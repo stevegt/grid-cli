@@ -10,8 +10,7 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2-syscall-tree/PSEUDOCODE.md,
     v2-syscall-tree/server.go,
     v2-syscall-tree/context.md
-XOut: module.go
-Out: cmd/grid-cli/main.go
+Out: v2-syscall-tree/cmd/grid-cli/main.go
 
 create cmd/grid-cli/main.go 
 

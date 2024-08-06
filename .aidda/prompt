@@ -10,13 +10,11 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/PSEUDOCODE.md,
     v2/server.go,
     v2/context.md
-Out: v2/cmd/grid-cli/main.go,
+XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
     v2/kernel.go,
     v2/module.go,
     v2/server.go
+Out: v2/message_test.go
 
-In cmd/grid-cli/main.go, we should import only
-github.com/stevegt/grid-cli/v2, and move all of the code from
-main.go to v2/*.go.  Make main.go minimal, and have it call
-grid-cli.Main().
+write test cases for the functions in message.go

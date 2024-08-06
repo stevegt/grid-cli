@@ -10,16 +10,6 @@ type Message struct {
 	Payload map[string]interface{} `json:"payload"` // Meta information or additional data
 }
 
-type SyscallNode struct {
-	Modules  []Module
-	Children map[string]*SyscallNode
-}
-
-type Kernel struct {
-	root          *SyscallNode
-	knownMessages map[string]Message
-}
-
 // Module is roughly equivalent to an application in a microkernel
 // system.
 type Module interface {

@@ -34,10 +34,66 @@ func NewKernel() *Kernel {
 	}
 }
 
-// HandleWebSocket handles incoming WebSocket connections and messages
-func (k *Kernel) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
+func (k *Kernel) addSyscall(parms ...interface{}) {
+	current := k.root
+	for _, parm := range parms {
+		key := fmt.Sprintf("%v", parm)
+		if _, exists := current.children[key]; !exists {
+			current.children[key] = &SyscallNode{
+				children: make(map[string]*SyscallNode),
+			}
+		}
+		current = current.children[key]
+	}
+	// Append the module to the leaf node
+	// Assuming module is pre-initialized and available in context
+	current.modules = append(current.modules, k.modules[fmt.Sprintf("%v", parms[len(parms)-1])])
+}
+
+func (k *Kernel) findBestMatch(parms ...interface{}) *SyscallNode {
+	current := k.root
+	for _, parm := range parms {
+		key := fmt.Sprintf("%v", parm)
+		if next, exists := current.children[key]; exists {
+			current = next
+		} else {
+			break
+		}
+	}
+	return current
+}
+
+func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]byte, error) {
+	bestMatch := k.findBestMatch(parms...)
+	var promisingModules []Module
+
+	for _, module := range bestMatch.modules {
+		promise, err := module.Accept(ctx, parms...)
+		if err != nil {
+			continue // Log and handle error
+		}
+		if promise.Parms[0].(bool) {
+			promisingModules = append(promisingModules, module)
+			k.addSyscall(parms...) // Add to syscall tree
+		}
+	}
+
+	for _, module := range promisingModules {
+		data, err := module.HandleMessage(ctx, parms...)
+		if err == nil {
+			return data, nil
+		}
+		// Log broken promise if HandleMessage fails after Accept returned true
+	}
+
+	return nil, fmt.Errorf("no module could handle the request")
+}
+
+func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *http.Request) {
 	upgrader := websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true },
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
 	}
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -52,32 +108,36 @@ func (k *Kernel) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("Failed to read message: %v\n", err)
 			break
 		}
-		k.processMessage(context.Background(), message)
+		parms, err := deserializeMessage(message)
+		if err != nil {
+			fmt.Printf("Failed to deserialize message: %v\n", err)
+			continue
+		}
+
+		// Consult modules based on the message parms
+		response, err := k.consultModules(ctx, parms...)
+		if err != nil {
+			fmt.Printf("Failed to consult modules: %v\n", err)
+			continue
+		}
+
+		// Response handling (omitted for brevity)
+		fmt.Println("Message processed, response generated.", response)
 	}
 }
 
-// processMessage processes a message, performing routing and handling using the syscall tree
-func (k *Kernel) processMessage(ctx context.Context, message []byte) {
-	var msg Message
-	if err := json.Unmarshal(message, &msg); err != nil {
-		fmt.Printf("Failed to unmarshal message: %v\n", err)
-		return
+func deserializeMessage(data []byte) ([]interface{}, error) {
+	var parms []interface{}
+	if err := json.Unmarshal(data, &parms); err != nil {
+		return nil, err
 	}
+	return parms, nil
+}
 
-	// Consult modules based on the message parms
-	response, err := k.consultModules(ctx, msg.Parms...)
+func serializeMessage(parms []interface{}) ([]byte, error) {
+	data, err := json.Marshal(parms)
 	if err != nil {
-		fmt.Printf("Failed to consult modules: %v\n", err)
-		return
+		return nil, err
 	}
-
-	// Response handling (omitted for brevity)
-	fmt.Println("Message processed, response generated.", response)
-}
-
-// consultModules consults modules for handling the message, utilizing the syscall tree for routing
-func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]byte, error) {
-	// Implementation involves traversing the syscall tree to find best match and consulting modules
-	// Omitted for brevity
-	return nil, nil
+	return data, nil
 }

@@ -1,0 +1,10 @@
+
+
+stdout:
+
+
+stderr:go: cannot find main module, but found .git/config in /home/stevegt/lab/grid-cli
+	to create a module there, run:
+	go mod init
+
+

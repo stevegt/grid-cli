@@ -23,11 +23,8 @@ type Kernel struct {
 // Module is roughly equivalent to an application in a microkernel
 // system.
 type Module interface {
-	// HandleMessage handles an incoming message, returning a promise.
-	// If `test` is true, it does not execute the actual handling
-	// logic, but instead checks if the handler can handle the
-	// message, and returns a promise of handling ability.
-	HandleMessage(ctx context.Context, test bool, in *Message) (out *Message, err error)
+	Accept(ctx context.Context, parms ...interface{}) (Message, error)
+	HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
 }
 
 type LocalCacheModule struct {
@@ -38,34 +35,75 @@ func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
 	return &LocalCacheModule{cacheDir: cacheDir}
 }
 
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, test bool, in *Message) (out *Message, err error) {
-	if test {
-		// Logic to check if the module can handle the message, returning a promise of handling ability
-		// XXX return a real promise
-		accept := &Message{
-			Parms: []interface{}{true},
-			Payload: map[string]interface{}{
-				"message": "Acceptable",
-			},
-		}
-		return accept, nil
-	}
-
-	// Implement logic to handle messages
+func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
+	// Logic to check if the module can handle the message, returning a promise of handling ability
 	// XXX return a real promise
-	data := &Message{
+	return Message{
 		Parms: []interface{}{true},
 		Payload: map[string]interface{}{
-			"message": "Handled",
+			"message": "Acceptable",
 		},
-	}
-	return data, nil
+	}, nil
 }
 
-func (k *Kernel) consultModules(ctx context.Context, in *Message) ([]byte, error) {
+func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
+	if len(parms) < 2 {
+		return nil, errors.New("insufficient arguments")
+	}
+
+	promiseHash, ok1 := parms[0].([]byte)
+	moduleHash, ok2 := parms[1].([]byte)
+	if !ok1 || !ok2 {
+		return nil, errors.New("invalid argument types")
+	}
+
+	cacheKey := constructCacheKey(promiseHash, moduleHash, parms[2:]...)
+	return loadFromCache(cacheKey)
+}
+
+func constructCacheKey(promiseHash, moduleHash []byte, args ...interface{}) string {
+	var keyBuilder strings.Builder
+
+	keyBuilder.WriteString(fmt.Sprintf("%x", promiseHash))
+	keyBuilder.WriteString("/")
+	keyBuilder.WriteString(fmt.Sprintf("%x", moduleHash))
+
+	for _, arg := range args {
+		var encodedArg string
+		switch v := arg.(type) {
+		case string:
+			encodedArg = url.QueryEscape(v)
+		case []byte:
+			encodedArg = url.QueryEscape(string(v))
+		default:
+			// Handle unsupported argument types
+		}
+		keyBuilder.WriteString("/")
+		keyBuilder.WriteString(encodedArg)
+	}
+
+	return keyBuilder.String()
+}
+
+func loadFromCache(cacheKey string) ([]byte, error) {
+	filePath := filepath.Join("cache", cacheKey)
+	return afero.ReadFile(fs, filePath)
+}
+
+func saveToCache(cacheKey string, data []byte) error {
+	cacheDir := "cache"
+	if err := fs.MkdirAll(cacheDir, 0755); err != nil {
+		return err
+	}
+	filePath := filepath.Join(cacheDir, cacheKey)
+	return afero.WriteFile(fs, filePath, data, 0644)
+}
+
+func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]byte, error) {
 	node := k.root
-	for _, parm := range in.Parms {
-		if child, ok := node.children[parm.(string)]; ok {
+	for _, parm := range parms {
+		key := fmt.Sprintf("%v", parm)
+		if child, ok := node.children[key]; ok {
 			node = child
 		} else {
 			break
@@ -74,18 +112,18 @@ func (k *Kernel) consultModules(ctx context.Context, in *Message) ([]byte, error
 
 	var promisingModules []Module
 	for _, module := range node.modules {
-		promise, err := module.HandleMessage(ctx, true, in)
+		promise, err := module.Accept(ctx, parms...)
 		if err != nil || !promise.Parms[0].(bool) {
 			continue
 		}
 		promisingModules = append(promisingModules, module)
-		k.addSyscall(in.Parms...)
+		k.addSyscall(parms...)
 	}
 
 	for _, module := range promisingModules {
-		response, err := module.HandleMessage(ctx, false, in)
-		if err == nil && response.Parms[0].(bool) {
-			return []byte("Handled"), nil
+		data, err := module.HandleMessage(ctx, parms...)
+		if err == nil {
+			return data, nil
 		}
 	}
 

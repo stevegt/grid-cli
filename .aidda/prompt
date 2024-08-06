@@ -16,8 +16,4 @@ Out: v2/cmd/grid-cli/main.go,
     v2/module.go,
     v2/server.go
 
-in cmd/grid-cli/main.go, we should import
-github.com/stevegt/grid-cli/v2, and move all of the code from
-main.go to v2/*.go.  Make main.go minimal, and have it call
-grid-cli.Main().
-
+the package name in v2/*.go should be grid-cli

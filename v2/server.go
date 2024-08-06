@@ -1,4 +1,4 @@
-package v2
+package grid_cli
 
 // Simplified overview of the system design based on the discussions
 

@@ -1,4 +1,4 @@
-package v2
+package grid_cli
 
 import (
 	"context"
@@ -12,8 +12,8 @@ import (
 
 // SyscallNode represents a node in the hierarchical syscall tree
 type SyscallNode struct {
-	modules  []Module
-	children map[string]*SyscallNode
+	Modules  []Module
+	Children map[string]*SyscallNode
 }
 
 // Kernel struct with the syscall tree root and file system abstraction
@@ -27,10 +27,11 @@ type Kernel struct {
 func NewKernel() *Kernel {
 	return &Kernel{
 		root: &SyscallNode{
-			children: make(map[string]*SyscallNode),
+			Children: make(map[string]*SyscallNode),
+			Modules:  []Module{},
 		},
 		fs:      afero.NewOsFs(),
-		modules: make(map[string]Module), // Initialize with known modules
+		modules: make(map[string]Module),
 	}
 }
 
@@ -38,23 +39,25 @@ func (k *Kernel) addSyscall(parms ...interface{}) {
 	current := k.root
 	for _, parm := range parms {
 		key := fmt.Sprintf("%v", parm)
-		if _, exists := current.children[key]; !exists {
-			current.children[key] = &SyscallNode{
-				children: make(map[string]*SyscallNode),
+		if _, exists := current.Children[key]; !exists {
+			current.Children[key] = &SyscallNode{
+				Children: make(map[string]*SyscallNode),
+				Modules:  []Module{},
 			}
 		}
-		current = current.children[key]
+		current = current.Children[key]
 	}
-	// Append the module to the leaf node
 	// Assuming module is pre-initialized and available in context
-	current.modules = append(current.modules, k.modules[fmt.Sprintf("%v", parms[len(parms)-1])])
+	if module, exists := k.modules[fmt.Sprintf("%v", parms[len(parms)-1])]; exists {
+		current.Modules = append(current.Modules, module)
+	}
 }
 
 func (k *Kernel) findBestMatch(parms ...interface{}) *SyscallNode {
 	current := k.root
 	for _, parm := range parms {
 		key := fmt.Sprintf("%v", parm)
-		if next, exists := current.children[key]; exists {
+		if next, exists := current.Children[key]; exists {
 			current = next
 		} else {
 			break
@@ -67,7 +70,7 @@ func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]by
 	bestMatch := k.findBestMatch(parms...)
 	var promisingModules []Module
 
-	for _, module := range bestMatch.modules {
+	for _, module := range bestMatch.Modules {
 		promise, err := module.Accept(ctx, parms...)
 		if err != nil {
 			continue // Log and handle error
@@ -108,7 +111,7 @@ func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *h
 			fmt.Printf("Failed to read message: %v\n", err)
 			break
 		}
-		parms, err := deserializeMessage(message)
+		parms, err := DeserializeMessage(message)
 		if err != nil {
 			fmt.Printf("Failed to deserialize message: %v\n", err)
 			continue
@@ -126,7 +129,7 @@ func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *h
 	}
 }
 
-func deserializeMessage(data []byte) ([]interface{}, error) {
+func DeserializeMessage(data []byte) ([]interface{}, error) {
 	var parms []interface{}
 	if err := json.Unmarshal(data, &parms); err != nil {
 		return nil, err
@@ -134,7 +137,7 @@ func deserializeMessage(data []byte) ([]interface{}, error) {
 	return parms, nil
 }
 
-func serializeMessage(parms []interface{}) ([]byte, error) {
+func SerializeMessage(parms []interface{}) ([]byte, error) {
 	data, err := json.Marshal(parms)
 	if err != nil {
 		return nil, err

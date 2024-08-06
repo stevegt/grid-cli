@@ -1,4 +1,4 @@
-package v2
+package grid_cli
 
 import (
 	"context"
@@ -11,8 +11,8 @@ type Message struct {
 }
 
 type SyscallNode struct {
-	modules  []Module
-	children map[string]*SyscallNode
+	Modules  []Module
+	Children map[string]*SyscallNode
 }
 
 type Kernel struct {
@@ -103,7 +103,7 @@ func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]by
 	node := k.root
 	for _, parm := range parms {
 		key := fmt.Sprintf("%v", parm)
-		if child, ok := node.children[key]; ok {
+		if child, ok := node.Children[key]; ok {
 			node = child
 		} else {
 			break
@@ -111,7 +111,7 @@ func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]by
 	}
 
 	var promisingModules []Module
-	for _, module := range node.modules {
+	for _, module := range node.Modules {
 		promise, err := module.Accept(ctx, parms...)
 		if err != nil || !promise.Parms[0].(bool) {
 			continue
@@ -134,12 +134,12 @@ func (k *Kernel) addSyscall(parms ...interface{}) {
 	node := k.root
 	for _, parm := range parms {
 		strParm := parm.(string)
-		if _, ok := node.children[strParm]; !ok {
-			node.children[strParm] = &SyscallNode{
-				children: make(map[string]*SyscallNode),
+		if _, ok := node.Children[strParm]; !ok {
+			node.Children[strParm] = &SyscallNode{
+				Children: make(map[string]*SyscallNode),
 			}
 		}
-		node = node.children[strParm]
+		node = node.Children[strParm]
 	}
-	node.modules = append(node.modules, k.knownMessages[parms[0].(string)])
+	node.Modules = append(node.Modules, k.knownMessages[parms[0].(string)])
 }

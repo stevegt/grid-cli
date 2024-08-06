@@ -1,4 +1,4 @@
-package v2
+package grid_cli
 
 // Message defines the structure for communication messages.
 // The first element in Parms is the promise of handling or not handling the syscall.

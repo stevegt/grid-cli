@@ -17,7 +17,12 @@ XOut: v2/cmd/grid-cli/main.go,
     v2/kernel.go,
     v2/module.go,
     v2/server.go
-Out: v2/message_test.go, v2/testdata/hello.msg
+Out: v2/message_test.go, v2/testdata/hello.msg,
+    v2/message.go,
+    v2/kernel.go,
+    v2/module.go,
+    v2/server.go
+
 
 Write test cases for the functions in message.go.  The hello.msg file
 is a test message file that contains an arbitrary multihash followed
@@ -26,3 +31,4 @@ should include a test for the ParseMessage function.  The ParseMessage
 function should be able to parse the multihash and the string from an
 io.Reader.  
 
+Fix the test errors.

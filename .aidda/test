@@ -7,15 +7,15 @@ FAIL	github.com/stevegt/grid-cli/v2 [build failed]
 stderr:# github.com/stevegt/grid-cli/v2 [github.com/stevegt/grid-cli/v2.test]
 ./module.go:8:6: Message redeclared in this block
 	./message.go:5:6: other declaration of Message
-./module.go:55:17: undefined: strings
-./module.go:57:25: undefined: fmt
-./module.go:59:25: undefined: fmt
-./module.go:65:17: undefined: url
-./module.go:67:17: undefined: url
-./module.go:79:14: undefined: filepath
-./module.go:80:9: undefined: afero
-./module.go:92:18: method Kernel.consultModules already declared at ./kernel.go:69:18
-./module.go:123:18: method Kernel.addSyscall already declared at ./kernel.go:38:18
-./module.go:80:9: too many errors
+./module.go:54:17: undefined: strings
+./module.go:56:25: undefined: fmt
+./module.go:58:25: undefined: fmt
+./module.go:64:17: undefined: url
+./module.go:66:17: undefined: url
+./module.go:78:14: undefined: filepath
+./module.go:79:9: undefined: afero
+./module.go:91:18: method Kernel.consultModules already declared at ./kernel.go:69:18
+./module.go:122:18: method Kernel.addSyscall already declared at ./kernel.go:38:18
+./module.go:79:9: too many errors
 
 

@@ -10,8 +10,7 @@ type Message struct {
 	Payload map[string]interface{} `json:"payload"` // Meta information or additional data
 }
 
-// Module is roughly equivalent to an application in a microkernel
-// system.
+// Module is roughly equivalent to an application in a microkernel system.
 type Module interface {
 	Accept(ctx context.Context, parms ...interface{}) (Message, error)
 	HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)

@@ -9,7 +9,9 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/module.go,
     v2/PSEUDOCODE.md,
     v2/server.go,
-    v2/context.md
+    v2/context.md.
+    v2/message_test.go,
+    v2/testdata/hello.msg
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
     v2/kernel.go,

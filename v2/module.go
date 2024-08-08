@@ -3,12 +3,13 @@ package grid_cli
 import (
 	"context"
 	"errors"
-)
+	"fmt"
+	"net/url"
+	"path/filepath"
+	"strings"
 
-type Message struct {
-	Parms   []interface{}          `json:"parms"`   // Parameters, with promise as the first element
-	Payload map[string]interface{} `json:"payload"` // Meta information or additional data
-}
+	"github.com/spf13/afero"
+)
 
 // Module is roughly equivalent to an application in a microkernel system.
 type Module interface {

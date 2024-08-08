@@ -21,6 +21,7 @@ Out: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/module.go,
+    v2/cache.go,
     v2/server.go
 
-move consultModules() from module.go to kernel.go
+move all of the cache-related code to cache.go

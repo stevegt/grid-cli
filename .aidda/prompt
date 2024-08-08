@@ -23,7 +23,4 @@ Out: v2/message_test.go, v2/testdata/hello.msg,
     v2/module.go,
     v2/server.go
 
-stdout:
-FAIL	github.com/stevegt/grid-cli/v2 [build failed]
-
-merge the consultModules from module.go into kernel.go
+move consultModules() from module.go to kernel.go

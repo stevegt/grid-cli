@@ -3,7 +3,6 @@ package grid_cli
 import (
 	"bytes"
 	"context"
-	"encoding/binary"
 	"io/ioutil"
 	"testing"
 )

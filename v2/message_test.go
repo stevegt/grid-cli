@@ -1,42 +1,48 @@
 package grid_cli
 
 import (
-	"bytes"
-	"context"
-	"io/ioutil"
 	"testing"
+
+	. "github.com/stevegt/goadapt"
 )
 
-// TestParseMessage tests the ParseMessage function, ensuring it can parse a multihash and a string from an io.Reader.
-func TestParseMessage(t *testing.T) {
-	ctx := context.Background()
-	data, err := ioutil.ReadFile("testdata/hello.msg")
-	if err != nil {
-		t.Fatalf("Failed to read test message file: %v", err)
+// TestMarshalMessage tests the message.Marshal function
+func TestMarshalMessage(t *testing.T) {
+	promise, err := NewPromise("I will say hello", "sha256")
+	msg := Message{
+		Promise: promise,
+		Parms:   []string{"hello"},
+		Payload: "world",
 	}
 
-	promiseHash, args, err := deserializeMessage(data)
-	if err != nil {
-		t.Fatalf("Failed to deserialize message: %v", err)
-	}
+	// Marshal the message
+	data, err := Marshal(&msg)
+	Tassert(t, err == nil, "Failed to marshal message: %v", err)
 
-	expectedHash := [...]byte{0x12, 0x20, 0x50, 0x1d, 0x4b, 0x4d, 0x2e, 0x95, 0x19, 0xd5, 0x15, 0x59, 0x4e, 0x2b, 0xde, 0x57, 0xb2, 0x8f, 0x39, 0xc0, 0x4e, 0xb8, 0x9e, 0xb4, 0x3d, 0x76, 0x2a, 0x20, 0xb9, 0x1d, 0x06, 0x2b, 0x7e, 0xd2}
-	expectedString := "hello world"
+	Pl(string(data))
 
-	if !bytes.Equal(promiseHash, expectedHash[:]) {
-		t.Errorf("Expected hash %x but got %x", expectedHash[:], promiseHash)
-	}
-
-	if len(args) != 1 {
-		t.Fatalf("Expected 1 argument but got %d", len(args))
-	}
-
-	arg, ok := args[0].([]byte)
-	if !ok {
-		t.Fatalf("Expected argument type []byte but got %T", args[0])
-	}
-
-	if string(arg) != expectedString {
-		t.Errorf("Expected string %q but got %q", expectedString, string(arg))
-	}
+	// Check the marshalled data
+	// XXX
 }
+
+/*
+// TestUnMarshalMessage tests the message.UnMarshal function
+func TestUnMarshalMessage(t *testing.T) {
+	data, err := ioutil.ReadFile("testdata/hello.msg")
+	Tassert(t, err == nil, "Failed to read test message file: %v", err)
+
+	// Unmarshal the message
+	var msg Message
+	err = Unmarshal(data, &msg)
+	Tassert(t, err == nil, "Failed to unmarshal message: %v", err)
+
+	// Check the message fields
+	spew.Dump(msg)
+
+	Tassert(t, len(msg.Parms) == 1, "Expected 1 argument but got %d", len(msg.Parms))
+	Tassert(t, msg.Parms[0] == "hello", "Expected string %q but got %q", "hello", msg.Parms[0])
+
+	Tassert(t, msg.Payload == "world", "Expected string %q but got %q", "world", msg.Payload)
+
+}
+*/

@@ -21,7 +21,10 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-Out: v2/module.go,
+XOut: v2/module.go,
     v2/cache.go
+Out: v2/DESIGN.md
 
-move all of the cache-related code to cache.go
+in DESIGN.md, discuss how we would use multihash, multibase, and
+multicodec to specify the first byte(s) of a promise hash, such that
+parsers can detect whether the hash is in binary, hex, or base58

@@ -27,4 +27,11 @@ XOut: v2/module.go,
 Out: v2/DESIGN.md
 XOut: v2/TODO.md
 
-in DESIGN.md, describe the cache (syscall tree) node structure
+in DESIGN.md, discuss:
+- do modules register with the kernel, reporting what messages they
+  can handle?  or does the kernel hash each module and use that hash
+  as the module hash?
+- discuss pros, cons, and flaws in either design
+- if modules register, what would the registration parameters be?
+- if modules register, then what happens if multiple modules register
+  to handle the same message?

@@ -1,12 +1,23 @@
 package grid_cli
 
 import (
+	"io/ioutil"
+	"os"
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	. "github.com/stevegt/goadapt"
 )
 
-// TestMarshalMessage tests the message.Marshal function
+// setup creates a temporary directory for testing
+func setup() (dir string) {
+	// create a new temporary directory
+	dir, err := os.MkdirTemp("", "grid-cli-test")
+	Ck(err)
+	return dir
+}
+
+// ExampleMarshalMessage tests the message.Marshal function
 func TestMarshalMessage(t *testing.T) {
 	promise, err := NewPromise("I will say hello", "sha256")
 	msg := Message{
@@ -21,11 +32,12 @@ func TestMarshalMessage(t *testing.T) {
 
 	Pl(string(data))
 
-	// Check the marshalled data
-	// XXX
+	// Output:
+	// QmddNuhGSReFgfv9rncrbEiruwPMu2YymprYHHC8YwqaQd hello
+	//
+	// world
 }
 
-/*
 // TestUnMarshalMessage tests the message.UnMarshal function
 func TestUnMarshalMessage(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/hello.msg")
@@ -42,7 +54,5 @@ func TestUnMarshalMessage(t *testing.T) {
 	Tassert(t, len(msg.Parms) == 1, "Expected 1 argument but got %d", len(msg.Parms))
 	Tassert(t, msg.Parms[0] == "hello", "Expected string %q but got %q", "hello", msg.Parms[0])
 
-	Tassert(t, msg.Payload == "world", "Expected string %q but got %q", "world", msg.Payload)
-
+	Tassert(t, msg.Payload == "world\n", "Expected string %q but got %q", "world", msg.Payload)
 }
-*/

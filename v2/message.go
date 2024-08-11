@@ -1,9 +1,11 @@
 package grid_cli
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"strings"
 
+	"github.com/multiformats/go-multibase"
 	"github.com/multiformats/go-multihash"
 	. "github.com/stevegt/goadapt"
 )
@@ -64,13 +66,9 @@ func Marshal(msg *Message) (buf []byte, err error) {
 	m, err := multihash.Encode(msg.Promise.Digest, msg.Promise.Code)
 	Ck(err)
 
-	// convert the multihash to a string
-	// XXX or do we want to leave it binary?
-	// XXX use multibase
-	// XXX check multicodec
-
-	// promiseStr := multihash.Multihash(m).HexString()
-	promiseStr := multihash.Multihash(m).B58String()
+	// convert the multihash to a multibase string
+	promiseStr, err := multibase.Encode(multibase.Base58BTC, m)
+	Ck(err)
 
 	parms := strings.Join(msg.Parms, " ")
 	header := Spf("%s %s", promiseStr, parms)
@@ -83,7 +81,6 @@ func Marshal(msg *Message) (buf []byte, err error) {
 	return buf, nil
 }
 
-/*
 func Unmarshal(data []byte, m *Message) (err error) {
 	defer Return(&err)
 	// Split the data into the header and payload
@@ -95,15 +92,16 @@ func Unmarshal(data []byte, m *Message) (err error) {
 	// Split the header into the promise and parameters
 	header := strings.Fields(string(parts[0]))
 	// promise is required
-	Assert(len(header) > 0, "invalid message header")
+	Assert(len(header) > 0, "invalid message header; missing promise hash")
 	promiseBuf := header[0]
 	// parameters are optional
 	if len(header) > 1 {
 		m.Parms = strings.Fields(string(header[1]))
 	}
-	// decode the promise hash
-	m.Promise, err = multihash.Decode(promiseBuf)
+	// decode the promise hash using multibase and multihash
+	_, buf, err := multibase.Decode(promiseBuf)
+	Ck(err)
+	m.Promise, err = multihash.Decode(buf)
 	Ck(err)
 	return nil
 }
-*/

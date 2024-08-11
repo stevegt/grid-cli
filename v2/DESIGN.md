@@ -24,8 +24,23 @@ This document outlines the design considerations and architecture for implementi
 
 - **Hierarchical Syscall Tree**: The kernel uses a hierarchical syscall tree to store acceptance history. This tree functions as an "ant routing" mechanism, caching successful paths to optimize future routing.
 
-
 - **Dynamic Acceptance History**: The syscall tree captures positive and negative acceptance history. It starts empty and is populated during operation as the kernel consults built-in and other modules to handle received messages.
+
+## Multihash, Multibase, and Multicodec
+
+PromiseGrid uses multihash and multibase to specify the first byte(s) of a promise hash. This ensures parsers can autodetect the hash format, be it binary, hex, or base58, enhancing compatibility and extensibility.
+
+- **Multihash**: Provides a consistent way to specify multiple hash algorithms, ensuring flexibility and future-proofing.
+- **Multibase**: Encodes multihash hashes such that their base (binary, hex, base58) is automatically interpreted by parsers.
+
+### Example
+
+Here's an example showing how multihash and multibase might be used:
+
+```go
+promiseHash := multihash.EncodeName([]byte(promiseText), "sha2-256")
+baseEncodedHash := multibase.Encode(multibase.Base58BTC, promiseHash)
+```
 
 ## Routing and Filtering
 
@@ -53,10 +68,11 @@ func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]by
             continue
         }
         // Now handle the message
-        _, data, err = module.HandleMessage(ctx, false, parms...)
+        data, err := module.HandleMessage(ctx, parms...)
         if err == nil {
             return data, nil
         }
+        // Log broken promise if HandleMessage fails after Accept returned true
     }
 
     return nil, fmt.Errorf("no module could handle the request")
@@ -66,14 +82,14 @@ func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]by
 ## Acceptance as a Form of Promise
 
 - **Promises and Accountability**: The acceptance of a message itself is a promise. Modules track which requests they accept and must fulfill these promises by successfully handling the requests.
-- The use of "accept" in this context aligns with the definitions in computing theory: An automaton accepts an input if it reaches an accepting state. Similarly, PromiseGrid modules accept a message if they can handle it, making a promise to process it, akin to how a Turing machine or a language automaton accepts strings belonging to a language. 
+- The use of "accept" in this context aligns with the definitions in computing theory: An automaton accepts an input if it reaches an accepting state. Similarly, PromiseGrid modules accept a message if they can handle it, making a promise to process it, akin to how a Turing machine or a language automaton accepts strings belonging to a language.
 
 ## Integration with WebSocket
 
 - Nodes interact with peers over the network via WebSocket connections.
 - WebSocket is the message transport mechanism we're using for now, although other mechanisms may be adopted in the future.
 - A sandboxed module can interact with the network by sending and receiving messages through the kernel.
-- The kernel communicates with the outside world (both network and local I/O) via non-sandboxed modules.  
+- The kernel communicates with the outside world (both network and local I/O) via non-sandboxed modules.
 
 ```go
 func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *http.Request) {

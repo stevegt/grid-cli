@@ -191,7 +191,6 @@ func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *h
 }
 ```
 
-
 ## Implementation Strategy
 
 ### Hierarchical Syscall Tree (Ant Routing)
@@ -221,7 +220,7 @@ func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *h
 - **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the request.
     - **Accept Function**: 
       ```go
-      func (m *Module) Accept(ctx context.Context, parms ...interface{}) (Promise, error)
+      func (m *Module) Accept(ctx context.Context, parms ...interface{}) (Message, error)
       ```
     - **Handling Function**: 
       ```go

@@ -27,4 +27,5 @@ XOut: v2/module.go,
 XOut: v2/DESIGN.md
 Out: v2/TODO.md
 
-update TODO.md, adding a list of prerequisites to each item
+update TODO.md.  for each item, list the prerequisite items, if any, and the
+items that depend on it, if any.  

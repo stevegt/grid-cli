@@ -24,8 +24,8 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 XOut: v2/module.go,
     v2/cache.go
-XOut: v2/DESIGN.md
-Out: v2/TODO.md
+Out: v2/DESIGN.md
+XOut: v2/TODO.md
 
-update TODO.md.  for each item, examine the prerequisite items.  at
-the bottom of the file, list the items that have circular prerequisites.
+in DESIGN.md, describe why (or why not) the message structure should
+have module hash as the second element after promise hash.  

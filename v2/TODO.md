@@ -1,7 +1,7 @@
 # TODO List for Implementing PromiseGrid Kernel
 
-## Message Structure
-- Define a `Message` structure where the promise is the first element in `Parms`.
+## Message Structure DONE
+- DONE Define a `Message` structure where the promise is the first element in `Parms`.
   - DONE Prerequisite: None
 
 - Ensure that the message format allows for the leading hash to be used as a promise hash, followed by the module hash and arguments.

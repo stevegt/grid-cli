@@ -27,5 +27,4 @@ XOut: v2/module.go,
 Out: v2/DESIGN.md
 XOut: v2/TODO.md
 
-in DESIGN.md, describe why (or why not) the message structure should
-have module hash as the second element after promise hash.  
+in DESIGN.md, describe the cache (syscall tree) node structure

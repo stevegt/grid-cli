@@ -20,6 +20,26 @@ This document outlines the design considerations and architecture for implementi
 
 - The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
 
+### Why (or Why Not) the Message Structure Should Have Module Hash as the Second Element
+
+### Why the Module Hash Should Be the Second Element:
+
+1. **Efficient Routing**: Including the module hash as the second element helps in efficiently routing the message to the correct module. This makes the lookup faster as the kernel can quickly identify which module is responsible for handling the message.
+
+2. **Clarity and Determinism**: By specifying the module hash right after the promise hash, the message structure becomes more deterministic. It ensures that the correct module is always targeted, reducing ambiguity and potential errors.
+
+3. **Security and Trust**: Having the module hash helps in verifying that the message is being handled by the appropriate module. This strengthens the security model by ensuring that promises are fulfilled by trusted modules.
+
+4. **Modularity**: This structure supports a highly modular system where each module can clearly advertise which promises it can handle, leading to better organization and maintainability.
+
+### Why the Module Hash Should Not Be the Second Element:
+
+1. **Flexibility**: Some might argue that having a fixed slot for the module hash reduces flexibility. If the system evolves to use a different routing mechanism, this fixed structure might hinder adaptability.
+
+2. **Overhead**: Including additional hashes in the message might increase the message size slightly, adding a minor overhead. However, this trade-off is often negligible compared to the benefits in routing efficiency and security.
+
+Overall, while there are minor trade-offs, including the module hash as the second element right after the promise hash greatly enhances the system’s efficiency, clarity, security, and modularity.
+
 ## Syscall Tree
 
 - **Hierarchical Syscall Tree**: The kernel uses a hierarchical syscall tree to store acceptance history. This tree functions as an "ant routing" mechanism, caching successful paths to optimize future routing.
@@ -32,15 +52,6 @@ PromiseGrid uses multihash and multibase to specify the first byte(s) of a promi
 
 - **Multihash**: Provides a consistent way to specify multiple hash algorithms, ensuring flexibility and future-proofing.
 - **Multibase**: Encodes multihash hashes such that their base (binary, hex, base58) is automatically interpreted by parsers.
-
-### Example
-
-Here's an example showing how multihash and multibase might be used:
-
-```go
-promiseHash := multihash.EncodeName([]byte(promiseText), "sha2-256")
-baseEncodedHash := multibase.Encode(multibase.Base58BTC, promiseHash)
-```
 
 ## Routing and Filtering
 

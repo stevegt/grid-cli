@@ -1,16 +1,16 @@
-# TODO List for Implementing PromiseGrid Kernel 
+# TODO List for Implementing PromiseGrid Kernel
 
 ## Message Structure
-- Define a `Message` structure where the promise is the first element in `Parms`
-- XXX Ensure that the message format allows for the leading hash to be used as a promise hash, followed by the module hash and arguments.
+- Define a `Message` structure where the promise is the first element in `Parms`.
+- Ensure that the message format allows for the leading hash to be used as a promise hash, followed by the module hash and arguments.
 
 ## Hierarchical Syscall Tree
-- Implement a hierarchical syscall tree as an "ant routing" mechanism to cache successful paths and optimize future routing.
+- Implement a hierarchical syscall tree to cache successful paths, optimizing future routing.
 - Incorporate promise-based acceptance in the syscall tree to enhance dynamic routing and module selection.
 
 ## Implement Ant Routing Mechanism
-- Incorporate ant routing mechanisms to cache the path to modules that have successfully handled previous calls.
-- Use the syscall tree to route messages to the module whose syscallTable key matches the most leading `parms` components.
+- Create an ant routing mechanism to cache the path to modules that have successfully handled previous calls.
+- Use the syscall tree to route messages to the module whose `syscallTable` key matches the most leading `parms` components.
 
 ## Cache Design and Lookup
 - Ensure that the cache uses filesystem separators (`/`) between each key component and URL-encodes the arguments.

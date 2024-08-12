@@ -131,5 +131,5 @@ The cache in the PromiseGrid kernel is designed to be a simple nested key-value 
 - As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model; the capability would be a key that is used by the kernel to unlock the cache node.
 - Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
 
-- When we talk about the cache and the messages it stores, are we talking about request messages or response messages?  Which is it?  Or is it both? Or are they both the same thing?  Is every message a promise, an assertion of truth?
+- Every message is a promise, an assertion of truth. When we talk about the cache and the messages it stores, we are talking about these messages.  How will this work in practice?  What's an example conversation flow?
 

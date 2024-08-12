@@ -33,6 +33,5 @@ XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 
-Add a paragraph to ADVICE.md about whether capability tokens can be
-endoded in a compressed format such as base58.  Does the multibase,
-multihash, or similar libraries support this?
+Add a paragraph to ADVICE.md about whether there is a standard format
+for encoding JWT tokens in a URL or in base58 or similar.

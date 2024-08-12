@@ -33,8 +33,9 @@ XOut: v2/DISCUSS.md
 Out: v2/cache.md
 
 Improve cache.md:
+- do not remove topics or content
+- move invalid, inconsistent, or incorrect content to the end of the file
 - improve layout and section organization
-- resolve inconsistencies 
 - make recommendations 
 - add examples
 - add a section on cache expiration

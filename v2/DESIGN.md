@@ -105,6 +105,13 @@ The cache or syscall tree node structure is integral to the efficient operation 
 1. **Unified Message Structure**:
     - The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
 
+## Multihash, Multibase, and Multicodec
+
+PromiseGrid uses multihash and multibase to specify the first byte(s) of a promise hash. This ensures parsers can autodetect the hash format, be it binary, hex, or base58, enhancing compatibility and extensibility.
+
+- **Multihash**: Provides a consistent way to specify multiple hash algorithms, ensuring flexibility and future-proofing.
+- **Multibase**: Encodes multihash hashes such that their base (binary, hex, base58) is automatically interpreted by parsers.
+
 2. **Acceptance as Promise**:
     - The kernel treats the acceptance of a message as a promise. The `Accept()` function returns a promise message instead of a simple boolean, allowing for richer interactions and more detailed responses.
     - This promise message contains meta-information about the module's capabilities and the conditions under which it will handle the message.
@@ -147,177 +154,88 @@ The cache or syscall tree node structure is integral to the efficient operation 
 
 Overall, while there are minor trade-offs, including the module hash as the second element right after the promise hash greatly enhances the system’s efficiency, clarity, security, and modularity.
 
-### Discussion on Unified Accept and HandleMessage Functions
+### Combining Accept and HandleMessage Functions
 
-#### Combine Accept and HandleMessage
+Here we explore the pros and cons of having separate `Accept()` and `HandleMessage()` functions versus a single function:
 
-1. **Simplicity**:
-    - **Unified Logic**: Combining decision-making and handling into a single function simplifies the module interface.
-    - **Efficiency**: Reduces overhead by consolidating the logic into one function.
+#### Combined Function
 
-2. **Consistency**:
-    - **Single Source of Truth**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency.
+1. **Simplicity**: Combines decision-making and handling into a single function.
+2. **Consistency**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency and reducing logic duplication.
+3. **Efficiency**: Eliminates redundant checks by combining acceptance and handling.
 
-#### Separate Accept and HandleMessage
+#### Separate Functions
 
-1. **Clarity**:
-    - **Modular Logic**: Maintains clear separation between the decision to handle a message and the actual message processing.
-    - **Early Rejection**: Enables modules to quickly reject messages they cannot handle, conserving resources.
+1. **Clarity**: Maintains clear separation between decision-making and handling logic.
+2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
+3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
 
-2. **Trust and Accountability**:
-    - **Promise-Based Acceptance**: Treats acceptance as a promise, which modules are expected to fulfill. If a module accepts a message but fails to handle it, it breaks the promise, which can be logged and managed.
+### Discussion of Resolving Acceptance
 
-## Syscall Tree
+Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
 
-- **Hierarchical Syscall Tree**: The kernel uses a hierarchical syscall tree to store acceptance history. This tree functions as an "ant routing" mechanism, caching successful paths to optimize future routing.
+1. **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the message.
+2. **Handling as Promise Fulfillment**: `HandleMessage` attempts to fulfill this promise. If it fails (breaking the promise), it is logged and handled appropriately.
 
-- **Dynamic Acceptance History**: The syscall tree captures positive and negative acceptance history. It starts empty and is populated during operation as the kernel consults built-in and other modules to handle received messages.
+### Proposed Dynamic Syscall Table and Ant Routing
 
-## Multihash, Multibase, and Multicodec
+Implementing a dynamic syscall table with ant routing involves:
 
-PromiseGrid uses multihash and multibase to specify the first byte(s) of a promise hash. This ensures parsers can autodetect the hash format, be it binary, hex, or base58, enhancing compatibility and extensibility.
+1. **Hierarchical Syscall Tree**: Each node in the tree can have multiple children representing different components of the parameters (`parms`).
+2. **Caching Successful Paths**: Cache successful paths to optimize future routing based on leading parameter sequences.
+3. **Populating During Operation**: The syscall tree starts empty and is populated during operation as modules accept and handle messages.
 
-- **Multihash**: Provides a consistent way to specify multiple hash algorithms, ensuring flexibility and future-proofing.
-- **Multibase**: Encodes multihash hashes such that their base (binary, hex, base58) is automatically interpreted by parsers.
+### Examples of Unified and Separate Function Approaches
 
-## Routing and Filtering
-
-- **Optimized Routing**: In the case of a cache miss, the kernel consults modules based on the hierarchical syscall tree. It routes the message to the module with the longest matching parameter slice.
+#### Combined Function:
 
 ```go
-func (k *Kernel) consultModules(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    bestMatch := k.findBestMatch(parms...)
-    var promisingModules []Module
+type Module interface {
+    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
+}
 
-    for _, module := range bestMatch.modules {
-        promise, err := module.Accept(ctx, parms...)
-        if err != nil {
-            continue // Log and handle error
-        }
-        if promise.Parms[0].(bool) {
-            promisingModules = append(promisingModules, module)
-            k.addSyscall(parms...) // Add to syscall tree
-        }
-    }
+type LocalCacheModule struct {
+    cacheDir string
+}
 
-    for _, module := range promisingModules {
-        acceptable, data, err := module.HandleMessage(ctx, true, parms...)
-        if err != nil || !acceptable {
-            continue
-        }
-        // Now handle the message
-        data, err := module.HandleMessage(ctx, parms...)
-        if err == nil {
-            return data, nil
-        }
-        // Log broken promise if HandleMessage fails after Accept returned true
-    }
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
+}
 
-    return nil, fmt.Errorf("no module could handle the request")
+func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic to process message, which includes accepting and handling
+    // Return a promise message with acceptance and handling results or errors
 }
 ```
 
-## Acceptance as a Form of Promise
-
-- **Promises and Accountability**: The acceptance of a message itself is a promise. Modules track which requests they accept and must fulfill these promises by successfully handling the requests.
-- The use of "accept" in this context aligns with the definitions in computing theory: An automaton accepts an input if it reaches an accepting state. Similarly, PromiseGrid modules accept a message if they can handle it, making a promise to process it, akin to how a Turing machine or a language automaton accepts strings belonging to a language.
-
-## Integration with WebSocket
-
-- Nodes interact with peers over the network via WebSocket connections.
-- WebSocket is the message transport mechanism we're using for now, although other mechanisms may be adopted in the future.
-- A sandboxed module can interact with the network by sending and receiving messages through the kernel.
-- The kernel communicates with the outside world (both network and local I/O) via non-sandboxed modules.
+#### Separate Functions:
 
 ```go
-func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *http.Request) {
-    upgrader := websocket.Upgrader{
-        CheckOrigin: func(r *http.Request) bool {
-            return true
-        },
-    }
-    conn, err := upgrader.Upgrade(w, r, nil)
-    if err != nil {
-        return
-    }
-    defer conn.Close()
+type Module interface {
+    Accept(ctx context.Context, parms ...interface{}) (Message, error)
+    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
+}
 
-    for {
-        _, message, err := conn.ReadMessage()
-        if err != nil {
-            break
-        }
+type LocalCacheModule struct {
+    cacheDir string
+}
 
-        parms, err := deserializeMessage(message)
-        if err != nil {
-            continue
-        }
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
+}
 
-        data, err := k.consultModules(ctx, parms...)
-        if err != nil {
-            continue
-        }
+func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic to accept or reject based on parms
+}
 
-        if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
-            break
-        }
-    }
+func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
+    // Implement logic to handle the message following acceptance
 }
 ```
 
-## Implementation Strategy
+### Conclusion
 
-### Hierarchical Syscall Tree (Ant Routing)
-
-- **Cached successful paths**: Enhance routing efficiency for future calls with similar parameters.
-- **Tree Structure**: Each node represents a level of parameter matching, with leaf nodes potentially corresponding to specific modules or cached results.
-    ```go
-    type SyscallNode struct {
-        modules  []Module
-        children map[string]*SyscallNode
-    }
-
-    type Kernel struct {
-        root *SyscallNode
-        knownMessages map[string]Message
-    }
-    ```
-
-### Simplifying Accept and HandleMessage into a Promise-Based Unified Approach
-
-- **Promise-Based Decision**: Consolidate *Accept* and *HandleMessage* into one step, where the promise to process a message is fulfilled immediately, and a promise message is generated and returned.
-- **PromiseMessage as Message**: Treat the *PromiseMessage* as merely the first element of `Parms`, introducing a seamless contract between caller and module.
-- **Dynamic Sys.
-
-#### Promise-Based Acceptance Mechanism
-
-- **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the request.
-    - **Accept Function**: 
-      ```go
-      func (m *Module) Accept(ctx context.Context, parms ...interface{}) (Message, error)
-      ```
-    - **Handling Function**: 
-      ```go
-      func (m *Module) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-      ```
-
-### Consulting Modules with Promise-Based Acceptance
-
-- **Optimized Module Consultation**: When a message is received, consult the syscall tree to find the longest matching parameter slice and route the message to the respective module.
-- **Caching Successful Calls**: Use the syscall tree to cache paths of successful module consultations, akin to ant routing, where a trail is left for future use.
-
-### Promise Message and Meta-Information Handling
-
-- **Unified Message Handling**: Integrate additional meta-information (such as trust levels, module capabilities, etc.) into the Promise message returned by the Accept or Handling process.
-- **Meta as Message.Payload**: Include any metadata or additional guarantees about the promise in the `Message.Payload`.
-
-```go
-func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *http.Request) { ... }
-```
-
-### Discussion: Integration with "Promises All the Way Down"
-
-- **Trust and Accountability with Promise-Based Design**: In this design, every interaction within the system is based on trust represented by promises. The acceptance and fulfillment of these promises form the foundation of module interactions, enhancing system resilience and adaptability.
+Implementing a hierarchical syscall tree and using a unified `PromiseMessage` structure simplifies the routing, acceptance, and handling of messages. By embedding known accept/reject messages in the kernel, the system can recognize and validate promises effectively. This approach aligns with the philosophy of "promises all the way down," ensuring trust, accountability, and optimized routing in a decentralized governance framework.
 
 ## Open Questions
 

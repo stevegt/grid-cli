@@ -26,5 +26,4 @@ XOut: v2/module.go,
 Out: v2/DESIGN.md
 XOut: v2/TODO.md
 
-examine context.md and DESIGN.md.  Add sections to DESIGN.md for any
-major topics that are covered in context.md but not in DESIGN.md.  
+find and fix one inconsistency in DESIGN.md.  make no other changes.

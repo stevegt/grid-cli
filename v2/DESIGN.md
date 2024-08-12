@@ -78,7 +78,7 @@ Modules can unwrap nested messages and forward them to other modules, allowing f
 
 The choice between explicit module registration and hash-based routing significantly impacts the design and functionality of the PromiseGrid system. Combining both approaches can provide a balanced solution, leveraging the strengths of each method while mitigating their weaknesses. The flexibility in message handling, including the delegation of nested messages, further enhances the system's modularity and adaptability.
 
-## Cache (Syscall Tree) Node Structure
+## Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
 
 The cache or syscall tree node structure is integral to the efficient operation of the PromiseGrid system. It serves as a hierarchical routing mechanism, caching successful paths for optimized future lookups.
 
@@ -104,59 +104,18 @@ The cache or syscall tree node structure is integral to the efficient operation 
 
 1. **Unified Message Structure**:
     - The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
+    - Example: A `Message` with the promise as the first element and subsequent elements as parameters to be handled by the module.
 
-## Multihash, Multibase, and Multicodec
+### Multihash, Multibase, and Multicodec
 
 PromiseGrid uses multihash and multibase to specify the first byte(s) of a promise hash. This ensures parsers can autodetect the hash format, be it binary, hex, or base58, enhancing compatibility and extensibility.
 
 - **Multihash**: Provides a consistent way to specify multiple hash algorithms, ensuring flexibility and future-proofing.
 - **Multibase**: Encodes multihash hashes such that their base (binary, hex, base58) is automatically interpreted by parsers.
 
-2. **Acceptance as Promise**:
-    - The kernel treats the acceptance of a message as a promise. The `Accept()` function returns a promise message instead of a simple boolean, allowing for richer interactions and more detailed responses.
-    - This promise message contains meta-information about the module's capabilities and the conditions under which it will handle the message.
-
-3. **Fulfillment and Accountability**:
-    - Once a module accepts a message (thereby making a promise), it is expected to handle the message correctly. If `HandleMessage()` fails after `Accept()` returns true, it is considered a broken promise.
-    - The kernel can track broken promises, enabling dynamic rerouting of requests and de-prioritizing unreliable modules.
-
-### Cache and File System
-
-1. **Cache as Filesystem**:
-    - The cache uses filesystem separators (`/`) between each key component, and arguments are URL-encoded to ensure safe and consistent storage.
-    - The kernel's local cache itself is implemented as a built-in module, ensuring uniform handling of cache lookups and module consultations.
-
-2. **Integration with OPFS**:
-    - The kernel uses the Origin Private File System (OPFS) for disk file access, providing a secure and performant storage backend.
-    - The `afero` library is used to abstract filesystem interactions, allowing flexibility in choosing storage backends.
-
-## Message Structure
-
-- The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
-
-## Why (or Why Not) the Message Structure Should Have Module Hash as the Second Element
-
-### Why the Module Hash Should Be the Second Element:
-
-1. **Efficient Routing**: Including the module hash as the second element helps in efficiently routing the message to the correct module. This makes the lookup faster as the kernel can quickly identify which module is responsible for handling the message.
-
-2. **Clarity and Determinism**: By specifying the module hash right after the promise hash, the message structure becomes more deterministic. It ensures that the correct module is always targeted, reducing ambiguity and potential errors.
-
-3. **Security and Trust**: Having the module hash helps in verifying that the message is being handled by the appropriate module. This strengthens the security model by ensuring that promises are fulfilled by trusted modules.
-
-4. **Modularity**: This structure supports a highly modular system where each module can clearly advertise which promises it can handle, leading to better organization and maintainability.
-
-### Why the Module Hash Should Not Be the Second Element:
-
-1. **Flexibility**: Some might argue that having a fixed slot for the module hash reduces flexibility. If the system evolves to use a different routing mechanism, this fixed structure might hinder adaptability.
-
-2. **Overhead**: Including additional hashes in the message might increase the message size slightly, adding a minor overhead. However, this trade-off is often negligible compared to the benefits in routing efficiency and security.
-
-Overall, while there are minor trade-offs, including the module hash as the second element right after the promise hash greatly enhances the system’s efficiency, clarity, security, and modularity.
-
 ### Combining Accept and HandleMessage Functions
 
-Here we explore the pros and cons of having separate `Accept()` and `HandleMessage()` functions versus a single function:
+Discussion of Pros and Cons:
 
 #### Combined Function
 
@@ -170,7 +129,7 @@ Here we explore the pros and cons of having separate `Accept()` and `HandleMessa
 2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
 3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
 
-### Discussion of Resolving Acceptance
+### Acceptance as Promise
 
 Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
 
@@ -254,3 +213,46 @@ Implementing a hierarchical syscall tree and using a unified `PromiseMessage` st
 - Update the sections with any additional questions or areas of exploration that arise during implementation and testing.
 - Refine the glossary to include more specialized terms and concepts as they arise in the documentation.
 - Incorporate visual aids (e.g., diagrams, flowcharts) to enhance understanding of system architecture and data flow.
+
+2. **Acceptance as Promise**:
+    - The kernel treats the acceptance of a message as a promise. The `Accept()` function returns a promise message instead of a simple boolean, allowing for richer interactions and more detailed responses.
+    - This promise message contains meta-information about the module's capabilities and the conditions under which it will handle the message.
+
+3. **Fulfillment and Accountability**:
+    - Once a module accepts a message (thereby making a promise), it is expected to handle the message correctly. If `HandleMessage()` fails after `Accept()` returns true, it is considered a broken promise.
+    - The kernel can track broken promises, enabling dynamic rerouting of requests and de-prioritizing unreliable modules.
+
+### Cache and File System
+
+1. **Cache as Filesystem**:
+    - The cache uses filesystem separators (`/`) between each key component, and arguments are URL-encoded to ensure safe and consistent storage.
+    - The kernel's local cache itself is implemented as a built-in module, ensuring uniform handling of cache lookups and module consultations.
+
+2. **Integration with OPFS**:
+    - The kernel uses the Origin Private File System (OPFS) for disk file access, providing a secure and performant storage backend.
+    - The `afero` library is used to abstract filesystem interactions, allowing flexibility in choosing storage backends.
+
+## Message Structure
+
+- The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
+
+## Why (or Why Not) the Message Structure Should Have Module Hash as the Second Element
+
+### Why the Module Hash Should Be the Second Element:
+
+1. **Efficient Routing**: Including the module hash as the second element helps in efficiently routing the message to the correct module. This makes the lookup faster as the kernel can quickly identify which module is responsible for handling the message.
+
+2. **Clarity and Determinism**: By specifying the module hash right after the promise hash, the message structure becomes more deterministic. It ensures that the correct module is always targeted, reducing ambiguity and potential errors.
+
+3. **Security and Trust**: Having the module hash helps in verifying that the message is being handled by the appropriate module. This strengthens the security model by ensuring that promises are fulfilled by trusted modules.
+
+4. **Modularity**: This structure supports a highly modular system where each module can clearly advertise which promises it can handle, leading to better organization and maintainability.
+
+### Why the Module Hash Should Not Be the Second Element:
+
+1. **Flexibility**: Some might argue that having a fixed slot for the module hash reduces flexibility. If the system evolves to use a different routing mechanism, this fixed structure might hinder adaptability.
+
+2. **Overhead**: Including additional hashes in the message might increase the message size slightly, adding a minor overhead. However, this trade-off is often negligible compared to the benefits in routing efficiency and security.
+
+Overall, while there are minor trade-offs, including the module hash as the second element right after the promise hash greatly enhances the system’s efficiency, clarity, security, and modularity.
+

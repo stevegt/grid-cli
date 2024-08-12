@@ -73,7 +73,7 @@ The cache or syscall tree node structure is integral to the efficient operation 
 
 - The `Message` structure includes the promise as the first element in the `Parms` field. Recipients route or discard messages based on the leading promise.
 
-### Why (or Why Not) the Message Structure Should Have Module Hash as the Second Element
+## Why (or Why Not) the Message Structure Should Have Module Hash as the Second Element
 
 ### Why the Module Hash Should Be the Second Element:
 
@@ -92,6 +92,26 @@ The cache or syscall tree node structure is integral to the efficient operation 
 2. **Overhead**: Including additional hashes in the message might increase the message size slightly, adding a minor overhead. However, this trade-off is often negligible compared to the benefits in routing efficiency and security.
 
 Overall, while there are minor trade-offs, including the module hash as the second element right after the promise hash greatly enhances the system’s efficiency, clarity, security, and modularity.
+
+### Discussion on Unified Accept and HandleMessage Functions
+
+#### Combine Accept and HandleMessage
+
+1. **Simplicity**:
+    - **Unified Logic**: Combining decision-making and handling into a single function simplifies the module interface.
+    - **Efficiency**: Reduces overhead by consolidating the logic into one function.
+
+2. **Consistency**:
+    - **Single Source of Truth**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency.
+
+#### Separate Accept and HandleMessage
+
+1. **Clarity**:
+    - **Modular Logic**: Maintains clear separation between the decision to handle a message and the actual message processing.
+    - **Early Rejection**: Enables modules to quickly reject messages they cannot handle, conserving resources.
+
+2. **Trust and Accountability**:
+    - **Promise-Based Acceptance**: Treats acceptance as a promise, which modules are expected to fulfill. If a module accepts a message but fails to handle it, it breaks the promise, which can be logged and managed.
 
 ## Syscall Tree
 
@@ -253,7 +273,6 @@ func handleWebSocket(ctx context.Context, k *Kernel, w http.ResponseWriter, r *h
 - Regarding the design choice of using a separate `Accept()` and `HandleMessage()` method -- does this not break promise theory's principle of not making promises on behalf of others? If there is a separate `Accept()` and `HandleMessage()` method, this means that the `Accept()` code path is making a promise on behalf of the `HandleMessage()` code path. What are the implications of this? Should this design be changed?
 - How does the kernel determine the best route when multiple modules provide promises to handle a message?
 - How will the system manage latency in the context of decentralized and distributed nodes?
-- What measures can be taken to ensure data consistency across the decentralized cache system over unreliable networks?
 
 ## Suggestions for Improving this Document
 

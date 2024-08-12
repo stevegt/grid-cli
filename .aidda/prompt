@@ -34,4 +34,4 @@ Out: v2/cache.md
 XOut: v2/cache.go
 
 Answer this question in cache.md:
-- It's not clear whether, when we talk about the cache and the messages it stores, we are talking about request messages or response messages.  Which is it?  Or is it both? Or are they both the same thing?  Is every message a promise, an assertion of truth?
+- When we talk about the cache and the messages it stores, are we talking about request messages or response messages?  Which is it?  Or is it both? Or are they both the same thing?  Is every message a promise, an assertion of truth?

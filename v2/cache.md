@@ -131,5 +131,45 @@ The cache in the PromiseGrid kernel is designed to be a simple nested key-value 
 - As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model; the capability would be a key that is used by the kernel to unlock the cache node.
 - Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
 
+### Example Conversation Flow
+
 - Every message is a promise, an assertion of truth. When we talk about the cache and the messages it stores, we are talking about these messages.  How will this work in practice?  What's an example conversation flow?
+
+To illustrate how the cache and promise-based handling work in practice, let's consider an example conversation flow:
+
+**Scenario**: A node requests the current weather for a specific location from another node that provides weather information.
+
+0. **Ad**
+    - Node B has a weather module that can retrieve weather data for various locations.  It broadcasts this capability to the network, promising that it can provide weather information for specific locations.
+
+1. **Request Message**:
+    - Node A sends a request message with node B's weather capability token, asking Node B to
+    return the current weather for `Location X`. The request message includes:
+        - XXX
+        - Capability token: A unique identifier representing node B's promise to provide weather data.
+        - Module Hash: The identifier of the weather module.
+        - Arguments: The location `X`.
+
+2. **Cache Lookup**:
+    - The kernel of Node B receives the request and performs a cache lookup using the promise hash, module hash, and arguments.
+    - If a cached response exists (e.g., weather data for `Location X`), the kernel retrieves it and sends it back to Node A.
+
+3. **Cache Miss and Module Consultation**:
+    - If the cache lookup fails (cache miss), the kernel consults the appropriate module to handle the request.
+    - The kernel invokes the weather module's function corresponding to the capability token (promise hash) and passes the arguments.
+    - The weather module processes the request, retrieves the current weather data for `Location X`, and generates the response.
+
+4. **Execute and Cache Result**:
+    - The weather module sends the response back to the kernel.
+    - The kernel caches the result using the same keys (promise hash, module hash, and arguments) to ensure future requests can be served directly
+ from the cache.
+    - The kernel sends the response back to Node A.
+
+5. **Response Message**:
+    - Node A receives the response message containing the current weather data for `Location X`.
+    - The promise made by Node B to provide the weather data is fulfilled.
+
+In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests effic
+iently and reliably.
+
 

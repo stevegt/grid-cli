@@ -1,9 +1,10 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
-    v2/context.md,
+    v2/ADVICE.md,
     v2/cache.md
 XIn: v2/message.go,
+    v2/context.md,
     v2/TODO.md,
     v2/DESIGN.md,
     v2/cache.go,
@@ -13,7 +14,6 @@ XIn: v2/message.go,
     v2/server.go,
     v2/message_test.go,
     v2/DISCUSS.md,
-    v2/ADVICE.md,
     v2/testdata/hello.msg
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
@@ -28,10 +28,14 @@ XOut: v2/module.go,
 XOut: v2/cache.go 
 XOut: v2/DESIGN.md
 XOut: v2/TODO.md
-XOut: v2/ADVICE.md
+Out: v2/ADVICE.md
 XOut: v2/DISCUSS.md
-Out: v2/cache.md
+XOut: v2/cache.md
 XOut: v2/cache.go
 
-Answer this question in cache.md:
-- Every message is a promise, an assertion of truth. When we talk about the cache and the messages it stores, we are talking about these messages.  How will this work in practice?  What's an example conversation flow?
+Wait.  Can a capability token be crafted such that it contains both
+the permission granted as well as the party to whom the permission is
+granted?  That would be a capability token that is self-contained and
+self-describing.  Is there any prior art on this?  Advise in ADVICE.md.
+
+

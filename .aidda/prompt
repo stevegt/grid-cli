@@ -34,4 +34,4 @@ Out: v2/cache.md
 XOut: v2/cache.go
 
 Answer this question in cache.md:
-- In a typical microkernel architecture, does the kernel have any knowledge of permissions, or is that left up to the microservers (drivers) to handle? Give examples of existing microkernels that do either.
+- How do microkernels interact with userland drivers?  Does the driver register with the kernel, or does the kernel load the driver as a part of the boot process, already knowing about the driver's address space and abilities?

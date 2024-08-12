@@ -68,7 +68,9 @@ The design of caching, module handling, and promise-based acceptance in the Prom
 - As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model. The capability would be a key that is used by the kernel to unlock the cache node.
 - Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
 
-- In a typical microkernel architecture, does the kernel have any knowledge of permissions, or is that left up to the microservers (drivers) to handle? Give examples of existing microkernels that do either.
+### Typical Microkernel Architecture and Permissions
+
+In a typical microkernel architecture, the kernel has minimal knowledge of permissions, and the responsibility for handling permissions is generally left to microservers (drivers). The kernel focuses on providing essential services such as communication and resource management, while higher-level functions, including access control and permissions, are managed by user-level services.
 
 ### Known Microkernel Architectures Using Capability-Based Security
 
@@ -84,3 +86,17 @@ Handling Permissions and Access Control in **seL4**:
 4. **Controlled Delegation**: Capabilities can be delegated (or propagated) to other threads, but the delegation is controlled by the kernel to prevent unauthorized access. This allows for flexible and secure sharing of resources within a system.
 
 By leveraging a capability-based security model, microkernels like seL4 ensure that access control is both fine-grained and secure, providing a robust foundation for building secure systems.
+
+#### Examples of Existing Microkernels
+
+1. **seL4**: As previously mentioned, seL4 uses a capability-based security model where the kernel maintains capability mappings but does not deeply involve itself in access control logic. Instead, it relies on the capabilities held by the user-level services to determine access rights.
+
+2. **Mach**: The Mach microkernel provides basic Inter-Process Communication (IPC) mechanisms and leaves most of the higher-level functionality, including access control, to user-space programs. The kernel does not have intrinsic knowledge of the permissions but enforces access controls passed to it via messages.
+
+3. **L4**: The L4 microkernel architecture also uses a minimalistic design philosophy, where the kernel provides basic mechanisms, and policy, including permissions, is implemented in user space. Access control is managed through capabilities issued and checked by user-space services.
+
+By delegating permission and access control management to microservers or user-level services, microkernel architectures can maintain a small and efficient core, allowing for easier verification and higher reliability.
+
+### Microkernel interaction with userland drivers
+
+- How do microkernels interact with userland drivers?  Does the driver register with the kernel, or does the kernel load the driver as a part of the boot process, already knowing about the driver's address space and abilities?

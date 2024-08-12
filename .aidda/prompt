@@ -30,6 +30,7 @@ XOut: v2/DESIGN.md
 XOut: v2/TODO.md
 XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
-Out: v2/cache.md
+XOut: v2/cache.md
+Out: v2/cache.go
 
-Improve cache.md.
+Add a Cache struct, with cache API stub methods, with comments, to cache.go.

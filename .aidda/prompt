@@ -26,10 +26,5 @@ XOut: v2/module.go,
 Out: v2/DESIGN.md
 XOut: v2/TODO.md
 
-in DESIGN.md, discuss pros and cons of having a flexible design such
-that the promise specifies whether modules register with the kernel,
-reporting what messages they can handle, or if the kernel hashes each
-module and uses that hash to route messages to the appropriate module.
-discuss the fact that, in essence, because modules can unwrap nested
-messages and forward them to other modules, the kernel is not
-necessarily the final arbiter of which module handles a message.
+examine context.md and DESIGN.md.  Add sections to DESIGN.md for any
+major topics that are covered in context.md but not in DESIGN.md.  

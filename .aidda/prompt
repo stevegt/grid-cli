@@ -1,6 +1,7 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In: /home/stevegt/lab/promisegrid/promisegrid/README.md
+In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
+    v2/cache.md
 XIn: v2/message.go,
     v2/TODO.md,
     v2/DESIGN.md,
@@ -14,7 +15,6 @@ XIn: v2/message.go,
     v2/DISCUSS.md,
     v2/ADVICE.md,
     v2/testdata/hello.msg
-In: v2/cache.md
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
     v2/kernel.go,

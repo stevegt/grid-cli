@@ -78,6 +78,8 @@ By leveraging a capability-based security model, microkernels like seL4 ensure t
 
 #### Examples of Existing Microkernels
 
+In a typical microkernel architecture, the kernel has minimal knowledge of permissions, and the responsibility for handling permissions is generally left to microservers (drivers). The kernel focuses on providing essential services such as communication and resource management, while higher-level functions, including access control and permissions, are managed by user-level services.
+
 1. **seL4**: As previously mentioned, seL4 uses a capability-based security model where the kernel maintains capability mappings but does not deeply involve itself in access control logic. Instead, it relies on the capabilities held by the user-level services to determine access rights.
 
 2. **Mach**: The Mach microkernel provides basic Inter-Process Communication (IPC) mechanisms and leaves most of the higher-level functionality, including access control, to user-space programs. The kernel does not have intrinsic knowledge of the permissions but enforces access controls passed to it via messages.
@@ -100,16 +102,26 @@ Microkernels interact with userland drivers through a well-defined communication
 
 In summary, userland drivers typically register with the kernel, which then maps their address spaces and sets up communication channels. These drivers can be dynamically loaded, allowing the kernel to extend its capabilities without needing to know about the driver specifics in advance.
 
+### How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?
+
+In the PromiseGrid Kernel, the determination of when to load a module from the cache, execute it, and store the result back in the cache follows a systematic approach:
+
+1. **Cache Lookup**: When a message arrives, the kernel first performs a cache lookup using the leading hash (capability token, function address) and the provided arguments. If the requested function call and its arguments are already in the cache, the kernel retrieves and returns the cached result.
+
+2. **Cache Miss**: If the cache lookup fails (cache miss), the kernel proceeds to consult the appropriate module(s) to handle the request. This involves invoking the module's function corresponding to the capability token and passing the arguments from the message.
+
+3. **Module Execution**: The module executes the function with the given arguments. During this execution, the module can dynamically generate the response based on the input or retrieve the necessary data from other sources.
+
+4. **Store Result in Cache**: Once the module generates the response, the kernel stores this result back in the cache. This ensures that subsequent requests with the same capability token and arguments can be served directly from the cache, optimizing future retrievals and reducing redundant computations.
+
+By following this procedure, the PromiseGrid Kernel ensures efficient use of the cache while leveraging modular execution to handle cache misses. This approach harmonizes decentralized cache handling with the overall system's modular and promise-based architecture.
+
 ## Open Questions
 
-- It sounds like a cache node struct might include a field that marks or flags the node as being an executable, an argument, or a result. Is that a good design? Or should we simply store the node's sequence number in that field, i.e., the node's position in the received message?
+- Does the cache even need to know anything about modules, or is it just a simple nested key-value store?
+- It sounds like a cache node struct might include a field that marks or flags the node as being an executable, an argument, or a result message. Is that a good design?  Or is it better to assume that the first key field is always an executable and the remaining fields are positional arguments?  
 - The cache stores messages intact, so the cache index tree is built from the message's positional parameters, starting with the first parameter in position zero, which we've been calling the promise hash. It appears that the cache knows very little about protocols, promises, or anything else other than the positional parameters of the message. The cache is a simple nested key-value store. The value is the message, and the key is the message's parameters.
 
 - As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model. The capability would be a key that is used by the kernel to unlock the cache node.
 - Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
 
-### Typical Microkernel Architecture and Permissions
-
-In a typical microkernel architecture, the kernel has minimal knowledge of permissions, and the responsibility for handling permissions is generally left to microservers (drivers). The kernel focuses on providing essential services such as communication and resource management, while higher-level functions, including access control and permissions, are managed by user-level services.
-
-- How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?

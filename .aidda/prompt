@@ -34,4 +34,4 @@ Out: v2/cache.md
 XOut: v2/cache.go
 
 Answer this question in cache.md:
-- How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?
+- Does the cache even need to know anything about modules, or is it just a simple nested key-value store?

@@ -2,9 +2,9 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/ADVICE.md,
+    v2/context.md,
     v2/cache.md
 XIn: v2/message.go,
-    v2/context.md,
     v2/TODO.md,
     v2/DESIGN.md,
     v2/cache.go,
@@ -33,5 +33,6 @@ XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 
-Add a paragraph to ADVICE.md about whether there is a standard format
-for encoding JWT tokens in a URL or in base58 or similar.
+Add a paragraph to ADVICE.md discussing the pros and cons of the
+promise hash coming first in the message, as opposed to the hash of
+the module to be executed.

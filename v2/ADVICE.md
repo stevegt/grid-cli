@@ -93,3 +93,45 @@ Both libraries can be used to encode capability tokens securely and efficiently,
 
 By utilizing these libraries, you can ensure that your capability tokens are not only compact but also maintain their integrity and security across different environments.
 
+## JSON Web Tokens (JWT) in URLs
+
+When it comes to encoding JSON Web Tokens (JWTs) for use in URLs, there's a standard format that is widely accepted. JWTs are typically encoded using Base64url, which is a URL-safe variant of Base64 encoding.
+
+### Why Base64url?
+
+1. **URL-safe**: Base64url encoding replaces characters that are not URL-safe (such as `+`, `/`, and `=`) with URL-safe alternatives (`-`, `_`, and no padding respectively). This ensures that the token can be safely included in a URL without requiring additional encoding.
+2. **Human-readable**: While not as compact as some other encodings (like base58), Base64url maintains a balance between human readability and URL safety.
+3. **Standardized**: The use of Base64url for JWTs is specified in the JSON Web Token (JWT) specification (RFC 7519). This standardization means that the approach is widely supported and understood, making it interoperable across different systems and libraries.
+
+### Encoding Steps
+
+1. **Header and Payload**: The JWT consists of three parts: the header, the payload, and the signature. Each part is encoded separately using Base64url.
+2. **Concatenation**: The three parts are concatenated together with periods (`.`) as separators. This forms the final JWT string that can be included in a URL.
+
+### Example
+
+Suppose you have the following JWT:
+```json
+{
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "1234567890",
+    "name": "John Doe",
+    "iat": 1516239022
+  },
+  "signature": "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+The encoded JWT would look something like this:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+This encoded JWT can be safely used as a URL parameter without further encoding.
+
+Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
+

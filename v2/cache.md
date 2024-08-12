@@ -1,31 +1,5 @@
 # Cache and Promise Handling in the PromiseGrid Kernel
 
-It sounds like a cache node struct might include a field that marks or
-flags the node as being an executable, an argument, or a result.  Is
-that correct?  Or do we simply store the node's sequence number in
-that field, i.e. the node's position in the received message?  Oh
-wait, the cache stores messages intact, so the cache index tree is
-built from the message's positional parameters, starting with the
-first parameter in position zero, which we've been calling the promise
-hash.  It appears that the cache actually knows very little about
-protocols, promises, or anything else other than the positional
-parameters of the message.  The cache is a simple nested key-value
-store.  The value is the message, and the key is the message's
-parameters.  But then how do we know when we need to load a module
-from the cache, execute it, and store the result back in the cache?
-
-As far as permissions and capabilities go, we might have a situation
-where a cache key or value is encrypted, and the cache node is 
-unlocked by a capability.  This would be a way to implement a
-capability-based security model.  The capability would be a key
-that is used by the kernel to unlock the cache node.  Alternatively,
-the kernel knows nothing about capabilities, and it is up to modules
-to verify that the caller has the necessary permissions to access
-a resource.  This would be a more traditional capability model, where
-the capability is a token that is passed to the module, and the module
-verifies the token before granting access to the resource.  
-
-
 ## Introduction
 
 In the PromiseGrid Kernel, caching and module handling are crucial for optimizing the retrieval and execution of data. This document outlines the strategies and implementation details for these systems, emphasizing their alignment with decentralized governance and microkernel architectural principles.
@@ -83,3 +57,32 @@ In the PromiseGrid Kernel, caching and module handling are crucial for optimizin
 ## Conclusion
 
 The design of caching, module handling, and promise-based acceptance in the PromiseGrid Kernel ensures a robust, flexible, and efficient system for decentralized governance and cooperation. By treating acceptance as a promise and integrating a hierarchical syscall tree with ant routing mechanisms, the kernel maintains trust, accountability, and optimized performance consistent with principles of computational theory and modular architecture.
+
+## open questions
+
+It sounds like a cache node struct might include a field that marks or
+flags the node as being an executable, an argument, or a result.  Is
+that correct?  Or do we simply store the node's sequence number in
+that field, i.e. the node's position in the received message?  Oh
+wait, the cache stores messages intact, so the cache index tree is
+built from the message's positional parameters, starting with the
+first parameter in position zero, which we've been calling the promise
+hash.  It appears that the cache actually knows very little about
+protocols, promises, or anything else other than the positional
+parameters of the message.  The cache is a simple nested key-value
+store.  The value is the message, and the key is the message's
+parameters.  But then how do we know when we need to load a module
+from the cache, execute it, and store the result back in the cache?
+
+As far as permissions and capabilities go, we might have a situation
+where a cache key or value is encrypted, and the cache node is 
+unlocked by a capability.  This would be a way to implement a
+capability-based security model.  The capability would be a key
+that is used by the kernel to unlock the cache node.  Alternatively,
+the kernel knows nothing about capabilities, and it is up to modules
+to verify that the caller has the necessary permissions to access
+a resource.  This would be a more traditional capability model, where
+the capability is a token that is passed to the module, and the module
+verifies the token before granting access to the resource.  
+
+

@@ -32,11 +32,4 @@ XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 Out: v2/cache.md
 
-Improve cache.md:
-- do not remove topics or content
-- move invalid, inconsistent, or incorrect content to the end of the file
-- improve layout and section organization
-- make recommendations 
-- add examples
-- add a section on cache expiration
-- use RFC 2119 language
+In cache.md, resolve open questions, add recommendations, and improve layout.

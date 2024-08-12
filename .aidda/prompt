@@ -13,6 +13,7 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/message_test.go,
     v2/DISCUSS.md,
     v2/ADVICE.md,
+    vw.cache.md,
     v2/testdata/hello.msg
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,

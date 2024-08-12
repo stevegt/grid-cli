@@ -28,9 +28,10 @@ XOut: v2/cache.go
 XOut: v2/DESIGN.md
 XOut: v2/TODO.md
 XOut: v2/ADVICE.md
-Out: v2/DISCUSS.md
+XOut: v2/DISCUSS.md
+Out: v2/cache.md
 
-Revise DISCUSS.md to clarify the following, making recommendations:
+Discuss the following in cache.md:
 
 It sounds like a cache node struct might include a field that marks or
 flags the node as being an executable, an argument, or a result.  Is
@@ -57,4 +58,3 @@ a resource.  This would be a more traditional capability model, where
 the capability is a token that is passed to the module, and the module
 verifies the token before granting access to the resource.  
 
-Discuss all of this in the DISCUSS.md file.  

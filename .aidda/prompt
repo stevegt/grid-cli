@@ -30,7 +30,8 @@ XOut: v2/DESIGN.md
 XOut: v2/TODO.md
 XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
-XOut: v2/cache.md
-Out: v2/cache.go
+Out: v2/cache.md
+XOut: v2/cache.go
 
-Add a Cache struct, with cache API stub methods, with comments, to cache.go.
+Answer this question in cache.md:
+- Are there any known microkernel architectures that use a capability-based security model? If so, how do they handle permissions and access control?

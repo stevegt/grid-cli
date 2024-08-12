@@ -67,5 +67,20 @@ The design of caching, module handling, and promise-based acceptance in the Prom
 
 - As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model. The capability would be a key that is used by the kernel to unlock the cache node.
 - Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
-- In a typical microkernel architecture, does the kernel have any knowledge of permissions, or is that left up to the microservers (drivers) to handle?
+
+- In a typical microkernel architecture, does the kernel have any knowledge of permissions, or is that left up to the microservers (drivers) to handle? Give examples of existing microkernels that do either.
+
+### Known Microkernel Architectures Using Capability-Based Security
+
 - Are there any known microkernel architectures that use a capability-based security model? If so, how do they handle permissions and access control?
+
+Yes, there are known microkernel architectures that use a capability-based security model. One notable example is the **seL4** microkernel. 
+- **seL4**: It's a high-assurance, high-performance microkernel developed with a strong focus on security and formal verification. In seL4, capabilities are used to control access to kernel objects, providing fine-grained access control. These capabilities are unforgeable tokens that describe what operations can be performed on objects (such as memory segments, threads, and IPC channels). The kernel maintains the mapping and distribution of these capabilities, ensuring that only authorized entities can access and manipulate kernel resources.
+
+Handling Permissions and Access Control in **seL4**:
+1. **Capabilities**: In seL4, capabilities are fundamental to its security model. Each capability specifies a set of rights to a particular object, and these rights determine what actions the holder can perform on the object.
+2. **Capability Space**: Each thread/task in seL4 has a capability space, which is a structure that holds all the capabilities that the thread possesses. This ensures that threads can only operate on objects for which they have the necessary capabilities.
+3. **Capability Invocation**: To perform an operation on an object, a thread must invoke the corresponding capability. The kernel then checks the rights encoded in the capability to determine whether the operation is permitted.
+4. **Controlled Delegation**: Capabilities can be delegated (or propagated) to other threads, but the delegation is controlled by the kernel to prevent unauthorized access. This allows for flexible and secure sharing of resources within a system.
+
+By leveraging a capability-based security model, microkernels like seL4 ensure that access control is both fine-grained and secure, providing a robust foundation for building secure systems.

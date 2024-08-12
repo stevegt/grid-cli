@@ -25,4 +25,4 @@ XOut: v2/module.go,
 Out: v2/cache.go XOut: v2/DESIGN.md
 XOut: v2/TODO.md
 
-In cache.go, add a comment describing the cache implementation.
+In cache.go, add a one-paragraph comment describing the cache implementation.

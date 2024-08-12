@@ -59,18 +59,7 @@ In the PromiseGrid Kernel, caching and module handling are crucial for optimizin
 
 The design of caching, module handling, and promise-based acceptance in the PromiseGrid Kernel ensures a robust, flexible, and efficient system for decentralized governance and cooperation. By treating acceptance as a promise and integrating a hierarchical syscall tree with ant routing mechanisms, the kernel maintains trust, accountability, and optimized performance consistent with principles of computational theory and modular architecture.
 
-## Open Questions
-
-- It sounds like a cache node struct might include a field that marks or flags the node as being an executable, an argument, or a result. Is that correct? Or do we simply store the node's sequence number in that field, i.e., the node's position in the received message?
-- The cache stores messages intact, so the cache index tree is built from the message's positional parameters, starting with the first parameter in position zero, which we've been calling the promise hash. It appears that the cache knows very little about protocols, promises, or anything else other than the positional parameters of the message. The cache is a simple nested key-value store. The value is the message, and the key is the message's parameters.
-- How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?
-
-- As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model. The capability would be a key that is used by the kernel to unlock the cache node.
-- Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
-
-### Typical Microkernel Architecture and Permissions
-
-In a typical microkernel architecture, the kernel has minimal knowledge of permissions, and the responsibility for handling permissions is generally left to microservers (drivers). The kernel focuses on providing essential services such as communication and resource management, while higher-level functions, including access control and permissions, are managed by user-level services.
+## Q&A
 
 ### Known Microkernel Architectures Using Capability-Based Security
 
@@ -100,3 +89,27 @@ By delegating permission and access control management to microservers or user-l
 ### Microkernel interaction with userland drivers
 
 - How do microkernels interact with userland drivers?  Does the driver register with the kernel, or does the kernel load the driver as a part of the boot process, already knowing about the driver's address space and abilities?
+
+Microkernels interact with userland drivers through a well-defined communication interface, usually using Inter-Process Communication (IPC) mechanisms. The typical process is as follows:
+
+1. **Registration**: Userland drivers register with the microkernel during the system's initialization phase. The registration involves specifying the driver's capabilities and the resources it will manage. During this process, the kernel may allocate specific address spaces and IPC channels for communication with the driver.
+
+2. **Dynamic Loading**: The kernel does not necessarily need to know about the driver's address space and abilities beforehand. Drivers can be dynamically loaded as required, allowing for a more modular and flexible system. The microkernel will map the driver's address space as part of the registration or loading process.
+
+3. **Message Passing**: Once loaded and initialized, userland drivers interact with the kernel and other system components via message passing. This interaction can include handling hardware interrupts, servicing IO requests, or managing other resources. The microkernel facilitates this communication through its IPC mechanism, ensuring that messages are delivered to the appropriate recipient.
+
+In summary, userland drivers typically register with the kernel, which then maps their address spaces and sets up communication channels. These drivers can be dynamically loaded, allowing the kernel to extend its capabilities without needing to know about the driver specifics in advance.
+
+## Open Questions
+
+- It sounds like a cache node struct might include a field that marks or flags the node as being an executable, an argument, or a result. Is that a good design? Or should we simply store the node's sequence number in that field, i.e., the node's position in the received message?
+- The cache stores messages intact, so the cache index tree is built from the message's positional parameters, starting with the first parameter in position zero, which we've been calling the promise hash. It appears that the cache knows very little about protocols, promises, or anything else other than the positional parameters of the message. The cache is a simple nested key-value store. The value is the message, and the key is the message's parameters.
+
+- As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model. The capability would be a key that is used by the kernel to unlock the cache node.
+- Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
+
+### Typical Microkernel Architecture and Permissions
+
+In a typical microkernel architecture, the kernel has minimal knowledge of permissions, and the responsibility for handling permissions is generally left to microservers (drivers). The kernel focuses on providing essential services such as communication and resource management, while higher-level functions, including access control and permissions, are managed by user-level services.
+
+- How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?

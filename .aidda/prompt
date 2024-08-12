@@ -22,10 +22,14 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/kernel.go,
     v2/server.go
 XOut: v2/module.go,
-Out: v2/cache.go 
+XOut: v2/cache.go 
 XOut: v2/DESIGN.md
 XOut: v2/TODO.md
+Out: v2/ADVICE.md
 
-In cache.go, add a one-paragraph comment describing the simplest
-possible cache implementation that meets the requirements from DESIGN.md.
+In ADVICE.md, summarize the cache discussion. Also, does the kernel have
+its own cache, or does it always rely on onre or more modules for
+caching?  Related; are network communications always done through
+modules, or can the kernel do some of that itself?
+
 

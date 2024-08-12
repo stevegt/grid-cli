@@ -11,6 +11,7 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/server.go,
     v2/context.md,
     v2/message_test.go,
+    v2/ADVICE.md,
     v2/testdata/hello.msg
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
@@ -27,9 +28,7 @@ XOut: v2/DESIGN.md
 XOut: v2/TODO.md
 Out: v2/ADVICE.md
 
-In ADVICE.md, summarize the cache discussion. Also, does the kernel have
-its own cache, or does it always rely on onre or more modules for
-caching?  Related; are network communications always done through
-modules, or can the kernel do some of that itself?
-
-
+It sounds like a cache node might have some sort of field that marks
+or flags the node as being an executable, an argument, or a result.  Is
+that correct?  If so, add language to ADVICE.md that explains how the
+cache node's type is determined.  

@@ -36,4 +36,5 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 Out: v2/doc/03.md, v2/doc/04.md
 
-merge v2/doc/04.md and v2/doc/03.md into each other
+merge v2/doc/04.md and v2/doc/03.md into each other, synchronizing the
+content of the two files.

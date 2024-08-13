@@ -135,3 +135,22 @@ This encoded JWT can be safely used as a URL parameter without further encoding.
 
 Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
 
+## Discussion on the Leading Hash in Messages
+
+In the PromiseGrid Kernel, messages MAY start with a promise hash followed by a module hash, and then additional arguments. This structure allows receivers to filter messages based on promises they are willing to accept and route the message to the appropriate module. Here are the pros and cons of the promise hash coming first:
+
+### Pros
+
+1. **Enhanced Filtering**: Placing the promise hash first allows modules and nodes to quickly filter messages based on the promises they accept. This ensures that only relevant messages are processed, improving efficiency.
+2. **Trust and Governance**: The first hash representing a promise aligns with the principles of decentralized governance. Nodes can establish trust relationships by agreeing on specific promises they will accept.
+3. **Modular Routing**: Early identification of the promise allows the kernel to route messages to the appropriate module, ensuring that the handling of messages is distributed efficiently across the system.
+
+### Cons
+
+1. **Complexity in Parsing**: Having multiple hashes (promise and module) to parse at the beginning of the message increases the complexity of message parsing.
+2. **Overhead**: Including multiple hashes in the message header adds overhead to the message size. However, this is generally offset by the benefits of efficient routing and filtering.
+
+### Recommendation
+
+Given the benefits of enhanced filtering, trust-based governance, and modular routing, it is recommended to use the promise hash as the leading hash in messages, followed by the module hash and additional arguments. This structure provides a robust framework for decentralized message handling and governance in the PromiseGrid Kernel.
+

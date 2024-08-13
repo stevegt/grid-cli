@@ -34,5 +34,6 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 
 Add a paragraph to ADVICE.md discussing the pros and cons of the
-promise hash coming first in the message, as opposed to the hash of
-the module to be executed.
+the hash of the module to be executed
+coming first in the message, as opposed to the
+promise hash.

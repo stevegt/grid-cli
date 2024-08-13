@@ -36,5 +36,4 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 Out: v2/doc/01.md
 
-In 01.md, include all design and discussion notes from all other files
-that are not already included in 00.md.
+In 00.md, include all design and discussion notes from 01.md that are not already included in 00.md.

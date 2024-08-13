@@ -1,11 +1,12 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md,
-In: v2/ADVICE.md,
+In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
+    v2/ADVICE.md,
     v2/context.md,
     v2/cache.md,
     v2/TODO.md,
     v2/DESIGN.md,
+    v2/layout.md,
     v2/DISCUSS.md
 XIn: v2/message.go,
     v2/cache.go,
@@ -32,7 +33,6 @@ XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
-Out: v2/layout.md
+Out: v2/doc/0.md
 
-In layout.md, suggest some better ways to organize the
-content and names of the given files.
+In 0.md, include all design and discussion notes from all other files.

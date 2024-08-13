@@ -1,13 +1,13 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
-    v2/ADVICE.md,
+XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md,
+In: v2/ADVICE.md,
     v2/context.md,
     v2/cache.md,
     v2/TODO.md,
     v2/DESIGN.md,
     v2/DISCUSS.md
-In: v2/message.go,
+XIn: v2/message.go,
     v2/cache.go,
     v2/kernel.go,
     v2/go.mod,
@@ -27,11 +27,12 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
 XOut: v2/module.go,
 XOut: v2/cache.go 
 XOut: v2/DESIGN.md
-Out: v2/TODO.md
+XOut: v2/TODO.md
 XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
+Out: v2/layout.md
 
-Add a section to TODO.md suggesting some better ways to organize the
+In layout.md, suggest some better ways to organize the
 content and names of the given files.

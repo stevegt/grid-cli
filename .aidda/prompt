@@ -4,16 +4,16 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/ADVICE.md,
     v2/context.md,
     v2/cache.md
-XIn: v2/message.go,
     v2/TODO.md,
     v2/DESIGN.md,
+    v2/DISCUSS.md,
+In: v2/message.go,
     v2/cache.go,
     v2/kernel.go,
     v2/go.mod,
     v2/module.go,
     v2/server.go,
     v2/message_test.go,
-    v2/DISCUSS.md,
     v2/testdata/hello.msg
 XOut: v2/cmd/grid-cli/main.go,
     v2/message.go,
@@ -27,14 +27,11 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
 XOut: v2/module.go,
 XOut: v2/cache.go 
 XOut: v2/DESIGN.md
-XOut: v2/TODO.md
-Out: v2/ADVICE.md
+Out: v2/TODO.md
+XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 
-Add a section to ADVICE.md describing how PromiseGrid modules are
-similar to supercomputer or mainframe systems that use hot-swappable,
-upgradeable modules that advertize their own capabilities or
-requirements upon insertion, and advertize their own degraded modes
-when they are in failure.  
+Add a section to TODO.md suggesting some better ways to organize the
+content and names of the given files.

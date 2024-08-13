@@ -34,5 +34,5 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 
 Add a paragraph to ADVICE.md explaining in more detail why
-the hash of the module to be executed should not be included
-in the message.
+the hash of the module to be executed should be included
+in the message if the goal is deterministic execution.

@@ -33,10 +33,8 @@ XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 
-Add a section to ADVICE.md describing existing supercomputer or
-mainframe systems that use hot-swappable, upgradeable modules that
-advertize their own capabilities or requirements upon insertion, and
-advertize their own degraded modes when they are in failure.  The
-section should describe how the system is able to dynamically
-reconfigure itself to accommodate the new module, and how the system
-is able to detect and respond to the removal of a module.
+Add a section to ADVICE.md describing how PromiseGrid modules are
+similar to supercomputer or mainframe systems that use hot-swappable,
+upgradeable modules that advertize their own capabilities or
+requirements upon insertion, and advertize their own degraded modes
+when they are in failure.  

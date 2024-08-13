@@ -33,6 +33,6 @@ XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
-Out: v2/doc/0.md
+Out: v2/doc/00.md
 
-In 0.md, include all design and discussion notes from all other files.
+In 00.md, include all design and discussion notes from all other files.

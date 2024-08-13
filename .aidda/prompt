@@ -7,7 +7,8 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/TODO.md,
     v2/DESIGN.md,
     v2/layout.md,
-    v2/DISCUSS.md
+    v2/DISCUSS.md,
+    v2/doc/00.md,
 XIn: v2/message.go,
     v2/cache.go,
     v2/kernel.go,
@@ -33,6 +34,7 @@ XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
-Out: v2/doc/00.md
+Out: v2/doc/01.md
 
-In 00.md, include all design and discussion notes from all other files.
+In 01.md, include all design and discussion notes from all other files
+that are not already included in 00.md.

@@ -3,4 +3,4 @@
 .grok*
 go.*
 nv.shada
-v2/doc/.*.swp
+*.swp

@@ -3,10 +3,10 @@ Content-Transfer-Encoding: quoted-printable
 In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/ADVICE.md,
     v2/context.md,
-    v2/cache.md
+    v2/cache.md,
     v2/TODO.md,
     v2/DESIGN.md,
-    v2/DISCUSS.md,
+    v2/DISCUSS.md
 In: v2/message.go,
     v2/cache.go,
     v2/kernel.go,

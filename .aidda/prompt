@@ -1,8 +1,7 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md,
-In:  v2/doc/00.md,
-    v2/ADVICE.md
+In:  v2/doc/
 Xin: v2/context.md,
     v2/cache.md,
     v2/TODO.md,
@@ -37,5 +36,4 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 Out: v2/doc/02.md
 
-In 02.md, include all design and discussion notes from ADVICE.md
-that are not already included in 00.md.
+move all content from ADVICE.md to 02.md

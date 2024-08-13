@@ -36,4 +36,4 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 Out: v2/doc/02.md
 
-move all content from ADVICE.md to 02.md
+merge ADVICE.md and DISCUSS.md into v2/doc/02.md

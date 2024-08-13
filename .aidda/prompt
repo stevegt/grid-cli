@@ -33,6 +33,7 @@ XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 
-Add a paragraph to ADVICE.md explaining in more detail why
-the hash of the module to be executed should be included
-in the message if the goal is deterministic execution.
+Add a paragraph to ADVICE.md explaining in more detail why the hash of
+the module to be executed should be included in the message if the
+goal is deterministic execution and demand-driven deployment of new
+code.

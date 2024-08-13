@@ -34,7 +34,7 @@ XOut: v2/ADVICE.md
 XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
-Out: v2/doc/00.md
+Out: v2/doc/02.md
 
-In 01.md, include all design and discussion notes from ADVICE.md
+In 02.md, include all design and discussion notes from ADVICE.md
 that are not already included in 00.md.

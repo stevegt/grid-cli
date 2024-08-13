@@ -1,7 +1,8 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md,
-In:  v2/ADVICE.md
+In:  v2/doc/00.md,
+    v2/ADVICE.md
 Xin: v2/context.md,
     v2/cache.md,
     v2/TODO.md,

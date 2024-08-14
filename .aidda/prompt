@@ -36,7 +36,7 @@ XOut: v2/DISCUSS.md
 XOut: v2/cache.md
 XOut: v2/cache.go
 XOut: v2/doc/03.md
-XOut: v2/doc/04.md
-Out: v2/doc/05.md
+Out: v2/doc/04.md
+XOut: v2/doc/05.md
 
-Merge v2/doc/04.md into v2/doc/05.md.  
+Merge v2/doc/05.md into v2/doc/04.md.  

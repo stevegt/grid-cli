@@ -38,4 +38,6 @@ XOut: v2/doc/03.md
 XOut: v2/doc/04.md
 Out: v2/doc/05.md
 
-merge v2/doc/04.md into v2/doc/05.md
+Merge v2/doc/04.md into v2/doc/05.md.  Please follow the instructions
+in the system message ragarding the format of your response, particularly
+the file delimiters.

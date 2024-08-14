@@ -39,10 +39,11 @@ XOut: v2/cache.md
 XOut: v2/cache.go
 XOut: v2/doc/03.md
 XOut: v2/doc/04.md
-Out: v2/doc/05.md
+Out: v2/doc/06.md
 X: Merge some of v2/doc/05.md into v2/doc/04.md.  
 
-Include this text in v2/doc/05.md:
+Refactor v2/doc/05.md into v2/doc/06.md, and include the following
+text:
 
 ```
 The cache MAY BE a sequence matcher.  If true, then given a partial

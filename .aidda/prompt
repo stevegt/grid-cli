@@ -40,4 +40,12 @@ XOut: v2/doc/04.md
 Out: v2/doc/05.md
 X: Merge some of v2/doc/05.md into v2/doc/04.md.  
 
-Merge some content from v2/doc/04.md into v2/doc/05.md.  
+Include this text in v2/doc/05.md:
+
+```
+The cache MAY BE a sequence matcher.  If true, then given a partial
+sequence, the cache can return the complete sequence.  We need to
+decide whether this is true, and we need to decide whether there can
+be wildcards in the sequence.  
+```
+

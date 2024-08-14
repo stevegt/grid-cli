@@ -8,7 +8,8 @@ Xin: v2/context.md,
     v2/DESIGN.md,
     v2/layout.md,
     v2/DISCUSS.md,
-    v2/doc/
+    v2/doc/04.md,
+    v2/doc/05.md
 XIn: v2/message.go,
     v2/cache.go,
     v2/kernel.go,

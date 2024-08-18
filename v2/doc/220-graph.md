@@ -1,5 +1,3 @@
-Based on your detailed documentation update, I have integrated all the elements discussed to create a holistic and comprehensive design document, incorporating the sequence-matching graph structure, node and edge composition, the traversal mechanism, and matching examples. 
-
 ### Sequence Matching Graph Documentation
 
 #### 1. Overview

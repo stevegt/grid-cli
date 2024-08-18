@@ -1,11 +1,10 @@
-Based on your detailed documentation update, I have integrated all the elements discussed to create a holistic and comprehensive design document, incorporating the sequence-matching graph structure, node and edge composition, the traversal mechanism, and matching examples. 
+```markdown
+# Sequence Matching Graph Documentation
 
-### Sequence Matching Graph Documentation
-
-#### 1. Overview
+## 1. Overview
 A sequence-matching graph is a data structure designed to match input sequences to stored sequences by traversing nodes and edges. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching.
 
-#### 2. Node Composition
+## 2. Node Composition
 Each node in the sequence-matching graph contains the following components:
 
 1. **Label**:
@@ -23,7 +22,7 @@ Each node in the sequence-matching graph contains the following components:
     }
     ```
 
-#### 3. Edge Composition
+## 3. Edge Composition
 Each edge in the sequence-matching graph connects to a child node and represents the next segment in the sequence.
 
 1. **Character**:
@@ -38,7 +37,7 @@ Each edge in the sequence-matching graph connects to a child node and represents
     }
     ```
 
-4. **Example Structure**:
+## 4. Example Structure
 
 Consider a simplified example with "ACGT" and "AGT" sequences:
 ```plaintext
@@ -53,14 +52,14 @@ Consider a simplified example with "ACGT" and "AGT" sequences:
         T
 ```
 
-#### 5. Input Sequence Matching
+## 5. Input Sequence Matching
 To match an input sequence to stored sequences in a sequence-matching graph, follow these steps:
 
 - Starting from the root, traverse through the graph using the characters of the input sequence.
 - At each node, follow the edge that matches the next character of the input sequence.
 - If a suitable edge or child node cannot be found at any point, the matching process terminates without a match.
 
-#### 6. Graph Traversal Mechanism
+## 6. Graph Traversal Mechanism
 Graph traversal utilizes a recursive or iterative technique to explore nodes and edges.
 
 1. **Recursive Method**:
@@ -94,7 +93,7 @@ Graph traversal utilizes a recursive or iterative technique to explore nodes and
     }
     ```
 
-### Examples of Matching
+## Examples of Matching
 1. **Example 1**: Matching "ACGT" in the diagram
     - Starting from the root, traverse edges labeled 'A', 'C', 'G', and 'T'. 
     - Successful match if all edges are followed correctly.
@@ -103,7 +102,9 @@ Graph traversal utilizes a recursive or iterative technique to explore nodes and
     - Starting from the root, traverse edges labeled 'A', 'G', and 'T'.
     - Successful match if all edges are followed correctly.
 
-### Conclusion
+## Conclusion
 The sequence matching graph structure, with detailed node and edge compositions, a traversal mechanism, and illustrative examples, forms the core of efficient sequence matching. This approach supports both recursive and iterative traversal techniques, ensuring flexibility and clarity in matching input sequences to stored reference sequences.
 
 This documentation integrates theoretical foundations with practical implementation methods to provide a cohesive understanding of sequence-matching graphs in the PromiseGrid system.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/220-graph.md

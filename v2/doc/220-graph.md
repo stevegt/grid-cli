@@ -36,9 +36,10 @@ Each edge in the sequence-matching graph connects to a child node and represents
     }
     ```
 
-4. **Example Structure**:
+#### 4. Example Structure
 
 Consider a simplified example with "ACGT" and "AGT" sequences:
+
 ```plaintext
        (root)
        /   \

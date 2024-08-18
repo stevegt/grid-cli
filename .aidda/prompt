@@ -21,9 +21,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-Out: v2/doc/330-messages.md
+Out: v2/doc/331-messages.md
 
-In 330-messages.md, answer the following questions: 
+In 331-messages.md, answer the following questions: 
 
 - What if we don't even parse the incoming message into its binary
   form first, but instead simply start doing sequence matching on the

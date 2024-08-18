@@ -143,3 +143,39 @@ Show an example of how a new sequence is added to the graph.
 The sequence matching graph structure, with detailed node and edge compositions, a traversal mechanism, and illustrative examples, forms the core of efficient sequence matching. This approach supports both recursive and iterative traversal techniques, ensuring flexibility and clarity in matching input sequences to stored reference sequences.
 
 This documentation integrates theoretical foundations with practical implementation methods to provide a cohesive understanding of sequence-matching graphs in the PromiseGrid system.
+
+### Sequence Matching in the Context of PromiseGrid
+
+#### Breakdown of Sequence Storage and Matching
+In a sequence-matching graph, sequences can be broken down into smaller sub-sequences, similar to the concept of hashing. These sub-sequences are stored as paths within the graph. When matching a sequence fragment with unknown leading characters, the following steps are taken:
+
+1. **Decomposition**: The input sequence is broken down into all possible sub-sequences.
+2. **Traversal**: The algorithm traverses the graph, starting from various nodes representing potential sub-sequences.
+3. **Comparison**: Each potential path is compared against the input sequence fragment to identify matches.
+
+This allows the system to handle sequences even if the leading characters are unknown. By leveraging the graph structure, PromiseGrid can efficiently search and match large datasets, ensuring optimal performance and accuracy.
+
+### Handling Unknown Leading Characters in Sequence Matching
+
+To find a sequence fragment when the leading characters are unknown, you can use the following approach:
+
+1. **Segment the Fragment**: Break down the input sequence fragment into smaller overlapping segments.
+2. **Search for Segments**: Traverse the graph to identify nodes corresponding to the segments.
+3. **Extend Matches**: Extend partial matches by exploring neighboring nodes in the graph until a complete match is found.
+
+This method ensures that even with unknown leading characters, the system can effectively locate and match sequence fragments within the graph.
+
+### Practical Example
+
+Consider a scenario where the input fragment is "CGTA":
+
+1. **Segment**: Break down "CGTA" into "CGT", "GTA".
+2. **Search**: Find nodes corresponding to "CGT" and "GTA" in the graph.
+3. **Extend**: Extend the matches by exploring adjacent nodes to form the complete sequence.
+
+By following these steps, the PromiseGrid system can efficiently handle and match sequence fragments, even with unknown leading characters, ensuring robust sequence matching capabilities.
+
+This practical approach, combined with the theoretical foundations and implementation details, provides a comprehensive understanding of sequence matching within the PromiseGrid system.
+
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/220-graph.md

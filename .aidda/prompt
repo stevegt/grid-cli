@@ -26,6 +26,5 @@ Out: v2/doc/220-graph.md
 
 Answer these questions in 220-graph.md:
 
-Are sequences broken down into words as in hashing before being stored
-in the graph?  How is a sequence fragment found when the leading characters
-of the sequence are unknown?  
+Show an example of the data structures and algorithms used to traverse
+the graph to find nodes corresponding to "CGT" and "GTA" in the graph.

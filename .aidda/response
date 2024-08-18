@@ -1,4 +1,5 @@
-```markdown
+File: /home/stevegt/lab/grid-cli/v2/doc/300-synthesis.md
+```
 # Synthesis of Concepts in PromiseGrid Design
 
 ## Introduction
@@ -38,7 +39,7 @@ In genetics, sequence matching and alignment algorithms are crucial for comparin
     - Hashes in PromiseGrid can reference any byte sequence, enabling flexible and robust storage solutions. This supports the efficient retrieval and duplication of data across the decentralized network.
     
 2. **Filesystem Integration**:
-    - Cache keys must use filesystem-safe separators and URL-encode arguments to handle special characters, ensuring compatibility with a variety of storage backends, including OPFS and afero.
+    - Cache keys must use filesystem-safe separators and URL-encode arguments to handle special characters, ensuring compatibility with a variety of storage backends, including OPFS and afero. 
 
 ### Handling of Raw Data and Module Interactions
 

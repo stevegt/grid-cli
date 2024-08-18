@@ -37,7 +37,7 @@ In genetics, sequence matching and alignment algorithms are crucial for comparin
     - Hashes in PromiseGrid can reference any byte sequence, enabling flexible and robust storage solutions. This supports the efficient retrieval and duplication of data across the decentralized network.
     
 2. **Filesystem Integration**:
-    - Cache keys must use filesystem-safe separators and URL-encode arguments to handle special characters, ensuring compatibility with a variety of storage backends, including OPFS and afero.  XXX only when on the wire?  or is this to support ease of recompiling code for WASM using e.g. an OPFS library?
+    - Cache keys must use filesystem-safe separators and URL-encode arguments to handle special characters, ensuring compatibility with a variety of storage backends, including OPFS and afero. 
 
 ### Handling of Raw Data and Module Interactions
 

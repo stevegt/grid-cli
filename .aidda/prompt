@@ -26,6 +26,9 @@ Out: v2/doc/300-synthesis.md
 In 300-synthesis.md, consider the implications in regards to genetic
 density and evolution if a sequence letter can be any arbitary byte
 value from 0x00 to 0xff.  Discuss the possibility that such a design
-may support low-level machine learning and evolutionary algorithms
-in the system.  
+may support low-level machine learning and evolutionary algorithms in
+the system.  Mention, for example, how a neural network could be
+implemented in the system; weights, biases, activation functions, and
+connections.
+
 

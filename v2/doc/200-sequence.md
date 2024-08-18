@@ -64,24 +64,28 @@ If the cache is implemented as a sequence matcher, it can enhance its capabiliti
     - Designing algorithms and data structures to accommodate wildcards will add flexibility but increase complexity.
     - Potential methods include dynamic programming extensions and graph traversal techniques that can evaluate multiple matching paths.
 
-## How BLAST Uses Hashing Algorithm
+## How BLAST Retrieves Regions and Evaluates Alignments
 
 ### Overview of BLAST
 
-BLAST (Basic Local Alignment Search Tool) is a widely used algorithm for comparing an input sequence against a database of sequences. BLAST uses hashing algorithms to organize sequences for rapid search and retrieval.
+BLAST (Basic Local Alignment Search Tool) is a widely used algorithm for comparing an input sequence against a database of sequences. It retrieves regions of the database sequences corresponding to the word hashes and evaluates the alignments.
 
-### Hashing in BLAST
+### BLAST Process
 
 1. **Hashing Words**:
-    - BLAST breaks down the input sequence into smaller sub-sequences called "words".
-    - Each word is hashed and stored in a hash table, allowing quick lookups.
+    - BLAST breaks down the input sequence into smaller sub-sequences called "words."
+    - Each word is hashed and stored in a hash table for rapid lookups.
 
 2. **Database Organization**:
     - The entire database of sequences is also broken down into words, and these words are hashed and stored.
 
-3. **Rapid Search**:
-    - When a new query sequence is input, it is divided into words, hashed, and looked up in the hash table.
-    - This allows BLAST to quickly find regions of potential similarity without scanning the entire database.
+3. **Finding Matches**:
+    - When a query sequence is input, it is divided into words, hashed, and compared against the hash table.
+    - This allows BLAST to quickly locate potential matching regions without scanning the entire database.
+
+4. **Extending Matches**:
+    - Initial word matches are extended to find longer regions of similarity.
+    - Alignment algorithms and scoring matrices are used to evaluate the quality of these extended matches.
 
 ### Example
 
@@ -106,13 +110,13 @@ Let's consider a simple example:
        101: ["TAC", "TAC_position_in_db_sequences"]}
 
 5. **Query Processing**:
-    - For the input word "ACG", BLAST performs a hash lookup.
-    - The hash 123 immediately points to sequences in the database that contain "ACG".
+    - For the input word "ACG," BLAST performs a hash lookup.
+    - The hash 123 immediately points to sequences in the database that contain "ACG."
 
 6. **Returning Matches**:
     - BLAST retrieves the regions of the database sequences corresponding to the word hashes and evaluates the alignments.
 
-### Advantage of Hashing in BLAST
+### Advantages of Hashing in BLAST
 
 1. **Speed**:
     - Hashing allows BLAST to quickly locate regions of potential matches without scanning the entire database.
@@ -123,5 +127,5 @@ Let's consider a simple example:
 
 ## Conclusion
 
-Implementing a cache as a sequence matcher involves leveraging sophisticated data structures and algorithms to efficiently manage and retrieve sequences based on partial inputs. Drawing inspiration from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, can provide a robust foundation for this capability. The use of hashing algorithms, as illustrated by BLAST, enables rapid search and retrieval through the efficient organization of sequences.
+Implementing a cache as a sequence matcher involves leveraging sophisticated data structures and algorithms to efficiently manage and retrieve sequences based on partial inputs. Drawing inspiration from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, can provide a robust foundation for this capability. The use of hashing algorithms, as illustrated by BLAST, enables rapid search and retrieval through efficient organization of sequences.
 

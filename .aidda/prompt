@@ -21,10 +21,16 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-XOut: v2/doc/220-graph.md
+Out: v2/doc/220-graph.md
 
-Detail the data structures in a sequence-matching graph.   Exactly
-what is a node composed of?  Exactly what is an edge composed of?
-Show an example of how an input sequence is matched to stored
-sequences.  Show how the graph is traversed to find the best match.
+In a sequence-matching graph, does the 'Children' field of a node
+contain the next node in the sequence?  Or does it contain both previous
+and next nodes?  
+
+Are entire genomes stored in the graph?  Or are only the sequences of
+interest stored?  If the latter, how are the sequences of interest
+identified?  Are they identified by their position in the genome?  Or
+are they identified by some other means?
+
+Show an example of how a new sequence is added to the graph.  
 

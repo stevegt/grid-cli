@@ -23,7 +23,8 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/340-magic.md
 
-In v2/doc/340-magic.md, resolve concerns using the following information:
+In v2/doc/340-magic.md, add the following information and update the
+"cons" section:
 
 - the "large database of sequence patterns" is the decentralized cache.
 - handling after sequence matching would still include any handler's

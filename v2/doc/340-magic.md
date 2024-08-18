@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/340-magic.md
-```markdown
 # Design Discussion on Sequence Matching for Message Handling
 
 ## Introduction
@@ -56,5 +53,3 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
 The sequence matching approach offers significant flexibility and potential performance advantages for handling diverse message types in PromiseGrid. However, the design must carefully address the complexity, ambiguity, and security implications of this method. Future implementations can leverage pattern databases and robust validation mechanisms to mitigate these challenges. 
 
 Overall, while byte-by-byte sequence matching is a promising method for dynamic message handling, it requires careful design considerations to ensure reliability, security, and efficiency in a production environment.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/340-magic.md

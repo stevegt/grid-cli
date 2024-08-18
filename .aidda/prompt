@@ -23,15 +23,11 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/340-magic.md
 
-In v2/doc/340-magic.md, discuss the pros and cons of the following design:
+In v2/doc/340-magic.md, resolve concerns using the following information:
 
-- What if we don't parse the incoming message first at all, but
-  instead simply start doing sequence matching on the message data,
-  byte by byte, to decide how to handle the message? Handling might
-  include multibase/multihash decoding, or some future kind of
-  decoding that we don't yet have. This is sort of similar to the way
-  the UNIX/Linux magic number system works, where the first few bytes
-  of a file are used to decide what kind of file it is -- there is
-  even a little language for specifying these magic numbers in the
-  file /etc/magic.  What are the pros and cons of this approach?
-
+- the "large database of sequence patterns" is the decentralized cache.
+- handling after sequence matching would still include any handler's
+  own validation and error detection.
+- ambiguous sequence patterns are resolved by the first match.
+  (Specify that ordering of first match is node-specific; the local
+  node's own configuration determines the order of tries.)

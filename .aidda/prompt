@@ -24,15 +24,10 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
 Out: v2/doc/200-sequence.md
 X: Merge some of v2/doc/05.md into v2/doc/04.md.  
 
-The cache MAY BE a sequence matcher.  If true, then given a partial
-sequence, the cache can return the complete sequence.  We need to
-decide whether this is true, and we need to decide whether there can
-be wildcards in the sequence.  
+Describe more detail of how BLAST uses a hashing algorithm to organize
+sequences for rapid search and retrieval.  Show how the algorithm
+works with a simple example.  
 
-Describe existing implementations of sequence matchers, e.g. from
-genetics, and detail how they work at the data structure level.  How
-does a given sequence get matched with a stored sequence?  How does
-the matcher decide whether a sequence is a match?  What are the
-data structures used?  What are the algorithms used?  
+
 
 

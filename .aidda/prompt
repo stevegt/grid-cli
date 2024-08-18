@@ -21,6 +21,10 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-XOut: v2/doc/200-sequence.md
+XOut: v2/doc/220-graph.md
 
-Detail the differences between 200-sequence.md and 210-sequence-graph.md.
+Detail the data structures in a sequence-matching graph.   Exactly
+what is a node composed of?  Exactly what is an edge composed of?
+Show an example of how an input sequence is matched to stored
+sequences.  Show how the graph is traversed to find the best match.
+

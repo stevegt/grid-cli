@@ -101,6 +101,44 @@ Graph traversal utilizes a recursive or iterative technique to explore nodes and
     - Starting from the root, traverse edges labeled 'A', 'G', and 'T'.
     - Successful match if all edges are followed correctly.
 
+### Advanced Questions Answered
+
+#### Sequence-Matching Graph and 'Children' Field of a Node
+In a sequence-matching graph, does the 'Children' field of a node contain the next node in the sequence? Or does it contain both previous and next nodes?
+- The 'Children' field of a node contains only the next node(s) in the sequence. It maps sequence characters to their corresponding child nodes, representing the continuation of the sequence.
+
+#### Genome Storage in Graph
+Are entire genomes stored in the graph? Or are only the sequences of interest stored? If the latter, how are the sequences of interest identified? Are they identified by their position in the genome? Or are they identified by some other means?
+- Only the sequences of interest are stored in the graph. These sequences are identified based on specific criteria such as the presence of particular motifs or functional relevance. The identification can be based on their positions in the genome or other biological markers.
+
+#### Adding a New Sequence to the Graph
+Show an example of how a new sequence is added to the graph.
+- To add a new sequence "AGC" to the graph, follow these steps:
+
+    ```go
+    func AddSequence(root *Node, sequence string) {
+        currentNode := root
+        
+        for _, char := range sequence {
+            if _, ok := currentNode.Children[char]; !ok {
+                newNode := &Node{
+                    Label:      string(char),
+                    Occurrences: []int{},
+                    Children:   make(map[rune]*Node),
+                }
+                currentNode.Children[char] = newNode
+            }
+            currentNode = currentNode.Children[char]
+        }
+        // Add occurrence position if needed
+        // currentNode.Occurrences = append(currentNode.Occurrences, position)
+    }
+
+    // Example usage:
+    root := &Node{Children: make(map[rune]*Node)}
+    AddSequence(root, "AGC")
+    ```
+
 ### Conclusion
 The sequence matching graph structure, with detailed node and edge compositions, a traversal mechanism, and illustrative examples, forms the core of efficient sequence matching. This approach supports both recursive and iterative traversal techniques, ensuring flexibility and clarity in matching input sequences to stored reference sequences.
 

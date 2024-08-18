@@ -26,14 +26,6 @@ Out: v2/doc/220-graph.md
 
 Answer these questions in 220-graph.md:
 
-In a sequence-matching graph, does the 'Children' field of a node
-contain the next node in the sequence?  Or does it contain both previous
-and next nodes?  
-
-Are entire genomes stored in the graph?  Or are only the sequences of
-interest stored?  If the latter, how are the sequences of interest
-identified?  Are they identified by their position in the genome?  Or
-are they identified by some other means?
-
-Show an example of how a new sequence is added to the graph.  
-
+Are sequences broken down into words as in hashing before being stored
+in the graph?  How is a sequence fragment found when the leading characters
+of the sequence are unknown?  

@@ -21,11 +21,14 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-Out: v2/doc/300-synthesis.md
+Out: v2/doc/320-ipc.md
 
-In 300-synthesis.md, given that a sequence letter could be any arbitary
-byte value from 0x00 to 0xff, discuss how a neural network could
-be implemented in the system in terms of storage of weights, biases,
-and edges.
+In 320-ipc.md, describe common microkernel IPC patterns and their
+counterpart in the PromiseGrid microkernel.  Address the question of
+whether the PromiseGrid microkernel is a message-passing microkernel,
+and if so, are the messages the same format as the messages in the
+PromiseGrid messages that are exchanged over the wire between network
+nodes?
+
 
 

@@ -23,11 +23,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/300-synthesis.md
 
-In 300-synthesis.md, discuss the interdisciplinary blend of concepts
-from genetics, computer science, and mathematics that are used in the
-design of PromiseGrid.  Consider the implications if a sequence letter
-can be any arbitary byte value from 0x00 to 0xff.  Discuss the impact
-of such a design on the storage of hashed data, raw data, module
-hashes, module argument parameters, and how received messages are
-processed.  
+In 300-synthesis.md, consider the implications in regards to genetic
+density and evolution if a sequence letter can be any arbitary byte
+value from 0x00 to 0xff.  Discuss the possibility that such a design
+may support low-level machine learning and evolutionary algorithms
+in the system.  
 

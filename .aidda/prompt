@@ -21,6 +21,6 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-Out: v2/doc/210-sequence-graph.md
+Out: v2/doc/200-sequence.md
 
-Merge 200-sequence.md into 210-sequence-graph.md.
+Merge 210-sequence-graph.md into 200-sequence.md.

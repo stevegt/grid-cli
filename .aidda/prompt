@@ -22,12 +22,5 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/kernel.go,
     v2/server.go
 Out: v2/doc/200-sequence.md
-X: Merge some of v2/doc/05.md into v2/doc/04.md.  
 
-
-Describe in more detail the use of a graph or node-based
-representation, where nodes represent sequences or sub-sequences and
-edges represent alignments.
-
-
-
+Merge 210-sequence-graph.md into 200-sequence.md.

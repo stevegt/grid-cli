@@ -23,11 +23,11 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/300-synthesis.md
 
-In 300-synthesis.md, if a sequence letter can be any arbitary byte
-value from 0x00 to 0xff, discuss how a neural network could be
-implemented in the system in terms of storage of weights, biases,
-and edges, how forward and back propagation would traverse the
-graph, and the fact that more complex activation functions could be
-stored as modularized, content-addressable functions.
+In 300-synthesis.md, assume a sequence letter could be any arbitary
+byte value from 0x00 to 0xff, and discuss how a neural network could
+be implemented in the system in terms of storage of weights, biases,
+and edges, how forward and back propagation would traverse the graph,
+and the fact that more complex activation functions could be stored as
+modularized, content-addressable functions.
 
 

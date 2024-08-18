@@ -24,7 +24,7 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
 Out: v2/doc/340-magic.md
 
 In v2/doc/340-magic.md, add the following information and update the
-"cons" section:
+pros and cons:
 
 - the "large database of sequence patterns" is the decentralized cache.
 - handling after sequence matching would still include any handler's

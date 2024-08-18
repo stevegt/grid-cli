@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document explores existing implementations of sequence matchers, including their operational principles, data structures, and algorithms. We'll delve into examples from genetics to illustrate how sequence matchers work at a data structure level, focusing on how given sequences are matched with stored sequences, the decision-making process on the match, and the data structures and algorithms involved.
+This document explores existing implementations of sequence matchers, their operational principles, data structures, and algorithms. We'll delve into examples from genetics to illustrate how sequence matchers work at a data structure level, focusing on how given sequences are matched with stored sequences, the decision-making process on the match, and the data structures and algorithms involved.
 
 ## Genetics Sequence Matchers
 
@@ -31,7 +31,7 @@ In genetics, sequence matching is critical for comparing DNA, RNA, or protein se
     - Example: Suffix trees allow for quick identification of repeated or similar sub-sequences.
 
 3. **Graphs**:
-    - Node-based representation where nodes represent sequences or sub-sequences and edges represent alignments.
+    - Graph or node-based representations where nodes represent sequences or sub-sequences and edges represent alignments.
     - Example: De Bruijn graphs are used in genome assembly to handle overlaps between sequences.
 
 ### Algorithms
@@ -128,4 +128,3 @@ Let's consider a simple example:
 ## Conclusion
 
 Implementing a cache as a sequence matcher involves leveraging sophisticated data structures and algorithms to efficiently manage and retrieve sequences based on partial inputs. Drawing inspiration from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, can provide a robust foundation for this capability. The use of hashing algorithms, as illustrated by BLAST, enables rapid search and retrieval through efficient organization of sequences.
-

@@ -110,3 +110,24 @@ Consider an incoming message that consists of a promise hash, a module hash, and
 
 The design decision to place the promise element first in the `PromiseGrid` message format aligns well with the principles of sequence-matching graphs. This approach enhances filtering, routing, and dynamic adaptation, forming a robust foundation for decentralized governance and efficient message handling. By integrating promises with sequence-matching graphs, PromiseGrid ensures a flexible, trust-based system capable of handling diverse and evolving messages.
 
+## What if, after parsing the incoming message into its binary form (via multibase/multihash decoding), we simply start doing sequence matching on the binary data, byte by byte, to decide how to handle the message?
+
+### Pros of Byte-by-Byte Sequence Matching
+
+1. **Simplicity**: This approach simplifies the process of deciding how to handle the message by using straightforward sequence matching techniques without needing to parse complex message structures or protocols.
+
+2. **Performance**: Byte-by-byte sequence matching can be efficient as it minimizes the need for extensive parsing and reassembly of messages. It can quickly determine if a known sequence is present, allowing for rapid message routing and handling.
+
+3. **Flexibility**: The method allows for flexible matching rules. By modifying the sequence matcher, the system can detect specific patterns or signatures within the binary data, enabling dynamic handling of a wide range of message types.
+
+4. **Scalability**: This approach can be scalable, especially for systems dealing with large volumes of messages. By using efficient data structures such as suffix trees or hash tables, sequence matchers can quickly locate matching sequences without the need to inspect each byte individually.
+
+### Cons of Byte-by-Byte Sequence Matching
+
+1. **Ambiguity**: Matching sequences byte by byte may lead to ambiguities if different message types share common subsequences. This could result in incorrect message handling or routing to the wrong module.
+
+2. **Overhead**: Implementing an efficient sequence matcher requires maintaining sophisticated data structures which could add overhead to the system. This includes building and updating these structures as new sequences or message types are introduced.
+
+3. **Maintenance**: Keeping the sequence matching logic up to date with the evolving message formats and protocols may require continuous maintenance. Any changes in the message structures might necessitate updates to the sequence matcher, increasing the complexity of the system.
+
+4. **Security Risks**: Relying solely on sequence matching without explicit parsing could expose the system to potential security risks such as buffer overflows or injections if malicious binary sequences are crafted to exploit weaknesses in the matching logic.

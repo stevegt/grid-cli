@@ -23,9 +23,15 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/330-messages.md
 
-In 320-messages.md, answer the following questions: 
+Answer the following questions: 
 
-- What if, after parsing the incoming message into its binary form
-  (via multibase/multihash decoding), we simply start doing sequence
-  matching on the binary data, byte by byte, to decide how to handle
-  the message? What are the pros and cons of this approach?
+- What if we don't even parse the incoming message into its binary
+  form first, but instead simply start doing sequence matching on the
+  message data, byte by byte, to decide how to handle the message?
+  Handling might include multibase/multihash decoding, or some future
+  kind of decoding that we don't yet have. This is sort of similar to
+  the way the UNIX/Linux magic number system works, where the first
+  few bytes of a file are used to decide what kind of file it is --
+  there is even a little language for specifying these magic numbers
+  in the file /etc/magic.  What are the pros and cons of this approach?
+

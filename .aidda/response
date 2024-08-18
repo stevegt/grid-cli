@@ -1,118 +1,38 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/330-messages.md
+<markdown>
+### Sequence Matchers and Their Implementations
+
+## Overview
+
+This document explores existing implementations of sequence matchers, their operational principles, data structures, and algorithms. We'll delve into examples from genetics to illustrate how sequence matchers work at a data structure level, focusing on how given sequences are matched with stored sequences, the decision-making process on the match, and the data structures and algorithms involved.
+
+## What if, after parsing the incoming message into its binary form (via multibase/multihash decoding), we simply start doing sequence matching on the binary data, byte by byte, to decide how to handle the message?
+
+### Pros of Byte-by-Byte Sequence Matching
+
+1. **Simplicity**: This approach simplifies the process of deciding how to handle the message by using straightforward sequence matching techniques without needing to parse complex message structures or protocols.
+
+2. **Performance**: Byte-by-byte sequence matching can be efficient as it minimizes the need for extensive parsing and reassembly of messages. It can quickly determine if a known sequence is present, allowing for rapid message routing and handling.
+
+3. **Flexibility**: The method allows for flexible matching rules. By modifying the sequence matcher, the system can detect specific patterns or signatures within the binary data, enabling dynamic handling of a wide range of message types.
+
+4. **Scalability**: This approach can be scalable, especially for systems dealing with large volumes of messages. By using efficient data structures such as suffix trees or hash tables, sequence matchers can quickly locate matching sequences without the need to inspect each byte individually.
+
+### Cons of Byte-by-Byte Sequence Matching
+
+1. **Ambiguity**: Matching sequences byte by byte may lead to ambiguities if different message types share common subsequences. This could result in incorrect message handling or routing to the wrong module.
+
+2. **Overhead**: Implementing an efficient sequence matcher requires maintaining sophisticated data structures which could add overhead to the system. This includes building and updating these structures as new sequences or message types are introduced.
+
+3. **Maintenance**: Keeping the sequence matching logic up to date with the evolving message formats and protocols may require continuous maintenance. Any changes in the message structures might necessitate updates to the sequence matcher, increasing the complexity of the system.
+
+4. **Security Risks**: Relying solely on sequence matching without explicit parsing could expose the system to potential security risks such as buffer overflows or injections if malicious binary sequences are crafted to exploit weaknesses in the matching logic.
+
+### Conclusion
+
+Using byte-by-byte sequence matching to determine how to handle messages can offer simplicity and performance benefits, particularly in high-volume messaging systems. However, it is crucial to address potential ambiguities, maintenance challenges, and security risks associated with this approach. Implementing robust data structures and ensuring proper validation of matched sequences will be essential to the successful deployment of this method.
+
+
+</markdown>
+```markdown
+EOF_/home/stevegt/lab/grid-cli/v2/doc/330-messages.md
 ```
-# Unified Message Handling and Sequence Matching Graphs in PromiseGrid
-
-## Introduction
-
-In this document, we reconcile the `PromiseGrid` message format with the concepts of sequence-matching graphs, as discussed in the PromiseGrid design documents. Specifically, we evaluate the design decision of placing the promise element first in the `PromiseGrid` message format. We'll discuss where this idea originated, its necessity, and its alignment or conflict with sequence-matching graph concepts.
-
-### Design Decision: Promise Element First
-
-The design choice to place the promise element first in the `PromiseGrid` message format stems from several principles:
-
-1. **Governance and Trust**:
-   - Placing the promise first allows nodes to filter messages based on the promises they accept, forming the basis for decentralized governance.
-   - This aligns with the idea of mutual promises in a social contract, where nodes agree on specific promises they will accept from one another.
-
-2. **Optimized Routing**:
-   - The promise element acts as a primary key or identifier, simplifying the initial filtering and routing of messages within the system.
-   - This principle aligns with the sequence-matching graph concept of moving through nodes based on leading components.
-
-## Sequence-Matching Graphs in PromiseGrid
-
-### Concepts and Benefits
-
-Sequence-matching graphs in PromiseGrid allow efficient matching and routing of messages based on their components. This structure provides several advantages:
-
-1. **Optimized Lookup**:
-   - Sequence-matching graphs enable efficient lookup and routing by matching sequences of parameters.
-   - This ensures that messages are directed to the appropriate modules or nodes without exhaustive searching.
-
-2. **Dynamic Adaptation**:
-   - The sequence-matching graph can dynamically adapt to new sequences, optimizing future lookups based on historical data.
-
-### Example: Parsing Incoming Messages
-
-Consider an incoming message that consists of a promise hash, a module hash, and additional arguments:
-
-1. **Message Structure**:
-   ```json
-   {
-     "parms": [
-       "promiseHash",
-       "moduleHash",
-       "arg1",
-       "arg2",
-       ...
-     ],
-     "payload": {
-       ...
-     }
-   }
-   ```
-
-2. **Parsing and Matching**:
-   - The message is parsed, extracting the `parms` array.
-   - Using sequence-matching graph principles, the system matches the beginning of the sequence (the promise hash) to determine the path.
-   - The system continues to match subsequent components (module hash, arguments) to refine the path and determine the optimal module or node for handling the message.
-
-### Step-by-Step Example
-
-1. **Incoming Message**:
-   ```
-   {
-     "parms": ["promiseHash123", "moduleHash456", "arg1", "arg2"],
-     "payload": { ... }
-   }
-   ```
-
-2. **Initial Matching**:
-   - The promise hash "promiseHash123" is matched to the first node in the sequence graph.
-   - The system uses the sequence graph to identify potential paths based on "promiseHash123".
-
-3. **Subsequent Matching**:
-   - After matching the promise hash, the system matches the next component, "moduleHash456".
-   - The sequence graph further narrows down the potential paths based on the promise and module hashes.
-
-4. **Final Matching**:
-   - The system matches the remaining arguments ("arg1", "arg2") to finalize the path.
-
-5. **Routing**:
-   - The system routes the message to the module or node that matches the entire sequence.
-   - This module or node processes the message based on the payload and parameters.
-
-6. **Optimization**:
-   - Successful paths are cached in the sequence-matching graph, optimizing future message routing.
-
-## Discussion: Pros and Cons
-
-### Advantages
-
-1. **Enhanced Filtering**:
-   - Placing the promise element first allows for initial filtering based on trust and acceptance.
-   - This enhances governance by ensuring that only messages with acceptable promises are processed.
-
-2. **Optimized Routing**:
-   - The sequence-matching graph approach ensures efficient routing by matching sequences step-by-step, reducing redundant searches.
-
-3. **Dynamic Adaptation**:
-   - The sequence-matching graph dynamically adapts to new sequences, enhancing the system's ability to handle diverse and evolving messages.
-
-### Potential Conflicts
-
-1. **Complexity**:
-   - Integrating sequence-matching graphs with promise-based message filtering and routing can introduce complexity.
-   - Ensuring that the system efficiently handles dynamic sequences requires careful design and optimization.
-
-2. **Overhead**:
-   - Maintaining and updating the sequence-matching graph can introduce computational overhead.
-   - Balancing optimization and system performance is critical to ensure efficiency.
-
-## Conclusion
-
-The design decision to place the promise element first in the `PromiseGrid` message format aligns well with the principles of sequence-matching graphs. This approach enhances filtering, routing, and dynamic adaptation, forming a robust foundation for decentralized governance and efficient message handling. By integrating promises with sequence-matching graphs, PromiseGrid ensures a flexible, trust-based system capable of handling diverse and evolving messages.
-
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/330-messages.md
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/330-messages.md

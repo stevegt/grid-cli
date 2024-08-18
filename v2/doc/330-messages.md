@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/330-messages.md
-```
 # Unified Message Handling and Sequence Matching Graphs in PromiseGrid
 
 ## Introduction
@@ -112,7 +110,3 @@ Consider an incoming message that consists of a promise hash, a module hash, and
 
 The design decision to place the promise element first in the `PromiseGrid` message format aligns well with the principles of sequence-matching graphs. This approach enhances filtering, routing, and dynamic adaptation, forming a robust foundation for decentralized governance and efficient message handling. By integrating promises with sequence-matching graphs, PromiseGrid ensures a flexible, trust-based system capable of handling diverse and evolving messages.
 
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/330-messages.md
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/330-messages.md

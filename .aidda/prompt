@@ -23,12 +23,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/330-messages.md
 
-In 320-messages.md, reconcile the promisegrid message format with the
-concepts of sequence-matching graphs from 300-synthesis.md.  In
-particular, consider the pros and cons of the design decision to place
-the promise element first in the promisegrid message format -- discuss
-where that idea came from, and whether it is necessary or in conflict
-with the sequence-matching graph concept.  
+In 320-messages.md, answer the following questions: 
 
-Show an example of how an incoming message is parsed into a sequence
-matching graph.
+- What if, after parsing the incoming message into its binary form
+  (via multibase/multihash decoding), we simply start doing sequence
+  matching on the binary data, byte by byte, to decide how to handle
+  the message? What are the pros and cons of this approach?

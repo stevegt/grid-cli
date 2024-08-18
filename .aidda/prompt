@@ -23,6 +23,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/220-graph.md
 
+
+Answer these questions in 220-graph.md:
+
 In a sequence-matching graph, does the 'Children' field of a node
 contain the next node in the sequence?  Or does it contain both previous
 and next nodes?  

@@ -1,11 +1,13 @@
+<blank line>
+File: /home/stevegt/lab/grid-cli/v2/doc/340-magic.md
 ```markdown
 # Design Discussion on Sequence Matching for Message Handling
 
 ## Introduction
 
-In the context of designing robust message-handling mechanisms, an alternative approach involves sequence matching on the message data, byte by byte, to decide how to handle the message. This method diverges from traditional parsing methods and bears similarity to the UNIX/Linux magic number system, which uses the first few bytes of a file to determine its type.
+In the context of designing robust message handling mechanisms, an alternative approach involves sequence matching on the message data, byte by byte, to decide how to handle the message. This method diverges from traditional parsing methods and bears similarity to the UNIX/Linux magic number system, which uses the first few bytes of a file to determine its type.
 
-This document discusses the pros and cons of implementing such a sequence-matching approach in PromiseGrid.
+This document discusses the pros and cons of implementing such a sequence matching approach in PromiseGrid.
 
 ## Design Overview
 
@@ -14,6 +16,8 @@ This document discusses the pros and cons of implementing such a sequence-matchi
 Rather than parsing an incoming message, the proposed design involves performing sequence matching on the message data, byte by byte. This approach uses the initial bytes of the message to decide how to handle it, potentially invoking various decoding mechanisms such as multibase/multihash decoding or other future decoding techniques.
 
 This design is akin to the UNIX/Linux magic number system, defined by `file` and `/etc/magic`, which identifies file types based on their initial bytes.
+
+The "large database of sequence patterns" is the decentralized cache.
 
 ### Pros of Sequence Matching for Message Handling
 
@@ -49,10 +53,14 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
 4. **Limited Error Handling**:
     - **Error Detection**: Parsing often includes error detection routines that sequence matching might overlook, leading to less predictable error handling and recovery.
 
+Handling after sequence matching would still include any handler's own validation and error detection.
+
 ### Conclusion
 
 The sequence matching approach offers significant flexibility and potential performance advantages for handling diverse message types in PromiseGrid. However, the design must carefully address the complexity, ambiguity, and security implications of this method. Future implementations can leverage pattern databases and robust validation mechanisms to mitigate these challenges.
 
 Overall, while byte-by-byte sequence matching is a promising method for dynamic message handling, it requires careful design considerations to ensure reliability, security, and efficiency in a production environment.
+Ambiguous sequence patterns are resolved by the first match. (Specify that ordering of first match is node-specific; the local node's own configuration determines the order of tries.)
+
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/340-magic.md

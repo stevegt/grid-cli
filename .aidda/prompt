@@ -23,11 +23,5 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/340-magic.md
 
-Add the following information to v2/doc/340-magic.md:
+Improve v2/doc/340-magic.md.
 
-- the "large database of sequence patterns" is the decentralized cache.
-- handling after sequence matching would still include any handler's
-  own validation and error detection.
-- ambiguous sequence patterns are resolved by the first match.
-  (Specify that ordering of first match is node-specific; the local
-  node's own configuration determines the order of tries.)

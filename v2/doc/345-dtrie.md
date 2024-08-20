@@ -75,7 +75,15 @@ Future improvements may focus on optimizing the trie algorithms for even better 
 
 Imagine a caller local to Host A asks A's kernel for the completion of a specific byte sequence. Here’s a step-by-step breakdown of the communication flow:
 
-### Step 1: Caller Requests Byte Sequence Completion
+### Step 1: Host B Advertizes Acceptance for Sequence Completion Requests
+
+First, Host B promises to accept requests for sequence completion, advertizing the prefixes it will accept.
+
+```
+Host B: PROMISE with prefixes it will accept for sequence completion
+```
+
+### Step 2: Caller Requests Byte Sequence Completion
 
 The caller on Host A initiates a request for a byte sequence starting with `0xDE 0xAD`.
 
@@ -83,7 +91,7 @@ The caller on Host A initiates a request for a byte sequence starting with `0xDE
 Caller -> Host A: Request completion for byte sequence 0xDE 0xAD
 ```
 
-### Step 2: Host A Searches Local Cache
+### Step 3: Host A Searches Local Cache
 
 Host A's kernel checks its local DTrie cache to find a completion for the byte sequence `0xDE 0xAD`. Suppose no matching completion is found in A's local cache.
 
@@ -92,64 +100,47 @@ Host A Kernel: Searching local DTrie cache for 0xDE 0xAD
 Host A Kernel: No match found in local cache
 ```
 
-### Step 3: Host A Makes a Promise to Host B
+### Step 4: Host A invokes Host B promise
 
-Host A's kernel makes a promise to Host B, asking whether Host B can provide a completion for the byte sequence.
-
-```
-Host A -> Host B: PROMISE 0xDE 0xAD
-```
-
-### Step 4: Host B Processes the Promise
-
-Host B receives the promise and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+Host A's kernel asks Host B, invoking its promise by sending a request for the sequence completion.
 
 ```
-Host B Kernel: Received PROMISE for 0xDE 0xAD
+Host A -> Host B: INVOKE 0xDE 0xAD
+```
+
+### Step 5: Host B Processes the invocation
+
+Host B receives the invocation and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+
+```
 Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
 ```
 
-### Step 5: Host B Sends Acceptance to Host A
+### Step 6: Host B Fulfills the Promise
 
-Host B sends an acceptance message back to Host A, indicating that it has found the completion for the requested byte sequence.
-
-```
-Host B -> Host A: ACCEPTANCE 0xDE 0xAD 0xBE 0xEF
-```
-
-### Step 6: Host A Receives Completion from Host B
-
-Host A's kernel processes the acceptance message, retrieves the completion byte sequence, and returns it to the original caller.
+Host B sends an fulfillment message back to Host A, indicating that it has found the completion for the requested byte sequence.
 
 ```
-Host A Kernel: Received ACCEPTANCE from Host B with completion 0xDE 0xAD 0xBE 0xEF
+Host B -> Host A: FULFILL 0xDE 0xAD 0xBE 0xEF
+```
+
+### Step 7: Host A Receives Completion from Host B
+
+Host A's kernel processes the fulfillment message, retrieves the completion byte sequence, and returns it to the original caller.
+
+```
+Host A Kernel: Received FULFILL from Host B with completion 0xDE 0xAD 0xBE 0xEF
 Host A Kernel: Returning bytes to caller
 Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
 ```
 
 ### Communication Flow Summary
 
-1. **Caller to Host A Kernel**: Initial request for byte sequence completion.
-2. **Host A Kernel**: Searches local cache and finds no match.
-3. **Host A to Host B**: Sends PROMISE message for the byte sequence.
-4. **Host B Kernel**: Searches local cache and finds the completion.
-5. **Host B to Host A**: Sends ACCEPTANCE message with the completion.
-6. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
+1. **Host B Advertizes**: Host B advertizes the prefixes it will accept for sequence completion.
+2. **Caller to Host A Kernel**: Initial request for byte sequence completion.
+3. **Host A Kernel**: Searches local cache and finds no match.
+4. **Host A to Host B**: Sends INVOKE message for the byte sequence.
+5. **Host B Kernel**: Searches local cache and finds the completion.
+6. **Host B to Host A**: Sends FULFILL message with the completion.
+7. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
 
-### Promise/Acceptance Message Structure
-
-The promise and acceptance messages follow a specific structure to standardize communication:
-
-- **PROMISE Message**
-  - Sender: Host A
-  - Recipient: Host B
-  - Payload: Byte sequence for which completion is sought, e.g., `0xDE 0xAD`.
-
-- **ACCEPTANCE Message**
-  - Sender: Host B
-  - Recipient: Host A
-  - Payload: Completed byte sequence found in local DTrie, e.g., `0xDE 0xAD 0xBE 0xEF`.
-
-## Conclusion
-
-This example clarifies how communication via the DTrie operates, particularly illustrating the interaction between hosts in the network to fulfill a caller's byte sequence completion request. By utilizing promise and acceptance messages, the DTrie structure facilitates efficient, distributed collaboration for data retrieval.

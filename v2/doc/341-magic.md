@@ -50,16 +50,46 @@ Address potential ambiguities where byte sequences overlap. Organize sequence pa
 
 Define heuristics for decision-making in ambiguous cases. Options include routing to the first match, broadcasting to multiple handlers, or utilizing a specific heuristic based on the node's configuration.
 
-### Step 4: Manage Sequence Patterns in a Database
+### Step 4: Manage Sequence Patterns in a Trie
 
-#### Utilize Decentralized Cache
+#### Utilize Trie Data Structure for Cache
 
-Store and manage sequence patterns efficiently using a decentralized cache, where each byte forms a part of the nested key structure. Each byte in the sequence is owned by one or more modules.
+Store and manage sequence patterns efficiently using a Trie data structure, where each byte forms a part of the nested key structure. The Trie will facilitate fast prefix matching and efficient storage.
 
-- **Cache Key Structure:**
-  - First Byte: Registered Owner(s)
-  - Second Byte: Nested Key -> Registered Owner(s)
+- **Trie Structure:**
+  - First Byte: Trie Node
+  - Second Byte: Child Trie Node -> Registered Handler(s)
   - Continue until sequence end or failure.
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.handler = None
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, sequence: bytes, handler):
+        node = self.root
+        for byte in sequence:
+            if byte not in node.children:
+                node.children[byte] = TrieNode()
+            node = node.children[byte]
+        node.handler = handler
+
+    def search(self, message: bytes):
+        node = self.root
+        for byte in message:
+            if byte in node.children:
+                node = node.children[byte]
+                if node.handler:
+                    return node.handler
+            else:
+                break
+        return None
+```
 
 ### Step 5: Implement Handlers with Validation and Error Detection
 

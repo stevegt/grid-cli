@@ -21,9 +21,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-In: v2/doc/340-magic.md
+In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md
 
-Write 341-magic.md based on the concepts in 340-magic.md. Include all
-concepts.
+Revise 341-magic.md -- grid-cli will use a Trie data structure for
+byte-by-byte prefix matching.  The cache is a Trie.
 

@@ -30,9 +30,8 @@ Revise 341-magic.md:
   returned byte streams might include indexes or pointers to ease
   parsing
 
-Create 342-prior.md, detailing each of these:
-1. **Ethereum's Merkle Patricia Trie**: Used in Ethereum to manage all accounts and transactions, providing a secure and verifiable data structure for fast lookups.
-2. **IPFS's Merkle DAG**: Utilizes a decentralized graph structure to store and retrieve files in a distributed network, ensuring data integrity and availability.
-3. **CTrie**: Concurrent tries used in parallel computing for lock-free data structures, allowing concurrent access and modifications without compromising data consistency.
+Revise 342-prior.md:
+- describe how IPFS's Merkle DAG works
+- describe how a CTrie works
 
 

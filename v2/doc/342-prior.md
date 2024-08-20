@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/342-prior.md
-```
 # Overview of Prior Art in Decentralized Tries
 
 ## Introduction
@@ -70,5 +67,3 @@ CTries are commonly used in parallel computing applications where high concurren
 ## Conclusion
 
 Understanding the prior art in decentralized tries helps in designing and implementing efficient, secure, and scalable data structures. Ethereum's Merkle Patricia Trie, IPFS's Merkle DAG, and CTries each offer unique solutions to different challenges in distributed systems. By leveraging the strengths of these data structures, developers can build robust and resilient applications that meet the demands of modern decentralized environments.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/342-prior.md

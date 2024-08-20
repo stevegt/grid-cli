@@ -25,6 +25,7 @@ In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md
 
 Revise 341-magic.md:
-- the cache is a decentralized Trie
-- do we want the handler to also return a parsed data structure representing the message?
+- the cache is a decentralized Trie -- discuss ways in which different
+  nodes can store and replicate portions of the cache
+- discuss the pros and cons of the handler also returning a parsed data structure representing the message
 

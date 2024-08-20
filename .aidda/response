@@ -100,7 +100,6 @@ import (
 type Handler func()
 
 type TrieNode struct {
-    // a map is a fast way to look up children by byte value
     children map[byte]*TrieNode
     handlers []Handler // Use a slice to hold multiple handlers
 }
@@ -195,7 +194,7 @@ promise containing an io.Reader that provides the next bytes in the
 sequence. The returned io.Reader provides bytes until the sequence is
 complete, at which point it returns io.EOF. The returned bytes are
 piped to the original caller via the same io.Reader that was returned
-by the handler. 
+by the handler.
 
 ### Consideration
 

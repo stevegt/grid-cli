@@ -14,6 +14,12 @@ Rather than parsing an incoming message, the proposed design involves performing
 
 This design is akin to the UNIX/Linux magic number system, defined by `file` and `/etc/magic`, which identifies file types based on their initial bytes.
 
+Byte sequences might overlap ambiguously. For example, similar initial bytes could represent different message types. Ambiguous sequence patterns are resolved by the first match. The ordering of first match is node-specific; the local node's own configuration determines the order of tries.
+
+Complexity in managing a large set of sequence patterns is mitigated by using the decentralized cache to store and retrieve patterns efficiently.  Cache keys are nested and are each one byte in size.  Each byte is "owned" (registered) by one or more modules (handlers).  As a message is processed, each successive byte of the message is looked up as the next, nested, key.  This process proceeds until a lookup fails; on failure, the entire message is routed to the module that owns the most recent byte key that succeeded.  In the case of multiple modules owning the same key, the local node SHALL choose: it MAY route to the first module in the list, or it MAY route to all, or some other heuristic.  XXX revisit this
+
+Handling after sequence matching would include any handler's own validation and error detection.  On failure of a handler, the message SHOULD be routed to the next handler in the list.  On failure of all handlers, the message MAY be dropped, and the router (dispatcher) SHOULD generate a new message to register the apparent spam (broken promise?).  XXX revisit this
+
 ### Pros of Sequence Matching for Message Handling
 
 1. **Simplicity and Speed**:
@@ -33,10 +39,6 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
 
 ### Cons of Sequence Matching for Message Handling
 
-1. **Ambiguity and Complexity**:
-    - **Ambiguous Sequences**: Byte sequences might overlap ambiguously, leading to incorrect handling. For example, similar initial bytes could represent different message types. XXX Ambiguous sequence patterns are resolved by the first match. The ordering of first match is node-specific; the local node's own configuration determines the order of tries.
-    - **Complex Pattern Management**: Managing a large set of sequence patterns could become complex and error-prone. XXX The "large database of sequence patterns" is the decentralized cache.
-
 2. **Security Implications**:
     - **Tampering Risk**: Matching based on bytes might expose the system to tampering if attackers craft byte sequences to deceive the match routines, potentially leading to security vulnerabilities.
     - **Insufficient Validation**: Without robust parsing, the system might skip essential validation steps, increasing the risk of processing malformed or malicious messages.
@@ -44,9 +46,6 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
 3. **Performance Overhead**:
     - **Sequence Database Management**: Maintaining and searching a large database of sequence patterns could introduce performance overhead, particularly as the number of patterns grows.
     - **Resource Intensive**: Repeated sequence matching might consume more resources compared to directly parsing structured messages with known formats.
-
-4. **Limited Error Handling**:
-    - **Error Detection**: Parsing often includes error detection routines that sequence matching might overlook, leading to less predictable error handling and recovery. XXX Handling after sequence matching would still include any handler's own validation and error detection.
 
 ### Conclusion
 

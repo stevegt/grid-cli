@@ -22,7 +22,8 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/kernel.go,
     v2/server.go
 In: v2/doc/340-magic.md
-Out: v2/doc/340-magic.md
+Out: v2/doc/341-magic.md
 
-Rework v2/doc/340-magic.md to include the changes marked with XXX.
+Write 341-magic.md based on the concepts in 340-magic.md. Include all
+concepts.
 

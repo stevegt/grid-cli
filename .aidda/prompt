@@ -23,7 +23,7 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md,
-    342-prior.md
+    v2/doc/342-prior.md
 
 Revise 341-magic.md:
 - rather than returning parsed messages in data structures, the

@@ -70,6 +70,7 @@ Data integrity is ensured through:
 A decentralized trie is a powerful tool for managing distributed data in the PromiseGrid framework. By allowing nodes to autonomously decide on their storage commitments and by embedding logs, transactions, and communication within the trie, the system achieves a high level of efficiency, scalability, and trustworthiness.
 
 Future improvements may focus on optimizing the trie algorithms for even better performance and exploring additional use cases for dTrie within decentralized applications.
+
 ## Example Message Flow
 
 Imagine a caller local to Host A asks A's kernel for the completion of a specific byte sequence. Here’s a step-by-step breakdown of the communication flow:
@@ -91,37 +92,37 @@ Host A Kernel: Searching local DTrie cache for 0xDE 0xAD
 Host A Kernel: No match found in local cache
 ```
 
-### Step 3: Host A Sends Bid Message to Host B
+### Step 3: Host A Makes a Promise to Host B
 
-Host A's kernel sends a bid message to Host B asking whether it can provide a completion for the byte sequence.
-
-```
-Host A -> Host B: BID 0xDE 0xAD
-```
-
-### Step 4: Host B Processes Bid Message
-
-Host B receives the bid message and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+Host A's kernel makes a promise to Host B, asking whether Host B can provide a completion for the byte sequence.
 
 ```
-Host B Kernel: Received BID for 0xDE 0xAD
+Host A -> Host B: PROMISE 0xDE 0xAD
+```
+
+### Step 4: Host B Processes the Promise
+
+Host B receives the promise and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+
+```
+Host B Kernel: Received PROMISE for 0xDE 0xAD
 Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
 ```
 
-### Step 5: Host B Sends Ask Message to Host A
+### Step 5: Host B Sends Acceptance to Host A
 
-Host B sends an ask message back to Host A, indicating that it has found the completion for the requested byte sequence.
+Host B sends an acceptance message back to Host A, indicating that it has found the completion for the requested byte sequence.
 
 ```
-Host B -> Host A: ASK 0xDE 0xAD 0xBE 0xEF
+Host B -> Host A: ACCEPTANCE 0xDE 0xAD 0xBE 0xEF
 ```
 
 ### Step 6: Host A Receives Completion from Host B
 
-Host A's kernel processes the ask message, retrieves the completion byte sequence, and returns it to the original caller.
+Host A's kernel processes the acceptance message, retrieves the completion byte sequence, and returns it to the original caller.
 
 ```
-Host A Kernel: Received ASK from Host B with completion 0xDE 0xAD 0xBE 0xEF
+Host A Kernel: Received ACCEPTANCE from Host B with completion 0xDE 0xAD 0xBE 0xEF
 Host A Kernel: Returning bytes to caller
 Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
 ```
@@ -130,26 +131,25 @@ Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
 
 1. **Caller to Host A Kernel**: Initial request for byte sequence completion.
 2. **Host A Kernel**: Searches local cache and finds no match.
-3. **Host A to Host B**: Sends BID message for the byte sequence.
+3. **Host A to Host B**: Sends PROMISE message for the byte sequence.
 4. **Host B Kernel**: Searches local cache and finds the completion.
-5. **Host B to Host A**: Sends ASK message with the completion.
+5. **Host B to Host A**: Sends ACCEPTANCE message with the completion.
 6. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
 
-### Bid/Ask Message Structure
+### Promise/Acceptance Message Structure
 
-The bid and ask messages follow a specific structure to standardize communication:
+The promise and acceptance messages follow a specific structure to standardize communication:
 
-- **BID Message**
+- **PROMISE Message**
   - Sender: Host A
   - Recipient: Host B
   - Payload: Byte sequence for which completion is sought, e.g., `0xDE 0xAD`.
 
-- **ASK Message**
+- **ACCEPTANCE Message**
   - Sender: Host B
   - Recipient: Host A
   - Payload: Completed byte sequence found in local DTrie, e.g., `0xDE 0xAD 0xBE 0xEF`.
 
 ## Conclusion
 
-This example clarifies how communication via the DTrie operates, particularly illustrating the interaction between hosts in the network to fulfill a caller's byte sequence completion request. By utilizing bid and ask messages, the DTrie structure facilitates efficient, distributed collaboration for data retrieval.
-
+This example clarifies how communication via the DTrie operates, particularly illustrating the interaction between hosts in the network to fulfill a caller's byte sequence completion request. By utilizing promise and acceptance messages, the DTrie structure facilitates efficient, distributed collaboration for data retrieval.

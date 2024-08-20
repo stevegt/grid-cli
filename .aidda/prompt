@@ -31,4 +31,8 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
 Out: v2/doc/345-dtrie.md
 
 Revise 345-dtrie.md:
-- restate bids and asks in terms of promises made and accepted
+- first, host B promises to accept requests for sequence completion,
+  advertizing the prefixes it will accept.  
+- then host A invoked B's promise, asking for the sequence completion
+- B fulfills the promise
+

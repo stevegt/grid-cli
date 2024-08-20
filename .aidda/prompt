@@ -25,8 +25,6 @@ In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md
 
 Revise 341-magic.md:
-- there can be more than one handler in a node; i.e. node.handler is a
-  slice
 - the cache is a decentralized Trie
-- the purpose of the grid is to provide the next byte in a sequence
+- do we want the handler to also return a parsed data structure representing the message?
 

@@ -88,7 +88,6 @@ Store and manage sequence patterns efficiently using a decentralized Trie data s
   - Second Byte: Child Trie Node -> Registered Handler(s)
   - Continue until sequence end or failure.
 
-
 ```go
 package main
 
@@ -101,7 +100,7 @@ type Handler func()
 type TrieNode struct {
     // a map is a fast way to look up children by byte value
     children map[byte]*TrieNode
-    handler  Handler
+    handlers []Handler // Use a slice to hold multiple handlers
 }
 
 type Trie struct {
@@ -109,27 +108,27 @@ type Trie struct {
 }
 
 func NewTrie() *Trie {
-    return &Trie{root: &TrieNode{children: make(map[byte]*TrieNode)}}
+    return &Trie{root: &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}}
 }
 
 func (t *Trie) Insert(sequence []byte, handler Handler) {
     node := t.root
     for _, b := range sequence {
         if _, ok := node.children[b]; !ok {
-            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode)}
+            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}
         }
         node = node.children[b]
     }
-    node.handler = handler
+    node.handlers = append(node.handlers, handler)
 }
 
-func (t *Trie) Search(message []byte) Handler {
+func (t *Trie) Search(message []byte) []Handler {
     node := t.root
     for _, b := range message {
         if _, ok := node.children[b]; ok {
             node = node.children[b]
-            if node.handler != nil {
-                return node.handler
+            if len(node.handlers) > 0 {
+                return node.handlers
             }
         } else {
             break
@@ -144,9 +143,11 @@ func main() {
     trie.Insert([]byte{0x03, 0x04}, func() { fmt.Println("Handling Message Type B") })
 
     message := []byte{0x01, 0x02}
-    handler := trie.Search(message)
-    if handler != nil {
-        handler()
+    handlers := trie.Search(message)
+    if handlers != nil {
+        for _, handler := range handlers {
+            handler()
+        }
     } else {
         fmt.Println("No handler found")
     }
@@ -178,4 +179,20 @@ Though sequence matching simplifies the initial routing, incorporate thorough va
 ## Conclusion
 
 The implementation of byte-by-byte sequence matching for message handling in PromiseGrid presents a flexible and efficient alternative to traditional parsing methods. By following these steps and addressing potential challenges, you can create a robust and adaptable message handling system. Future updates and enhancements will focus on optimizing performance and extending support for new message types and encoding schemes.
+
+### Grid Function
+
+The foundation function of the grid is to complete byte sequences.
+
+The decentralized Trie structure allows for rapid identification and
+routing of messages to appropriate handlers based on initial byte
+sequences.  A handler is called with an io.Reader that provides the
+remaining bytes of the incoming message to the handler; the preceeding
+bytes are provided to the handler in a slice. The handler returns a
+promise containing an io.Reader that provides the next bytes in the
+sequence.  The returned io.Reader provides bytes until the sequence is
+complete, at which point it returns io.EOF.  The returned bytes are
+piped to the original caller via the same io.Reader that was returned
+by the handler.  XXX do we want the handler to also return a parsed
+data structure representing the message?
 

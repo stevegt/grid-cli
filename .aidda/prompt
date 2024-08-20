@@ -21,9 +21,21 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-In: v2/doc/341-magic.md,
+XIn: v2/doc/341-magic.md,
+XIn: v2/doc/341-magic.md,
     v2/doc/342-prior.md
+In: /home/stevegt/lab/promisegrid/promisegrid/README.md, 
+    v2/doc/343-dht.md
 Out: v2/doc/343-dht.md
 
-Create 343-dht.md:
-- imagine a design which is a hybrid of a DHT and an open market
+Revise 343-dht.md:
+- replication factor is based in part on market supply/demand
+  dynamics; a node can decideon its own to keep a copy if it see price
+  increase
+- replace contracts, rewards, and penalties with Burgess-style promises and
+  security-token-style capabilities
+- imagine how enforcement might be replaced with Burgess-style
+  broken promise accounting for reputation
+- chunking might be via rabin polynomials
+- describe how transaction logs are themselves stored in the system as
+  hashed blobs, just like any other data

@@ -1,5 +1,5 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/343-dht.md
-```
+```markdown
 # Hybrid DHT and Open Market Design
 
 ## Introduction
@@ -16,7 +16,7 @@ This document outlines a design concept that combines aspects of a Distributed H
 2. **Open Market Layer**
    - An open market layer functions atop the DHT, allowing nodes to trade storage and retrieval services.
    - Nodes can offer their storage capacity and bandwidth in exchange for compensation.
-   - Market dynamics such as pricing, bidding, and competition determine the cost and allocation of resources.
+   - Market dynamics, such as supply, demand, pricing, and competition, determine the cost and allocation of resources.
 
 ## Design Overview
 
@@ -25,7 +25,7 @@ This document outlines a design concept that combines aspects of a Distributed H
 #### Structure
 - **Nodes and Keys:** Every node in the system holds a unique identifier. Keys are distributed across the network based on consistent hashing.
 - **Routing:** Nodes maintain routing tables with information about a subset of other nodes, allowing efficient key lookups with a logarithmic number of hops.
-- **Replication:** Data is replicated across multiple nodes to ensure availability and fault tolerance. Replication factors can be adjusted based on the importance and redundancy requirements of the data.
+- **Replication:** Data is replicated across multiple nodes to ensure availability and fault tolerance. Replication factors can be influenced by market supply and demand dynamics; a node can decide on its own to keep a copy if it sees a price increase.
 
 ### Open Market Layer
 
@@ -35,34 +35,33 @@ This document outlines a design concept that combines aspects of a Distributed H
 - **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.
 
 #### Transactions
-- **Contracts:** Once a match is found, nodes enter into a contract specifying the terms of the transaction. Contracts are cryptographically signed to ensure integrity and non-repudiation.
-- **Payments:** Payment mechanisms, potentially leveraging cryptocurrencies or tokens, are used to compensate nodes providing storage or retrieval services.
-- **Enforcement:** Smart contracts or other mechanisms enforce compliance with the contract terms, penalizing breaches and ensuring that the agreed-upon services are rendered.
-  
+- **Promises and Capabilities:** Burgess-style promises and security-token-style capabilities replace traditional contracts, rewards, and penalties.
+- **Broken Promise Accounting:** Enforcement mechanisms are replaced with Burgess-style broken promise accounting, which impacts a node's reputation within the system.
+
 ## Data Storage and Retrieval
 
 ### Storage Process
 1. **Identification:** The data to be stored is assigned a unique key using a cryptographic hash function.
 2. **Market Interaction:** The node seeking storage interacts with the market layer, finding a suitable storage offer.
-3. **Contract Formation:** A contract is formed and signed by both parties, detailing the storage terms.
-4. **Data Distribution:** The data is divided into chunks (if necessary) and distributed to the selected storage nodes according to the contract.
+3. **Promise Formation:** A promise is formed and agreed upon by both parties, detailing the storage terms.
+4. **Data Chunking:** The data is divided into chunks using Rabin polynomials (if necessary) and distributed to the selected storage nodes according to the promise.
 5. **Replication:** The data is replicated across multiple nodes to ensure reliability as per the agreed replication factor.
 
 ### Retrieval Process
 1. **Identification:** The key associated with the data is used to locate the data across the DHT.
 2. **Market Interaction:** The node seeking to retrieve the data interacts with the market to find retrieval offers.
-3. **Contract Formation:** A retrieval contract is established, detailing the retrieval terms.
-4. **Data Transfer:** The data is retrieved from the storage nodes and transferred to the requesting node according to the contract conditions.
+3. **Promise Formation:** A retrieval promise is established, detailing the retrieval terms.
+4. **Data Transfer:** The data is retrieved from the storage nodes and transferred to the requesting node according to the promise conditions.
   
 ## Market Dynamics
 
 ### Incentive Structures
-- **Reward Mechanisms:** Nodes are incentivized to provide high-quality storage and retrieval services through rewards. Higher reliability and faster access times may attract higher prices.
-- **Penalty Mechanisms:** Nodes that fail to meet their contractual obligations may incur penalties, discouraging poor performance and breaches of contract.
-  
+- **Quality of Service (QoS):** Nodes are incentivized to provide high-quality storage and retrieval services, which are reflected in their reputation. Higher reliability and faster access times may attract higher prices.
+- **Reputation Impact:** Nodes failing to meet their promises face a degradation in their reputation, which discourages poor performance and broken promises.
+
 ### Competitive Environment
-- **Quality of Service (QoS):** Nodes can differentiate themselves based on their QoS offerings, such as uptime, speed, and reliability.
-- **Reputation Systems:** A reputation system tracks the performance and reliability of nodes, influencing their attractiveness in the market.
+- **Differentiation:** Nodes can differentiate themselves based on their QoS offerings, such as uptime, speed, and reliability.
+- **Reputation Systems:** A robust reputation system tracks the performance and reliability of nodes, influencing their attractiveness and opportunities in the market.
 
 ## Security Considerations
 
@@ -71,8 +70,13 @@ This document outlines a design concept that combines aspects of a Distributed H
 - **Encryption:** Data can be encrypted before storage to maintain privacy, with only authorized nodes having access to decryption keys.
 
 ### Trust and Verification
-- **Decentralized Trust:** The hybrid system minimizes the reliance on central authorities, relying instead on cryptographic contracts and reputation systems to foster trust.
-- **Auditability:** All transactions and contracts are logged and auditable to ensure transparency and accountability.
+- **Decentralized Trust:** The hybrid system minimizes the reliance on central authorities, relying instead on cryptographic promises and reputation systems to foster trust.
+- **Auditability:** All transactions, promises, and broken promises are logged and auditable to ensure transparency and accountability.
+
+## Transaction Logs
+
+### Storage of Transaction Logs
+- **Hashed Blobs:** Transaction logs are themselves stored in the system as hashed blobs, just like any other data. This ensures their integrity, verifiability, and availability throughout the network.
 
 ## Conclusion
 

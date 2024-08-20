@@ -29,13 +29,6 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
 Out: v2/doc/343-dht.md
 
 Revise 343-dht.md:
-- replication factor is based in part on market supply/demand
-  dynamics; a node can decideon its own to keep a copy if it see price
-  increase
-- replace contracts, rewards, and penalties with Burgess-style promises and
-  security-token-style capabilities
-- imagine how enforcement might be replaced with Burgess-style
-  broken promise accounting for reputation
-- chunking might be via rabin polynomials
-- describe how transaction logs are themselves stored in the system as
-  hashed blobs, just like any other data
+- describe prs and cons of including the DHT layer 
+- describe how a node that chooses to store a blob copy despite DHT routing
+  can nevertheless advertize the copy

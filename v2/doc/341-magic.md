@@ -89,7 +89,7 @@ Store and manage sequence patterns efficiently using a decentralized Trie data s
   - Continue until sequence end or failure.
 
 - **Heap Utilization for Child Nodes:**
-  Use a heap or a sorted slice for managing child nodes within each TrieNode. This allows for efficient searching and insertion.
+  Use a heap or consider alternative data structures for managing child nodes within each TrieNode. While binary search in a sorted slice is efficient, hash maps could offer potentially faster lookups depending on your specific context and use cases.
 
 ```go
 package main

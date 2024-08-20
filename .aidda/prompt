@@ -25,8 +25,8 @@ In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md
 
 Revise 341-magic.md:
+- recommend a better data structure instead of a sorted slice -- e.g.
+  does a hash map even make sense given that each key is a single byte?
 - the cache is a decentralized Trie
 - the purpose of the grid is to provide the next byte in a sequence
-- recommend a better data structure instead of a sorted slice -- e.g. is
-  binary search in a heap a thing?
 

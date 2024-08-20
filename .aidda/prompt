@@ -27,5 +27,8 @@ Out: v2/doc/341-magic.md
 Revise 341-magic.md:
 - the cache is a decentralized Trie
 - the purpose of the grid is to provide the next byte in a sequence
-- use Go in language examples
+- use a heap or a sorted slice for child nodes
+- call a binary search method to find a particular child in Insert and in Search
+- advise if there is a better data structure for this -- e.g. is
+  binary search in a heap a thing?
 

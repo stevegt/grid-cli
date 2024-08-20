@@ -27,12 +27,39 @@ Create a byte-by-byte matching logic within the message handling component. This
   2. Compare these bytes with the registered sequences.
   3. On a match, route the message to the corresponding handler.
 
-```python
-def match_sequence(message: bytes, patterns: dict):
-    for pattern, handler in patterns.items():
-        if message.startswith(pattern):
+```go
+package main
+
+import (
+    "bytes"
+    "fmt"
+)
+
+type Handler func()
+
+func matchSequence(message []byte, patterns map[string]Handler) Handler {
+    for pattern, handler := range patterns {
+        if bytes.HasPrefix(message, []byte(pattern)) {
             return handler
-    return None
+        }
+    }
+    return nil
+}
+
+func main() {
+    patterns := map[string]Handler{
+        "\x01\x02": func() { fmt.Println("Handling Message Type A") },
+        "\x03\x04": func() { fmt.Println("Handling Message Type B") },
+    }
+
+    message := []byte{0x01, 0x02}
+    handler := matchSequence(message, patterns)
+    if handler != nil {
+        handler()
+    } else {
+        fmt.Println("No handler found")
+    }
+}
 ```
 
 ### Step 3: Handle Ambiguity in Matching Patterns
@@ -54,41 +81,70 @@ Define heuristics for decision-making in ambiguous cases. Options include routin
 
 #### Utilize Trie Data Structure for Cache
 
-Store and manage sequence patterns efficiently using a Trie data structure, where each byte forms a part of the nested key structure. The Trie will facilitate fast prefix matching and efficient storage.
+Store and manage sequence patterns efficiently using a decentralized Trie data structure, where each byte forms a part of the nested key structure. The Trie will facilitate fast prefix matching and efficient storage.
 
 - **Trie Structure:**
   - First Byte: Trie Node
   - Second Byte: Child Trie Node -> Registered Handler(s)
   - Continue until sequence end or failure.
 
-```python
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.handler = None
+```go
+package main
 
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
+import "fmt"
 
-    def insert(self, sequence: bytes, handler):
-        node = self.root
-        for byte in sequence:
-            if byte not in node.children:
-                node.children[byte] = TrieNode()
-            node = node.children[byte]
-        node.handler = handler
+type TrieNode struct {
+    children map[byte]*TrieNode
+    handler  Handler
+}
 
-    def search(self, message: bytes):
-        node = self.root
-        for byte in message:
-            if byte in node.children:
-                node = node.children[byte]
-                if node.handler:
-                    return node.handler
-            else:
-                break
-        return None
+type Trie struct {
+    root *TrieNode
+}
+
+func NewTrie() *Trie {
+    return &Trie{root: &TrieNode{children: make(map[byte]*TrieNode)}}
+}
+
+func (t *Trie) Insert(sequence []byte, handler Handler) {
+    node := t.root
+    for _, b := range sequence {
+        if _, ok := node.children[b]; !ok {
+            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode)}
+        }
+        node = node.children[b]
+    }
+    node.handler = handler
+}
+
+func (t *Trie) Search(message []byte) Handler {
+    node := t.root
+    for _, b := range message {
+        if child, ok := node.children[b]; ok {
+            node = child
+            if node.handler != nil {
+                return node.handler
+            }
+        } else {
+            break
+        }
+    }
+    return nil
+}
+
+func main() {
+    trie := NewTrie()
+    trie.Insert([]byte{0x01, 0x02}, func() { fmt.Println("Handling Message Type A") })
+    trie.Insert([]byte{0x03, 0x04}, func() { fmt.Println("Handling Message Type B") })
+
+    message := []byte{0x01, 0x02}
+    handler := trie.Search(message)
+    if handler != nil {
+        handler()
+    } else {
+        fmt.Println("No handler found")
+    }
+}
 ```
 
 ### Step 5: Implement Handlers with Validation and Error Detection

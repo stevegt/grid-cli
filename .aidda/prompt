@@ -21,15 +21,9 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-XIn: v2/doc/341-magic.md,
-XOut: v2/doc/341-magic.md,
-In: v2/doc/342-prior.md
-Out: v2/doc/342-prior.md
+In: v2/doc/341-magic.md,
+    v2/doc/342-prior.md
+Out: v2/doc/343-dht.md
 
-Revise 342-prior.md:
-- describe in detail how IPFS's Merkle DAG works, e.g. when a local
-  node does not have a blob in its local cache, how does it fetch it
-  from others?
-- is a CTrie able to be decentralized across multiple nodes?
-
-
+Create 343-dht.md:
+- imagine a design which is a hybrid of a DHT and an open market

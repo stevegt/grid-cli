@@ -18,6 +18,18 @@ IPFS (InterPlanetary File System) uses a Merkle DAG to organize and store data. 
 
 - **Deduplication:** Identical pieces of data produce the same hash, allowing the system to store a single copy and reference it multiple times, thus saving space.
 
+### Fetching Blobs from Other Nodes
+
+When a local node does not have a blob in its local cache, it uses several steps to fetch it from other nodes in the IPFS network:
+
+1. **Content Identification:** The blob is identified by its unique cryptographic hash.
+2. **DHT Query:** The local node queries the Distributed Hash Table (DHT) to find the peer nodes that store the requested hash. The DHT is essentially a distributed way to locate which peers have which blocks.
+3. **Peer Discovery:** The node discovers a list of potential peers that might have the desired data.
+4. **Data Request:** The local node sends a request to these peers for the specific data block.
+5. **Data Transfer:** If the target node has the blob, it responds with the data, which the local node then caches locally for future use.
+
+This peer-to-peer mechanism ensures that data can be retrieved efficiently and reliably even if it is not present on the local node.
+
 ### Benefits
 
 - **Data Integrity:** Cryptographic hashes ensure that data has not been tampered with.
@@ -37,6 +49,17 @@ A CTrie is a thread-safe, lock-free data structure designed for high concurrency
 - **Branching and Compression:** Combines nodes with common prefixes to form a compressed branch, optimizing memory usage and speeding up operations by reducing the depth of the trie.
 
 - **Snapshots:** Supports consistent snapshots of the data structure at any point in time, facilitating operations such as cloning or point-in-time views without halting ongoing operations.
+
+### Decentralization Across Multiple Nodes
+
+A CTrie itself is designed primarily for concurrent access within a single node, focusing on efficient in-memory operations. However, the principles of CTries can inspire similar distributed data structures. Decentralizing a CTrie across multiple nodes would require significant adaptation, including:
+
+- **Distributed Coordination:** Implementing a mechanism to manage distributed transactions and maintain consistency across nodes.
+- **Partitioning:** Dividing the trie into segments or partitions that can be managed by different nodes.
+- **Replication:** Ensuring data redundancy and fault tolerance by replicating parts of the trie across several nodes.
+- **Synchronization:** Efficiently synchronizing changes across nodes to ensure consistency and coherence.
+
+While a standard CTrie is not inherently decentralized, these adaptations could potentially enable a similar structure to function across multiple nodes.
 
 ### Benefits
 

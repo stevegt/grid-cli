@@ -187,12 +187,15 @@ The foundation function of the grid is to complete byte sequences.
 The decentralized Trie structure allows for rapid identification and
 routing of messages to appropriate handlers based on initial byte
 sequences.  A handler is called with an io.Reader that provides the
-remaining bytes of the incoming message to the handler; the preceeding
+remaining bytes of the incoming message to the handler; the preceding
 bytes are provided to the handler in a slice. The handler returns a
 promise containing an io.Reader that provides the next bytes in the
-sequence.  The returned io.Reader provides bytes until the sequence is
-complete, at which point it returns io.EOF.  The returned bytes are
+sequence. The returned io.Reader provides bytes until the sequence is
+complete, at which point it returns io.EOF. The returned bytes are
 piped to the original caller via the same io.Reader that was returned
-by the handler.  XXX do we want the handler to also return a parsed
-data structure representing the message?
+by the handler. 
+
+### Consideration
+
+Do we want the handler to also return a parsed data structure representing the message?
 

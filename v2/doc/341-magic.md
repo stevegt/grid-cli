@@ -114,7 +114,7 @@ func (t *Trie) Insert(sequence []byte, handler Handler) {
     node := t.root
     for _, b := range sequence {
         if _, ok := node.children[b]; !ok {
-            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}
+            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}}
         }
         node = node.children[b]
     }
@@ -177,7 +177,17 @@ Though sequence matching simplifies the initial routing, incorporate thorough va
 
 ## Decentralized Trie Cache
 
+The cache stores a copy of the returned bytes in the Trie, making them available for later lookups. The returned bytes include a signature from the handler certifying (promising) the accuracy of the completion.
+
+### Cache as a Decentralized Trie
+
 The cache is a decentralized Trie that allows for efficient storage and retrieval of byte sequences. Different nodes can store and replicate portions of the Trie structure to maintain decentralized resilience and availability.
+
+### Prior Art for Decentralized Tries
+
+1. **Ethereum's Merkle Patricia Trie**: Used in Ethereum to manage all accounts and transactions, providing a secure and verifiable data structure for fast lookups.
+2. **IPFS's Merkle DAG**: Utilizes a decentralized graph structure to store and retrieve files in a distributed network, ensuring data integrity and availability.
+3. **CTrie**: Concurrent tries used in parallel computing for lock-free data structures, allowing concurrent access and modifications without compromising data consistency.
 
 ### Ways to Store and Replicate Portions of the Cache
 

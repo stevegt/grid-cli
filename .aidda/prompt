@@ -22,13 +22,17 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/kernel.go,
     v2/server.go
 In: v2/doc/341-magic.md
-Out: v2/doc/341-magic.md
+Out: v2/doc/341-magic.md,
+    342-prior.md
 
 Revise 341-magic.md:
-- the cache stores a copy of the returned bytes in the trie, making
-  them available for later lookups
-- the returned bytes include a signature from the handler certifying
-  (promising) the accuracy of the completion
-- the cache is a decentralized Trie -- discuss prior art for
-  decentralized tries
+- rather than returning parsed messages in data structures, the
+  returned byte streams might include indexes or pointers to ease
+  parsing
+
+Create 342-prior.md, detailing each of these:
+1. **Ethereum's Merkle Patricia Trie**: Used in Ethereum to manage all accounts and transactions, providing a secure and verifiable data structure for fast lookups.
+2. **IPFS's Merkle DAG**: Utilizes a decentralized graph structure to store and retrieve files in a distributed network, ensuring data integrity and availability.
+3. **CTrie**: Concurrent tries used in parallel computing for lock-free data structures, allowing concurrent access and modifications without compromising data consistency.
+
 

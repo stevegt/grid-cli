@@ -25,7 +25,10 @@ In: v2/doc/341-magic.md
 Out: v2/doc/341-magic.md
 
 Revise 341-magic.md:
-- the cache is a decentralized Trie -- discuss ways in which different
-  nodes can store and replicate portions of the cache
-- discuss the pros and cons of the handler also returning a parsed data structure representing the message
+- the cache stores a copy of the returned bytes in the trie, making
+  them available for later lookups
+- the returned bytes include a signature from the handler certifying
+  (promising) the accuracy of the completion
+- the cache is a decentralized Trie -- discuss prior art for
+  decentralized tries
 

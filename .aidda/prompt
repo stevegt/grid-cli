@@ -30,9 +30,9 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
 Out: v2/doc/345-dtrie.md
 
 Revise 345-dtrie.md:
-- each node voluntarily stores arbitrary leaves of the tree
-- the decision of whether to store a leaf is local and depends on both
-  supply/demand observations as well as storage promises made
-- logs are stored in the trie
-- accounting transactions are stored in the trie
-- communication is via the trie
+- imagine how communication is via the trie
+- show an example flow of messages, starting with a caller local to
+  host A asking A's kernel for the completion of a byte sequence, A
+  searching its local cache, then asking B for the completion, B
+  returning the completion, and A returning the bytes to the caller.
+  In the example, include the bid/ask messages as well.

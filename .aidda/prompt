@@ -21,17 +21,15 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
-In: v2/doc/341-magic.md
-Out: v2/doc/341-magic.md,
-    v2/doc/342-prior.md
-
-Revise 341-magic.md:
-- rather than returning parsed messages in data structures, the
-  returned byte streams might include indexes or pointers to ease
-  parsing
+XIn: v2/doc/341-magic.md,
+XOut: v2/doc/341-magic.md,
+In: v2/doc/342-prior.md
+Out: v2/doc/342-prior.md
 
 Revise 342-prior.md:
-- describe how IPFS's Merkle DAG works
-- describe how a CTrie works
+- describe in detail how IPFS's Merkle DAG works, e.g. when a local
+  node does not have a blob in its local cache, how does it fetch it
+  from others?
+- is a CTrie able to be decentralized across multiple nodes?
 
 

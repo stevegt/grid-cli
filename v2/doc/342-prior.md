@@ -1,69 +1,49 @@
-# Overview of Prior Art in Decentralized Tries
+# Understanding IPFS's Merkle DAG and CTrie
 
 ## Introduction
 
-In decentralized systems, efficient data storage and retrieval are crucial. Several data structures have been developed to address these needs, including Ethereum's Merkle Patricia Trie, IPFS's Merkle DAG, and CTries. Each of these structures offers unique advantages in managing data integrity, availability, and consistency in distributed environments.
+In this document, we describe the workings of IPFS's Merkle Directed Acyclic Graph (DAG) and the Concurrent Trie (CTrie) data structures. Both data structures are renowned for their efficiency, robustness, and decentralized operation, making them pivotal in various distributed systems.
 
-## 1. Ethereum's Merkle Patricia Trie
+## IPFS's Merkle DAG
 
-### Description
+### How It Works
 
-Ethereum uses the Merkle Patricia Trie to manage all accounts and transactions. This data structure combines the properties of both Patricia Tries and Merkle Trees to enable efficient, secure, and verifiable state management.
+IPFS (InterPlanetary File System) uses a Merkle DAG to organize and store data. Each node in the DAG represents a block of data that includes a unique cryptographic hash.
 
-- **Merkle Tree**: Provides cryptographic proof of the data's integrity and consistency.
-- **Patricia Trie**: Ensures efficient key-value storage and retrieval with compressed paths.
+- **Nodes and Links:** Each node can link to multiple child nodes, forming a directed acyclic graph. Links are based on cryptographic hashes, ensuring data integrity and uniqueness.
 
-### Features
+- **Content Addressing:** The cryptographic hash of a node serves as its address in the IPFS network. This enables content addressing, where data retrieval is based on the content itself rather than its location.
 
-- **Efficient Lookups**: Enables fast lookups for account balances and transaction data.
-- **Cryptographic Verification**: Ensures data integrity through hash-based verification.
-- **Scalability**: Handles large volumes of data with minimal overhead.
-- **State Management**: Maintains a verifiable state that can be updated with new transactions.
+- **Immutable Data:** Once a node is created and hashed, it cannot be altered without changing its hash. This immutability ensures a high level of trust and integrity in the stored data.
 
-### Use Case
+- **Deduplication:** Identical pieces of data produce the same hash, allowing the system to store a single copy and reference it multiple times, thus saving space.
 
-Ethereum's Merkle Patricia Trie is used to manage the blockchain's state, ensuring that all transactions and account balances are securely recorded and easily verifiable. This structure enables nodes to quickly verify the integrity of the blockchain, enhancing security and trust.
+### Benefits
 
-## 2. IPFS's Merkle DAG
+- **Data Integrity:** Cryptographic hashes ensure that data has not been tampered with.
+- **Efficient Storage:** Deduplication and content addressing optimize storage usage.
+- **Scalability:** Nodes can be added without restructuring the entire data set, providing a scalable solution for large datasets.
 
-### Description
+## Concurrent Trie (CTrie)
 
-IPFS (InterPlanetary File System) utilizes a Merkle Directed Acyclic Graph (DAG) to store and retrieve files in a distributed network. The Merkle DAG combines the benefits of Merkle Trees and DAGs to ensure data integrity and availability across a decentralized network.
+### How It Works
 
-- **Merkle Tree**: Provides cryptographic proof of the data's integrity.
-- **DAG**: Ensures that data references prevent cycles, enabling efficient data traversal and retrieval.
+A CTrie is a thread-safe, lock-free data structure designed for high concurrency scenarios. It is an extension of the radix trie, supporting efficient concurrent operations.
 
-### Features
+- **Radix Trie Foundation:** Based on the radix trie (or prefix tree), it stores keys through a series of compressed common prefixes, enabling quick lookups, insertions, and deletions.
 
-- **Data Integrity**: Ensures that data cannot be modified without detection.
-- **Decentralized Storage**: Distributes data across a network, enhancing availability and fault tolerance.
-- **Content Addressing**: Uses unique hashes to identify and locate data.
-- **Versioning**: Supports immutable data structures and enables versioning of stored data.
+- **Non-blocking Operations:** Utilizes compare-and-swap (CAS) instructions to achieve lock-free operations, ensuring that multiple threads can operate on the trie simultaneously without locking its entire structure.
 
-### Use Case
+- **Branching and Compression:** Combines nodes with common prefixes to form a compressed branch, optimizing memory usage and speeding up operations by reducing the depth of the trie.
 
-IPFS's Merkle DAG is used to store and share files in a distributed manner, ensuring that files remain accessible and verifiable even if some nodes go offline. This structure enhances the resilience and integrity of data in decentralized applications.
+- **Snapshots:** Supports consistent snapshots of the data structure at any point in time, facilitating operations such as cloning or point-in-time views without halting ongoing operations.
 
-## 3. CTrie
+### Benefits
 
-### Description
-
-A CTrie (Concurrent Trie) is a lock-free, concurrent data structure used in parallel computing environments. CTries allow multiple threads to access and modify the trie simultaneously, without compromising data consistency or performance.
-
-- **Lock-Free**: Allows multiple concurrent modifications without the need for locking mechanisms.
-- **Trie**: Provides efficient key-value storage and retrieval.
-
-### Features
-
-- **Concurrency**: Supports concurrent read and write operations, improving performance in multi-threaded environments.
-- **Lock-Free**: Avoids the overhead and contention issues associated with locking mechanisms.
-- **Consistency**: Ensures data consistency through atomic operations and versioning.
-- **Efficiency**: Offers efficient memory usage and fast access times.
-
-### Use Case
-
-CTries are commonly used in parallel computing applications where high concurrency and low latency are essential. They are particularly useful in scenarios requiring frequent updates to large datasets, such as in-memory caches or real-time data processing systems.
+- **Concurrency:** Lock-free design maximizes throughput and minimizes contention, making it suitable for multi-threaded environments.
+- **Efficiency:** Prefix compression reduces the memory footprint and accelerates key operations like lookup, insert, and delete.
+- **Consistency:** Consistent snapshot capability allows reliable point-in-time views and makes it easier to implement backup or rollback functionalities.
 
 ## Conclusion
 
-Understanding the prior art in decentralized tries helps in designing and implementing efficient, secure, and scalable data structures. Ethereum's Merkle Patricia Trie, IPFS's Merkle DAG, and CTries each offer unique solutions to different challenges in distributed systems. By leveraging the strengths of these data structures, developers can build robust and resilient applications that meet the demands of modern decentralized environments.
+Both IPFS's Merkle DAG and the CTrie demonstrate advanced techniques for managing data in distributed and concurrent environments. Understanding these structures provides valuable insights into designing systems that require robust, efficient, and scalable data handling solutions.

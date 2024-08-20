@@ -183,20 +183,6 @@ The cache stores a copy of the returned bytes in the Trie, making them available
 
 The cache is a decentralized Trie that allows for efficient storage and retrieval of byte sequences. Different nodes can store and replicate portions of the Trie structure to maintain decentralized resilience and availability.
 
-### Prior Art for Decentralized Tries
-
-1. **Ethereum's Merkle Patricia Trie**: Used in Ethereum to manage all accounts and transactions, providing a secure and verifiable data structure for fast lookups.
-2. **IPFS's Merkle DAG**: Utilizes a decentralized graph structure to store and retrieve files in a distributed network, ensuring data integrity and availability.
-3. **CTrie**: Concurrent tries used in parallel computing for lock-free data structures, allowing concurrent access and modifications without compromising data consistency.
-
-### Ways to Store and Replicate Portions of the Cache
-
-1. **Sharding**: Divide the Trie into shards, where each node is responsible for a subset of the Trie based on prefixes. Nodes can exchange shards to maintain consistency.
-2. **Replication**: Implement replication mechanisms where critical parts of the Trie are duplicated across multiple nodes to ensure data availability and fault tolerance.
-3. **Consistent Hashing**: Use consistent hashing to dynamically allocate Trie nodes to different physical nodes, allowing for scalable and balanced distribution of data.
-
-By combining these methods, the decentralized Trie cache can enhance the scalability, fault tolerance, and efficiency of the sequence matching implementation.
-
 ## Considerations on Handler Return Values
 
 ### Pros and Cons of Returning a Parsed Data Structure
@@ -211,7 +197,33 @@ By combining these methods, the decentralized Trie cache can enhance the scalabi
 2. **Performance Overhead**: Parsing the message within the handler might introduce performance overhead, especially for large messages or complex data structures.
 3. **Coupling**: Returning structured data can increase coupling between handlers and downstream components, reducing modularity and making it harder to adapt to changes.
 
-Weighing these pros and cons is essential for deciding whether handlers should return a parsed data structure. The decision should align with the system's performance, maintainability, and extensibility goals.
+### Pros and Cons of Byte Streams with Indexes or Pointers
+
+**Pros:**
+1. **Optimized Parsing**: Directly returning byte streams with indexes or pointers simplifies the parsing process for subsequent components, reducing the overhead of re-parsing the entire structure.
+2. **Efficiency**: This approach can reduce memory usage and improve performance, especially for large messages where only parts of the data need to be accessed.
+3. **Flexibility**: It allows downstream components to interpret and process the data based on their specific requirements, providing a flexible way to handle different message types.
+
+**Cons:**
+1. **Complexity**: Handling byte streams with indexes or pointers requires more complex logic to ensure that indexes are correct and pointers are managed properly.
+2. **Error-Prone**: There is a higher risk of errors, such as incorrect pointer arithmetic or out-of-bounds access, which can lead to crashes or security vulnerabilities.
+3. **Maintenance**: Maintaining code that deals with raw byte streams and pointers can be more cumbersome compared to using higher-level data structures.
+
+Weighing these pros and cons is essential for deciding whether to return byte streams with indexes or pointers. The decision should align with the system's performance, maintainability, and extensibility goals.
+
+### Prior Art for Decentralized Tries
+
+1. **Ethereum's Merkle Patricia Trie**: Used in Ethereum to manage all accounts and transactions, providing a secure and verifiable data structure for fast lookups.
+2. **IPFS's Merkle DAG**: Utilizes a decentralized graph structure to store and retrieve files in a distributed network, ensuring data integrity and availability.
+3. **CTrie**: Concurrent tries used in parallel computing for lock-free data structures, allowing concurrent access and modifications without compromising data consistency.
+
+### Ways to Store and Replicate Portions of the Cache
+
+1. **Sharding**: Divide the Trie into shards, where each node is responsible for a subset of the Trie based on prefixes. Nodes can exchange shards to maintain consistency.
+2. **Replication**: Implement replication mechanisms where critical parts of the Trie are duplicated across multiple nodes to ensure data availability and fault tolerance.
+3. **Consistent Hashing**: Use consistent hashing to dynamically allocate Trie nodes to different physical nodes, allowing for scalable and balanced distribution of data.
+
+By combining these methods, the decentralized Trie cache can enhance the scalability, fault tolerance, and efficiency of the sequence matching implementation.
 
 ## Conclusion
 

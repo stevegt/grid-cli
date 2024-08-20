@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
-```
 # Decentralized Trie (DTrie) for Efficient Data Storage and Retrieval
 
 ## Introduction
@@ -105,5 +103,3 @@ Securing the validation of each node's operations to prevent tampering.
 ## Conclusion
 
 The decentralized trie (DTrie) system leverages promises and market forces to create a scalable, reliable, and efficient data storage and retrieval network. By distributing trie segments across multiple nodes and using economic incentives to govern operations, the DTrie architecture ensures robust performance and trustworthiness. Future work will focus on optimizing system performance, enhancing security measures, and refining market dynamics to further improve the network's efficiency and reliability.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md

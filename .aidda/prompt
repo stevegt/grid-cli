@@ -23,5 +23,5 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/server.go
 Out: v2/doc/340-magic.md
 
-Integrate XXX comments in v2/doc/340-magic.md.
+Implement changes marked with XXX comments in v2/doc/340-magic.md.
 

@@ -88,27 +88,20 @@ Store and manage sequence patterns efficiently using a decentralized Trie data s
   - Second Byte: Child Trie Node -> Registered Handler(s)
   - Continue until sequence end or failure.
 
-- **Heap Utilization for Child Nodes:**
-  Use a heap or consider alternative data structures for managing child nodes within each TrieNode. While binary search in a sorted slice is efficient, hash maps could offer potentially faster lookups depending on your specific context and use cases.
 
 ```go
 package main
 
 import (
     "fmt"
-    "sort"
 )
 
 type Handler func()
 
 type TrieNode struct {
-    children []childNode
+    // a map is a fast way to look up children by byte value
+    children map[byte]*TrieNode
     handler  Handler
-}
-
-type childNode struct {
-    byte
-    *TrieNode
 }
 
 type Trie struct {
@@ -116,21 +109,16 @@ type Trie struct {
 }
 
 func NewTrie() *Trie {
-    return &Trie{root: &TrieNode{children: make([]childNode, 0)}}
+    return &Trie{root: &TrieNode{children: make(map[byte]*TrieNode)}}
 }
 
 func (t *Trie) Insert(sequence []byte, handler Handler) {
     node := t.root
     for _, b := range sequence {
-        idx := binarySearch(node.children, b)
-        if idx < len(node.children) && node.children[idx].byte == b {
-            node = node.children[idx].TrieNode
-        } else {
-            newNode := &TrieNode{children: make([]childNode, 0)}
-            node.children = append(node.children, childNode{b, newNode})
-            sort.Slice(node.children, func(i, j int) bool { return node.children[i].byte < node.children[j].byte })
-            node = newNode
+        if _, ok := node.children[b]; !ok {
+            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode)}
         }
+        node = node.children[b]
     }
     node.handler = handler
 }
@@ -138,9 +126,8 @@ func (t *Trie) Insert(sequence []byte, handler Handler) {
 func (t *Trie) Search(message []byte) Handler {
     node := t.root
     for _, b := range message {
-        idx := binarySearch(node.children, b)
-        if idx < len(node.children) && node.children[idx].byte == b {
-            node = node.children[idx].TrieNode
+        if _, ok := node.children[b]; ok {
+            node = node.children[b]
             if node.handler != nil {
                 return node.handler
             }
@@ -149,10 +136,6 @@ func (t *Trie) Search(message []byte) Handler {
         }
     }
     return nil
-}
-
-func binarySearch(children []childNode, b byte) int {
-    return sort.Search(len(children), func(i int) bool { return children[i].byte >= b })
 }
 
 func main() {
@@ -169,8 +152,6 @@ func main() {
     }
 }
 ```
-
-**Note:** While using a heap or a sorted slice for child nodes and performing binary search within these structures can be efficient, it's worth considering other data structures like hash maps for potentially faster lookups depending on the context and typical use cases of the grid.
 
 ### Step 5: Implement Handlers with Validation and Error Detection
 

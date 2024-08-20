@@ -26,13 +26,9 @@ XIn: v2/doc/341-magic.md,
     v2/doc/342-prior.md
 In: /home/stevegt/lab/promisegrid/promisegrid/README.md, 
     v2/doc/341-magic.md,
-    v2/doc/344-market.md
+    v2/doc/344-market.md,
+    v2/doc/345-dtrie.md
 Out: v2/doc/345-dtrie.md
 
 Revise 345-dtrie.md:
-- imagine how communication is via the trie
-- show an example flow of messages, starting with a caller local to
-  host A asking A's kernel for the completion of a byte sequence, A
-  searching its local cache, then asking B for the completion, B
-  returning the completion, and A returning the bytes to the caller.
-  In the example, include the bid/ask messages as well.
+- restate bids and asks in terms of promises made and accepted

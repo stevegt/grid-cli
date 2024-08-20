@@ -1,77 +1,94 @@
-
 File: /home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
-```
-# Decentralized Trie in PromiseGrid
+```markdown
+# Communication via the Decentralized Trie (DTrie)
 
 ## Introduction
 
-A decentralized trie (dTrie) is a scalable and efficient data structure used within the PromiseGrid framework for managing distributed data. Each node in the network may participate in storing parts of the trie, facilitating the decentralized storage and retrieval of information.
+The Decentralized Trie (DTrie) structure facilitates efficient, distributed storage and retrieval of byte sequences. This document paints an illustrative picture of how communication transpires through the DTrie by demonstrating an example message flow. We will follow a caller's request from Host A, the steps taken within Host A's kernel, and the interactions with Host B to complete the request.
 
-## Key Features
+## Example Message Flow
 
-- **Arbitrary Leaf Storage**: Each node voluntarily stores arbitrary leaves of the trie.
-- **Local Decision Making**: The decision of whether to store a leaf is local and depends on both supply/demand observations as well as storage promises made.
-- **Log Storage**: Logs are stored in the trie.
-- **Transaction Storage**: Accounting transactions are stored in the trie.
-- **Trie-based Communication**: Communication is facilitated via the trie.
+Imagine a caller local to Host A asks A's kernel for the completion of a specific byte sequence. Here’s a step-by-step breakdown of the communication flow:
 
-## Architecture
+### Step 1: Caller Requests Byte Sequence Completion
 
-### Trie Structure
+The caller on Host A initiates a request for a byte sequence starting with `0xDE 0xAD`.
 
-The dTrie is a distributed data structure where each node can store different parts (leaves or internal nodes) of the trie. The architecture is designed to provide efficient data insertion, deletion, and retrieval while maintaining consistency and redundancy.
+```
+Caller -> Host A: Request completion for byte sequence 0xDE 0xAD
+```
 
-### Node Responsibilities
+### Step 2: Host A Searches Local Cache
 
-1. **Voluntary Storage**: Nodes decide autonomously whether to store a particular leaf or node segment. This decision is influenced by:
-   - **Supply/Demand**: Nodes may prioritize storing data that is in higher demand or lower supply within the network.
-   - **Storage Promises**: Existing promises and commitments may guide the node's storage decisions.
+Host A's kernel checks its local DTrie cache to find a completion for the byte sequence `0xDE 0xAD`. Suppose no matching completion is found in A's local cache.
 
-2. **Log Management**: Nodes are responsible for storing logs in the trie to maintain an auditable record of events and actions. These logs may include:
-   - System events
-   - Transactional logs
+```
+Host A Kernel: Searching local DTrie cache for 0xDE 0xAD
+Host A Kernel: No match found in local cache
+```
 
-3. **Transaction Management**: Accounting transactions are stored in the trie, enabling transparent and verifiable financial interactions between nodes.
+### Step 3: Host A Sends Bid Message to Host B
 
-4. **Communication**: Nodes communicate through the trie, utilizing its structure for efficient data sharing and retrieval.
+Host A's kernel sends a bid message to Host B asking whether it can provide a completion for the byte sequence.
 
-### Data Insertion
+```
+Host A -> Host B: BID 0xDE 0xAD
+```
 
-When new data is inserted into the trie:
-1. **Identify Position**: The appropriate position in the trie is identified based on the data's key.
-2. **Insert Data**: The data is inserted at the identified location, and the trie is updated accordingly.
-3. **Propagate Changes**: Relevant nodes are notified of the changes, ensuring consistency across the decentralized network.
+### Step 4: Host B Processes Bid Message
 
-### Data Retrieval
+Host B receives the bid message and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
 
-To retrieve data from the trie:
-1. **Locate Data**: The trie is traversed from the root to the designated leaf node where the data is stored.
-2. **Fetch Data**: The data is fetched from the leaf node and returned to the requesting entity.
-3. **Verify Integrity**: Integrity checks are performed to ensure the data has not been tampered with during storage or retrieval.
+```
+Host B Kernel: Received BID for 0xDE 0xAD
+Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
+```
 
-### Maintaining Consistency
+### Step 5: Host B Sends Ask Message to Host A
 
-Consistency in the dTrie is maintained through:
-1. **Replication**: Critical parts of the trie are replicated across multiple nodes to ensure data availability and fault tolerance.
-2. **Conflict Resolution**: In the case of conflicting updates, predefined rules and consensus mechanisms are employed to resolve conflicts and maintain a consistent state.
+Host B sends an ask message back to Host A, indicating that it has found the completion for the requested byte sequence.
 
-## Security Considerations
+```
+Host B -> Host A: ASK 0xDE 0xAD 0xBE 0xEF
+```
 
-### Data Integrity
+### Step 6: Host A Receives Completion from Host B
 
-Data integrity is ensured through:
-- **Cryptographic Hashing**: Each node and data entry in the trie is associated with a cryptographic hash, allowing verification of data integrity.
-- **Signatures**: Nodes may sign the data they store, providing an additional layer of assurance.
+Host A's kernel processes the ask message, retrieves the completion byte sequence, and returns it to the original caller.
 
-### Privacy
+```
+Host A Kernel: Received ASK from Host B with completion 0xDE 0xAD 0xBE 0xEF
+Host A Kernel: Returning bytes to caller
+Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
+```
 
-- **Encryption**: Sensitive data is encrypted before being inserted into the trie, ensuring that only authorized entities can read the data.
-- **Access Control**: Nodes enforce access control policies to regulate who can read or write to specific parts of the trie.
+### Communication Flow Summary
+
+1. **Caller to Host A Kernel**: Initial request for byte sequence completion.
+2. **Host A Kernel**: Searches local cache and finds no match.
+3. **Host A to Host B**: Sends BID message for the byte sequence.
+4. **Host B Kernel**: Searches local cache and finds the completion.
+5. **Host B to Host A**: Sends ASK message with the completion.
+6. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
+
+### Bid/Ask Message Structure
+
+The bid and ask messages follow a specific structure to standardize communication:
+
+- **BID Message**
+  - Sender: Host A
+  - Recipient: Host B
+  - Payload: Byte sequence for which completion is sought, e.g., `0xDE 0xAD`.
+
+- **ASK Message**
+  - Sender: Host B
+  - Recipient: Host A
+  - Payload: Completed byte sequence found in local DTrie, e.g., `0xDE 0xAD 0xBE 0xEF`.
 
 ## Conclusion
 
-A decentralized trie is a powerful tool for managing distributed data in the PromiseGrid framework. By allowing nodes to autonomously decide on their storage commitments and by embedding logs, transactions, and communication within the trie, the system achieves a high level of efficiency, scalability, and trustworthiness.
+This example clarifies how communication via the DTrie operates, particularly illustrating the interaction between hosts in the network to fulfill a caller's byte sequence completion request. By utilizing bid and ask messages, the DTrie structure facilitates efficient, distributed collaboration for data retrieval.
 
-Future improvements may focus on optimizing the trie algorithms for even better performance and exploring additional use cases for dTrie within decentralized applications.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
+```

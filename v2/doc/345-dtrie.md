@@ -1,8 +1,8 @@
-# Decentralized Trie in PromiseGrid
+# Communication via the Decentralized Trie (DTrie)
 
 ## Introduction
 
-A decentralized trie (dTrie) is a scalable and efficient data structure used within the PromiseGrid framework for managing distributed data. Each node in the network may participate in storing parts of the trie, facilitating the decentralized storage and retrieval of information.
+The Decentralized Trie (DTrie) structure facilitates efficient, distributed storage and retrieval of byte sequences. This document paints an illustrative picture of how communication transpires through the DTrie by demonstrating an example message flow. We will follow a caller's request from Host A, the steps taken within Host A's kernel, and the interactions with Host B to complete the request.
 
 ## Key Features
 
@@ -70,3 +70,86 @@ Data integrity is ensured through:
 A decentralized trie is a powerful tool for managing distributed data in the PromiseGrid framework. By allowing nodes to autonomously decide on their storage commitments and by embedding logs, transactions, and communication within the trie, the system achieves a high level of efficiency, scalability, and trustworthiness.
 
 Future improvements may focus on optimizing the trie algorithms for even better performance and exploring additional use cases for dTrie within decentralized applications.
+## Example Message Flow
+
+Imagine a caller local to Host A asks A's kernel for the completion of a specific byte sequence. Here’s a step-by-step breakdown of the communication flow:
+
+### Step 1: Caller Requests Byte Sequence Completion
+
+The caller on Host A initiates a request for a byte sequence starting with `0xDE 0xAD`.
+
+```
+Caller -> Host A: Request completion for byte sequence 0xDE 0xAD
+```
+
+### Step 2: Host A Searches Local Cache
+
+Host A's kernel checks its local DTrie cache to find a completion for the byte sequence `0xDE 0xAD`. Suppose no matching completion is found in A's local cache.
+
+```
+Host A Kernel: Searching local DTrie cache for 0xDE 0xAD
+Host A Kernel: No match found in local cache
+```
+
+### Step 3: Host A Sends Bid Message to Host B
+
+Host A's kernel sends a bid message to Host B asking whether it can provide a completion for the byte sequence.
+
+```
+Host A -> Host B: BID 0xDE 0xAD
+```
+
+### Step 4: Host B Processes Bid Message
+
+Host B receives the bid message and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+
+```
+Host B Kernel: Received BID for 0xDE 0xAD
+Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
+```
+
+### Step 5: Host B Sends Ask Message to Host A
+
+Host B sends an ask message back to Host A, indicating that it has found the completion for the requested byte sequence.
+
+```
+Host B -> Host A: ASK 0xDE 0xAD 0xBE 0xEF
+```
+
+### Step 6: Host A Receives Completion from Host B
+
+Host A's kernel processes the ask message, retrieves the completion byte sequence, and returns it to the original caller.
+
+```
+Host A Kernel: Received ASK from Host B with completion 0xDE 0xAD 0xBE 0xEF
+Host A Kernel: Returning bytes to caller
+Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
+```
+
+### Communication Flow Summary
+
+1. **Caller to Host A Kernel**: Initial request for byte sequence completion.
+2. **Host A Kernel**: Searches local cache and finds no match.
+3. **Host A to Host B**: Sends BID message for the byte sequence.
+4. **Host B Kernel**: Searches local cache and finds the completion.
+5. **Host B to Host A**: Sends ASK message with the completion.
+6. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
+
+### Bid/Ask Message Structure
+
+The bid and ask messages follow a specific structure to standardize communication:
+
+- **BID Message**
+  - Sender: Host A
+  - Recipient: Host B
+  - Payload: Byte sequence for which completion is sought, e.g., `0xDE 0xAD`.
+
+- **ASK Message**
+  - Sender: Host B
+  - Recipient: Host A
+  - Payload: Completed byte sequence found in local DTrie, e.g., `0xDE 0xAD 0xBE 0xEF`.
+
+## Conclusion
+
+This example clarifies how communication via the DTrie operates, particularly illustrating the interaction between hosts in the network to fulfill a caller's byte sequence completion request. By utilizing bid and ask messages, the DTrie structure facilitates efficient, distributed collaboration for data retrieval.
+

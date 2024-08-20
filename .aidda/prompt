@@ -2,7 +2,7 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
-In: /home/stevegt/lab/promisegrid/promisegrid/README.md, 
+XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md, 
     v2/doc/
 XIn: v2/message.go,
     v2/cache.go,
@@ -21,6 +21,7 @@ XOut: v2/message_test.go, v2/testdata/hello.msg,
     v2/message.go,
     v2/kernel.go,
     v2/server.go
+In: v2/doc/340-magic.md
 Out: v2/doc/340-magic.md
 
 Rework v2/doc/340-magic.md to include the changes marked with XXX.

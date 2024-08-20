@@ -37,8 +37,8 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
 ### Cons of Sequence Matching for Message Handling
 
 1. **Ambiguity and Complexity**:
-    - **Ambiguous Sequences**: Byte sequences might overlap ambiguously, leading to incorrect handling. For example, similar initial bytes could represent different message types.
-    - **Complex Pattern Management**: Managing a large set of sequence patterns could become complex and error-prone.
+    - **Ambiguous Sequences**: Byte sequences might overlap ambiguously, leading to incorrect handling. For example, similar initial bytes could represent different message types. XXX Ambiguous sequence patterns are resolved by the first match. The ordering of first match is node-specific; the local node's own configuration determines the order of tries.
+    - **Complex Pattern Management**: Managing a large set of sequence patterns could become complex and error-prone. XXX The "large database of sequence patterns" is the decentralized cache.
 
 2. **Security Implications**:
     - **Tampering Risk**: Matching based on bytes might expose the system to tampering if attackers craft byte sequences to deceive the match routines, potentially leading to security vulnerabilities.
@@ -49,7 +49,7 @@ This design is akin to the UNIX/Linux magic number system, defined by `file` and
     - **Resource Intensive**: Repeated sequence matching might consume more resources compared to directly parsing structured messages with known formats.
 
 4. **Limited Error Handling**:
-    - **Error Detection**: Parsing often includes error detection routines that sequence matching might overlook, leading to less predictable error handling and recovery.
+    - **Error Detection**: Parsing often includes error detection routines that sequence matching might overlook, leading to less predictable error handling and recovery. XXX Handling after sequence matching would still include any handler's own validation and error detection.
 
 ### Conclusion
 

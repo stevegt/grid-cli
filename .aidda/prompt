@@ -27,7 +27,7 @@ In:
     v2/doc/345-dtrie.md
     v2/doc/346-persist.md
     v2/doc/347-dtrie.md
-Out: v2/doc/347-dtrie.md
+Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
 - apply updates based on all other documentation

@@ -1,5 +1,5 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
-```
+```markdown
 ### Treating Lazy-Loading from Disk and Network 
 
 In the PromiseGrid system, lazy-loading a node from disk should be treated the same as lazy-loading a node from a remote host over the network; both are IO-bound operations. 

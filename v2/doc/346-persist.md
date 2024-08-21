@@ -102,7 +102,11 @@ func main() {
 
 ## Persisting the Trie to Disk in Go
 
-Below is a Go code example, based on `trie.go`, that persists the trie to disk using the `afero` library:
+### Each Trie Node in Its Own Disk File
+
+In this approach, each trie node is persisted in its own disk file. This method allows for finer-grained updates and could potentially improve I/O performance by loading only the required parts of the trie.
+
+Below is a Go code example that demonstrates how to save and load each trie node into its own file using the `afero` library:
 
 ```go
 package main
@@ -113,6 +117,7 @@ import (
 	"fmt"
 	"github.com/spf13/afero"
 	"io"
+	"path"
 )
 
 type TrieNode struct {
@@ -123,14 +128,16 @@ type TrieNode struct {
 type Trie struct {
 	Root *TrieNode
 	Fs   afero.Fs
+	BaseDir string
 }
 
 type Handler func()
 
-func NewTrie(fs afero.Fs) *Trie {
+func NewTrie(fs afero.Fs, baseDir string) *Trie {
 	return &Trie{
 		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}},
-		Fs:   fs,
+		Fs: fs,
+		BaseDir: baseDir,
 	}
 }
 
@@ -183,41 +190,79 @@ func (t *Trie) Search(r io.Reader) ([]Handler, error) {
 	return nil, nil
 }
 
-func (t *Trie) Save(filename string) error {
+func (t *Trie) SaveNode(node *TrieNode, path string) error {
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
-	if err := enc.Encode(t.Root); err != nil {
+	if err := enc.Encode(node); err != nil {
 		return err
 	}
-
-	return afero.WriteFile(t.Fs, filename, buf.Bytes(), 0644)
+	return afero.WriteFile(t.Fs, path, buf.Bytes(), 0644)
 }
 
-func (t *Trie) Load(filename string) error {
-	data, err := afero.ReadFile(t.Fs, filename)
+func (t *Trie) SaveNodesRecursively(node *TrieNode, nodePath string) error {
+	if err := t.SaveNode(node, nodePath); err != nil {
+		return err
+	}
+	for childKey, childNode := range node.Children {
+		childPath := path.Join(nodePath, fmt.Sprintf("%d", childKey))
+		if err := t.SaveNodesRecursively(childNode, childPath); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (t *Trie) Save() error {
+	return t.SaveNodesRecursively(t.Root, t.BaseDir)
+}
+
+func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
+	data, err := afero.ReadFile(t.Fs, nodePath)
+	if err != nil {
+		return nil, err
+	}
+	buf := bytes.NewBuffer(data)
+	node := &TrieNode{}
+	dec := gob.NewDecoder(buf)
+	if err := dec.Decode(node); err != nil {
+		return nil, err
+	}
+	for childKey := range node.Children {
+		childPath := path.Join(nodePath, fmt.Sprintf("%d", childKey))
+		childNode, err := t.LoadNode(childPath)
+		if err != nil {
+			return nil, err
+		}
+		node.Children[childKey] = childNode
+	}
+	return node, nil
+}
+
+func (t *Trie) Load() error {
+	rootNode, err := t.LoadNode(t.BaseDir)
 	if err != nil {
 		return err
 	}
-	buf := bytes.NewBuffer(data)
-	dec := gob.NewDecoder(buf)
-	return dec.Decode(&t.Root)
+	t.Root = rootNode
+	return nil
 }
 
 func main() {
 	fs := afero.NewOsFs()
-	trie := NewTrie(fs)
+	trie := NewTrie(fs, "trie_data")
+
 	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
 	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
 
 	// Save trie to disk
-	if err := trie.Save("trie_data.gob"); err != nil {
+	if err := trie.Save(); err != nil {
 		fmt.Println("Error saving trie:", err)
 		return
 	}
 
 	// Load trie from disk
-	newTrie := NewTrie(fs)
-	if err := newTrie.Load("trie_data.gob"); err != nil {
+	newTrie := NewTrie(fs, "trie_data")
+	if err := newTrie.Load(); err != nil {
 		fmt.Println("Error loading trie:", err)
 		return
 	}
@@ -241,4 +286,4 @@ func main() {
 
 ### Conclusion
 
-By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. This dual approach ensures that the PromiseGrid system remains robust, adaptable, and efficient in diverse runtime conditions.
+By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where each trie node is persisted in its own disk file further enhances the ability to manage and retrieve parts of the trie efficiently.

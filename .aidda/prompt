@@ -33,5 +33,6 @@ In: v2/doc/346-persist.md
 Out: v2/doc/346-persist.md
 
 Revise 346-persist.md:
-- have each trie node be in its own disk file
-- explore other options for persisting the trie to disk
+- lazy-load node files; never load the entire trie, never load all
+  children
+- imagine other options for persisting the trie to disk

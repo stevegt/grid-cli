@@ -1,8 +1,8 @@
-# Pure Market Design with Promises and Reputation
+# Pure Market Design with Promises, Reputation, and the Decentralized Trie (DTrie)
 
 ## Introduction
 
-This document outlines a design concept for a pure market system that operates based on promises and reputation, without relying on a Distributed Hash Table (DHT). The goal is to create a decentralized market for storage and retrieval services where nodes interact directly based on market dynamics, leveraging promises and reputation to ensure reliability and trustworthiness.
+This document outlines a design concept for a pure market system that operates based on promises, reputation, and the Decentralized Trie (DTrie). The goal is to create a decentralized market for storage and retrieval services where nodes interact directly based on market dynamics, leveraging promises and reputation to ensure reliability and trustworthiness. The DTrie facilitates efficient, distributed storage and retrieval of byte sequences within this market system.
 
 ## Core Components
 
@@ -19,6 +19,10 @@ This document outlines a design concept for a pure market system that operates b
 3. **Reputation System**
    - Nodes build and maintain a reputation based on their history of promises and performance.
    - A node’s reputation influences its attractiveness and pricing power in the market.
+
+4. **Decentralized Trie (DTrie)**
+   - The DTrie structure facilitates efficient, distributed storage and retrieval of byte sequences.
+   - Nodes store and manage sequence patterns in a Trie, enabling fast prefix matching and efficient storage.
 
 ## Design Overview
 
@@ -74,6 +78,129 @@ This document outlines a design concept for a pure market system that operates b
 ### Storage of Transaction Logs
 - **Hashed Blobs:** Transaction logs are stored within the system as hashed blobs, ensuring their integrity, verifiability, and availability throughout the network.
 
+## Decentralized Trie (DTrie)
+
+### Key Features
+
+- **Arbitrary Leaf Storage**: Each node voluntarily stores arbitrary leaves of the trie.
+- **Local Decision Making**: The decision of whether to store a leaf is local and depends on both supply/demand observations as well as storage promises made.
+- **Log Storage**: Logs are stored in the trie.
+- **Transaction Storage**: Accounting transactions are stored in the trie.
+- **Trie-based Communication**: Communication is facilitated via the trie.
+
+### Architecture
+
+#### Trie Structure
+
+The DTrie is a distributed data structure where each node can store different parts (leaves or internal nodes) of the trie. The architecture is designed to provide efficient data insertion, deletion, and retrieval while maintaining consistency and redundancy.
+
+#### Node Responsibilities
+
+1. **Voluntary Storage**: Nodes decide autonomously whether to store a particular leaf or node segment. This decision is influenced by:
+   - **Supply/Demand**: Nodes may prioritize storing data that is in higher demand or lower supply within the network.
+   - **Storage Promises**: Existing promises and commitments may guide the node's storage decisions.
+
+2. **Log Management**: Nodes are responsible for storing logs in the trie to maintain an auditable record of events and actions. These logs may include:
+   - System events
+   - Transactional logs
+
+3. **Transaction Management**: Accounting transactions are stored in the trie, enabling transparent and verifiable financial interactions between nodes.
+
+4. **Communication**: Nodes communicate through the trie, utilizing its structure for efficient data sharing and retrieval.
+
+### Data Insertion
+
+When new data is inserted into the trie:
+1. **Identify Position**: The appropriate position in the trie is identified based on the data's key.
+2. **Insert Data**: The data is inserted at the identified location, and the trie is updated accordingly.
+3. **Propagate Changes**: Relevant nodes are notified of the changes, ensuring consistency across the decentralized network.
+
+### Data Retrieval
+
+To retrieve data from the trie:
+1. **Locate Data**: The trie is traversed from the root to the designated leaf node where the data is stored.
+2. **Fetch Data**: The data is fetched from the leaf node and returned to the requesting entity.
+3. **Verify Integrity**: Integrity checks are performed to ensure the data has not been tampered with during storage or retrieval.
+
+### Maintaining Consistency
+
+Consistency in the DTrie is maintained through:
+1. **Replication**: Critical parts of the trie are replicated across multiple nodes to ensure data availability and fault tolerance.
+2. **Conflict Resolution**: In the case of conflicting updates, predefined rules and consensus mechanisms are employed to resolve conflicts and maintain a consistent state.
+
+## Example Message Flow
+
+Imagine a caller local to Host A asks A's kernel for the completion of a specific byte sequence. Here’s a step-by-step breakdown of the communication flow:
+
+### Step 1: Host B Advertizes Acceptance for Sequence Completion Requests
+
+First, Host B promises to accept requests for sequence completion, advertizing the prefixes it will accept.
+
+```
+Host B: PROMISE with prefixes it will accept for sequence completion
+```
+
+### Step 2: Caller Requests Byte Sequence Completion
+
+The caller on Host A initiates a request for a byte sequence starting with `0xDE 0xAD`.
+
+```
+Caller -> Host A: Request completion for byte sequence 0xDE 0xAD
+```
+
+### Step 3: Host A Searches Local Cache
+
+Host A's kernel checks its local DTrie cache to find a completion for the byte sequence `0xDE 0xAD`. Suppose no matching completion is found in A's local cache.
+
+```
+Host A Kernel: Searching local DTrie cache for 0xDE 0xAD
+Host A Kernel: No match found in local cache
+```
+
+### Step 4: Host A invokes Host B promise
+
+Host A's kernel asks Host B, invoking its promise by sending a request for the sequence completion.
+
+```
+Host A -> Host B: INVOKE 0xDE 0xAD
+```
+
+### Step 5: Host B Processes the invocation
+
+Host B receives the invocation and searches its local DTrie cache to find a possible completion for the byte sequence `0xDE 0xAD`. Suppose Host B finds the completion byte sequence `0xDE 0xAD 0xBE 0xEF`.
+
+```
+Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
+```
+
+### Step 6: Host B Fulfills the Promise
+
+Host B sends an fulfillment message back to Host A, indicating that it has found the completion for the requested byte sequence.
+
+```
+Host B -> Host A: FULFILL 0xDE 0xAD 0xBE 0xEF
+```
+
+### Step 7: Host A Receives Completion from Host B
+
+Host A's kernel processes the fulfillment message, retrieves the completion byte sequence, and returns it to the original caller.
+
+```
+Host A Kernel: Received FULFILL from Host B with completion 0xDE 0xAD 0xBE 0xEF
+Host A Kernel: Returning bytes to caller
+Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
+```
+
+### Communication Flow Summary
+
+1. **Host B Advertizes**: Host B advertizes the prefixes it will accept for sequence completion.
+2. **Caller to Host A Kernel**: Initial request for byte sequence completion.
+3. **Host A Kernel**: Searches local cache and finds no match.
+4. **Host A to Host B**: Sends INVOKE message for the byte sequence.
+5. **Host B Kernel**: Searches local cache and finds the completion.
+6. **Host B to Host A**: Sends FULFILL message with the completion.
+7. **Host A Kernel to Caller**: Returns the completed byte sequence to the caller.
+
 ## Conclusion
 
-The pure market design with promises and reputation aims to create a decentralized and dynamic market for storage and retrieval services. By eliminating the DHT layer, the system focuses on direct interactions between nodes based on market principles and reputation. Future work will involve refining the economic models, enhancing security mechanisms, and optimizing performance to ensure a robust and reliable market system.
+The pure market design with promises, reputation, and the Decentralized Trie (DTrie) aims to create a decentralized and dynamic market for storage and retrieval services. By integrating the DTrie structure, the system achieves efficient data handling and communication. Future work will involve refining the economic models, enhancing security mechanisms, and optimizing performance to ensure a robust and reliable market system.

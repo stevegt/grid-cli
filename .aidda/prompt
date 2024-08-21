@@ -34,5 +34,5 @@ Out: v2/doc/346-persist.md
 XOut: v2/x/trie.go
 
 Revise 346-persist.md:
-- explore more options for persisting the trie to disk
-- show a Go code, based on trie.go, that persists the trie to disk
+- have each trie node be in its own disk file
+- explore other options for persisting the trie to disk

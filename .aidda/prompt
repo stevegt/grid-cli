@@ -31,7 +31,11 @@ Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
 - discuss how byte-sequence ceompletion functions in the context of
-  intrahost communications between microkernel services
+  intrahost communications between microkernel services; for example,
+  in computing, any function call, API call, RPC, query, etc. can be
+  expressed along with its response as a single byte sequence;
+  returning the results of a call is equivalent to completing the byte
+  sequence
 
 .stop
 

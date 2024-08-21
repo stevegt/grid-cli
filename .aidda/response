@@ -1,4 +1,5 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/344-market.md
+<blank line>
+File: /home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
 ```
 # Pure Market Design with Promises, Reputation, and the Decentralized Trie (DTrie)
 
@@ -31,7 +32,7 @@ This document outlines a design concept for a pure market system that operates b
 ### Market Layer
 
 #### Market Mechanics
-- **Supply/Demand Replcation:** Nodes MAY voluntarily store and offer copies of high-value data based on market pricing or volume.
+- **Supply/Demand Replication:** Nodes MAY voluntarily store and offer copies of high-value data based on market pricing or volume.
 - **Storage Offers:** Nodes advertise their available storage capacity. Each offer includes specifics such as price, duration, and conditions.
 - **Bidding:** Nodes in need of storage place bids, proposing terms for storing their data. The market matches offers and bids based on compatibility and preferences.
 - **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.
@@ -207,4 +208,4 @@ Caller <- Host A: Completion for 0xDE 0xAD is 0xDE 0xAD 0xBE 0xEF
 
 The pure market design with promises, reputation, and the Decentralized Trie (DTrie) aims to create a decentralized and dynamic market for storage and retrieval services. By integrating the DTrie structure, the system achieves efficient data handling and communication. Future work will involve refining the economic models, enhancing security mechanisms, and optimizing performance to ensure a robust and reliable market system.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/344-market.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md

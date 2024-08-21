@@ -15,11 +15,6 @@ XIn: v2/doc/346-persist.md
 XIn: v2/doc/
 XOut: v2/doc/README.md 
     v2/doc/320-ipc.md 
-X: Revise 320-ipc.md:
-    - apply updates based on all other documentation
-X: Revise v2/doc/README.md: 
-    - update the table of contents
-    - include links to all other markdown files
 In: 
     v2/doc/300-synthesis.md
     v2/doc/320-ipc.md
@@ -34,6 +29,19 @@ In:
     v2/doc/347-dtrie.md
 Out: v2/doc/347-dtrie.md
 
+Revise 320-ipc.md:
+- apply updates based on all other documentation
+- in particular, explore the implications of the byte-sequence
+  completion and trie
+- discuss pros and cons of using the same message format for both
+  interhost communications over the network and intrahost IPC
+- discuss pros and cons of having one trie for both intrahost and
+  interhost message handling
+- discuss what byte-sequence completion means and how it functions in
+  the context of intrahost communications between microkernel services
+
+.stop
+
 Revise 347-dtrie.md:
 - treat lazy-loading a node from disk the same as lazy-loading a node
   from a remote host over the network; both are IO-bound.  in both
@@ -41,3 +49,7 @@ Revise 347-dtrie.md:
   kernel handles disk and network I/O.  the trie code does not import
   any opfs or afero library; file and network I/O are the
   responsibility of other microkernel services.
+
+Revise v2/doc/README.md: 
+- update the table of contents
+- include links to all other markdown files

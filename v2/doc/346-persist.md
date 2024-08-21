@@ -1,6 +1,3 @@
-  
-File: /home/stevegt/lab/grid-cli/v2/doc/346-persist.md
-```markdown
 # Persisting the Trie to Disk
 
 ## Introduction
@@ -106,5 +103,3 @@ func main() {
 ## Conclusion
 
 By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. This dual approach ensures that the PromiseGrid system remains robust, adaptable, and efficient in diverse runtime conditions.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/346-persist.md

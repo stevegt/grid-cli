@@ -28,7 +28,7 @@ In: /home/stevegt/lab/promisegrid/promisegrid/README.md,
     v2/doc/341-magic.md,
     v2/doc/344-market.md,
     v2/doc/345-dtrie.md
-Out: v2/doc/344-market.md
-XOut: v2/doc/345-dtrie.md
+XOut: v2/doc/344-market.md
+Out: v2/doc/345-dtrie.md
 
 merge 345-dtrie.md and 344-market.md

@@ -29,7 +29,7 @@ This document outlines a design concept for a pure market system that operates b
 ### Market Layer
 
 #### Market Mechanics
-- **Supply/Demand Replcation:** Nodes MAY voluntarily store and offer copies of high-value data based on market pricing or volume.
+- **Supply/Demand Replication:** Nodes MAY voluntarily store and offer copies of high-value data based on market pricing or volume.
 - **Storage Offers:** Nodes advertise their available storage capacity. Each offer includes specifics such as price, duration, and conditions.
 - **Bidding:** Nodes in need of storage place bids, proposing terms for storing their data. The market matches offers and bids based on compatibility and preferences.
 - **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.

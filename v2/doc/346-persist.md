@@ -37,7 +37,7 @@ The chosen persistence strategy must meet the following requirements:
 - **Compatibility**: Can be used in native environments; minimal work is needed to extend it to WASM.
 
 **Implementation**:
-- **WASM**: Create a custom backend for `afero` that communicates with the browser’s file API (OPFS).
+- **WASM**: Create a custom backend for `afero` that communicates with the browser's file API (OPFS).
 - **Native**: Use the default OS filesystem backend or other suitable backends provided by `afero`.
 
 ## Example Implementations
@@ -102,11 +102,11 @@ func main() {
 
 ## Persisting the Trie to Disk in Go
 
-### Each Trie Node in Its Own Disk File
+### Lazy-Loading Node Files
 
-In this approach, each trie node is persisted in its own disk file. This method allows for finer-grained updates and could potentially improve I/O performance by loading only the required parts of the trie.
+In this approach, trie nodes are lazily loaded from the disk as needed. This method ensures that the entire trie is never fully loaded into memory, and only the relevant children nodes are accessed, thereby optimizing memory usage.
 
-Below is a Go code example that demonstrates how to save and load each trie node into its own file using the `afero` library:
+Below is a Go code example that demonstrates how to lazily load each trie node from its own file using the `afero` library:
 
 ```go
 package main
@@ -123,11 +123,13 @@ import (
 type TrieNode struct {
 	Children map[byte]*TrieNode
 	Handlers []Handler
+	Path     string
+	Fs       afero.Fs
 }
 
 type Trie struct {
-	Root *TrieNode
-	Fs   afero.Fs
+	Root    *TrieNode
+	Fs      afero.Fs
 	BaseDir string
 }
 
@@ -135,7 +137,7 @@ type Handler func()
 
 func NewTrie(fs afero.Fs, baseDir string) *Trie {
 	return &Trie{
-		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}},
+		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
 		Fs: fs,
 		BaseDir: baseDir,
 	}
@@ -155,7 +157,7 @@ func (t *Trie) Insert(r io.Reader, handler Handler) error {
 		if n > 0 {
 			b := buf[0]
 			if _, ok := node.Children[b]; !ok {
-				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}}
+				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
 			}
 			node = node.Children[b]
 		}
@@ -178,7 +180,14 @@ func (t *Trie) Search(r io.Reader) ([]Handler, error) {
 		if n > 0 {
 			b := buf[0]
 			if child, ok := node.Children[b]; ok {
-				node = child
+				if child == nil {
+					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
+					if err != nil {
+						return nil, err
+					}
+					node.Children[b] = loadedNode
+				}
+				node = node.Children[b]
 				if len(node.Handlers) > 0 {
 					return node.Handlers, nil
 				}
@@ -190,30 +199,31 @@ func (t *Trie) Search(r io.Reader) ([]Handler, error) {
 	return nil, nil
 }
 
-func (t *Trie) SaveNode(node *TrieNode, path string) error {
+func (t *Trie) SaveNode(node *TrieNode) error {
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	if err := enc.Encode(node); err != nil {
 		return err
 	}
-	return afero.WriteFile(t.Fs, path, buf.Bytes(), 0644)
+	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
 }
 
-func (t *Trie) SaveNodesRecursively(node *TrieNode, nodePath string) error {
-	if err := t.SaveNode(node, nodePath); err != nil {
+func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
+	if err := t.SaveNode(node); err != nil {
 		return err
 	}
 	for childKey, childNode := range node.Children {
-		childPath := path.Join(nodePath, fmt.Sprintf("%d", childKey))
-		if err := t.SaveNodesRecursively(childNode, childPath); err != nil {
-			return err
+		if childNode != nil {
+			if err := t.SaveNodesRecursively(childNode); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
 }
 
 func (t *Trie) Save() error {
-	return t.SaveNodesRecursively(t.Root, t.BaseDir)
+	return t.SaveNodesRecursively(t.Root)
 }
 
 func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
@@ -227,13 +237,10 @@ func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
 	if err := dec.Decode(node); err != nil {
 		return nil, err
 	}
+	node.Path = nodePath
+	node.Fs = t.Fs
 	for childKey := range node.Children {
-		childPath := path.Join(nodePath, fmt.Sprintf("%d", childKey))
-		childNode, err := t.LoadNode(childPath)
-		if err != nil {
-			return nil, err
-		}
-		node.Children[childKey] = childNode
+		node.Children[childKey] = nil // Mark child as needing lazy load
 	}
 	return node, nil
 }
@@ -286,4 +293,4 @@ func main() {
 
 ### Conclusion
 
-By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where each trie node is persisted in its own disk file further enhances the ability to manage and retrieve parts of the trie efficiently.
+By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where trie nodes are lazily loaded from disk ensures optimal memory usage and efficient retrieval of parts of the trie.

@@ -13,12 +13,14 @@ XOut: v2/doc/344-market.md
 XOut: v2/x/trie.go
 XIn: v2/doc/346-persist.md
 In: v2/doc/
-Out: v2/doc/README.md,
+XOut: v2/doc/README.md,
     v2/doc/320-ipc.md,
-    v2/doc/347-dtrie.md
-
-Revise 320-ipc.md:
-- apply updates based on all other documentation
+Out:    v2/doc/347-dtrie.md
+X: Revise 320-ipc.md:
+    - apply updates based on all other documentation
+X: Revise v2/doc/README.md: 
+    - update the table of contents
+    - include links to all other markdown files
 
 Revise 347-dtrie.md:
 - treat lazy-loading a node from disk the same as lazy-loading a node
@@ -27,7 +29,3 @@ Revise 347-dtrie.md:
   kernel handles disk and network I/O.  the trie code does not import
   any opfs or afero library; file and network I/O are the
   responsibility of other microkernel services.
-
-Revise v2/doc/README.md: 
-- update the table of contents
-- include links to all other markdown files

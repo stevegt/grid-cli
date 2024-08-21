@@ -1,4 +1,4 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
+File: /home/stevegt/lab/grid-cli/v2/doc/344-market.md
 ```
 # Pure Market Design with Promises, Reputation, and the Decentralized Trie (DTrie)
 
@@ -178,7 +178,7 @@ Host B Kernel: Found completion: 0xDE 0xAD 0xBE 0xEF in local cache
 
 ### Step 6: Host B Fulfills the Promise
 
-Host B sends an fulfillment message back to Host A, indicating that it has found the completion for the requested byte sequence.
+Host B sends a fulfillment message back to Host A, indicating that it has found the completion for the requested byte sequence.
 
 ```
 Host B -> Host A: FULFILL 0xDE 0xAD 0xBE 0xEF
@@ -212,9 +212,9 @@ Building on the design discussion outlined above, the DTrie can also be used to 
 
 ### Implementation Steps
 
-#### Design Sequence Patterns
+#### Sequence Patterns
 
-Begin by defining the byte sequences for various message types. Each sequence acts as a signature that identifies the message type and determines the handling mechanism. Maintain a centralized list of these byte sequences, documented and accessible to all modules.
+Each sequence acts as a signature that identifies the message type and determines the handling mechanism. 
 
 - **Example:**
   - Sequence `0x01 0x02` for Message Type A
@@ -222,56 +222,7 @@ Begin by defining the byte sequences for various message types. Each sequence ac
 
 #### Implement Sequence Matching Logic
 
-Create a byte-by-byte matching logic within the message handling component. This logic will read and compare the initial bytes of incoming messages against the pre-defined sequences.
-
-- **Algorithm:**
-  1. Read the initial bytes of the incoming message.
-  2. Compare these bytes with the registered sequences in the Trie.
-  3. On a match, route the message to the corresponding handler.
-
-```go
-package main
-
-import (
-    "bytes"
-    "fmt"
-)
-
-type Handler func()
-
-func matchSequence(message []byte, patterns map[string]Handler) Handler {
-    for pattern, handler := range patterns {
-        if bytes.HasPrefix(message, []byte(pattern)) {
-            return handler
-        }
-    }
-    return nil
-}
-
-func main() {
-    patterns := map[string]Handler{
-        "\x01\x02": func() { fmt.Println("Handling Message Type A") },
-        "\x03\x04": func() { fmt.Println("Handling Message Type B") },
-    }
-
-    message := []byte{0x01, 0x02}
-    handler := matchSequence(message, patterns)
-    if handler != nil {
-        handler()
-    } else {
-        fmt.Println("No handler found")
-    }
-}
-```
-
-#### Handle Ambiguity in Matching Patterns
-
-Address potential ambiguities where byte sequences overlap. Organize sequence patterns in a prioritized order, specific to each node's configuration. The first matching sequence will take precedence.
-
-- **Example:**
-  - Node Configuration:
-    - `0x01 0x02` (Priority 1)
-    - `0x01` (Priority 2)
+Use a Trie data structure to store and match sequence patterns efficiently. The Trie allows for fast prefix matching and facilitates the routing of messages based on the initial byte sequences.
 
 #### Local Node Decision-Heuristics
 
@@ -310,14 +261,14 @@ func NewTrie() *Trie {
 }
 
 func (t *Trie) Insert(sequence []byte, handler Handler) {
-    node := t.root
-    for _, b := range sequence {
-        if _, ok := node.children[b]; !ok {
-            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}}
-        }
-        node = node.children[b]
-    }
-    node.handlers = append(node.handlers, handler)
+	node := t.root
+	for _, b := range sequence {
+		if _, ok := node.children[b]; !ok {
+			node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}
+		}
+		node = node.children[b]
+	}
+	node.handlers = append(node.handlers, handler)
 }
 
 func (t *Trie) Search(message []byte) []Handler {
@@ -358,7 +309,8 @@ Ensure that each handler performs its own validation and error detection process
 
 - **Error Handling:**
   - On failure, try the next handler.
-  - If all handlers fail, consider the message as spam and generate a notification.
+  - If all handlers fail, consider the message as spam and adjust
+    sender's reputation
 
 ### Security Considerations in Trie Cache
 
@@ -376,4 +328,4 @@ Though sequence matching simplifies the initial routing, incorporate thorough va
 
 The integration of the Decentralized Trie (DTrie) for both pure market design and sequence pattern caching presents a cohesive, efficient, and robust framework. The market operates on promises and reputation, while the DTrie ensures efficient data management and sequence matching. Future work will involve fine-tuning economic models, enhancing security mechanisms, and optimizing overall performance for robustness and reliability.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/345-dtrie.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/344-market.md

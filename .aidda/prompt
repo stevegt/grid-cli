@@ -14,7 +14,11 @@ XOut: v2/x/trie.go
 XIn: v2/doc/346-persist.md
 In: v2/doc/
 Out: v2/doc/README.md,
+    v2/doc/320-ipc.md,
     v2/doc/347-dtrie.md
+
+Revise 320-ipc.md:
+- apply updates based on all other documentation
 
 Revise 347-dtrie.md:
 - treat lazy-loading a node from disk the same as lazy-loading a node
@@ -25,4 +29,5 @@ Revise 347-dtrie.md:
   responsibility of other microkernel services.
 
 Revise v2/doc/README.md: 
-- create a table of contents with links to all other markdown files
+- update the table of contents
+- include links to all other markdown files

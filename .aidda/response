@@ -1,8 +1,89 @@
-```markdown
-# PromiseGrid Design and Documentation
+File: /home/stevegt/lab/grid-cli/v2/doc/README.md
+```
+## PromiseGrid v2 Documentation
 
-## 347-dtrie.md
+### Table of Contents
 
+1. [Introduction](#introduction)
+2. [Embedded Design Notes](#embedded-design-notes)
+3. [Module Integration](#module-integration)
+4. [Capability Tokens](#capability-tokens)
+5. [Data Flow and Sequence Matching](#data-flow-and-sequence-matching)
+6. [Inter-Process Communication (IPC)](#inter-process-communication-ipc)
+7. [Sequence Graphs](#sequence-graphs)
+8. [Hybrid DHT and Open Market](#hybrid-dht-and-open-market)
+9. [Persisting the Trie to Disk](#persisting-the-trie-to-disk)
+10. [Advanced Configuration](#advanced-configuration)
+
+### Introduction
+
+PromiseGrid synthesizes concepts from genetics, computer science, and mathematics in its design, particularly in its approach to decentralized governance, caching, and modular interactions. [...]
+
+### Embedded Design Notes
+
+Includes detailed notes on the design philosophy and architectural principles guiding PromiseGrid. Each file under `embedded` subdirectory represents a specific aspect of the design.
+
+- [Design Overview](./doc/00.md)
+- [Discussion Notes](./doc/01.md)
+
+### Module Integration
+
+Discusses strategies for effective module integration, ensuring modular, flexible, and decentralized processing.
+
+- [Cache and Module Handling](./doc/02.md)
+- [Advanced Discussions](./doc/03.md)
+- [Module Integration Concepts](./doc/04.md)
+
+### Capability Tokens
+
+Details the use and implementation of self-contained capability tokens in PromiseGrid. Tokens manage permissions and identity securely.
+
+- [Capability Tokens and Prior Art](./doc/150-capability-tokens.md)
+
+### Data Flow and Sequence Matching
+
+Explores the techniques of sequence matching, data structures like tries and graphs, and their applications.
+
+- [Introduction to Sequence Matching](./doc/200-sequence.md)
+- [Graph or Node-Based Representation](./doc/210-sequence-graph.md)
+
+### Inter-Process Communication (IPC)
+
+Inter-Process Communication is critical for a microkernel architecture, facilitating communication between various modules or components within the PromiseGrid.
+
+- [IPC in PromiseGrid](./doc/320-ipc.md)
+
+### Sequence Graphs
+
+Details on implementing sequence matchers using graph-based structures within PromiseGrid.
+
+- [Sequence Matching Implementation](./doc/220-graph.md)
+- [Advanced Sequence Matching Concepts](./doc/221-graph.md)
+
+### Hybrid DHT and Open Market
+
+Combines DHT with an open market system to leverage decentralized storage and lookup efficiency.
+
+- [Hybrid DHT and Market Design](./doc/343-dht.md)
+- [Pure Market Design](./doc/344-market.md)
+
+### Persisting the Trie to Disk
+
+Describes various options for persisting the trie data structure to disk within PromiseGrid.
+
+- [Persistence Strategies](./doc/346-persist.md)
+
+### Advanced Configuration
+
+Detailed advanced setups and configurations for PromiseGrid, focusing on modular, flexible, and decentralized system administration.
+
+- [Dynamic Trie](./doc/345-dtrie.md)
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/README.md
+
+
+File: /home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
+```
 ### Treating Lazy-Loading from Disk and Network 
 
 In the PromiseGrid system, lazy-loading a node from disk should be treated the same as lazy-loading a node from a remote host over the network; both are IO-bound operations. 
@@ -12,92 +93,7 @@ In the PromiseGrid system, lazy-loading a node from disk should be treated the s
 - The trie code does not import any OPFS or `afero` library; file and network I/O are the responsibility of other microkernel services.
 
 This approach ensures that the trie code remains focused on its primary responsibility—efficiently managing in-memory trie data structures—while delegating I/O operations to dedicated microkernel services. This separation of concerns leads to cleaner, more maintainable code and leverages the existing microkernel services for handling diverse I/O operations.
-
-## 348-other.md
-
-### Exploring Other Options for Trie Persistence
-
-In the PromiseGrid system, it is crucial to explore various strategies for persisting the trie to disk and retrieving it from both local and remote nodes. Here are some potential options:
-
-1. **Local Persistence Using Origin Private File System (OPFS)**:
-    - Utilize OPFS for persisting trie data on the local disk. This method provides secure, performant, and private storage tailored for web environments.
-    - OPFS ensures compatibility with WASM environments, making it an ideal choice for scenarios where the trie must be accessed locally in secure and efficient ways.
-
-2. **Filesystem Abstractions with `afero`**:
-    - Abstract filesystem interactions using the `afero` library. This approach provides flexibility to switch between different backends, such as local filesystems, in-memory filesystems, or even cloud storage.
-    - By leveraging `afero`, the system can dynamically choose the most appropriate storage backend, enhancing adaptability and performance in varied environments.
-
-3. **Requesting Remote Nodes for Trie Data**:
-    - For distributed persistence and retrieval, develop mechanisms to request and fetch trie data from remote nodes. This method supports decentralization and redundancy, ensuring trie availability across the network.
-    - Implement efficient caching and retrieval strategies to minimize latency and bandwidth usage. This may include techniques like data chunking and deduplication to optimize the transfer and storage of trie segments.
-
-4. **Hybrid Approaches**:
-    - Combine local and remote persistence strategies for a hybrid approach. For instance, store frequently accessed parts of the trie locally using OPFS, while relying on remote nodes for less frequently used segments.
-    - Implement intelligent caching mechanisms to dynamically determine which parts of the trie to keep locally based on access patterns and usage statistics.
-
-By exploring and implementing these strategies, the PromiseGrid system can achieve a robust, efficient, and scalable solution for persisting and retrieving trie data, ensuring optimal performance and reliability across diverse environments.
-
-## Conclusion
-
-The proposed strategies for lazy-loading nodes and persisting trie data underscore the modular and flexible nature of the PromiseGrid system. By treating file and network I/O uniformly and leveraging various persistence options, the system can ensure efficient data management and robust performance, catering to both local and distributed environments.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
-
-```markdown
-# Exploring Persistence Options for Trie Data
-
-### Introduction
-
-Efficiently persisting and retrieving trie data is crucial for the performance and reliability of the PromiseGrid system. Here, we explore various strategies to achieve this, focusing on both local and remote persistence options.
-
-### Local Persistence Options
-
-1. **Origin Private File System (OPFS)**:
-    - **Description**: OPFS provides a secure and performant method for persisting data on the local disk in web environments.
-    - **Advantages**:
-        - **Security**: Offers a secure sandboxed environment for storing sensitive data.
-        - **Performance**: Optimized for high-performance web applications.
-        - **Compatibility**: Works seamlessly with WASM environments, ensuring cross-platform compatibility.
-    - **Implementation**:
-        - Utilize JavaScript interfaces to interact with OPFS for read/write operations.
-        - Ensure data integrity and consistency during persistence operations.
-
-2. **Filesystem Abstractions Using `afero`**:
-    - **Description**: The `afero` library provides a flexible way to abstract filesystem interactions, allowing the use of different backends.
-    - **Advantages**:
-        - **Flexibility**: Can switch between various storage backends (e.g., local filesystems, in-memory filesystems, cloud storage).
-        - **Ease of Use**: Simplifies filesystem operations with a consistent API.
-    - **Implementation**:
-        - Create a custom backend for `afero` tailored to specific storage needs.
-        - Integrate `afero` to handle trie data persistence, leveraging the chosen backend.
-
-### Remote Persistence Options
-
-1. **Fetching Trie Data from Remote Nodes**:
-    - **Description**: Implementing mechanisms to request and retrieve trie data from remote nodes supports decentralization and redundancy.
-    - **Advantages**:
-        - **Scalability**: Facilitates distributed storage, enhancing scalability across the network.
-        - **Redundancy**: Ensures high availability and fault tolerance through data replication.
-    - **Implementation**:
-        - Develop a protocol for requesting trie data from peer nodes.
-        - Optimize data transfer by implementing chunking and deduplication strategies.
-
-2. **Hybrid Approaches**:
-    - **Description**: Combine local and remote persistence strategies to balance performance and reliability.
-    - **Advantages**:
-        - **Performance**: Local storage of frequently accessed data reduces latency.
-        - **Reliability**: Remote storage ensures data availability and fault tolerance.
-    - **Implementation**:
-        - Implement intelligent caching algorithms to determine which parts of the trie to store locally.
-        - Utilize remote nodes for less frequently accessed trie segments, ensuring efficient data distribution.
-
-### Conclusion
-
-By exploring and implementing varied persistence strategies, PromiseGrid can maintain efficient and reliable trie data management. Leveraging techniques like OPFS, `afero`, and remote fetching ensures the system caters to both local and distributed environments, optimizing performance and scalability.
-
----
-
-**Sources**: 
-- Various Implementation and Discussion Documents from `cache.md`, `context.md`, `DESIGN.md`
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/348-other.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md

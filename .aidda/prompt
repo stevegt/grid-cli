@@ -30,15 +30,8 @@ In:
 Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
-- apply updates based on all other documentation
-- in particular, explore the implications of the byte-sequence
-  completion and trie
-- discuss pros and cons of using the same message format for both
-  interhost communications over the network and intrahost IPC
-- discuss pros and cons of having one trie for both intrahost and
-  interhost message handling
-- discuss what byte-sequence completion means and how it functions in
-  the context of intrahost communications between microkernel services
+- discuss how byte-sequence ceompletion functions in the context of
+  intrahost communications between microkernel services
 
 .stop
 

@@ -1,13 +1,93 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
+  
+File: /home/stevegt/lab/grid-cli/v2/doc/320-ipc.md
 ```markdown
-### Treating Lazy-Loading from Disk and Network 
+# Inter-Process Communication (IPC) in PromiseGrid
 
-In the PromiseGrid system, lazy-loading a node from disk should be treated the same as lazy-loading a node from a remote host over the network; both are IO-bound operations. 
+## Introduction
 
-- In both cases, an in-memory trie miss generates a call via the kernel.
-- The kernel handles disk and network I/O.
-- The trie code does not import any OPFS or `afero` library; file and network I/O are the responsibility of other microkernel services.
+Inter-Process Communication (IPC) is a critical aspect of any microkernel architecture, facilitating communication between various modules or components. This document explores common microkernel IPC patterns, the implications of byte-sequence completion and trie, and the design considerations for using the same message format for both interhost communications over the network and intrahost IPC within PromiseGrid.
 
-This approach ensures that the trie code remains focused on its primary responsibility—efficiently managing in-memory trie data structures—while delegating I/O operations to dedicated microkernel services. This separation of concerns leads to cleaner, more maintainable code and leverages the existing microkernel services for handling diverse I/O operations.
+## Common Microkernel IPC Patterns
+
+### 1. Message Passing
+
+**Pattern**: In many microkernel systems, IPC is implemented using message passing. Processes or modules communicate by sending and receiving messages through well-defined interfaces.
+- **Example**: The Mach microkernel uses message-passing IPC to facilitate communication between different parts of the system.
+
+**In PromiseGrid**:
+- The PromiseGrid microkernel employs a message-passing IPC mechanism. Messages in PromiseGrid are encapsulated in structures that include parameters (parms), a leading promise hash, and a module hash.
+- This design facilitates efficient and secure communication between modules, aligning with PromiseGrid’s decentralized and modular architecture.
+
+### 2. Shared Memory
+
+**Pattern**: Shared memory allows multiple processes to access the same memory space, enabling fast data exchange.
+- **Example**: Systems like QNX use shared memory as a high-performance IPC mechanism in certain situations.
+
+**In PromiseGrid**:
+- While shared memory is not the primary IPC mechanism in PromiseGrid, caches treated as shared resources can be conceptually aligned with this pattern.
+- Modules in PromiseGrid can cache results, which are then accessible to other modules, facilitating efficient data sharing while maintaining modularity.
+
+### 3. Remote Procedure Call (RPC)
+
+**Pattern**: RPC involves executing a procedure (subroutine) on a remote server or component as if it were a local call. This abstracts the details of communication, providing a simple interface for IPC.
+- **Example**: The L4 microkernel and other similar systems use RPC for IPC.
+
+**In PromiseGrid**:
+- Message handling in PromiseGrid can be seen as a form of RPC. Each message includes a hash that identifies the module and procedure to be executed. The kernel routes the message to the appropriate module based on these hashes.
+- This aligns with PromiseGrid’s promise-based interactions, encapsulating functionality and communication in promise messages.
+
+### Byte-Sequence Completion and Trie
+
+Byte-sequence completion refers to handling incoming byte sequences by determining how they should be processed based on their initial segments. This method leverages sequence matching to efficiently route messages to the appropriate handlers.
+
+**Implications in PromiseGrid**:
+- **Efficient Routing**: The trie structure facilitates fast prefix matching, ensuring that messages are quickly and accurately routed based on initial byte sequences.
+- **Dynamic Adaptation**: The system can dynamically adapt to new sequences and handlers, optimizing future lookups and processing.
+- **Security and Validation**: While byte-sequence completion simplifies initial routing, thorough validation by each handler ensures that messages are processed securely and correctly.
+
+## Unified Message Format for Network and IPC
+
+### Pros and Cons of Using the Same Message Format
+
+**Pros**:
+- **Consistency**: A unified message format simplifies the translation and handling of messages across different communication channels.
+- **Interoperability**: Modules can seamlessly interact through both interhost (network) and intrahost (IPC) communications without altering the message structure.
+- **Efficiency**: Reusing the same message format reduces redundancy and the need for different parsing logic, improving overall efficiency.
+
+**Cons**:
+- **Complexity**: Ensuring that the unified format is optimal for both network and IPC scenarios can be challenging, as the requirements might differ.
+- **Overhead**: The inclusion of network-specific metadata in IPC messages (or vice versa) could introduce unnecessary overhead.
+
+## Trie for Intrahost and Interhost Message Handling
+
+### Pros and Cons of Having One Trie
+
+**Pros**:
+- **Unified Approach**: A single trie for both intrahost and interhost message handling ensures a consistent and efficient routing mechanism.
+- **Resource Sharing**: Shared resources such as trie nodes can reduce redundancy and leverage existing data structures for both communication types.
+
+**Cons**:
+- **Scalability**: A single trie might become a bottleneck if it grows too large or if access patterns differ significantly between IPC and network messages.
+- **Latency**: Interhost trie access might introduce additional latency compared to a dedicated intrahost trie, impacting performance.
+
+## Byte-Sequence Completion in Microkernel Services
+
+### Functionality in Intrahost Communications
+
+Byte-sequence completion in PromiseGrid’s microkernel services works as follows:
+1. **Initial Byte Matching**: The kernel attempts to match incoming byte sequences to known handlers using a trie.
+2. **Handler Invocation**: On a successful match, the kernel routes the message to the appropriate handler, which processes the message based on its internal logic.
+3. **Dynamic Cache Updates**: Successful message handling paths are cached, optimizing future lookups and reducing processing time.
+
+### Example Scenario
+
+1. **Caller Request**: A service requests the completion of a byte sequence starting with `0xDE 0xAD`.
+2. **Kernel Lookup**: The kernel performs a trie lookup for the sequence `0xDE 0xAD`.
+3. **Handler Execution**: On finding a match, the corresponding handler processes the message and returns a response.
+4. **Cache Update**: The trie is updated with the successful path, enhancing future lookups.
+
+## Conclusion
+
+The PromiseGrid microkernel leverages common IPC patterns, specifically message passing, to facilitate communication between modules. By incorporating byte-sequence completion and trying structures, the system ensures efficient routing and dynamic message handling. The pros and cons of using a unified message format and a single trie for both intrahost and interhost communications highlight the need for careful design to balance efficiency, scalability, and complexity. Overall, these design choices underpin a robust, flexible, and decentralized system architecture.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/320-ipc.md

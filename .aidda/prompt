@@ -19,10 +19,12 @@ Out: v2/doc/320-ipc.md
 Revise 320-ipc.md:
 - imagine the algorithm for how the kernel can seamlessly perform
   successive lookups in multiple tries, both in-memory, persistent,
-  and remote.  does it simply use default handlers to transition to
-  the next trie, or some other mechanism?
+  and remote.  e.g. does the kernel itself execute the transition to
+  the next trie, or is this done by handlers?  i.e. are all tries mounted
+  in a root trie similar to filesystem mounts?
 - discuss the similarity between a multi-tape turing machine and
-  multiple tries
+  multiple tries.  a multi-tape turing machine is computationally
+  equivalent to a single-tape turing machine.
 
 .stop
 

@@ -44,6 +44,18 @@ Byte-sequence completion refers to handling incoming byte sequences by determini
 - **Dynamic Adaptation**: The system can dynamically adapt to new sequences and handlers, optimizing future lookups and processing.
 - **Security and Validation**: While byte-sequence completion simplifies initial routing, thorough validation by each handler ensures that messages are processed securely and correctly.
 
+### Algorithm for Multiple Trie Lookups
+
+To seamlessly perform successive lookups in multiple tries (in-memory, persistent, and remote), the kernel utilizes a combination of default handlers and dynamic routing mechanisms:
+
+1. **Initial Lookup**: The kernel begins with an in-memory trie for fast lookup. If the sequence is found, the associated handler is invoked immediately.
+2. **Fallback to Persistent Trie**: If the in-memory trie does not contain the sequence, the kernel falls back to a persistent trie stored on disk. This involves asynchronous I/O operations managed by kernel services.
+3. **Remote Trie Query**: If the sequence is still not found, the kernel queries remote tries hosted on different nodes via the network. This step involves interhost communication protocols optimized for low latency.
+4. **Caching Results**: Successful lookups from persistent or remote tries are cached in the in-memory trie for future efficiency.
+5. **Handler Invocation and Validation**: Each handler performs necessary validation to ensure message integrity before processing.
+
+The seamless transition between tries ensures a robust, scalable, and efficient lookup mechanism while maintaining the decentralized nature of PromiseGrid.
+
 ## Unified Message Format for Network and IPC
 
 ### Pros and Cons of Using the Same Message Format
@@ -88,19 +100,18 @@ There is effectively no difference in functionality between using an in-memory t
 - **Performance Balance**: A hybrid approach leverages the speed of in-memory operations and the reliability of persistent storage, optimizing for both performance and data integrity.
 - **Resource Management**: Efficient use of both memory and disk resources ensures scalable and performant IPC mechanisms.
 
-### Trie and Turing Machine Analogies
+### Trier and Multi-Tape Turing Machine Analogy
 
 A trie data structure on its own can be compared to a Turing machine tape due to its ability to store sequences of data that can be read and written dynamically.
 
 **Multi-Tape Turing Machine and Multiple Tries**:
-- A multi-tape Turing machine, which processes multiple tapes simultaneously, can be analogized to having multiple tries where parallel processing of different data sequences occurs concurrently.
+- **Parallel Processing**: Just as a multi-tape Turing machine processes multiple tapes concurrently, multiple tries facilitate parallel lookup and processing of different data sequences. This enhances computational efficiency and allows simultaneous handling of diverse tasks.
+- **State Representation**: In a multi-tape Turing machine, each tape represents a different input sequence. Similarly, multiple tries can represent different namespaces or domains of data, each handling specific types of messages or requests.
 
 **Trie as a Turing Tape**:
-- Each node in a trie represents a state, and the sequence of nodes to reach a leaf node represents a series of tape symbols being read or written. This highlights the trie’s capacity for representing complex, varying-length sequences dynamically.
+- Each node in a trie represents a state. The sequence of nodes traversed to reach a leaf node represents a series of tape symbols being read or written. This highlights the trie’s capacity for representing complex, varying-length sequences dynamically.
 
-**Turing Completeness and Sequence Completion Using Tries**:
-- Sequence completion using tries involves state transitions akin to those in a Turing machine. By matching sequences and invoking handlers based on these matches, the system effectively simulates a Turing machine's capability to process and generate any computable sequence.
-- This makes a system using trie-based sequence completion conceptually Turing complete, capable of performing any computation given appropriate sequence patterns and handler logic.
+By leveraging the analogy with a multi-tape Turing machine, we can further understand how multiple tries in PromiseGrid enable efficient parallel processing and refined data handling in a decentralized environment.
 
 ## Byte-Sequence Completion in Microkernel Services
 

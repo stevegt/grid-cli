@@ -17,16 +17,12 @@ In:
 Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
-- discuss the pros and cons of having an in-memory trie, separate from
-  the decentralized persistent trie, to process IPC messages
-- discuss how there is no difference between having an in-memory trie
-  and a decentralized trie vs having a local persistent trie and
-  remote tries
+- imagine the algorithm for how the kernel can seamlessly perform
+  successive lookups in multiple tries, both in-memory, persistent,
+  and remote.  does it simply use default handlers to transition to
+  the next trie, or some other mechanism?
 - discuss the similarity between a multi-tape turing machine and
   multiple tries
-- discuss how a trie is like a turing tape
-- discuss how sequence completion using tries is turing equivalent or
-  turing complete
 
 .stop
 

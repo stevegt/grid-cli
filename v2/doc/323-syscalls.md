@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/323-syscalls.md
-```markdown
 # PromiseGrid Syscall Mechanism
 
 ## Overview
@@ -95,6 +93,3 @@ Modules can manage their ports dynamically, requesting and releasing ports as re
 ## Summary
 
 Syscalls in PromiseGrid are implemented using a message-passing mechanism where modules communicate with the kernel via allocated ports. This design ensures modularity, security, and flexibility by leveraging the standard ports and capability tokens for dynamic resource management. The kernel validates, executes, and responds to syscall requests, maintaining an efficient and secure system operation.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/323-syscalls.md
-```

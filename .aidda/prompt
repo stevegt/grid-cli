@@ -4,14 +4,21 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
-Out: v2/doc/323-syscalls.md
+Out: 
+    v2/doc/324-syscalls-sequences.md
 
-Create 323-syscalls.md:
-- imagine how syscalls might work in promisegrid
-- e.g. syscalls might work via message-passing, sending a syscall
-  request on a port that was granted to the module at load time.
-- e.g. each module might have standard ports equivalent to stdin,
-  stdout, stderr
+Create v2/doc/324-syscalls-sequences.md:
+- imagine how syscalls might simply be sequence completions
+- e.g. 'file_read' might simply be the leading bytes of a sequence
+- e.g. the kernel might hardcode these sequences in its embed trie
+- e.g. the embed trie might be the root trie that all other tries are
+  mounted on
+- e.g. sequences that have side effects (e.g. file_write) might
+  include timestamps in their request message sequence
+- e.g. stdout might be how a module sends syscalls; like mach, the
+  sent message (byte sequence) might include a port on which the
+  module expects to receive the response
+- e.g. a port number is a capability, a promise, a large hash 
 
 .stop
 

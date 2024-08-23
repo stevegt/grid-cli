@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/324-syscalls-sequences.md
-```
 # Syscalls as Sequence Completions
 
 ## Overview
@@ -121,7 +118,5 @@ Trie:
 
 By treating syscalls as sequences of bytes and utilizing a trie-based structure for efficient lookup, the PromiseGrid framework can handle syscalls dynamically and effectively. Including timestamps for operations with side effects ensures consistency, while using stdout for communication allows for a streamlined message-passing mechanism. This approach enhances modularity, scalability, and reliability in syscall processing within PromiseGrid.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/324-syscalls-sequences.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/324-syscalls-sequences.md

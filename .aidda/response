@@ -35,6 +35,15 @@ Inter-Process Communication (IPC) is a critical aspect of any microkernel archit
 - Message handling in PromiseGrid can be seen as a form of RPC. Each message includes a hash that identifies the module and procedure to be executed. The kernel routes the message to the appropriate module based on these hashes.
 - This aligns with PromiseGrid’s promise-based interactions, encapsulating functionality and communication in promise messages.
 
+### 4. Callbacks
+
+**Pattern**: Callbacks are functions that a system can call at a later time. They allow asynchronous processing and make the system more responsive to events.
+- **Example**: The Minix microkernel employs callbacks to handle certain driver and service interactions.
+
+**In PromiseGrid**:
+- Callbacks can be integrated with message passing in PromiseGrid. For instance, a module can register a callback function to handle incoming messages asynchronously.
+- This combination enables flexible and dynamic interaction patterns, improving responsiveness and handling complexity in module communication.
+
 ### Byte-Sequence Completion and Trie
 
 Byte-sequence completion refers to handling incoming byte sequences by determining how they should be processed based on their initial segments. This method leverages sequence matching to efficiently route messages to the appropriate handlers.
@@ -105,7 +114,7 @@ There is effectively no difference in functionality between using an in-memory t
 A trie data structure on its own can be compared to a Turing machine tape due to its ability to store sequences of data that can be read and written dynamically.
 
 **Multi-Tape Turing Machine and Multiple Tries**:
-A multi-tape Turing machine uses several tapes simultaneously for computation, each operated independently but contributing to the overall state. Similarly, PromiseGrid can leverage multiple tries (in-memory, persistent, and remote) to handle different scopes and contexts of message handling, each trie functioning like a separate tape in the multi-tape Turing machine model.
+A multi-tape Turing machine uses several tapes simultaneously for computation, each operated independently, but contributing to the overall state. Similarly, PromiseGrid can leverage multiple tries (in-memory, persistent, and remote) to handle different scopes and contexts of message handling, each trie functioning like a separate tape in the multi-tape Turing machine model.
 
 **Trie as a Turing Tape**:
 - Each node in a trie represents a state. The sequence of nodes traversed to reach a leaf node represents a series of tape symbols being read or written. This highlights the trie’s capacity for representing complex, varying-length sequences dynamically.

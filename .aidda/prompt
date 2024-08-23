@@ -17,9 +17,9 @@ In:
 Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
-- discuss how microkernels usually interoperate with drivers and
-  services -- it it always message passing, or is it callbacks?  or
-  are messages delivered via callbacks?  are microkernel messages sync
+- discuss how the Mach microkernel interoperates with drivers and
+  services -- it it message passing, or is it callbacks?  or
+  are messages delivered via callbacks?  are messages sync
   or async?
 
 .stop

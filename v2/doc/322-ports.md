@@ -1,6 +1,3 @@
-<blank line>
-File: /home/stevegt/lab/grid-cli/v2/doc/322-ports.md
-```markdown
 # Mach-like Message Ports in PromiseGrid
 
 ## Introduction
@@ -136,7 +133,3 @@ fmt.Println("Received message:", message.Payload)
 ## Conclusion
 
 PromiseGrid's message ports, inspired by Mach-like message ports, provide a powerful framework for inter-process communication and decentralized networking. By leveraging the unique characteristics of message ports, PromiseGrid ensures efficient, scalable, and secure communication between modules and nodes. Future enhancements will continue to push the boundaries of what is possible, making PromiseGrid a robust platform for decentralized applications.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/322-ports.md
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/322-ports.md

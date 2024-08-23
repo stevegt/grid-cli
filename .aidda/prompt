@@ -4,11 +4,22 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out: v2/doc/323-syscalls.md
+
+Create 323-syscalls.md:
+- imagine how syscalls might work in promisegrid
+- e.g. syscalls might work via message-passing, sending a syscall
+  request on a port that was granted to the module at load time.
+- e.g. each module might have standard ports equivalent to stdin,
+  stdout, stderr
+
+.stop
+
 Out: 
     v2/doc/322-ports.md
 
-Create 321-ports.md:
-- imagine how mach-like message ports might work in promisegrid
+Revise 321-ports.md:
+- fix the syscalls
 
 .stop
 

@@ -2,6 +2,16 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
+In: v2/doc/context.md
+Out: v2/doc/010-context.md
+
+Create 010-context.md:
+- summarize the conversation and thought processes that led to all
+  decisions, conclusions, and open questions
+- detail all decisions, conclusions, and open questions
+
+.stop
+
 In: 
     v2/doc/300-synthesis.md
     v2/doc/320-ipc.md

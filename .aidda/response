@@ -60,6 +60,26 @@ The efficient use of software interrupts ensures minimal overhead and quick cont
 - Software interrupts could be employed as a mechanism to transition between user-space modules and microkernel services, aligning with the modular architecture.
 - This encourages streamlined handling of syscalls, improving responsiveness and system performance.
 
+### Kernel Mode vs User Mode
+
+Modern operating systems utilize two principal modes of operation to ensure both security and proper resource management: kernel mode and user mode.
+
+**Kernel Mode** (also known as supervisor mode, system mode, or privileged mode):
+- **Access**: Full access to all hardware and system resources.
+- **Privilege**: Allows execution of all CPU instructions and direct hardware manipulation.
+- **Usage**: Used by the core components of the operating system such as the kernel, device drivers, and certain critical system services.
+- **Risks**: Errors in kernel mode can lead to system crashes, as the kernel can overwrite critical system data.
+
+**User Mode**:
+- **Access**: Limited access to hardware and system resources to ensure stability and security.
+- **Privilege**: Restricts execution to a subset of CPU instructions and denies direct hardware interaction.
+- **Usage**: User applications and certain less critical system processes operate in user mode.
+- **Safety**: Errors are usually contained and isolated, preventing system-wide crashes.
+
+**Switching Between Modes**:
+- **System Calls (Syscalls)**: Are the primary mechanism for transitioning from user mode to kernel mode. When an application in user mode requires a service provided by the kernel, it issues a syscall. This transitions the CPU to kernel mode, allowing the kernel to perform the requested operation.
+- **Hardware Interrupts**: Can also trigger a mode switch, such as handling I/O operations or system timers.
+
 ### Mach Microkernel Interoperability with Drivers and Services
 
 The Mach microkernel exemplifies the use of message passing for IPC, especially in its interaction with drivers and services. 

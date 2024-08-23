@@ -17,8 +17,8 @@ In:
 Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
-- discuss how a process sends a message in the Mach microkernel -- is
-  it via a software interrupt?  
+- discuss how software interrupts are used to trigger syscalls in the
+  Mach, UNIX, or Linux kernel
 
 .stop
 

@@ -3,12 +3,12 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/320-ipc.md
+    v2/doc/
 Out: 
-    v2/doc/321-mach.md
+    v2/doc/322-ports.md
 
-Create 321-mach.md:
-- describe mach ports, messages, and message format
+Create 321-ports.md:
+- imagine how mach-like message ports might work in promisegrid
 
 .stop
 

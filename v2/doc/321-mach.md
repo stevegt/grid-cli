@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/321-mach.md
-```markdown
 # Mach Ports, Messages, and Message Format
 
 ## Introduction
@@ -93,5 +91,3 @@ The layout of a typical Mach message is as follows:
 ## Conclusion
 
 The Mach microkernel's IPC mechanism via ports and messages provides a robust and efficient framework for task communication. Understanding the architecture and format of Mach ports and messages is crucial for developing distributed and modular systems leveraging the Mach microkernel's capabilities.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/321-mach.md

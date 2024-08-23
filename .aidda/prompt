@@ -2,14 +2,13 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
-In: v2/doc/context.md
-    v2/doc/010-context.md
-Out: v2/doc/010-context.md
+In: 
+    v2/doc/320-ipc.md
+Out: 
+    v2/doc/321-mach.md
 
-Revise 010-context.md:
-- add items to the summary of the conversation and thought processes that led to all
-  decisions, conclusions, and open questions
-- add details regarding all decisions, conclusions, and open questions
+Create 321-mach.md:
+- describe mach ports, messages, and message format
 
 .stop
 

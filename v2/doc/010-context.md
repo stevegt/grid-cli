@@ -69,4 +69,3 @@ The project embraces decentralized governance, where trust relationships are for
    - Finding the right balance between efficient serialization and maintaining readability and ease of debugging.
 
 This document captures the evolving thought processes, decisions, and ongoing questions addressed throughout the project's development. The approach aims to create a flexible, efficient, and trust-based system, aligning with the principles of decentralized governance and modularity.
-

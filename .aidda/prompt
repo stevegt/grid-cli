@@ -17,6 +17,13 @@ In:
 Out: v2/doc/320-ipc.md
 
 Revise 320-ipc.md:
+- discuss how microkernels usually interoperate with drivers and
+  services -- it it always message passing, or is it callbacks?  or
+  are messages delivered via callbacks?  are microkernel messages sync
+  or async?
+
+.stop
+
 - imagine the algorithm for how the kernel can seamlessly perform
   successive lookups in multiple tries, both in-memory, persistent,
   and remote.  
@@ -25,10 +32,6 @@ Revise 320-ipc.md:
   kernel
 - discuss the pros and cons of all tries mounted
   in a root trie similar to filesystem mounts
-- discuss how microkernels usually interoperate with drivers and
-  services -- it it always message passing, or is it callbacks?  or
-  are messages delivered via callbacks?  are microkernel messages sync
-  or async?
 - a multi-tape turing machine is computationally
   equivalent to a single-tape turing machine.
 

@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/326-prior.md
-```
 # Prior Art in Decentralized Trie Data Structures
 
 ## Introduction
@@ -69,7 +67,5 @@ Despite the benefits, there are challenges associated with implementing decentra
 
 Decentralized trie data structures offer a robust and efficient means of managing data across distributed networks. Systems such as IPFS, Ethereum, and Corda illustrate the effectiveness of these structures in real-world applications. While challenges exist, the benefits of scalability, fault tolerance, and data integrity make decentralized tries a valuable tool for building resilient and scalable distributed systems.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/326-prior.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/326-prior.md

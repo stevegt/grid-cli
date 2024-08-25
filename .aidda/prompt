@@ -7,9 +7,9 @@ In:
 Out: 
     v2/doc/326-prior.md
 
-Create v2/doc/326-prior.md
-- describe any prior art in existing decentralized trie data structures
-- in this context, "decentralized" means no central controlling server
+Revise v2/doc/326-prior.md
+- describe radix trees in more detail
+- describe corda in more detail
 
 .stop
 

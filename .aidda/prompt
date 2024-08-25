@@ -3,11 +3,113 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
+    v2/doc/320-ipc.md
+    v2/doc/321-mach.md
+    v2/doc/322-ports.md
+    v2/doc/323-syscalls.md
+    v2/doc/324-syscalls-sequences.md
+    v2/doc/325-mount.md
     v2/doc/326-prior.md
 Out: 
-    v2/doc/326-prior.md
+    v2/doc/329-issues.md
 
-Revise v2/doc/326-prior.md
+Create v2/doc/329-issues.md
+- review the documentation and provide feedback on issues, problems,
+  open questions
+
+.stop
+
+Out: 
+    v2/doc/324-syscalls-sequences.md
+
+Create v2/doc/324-syscalls-sequences.md:
+- imagine how syscalls might simply be sequence completions
+- e.g. 'file_read' might simply be the leading bytes of a sequence
+- e.g. the kernel might hardcode these sequences in its embed trie
+- e.g. the embed trie might be the root trie that all other tries are
+  mounted on
+- e.g. sequences that have side effects (e.g. file_write) might
+  include timestamps in their request message sequence
+- e.g. stdout might be how a module sends syscalls; like mach, the
+  sent message (byte sequence) might include a port on which the
+  module expects to receive the response
+- e.g. a port number is a capability, a promise, a large hash 
+
+.stop
+
+Out: 
+    v2/doc/322-ports.md
+
+Revise 321-ports.md:
+- fix the syscalls
+
+.stop
+
+In: 
+    v2/doc/300-synthesis.md
+    v2/doc/320-ipc.md
+    v2/doc/330-messages.md
+    v2/doc/340-magic.md
+    v2/doc/341-magic.md
+    v2/doc/342-prior.md
+    v2/doc/343-dht.md
+    v2/doc/344-market.md
+    v2/doc/345-dtrie.md
+    v2/doc/346-persist.md
+    v2/doc/347-dtrie.md
+Out: v2/doc/320-ipc.md
+
+Revise 320-ipc.md:
+- describe kernel mode vs user mode in more detail 
+
+.stop
+
+- imagine the algorithm for how the kernel can seamlessly perform
+  successive lookups in multiple tries, both in-memory, persistent,
+  and remote.  
+- discuss the pros and cons of the transition to
+  the next trie being handled by handlers, with callbacks into the
+  kernel
+- discuss the pros and cons of all tries mounted
+  in a root trie similar to filesystem mounts
+- a multi-tape turing machine is computationally
+  equivalent to a single-tape turing machine.
+
+.stop
+
+- discuss how byte-sequence ceompletion functions in the context of
+  intrahost communications between microkernel services; for example,
+  in computing, any function call, API call, RPC, query, etc. can be
+  expressed along with its response as a single byte sequence;
+  returning the results of a call is equivalent to completing the byte
+  sequence
+
+
+XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md  
+    v2/doc/
+XIn: v2/doc/341-magic.md 
+    v2/doc/342-prior.md
+XIn: /home/stevegt/lab/promisegrid/promisegrid/README.md  
+    v2/doc/341-magic.md 
+    v2/doc/344-market.md 
+XOut: v2/doc/344-market.md
+XOut: v2/x/trie.go
+XIn: v2/doc/346-persist.md
+XIn: v2/doc/
+XOut: v2/doc/README.md 
+    v2/doc/320-ipc.md 
+
+Revise 347-dtrie.md:
+- treat lazy-loading a node from disk the same as lazy-loading a node
+  from a remote host over the network; both are IO-bound.  in both
+  cases, an in-memory trie miss generates a call via the kernel.  the
+  kernel handles disk and network I/O.  the trie code does not import
+  any opfs or afero library; file and network I/O are the
+  responsibility of other microkernel services.
+
+Revise v2/doc/README.md: 
+- update the table of contents
+- include links to all other markdown files
 - describe corda's peer-to-peer protocol and the message format that
   is used when performing remote tree lookups
 

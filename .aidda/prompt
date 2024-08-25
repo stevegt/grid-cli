@@ -8,8 +8,8 @@ Out:
     v2/doc/326-prior.md
 
 Revise v2/doc/326-prior.md
-- describe how corda handles the transitions between local and remote
-  radix tree data when doing a lookup 
+- describe corda's peer-to-peer protocol and the message format that
+  is used when performing remote tree lookups
 
 .stop
 

@@ -7,17 +7,9 @@ In:
 Out: 
     v2/doc/325-mount.md
 
-Create v2/doc/325-mount.md
-- imagine how a mount handler module handles the transition from a root
-  or parent trie to a mounted child trie
-- e.g. when the search reaches the end of a stored seqence in a trie
-  (sequence fault) it invokes the most recent handler in the sequence.
-  if this is a mount handler, then the mount handler continues the
-  search in the mounted trie
-- e.g. root trie searches might be handled by a mount handler that is
-  loaded from the kernel's embed trie; it's possible that this
-  embedded handler is roughly analogous to a boot loader, and the
-  embedded trie a miniroot
+Revise v2/doc/325-mount.md
+- describe how the UNIX or Linux kernels or filesystem drivers handle
+  mount points when walking the filesystem tree
 
 .stop
 

@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/325-mount.md
-```
 # Handling Trie Transitions with Mount Handlers
 
 ## Overview
@@ -92,6 +89,3 @@ In this process, the mount handler ensures seamless transitions between trie str
 ## Conclusion
 
 Mount handlers play a critical role in managing transitions between trie structures within the PromiseGrid system. By handling sequence faults and directing searches to appropriate child tries, they ensure efficient and flexible search operations in a decentralized environment. The embedded mount handlers serve as initializers, analogous to boot loaders, setting up the foundational trie structures that other handlers build upon.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/325-mount.md
-```

@@ -8,8 +8,8 @@ Out:
     v2/doc/326-prior.md
 
 Revise v2/doc/326-prior.md
-- describe the difference between trie and radix
-- describe corda in more detail
+- describe how corda handles the transitions between local and remote
+  radix tree data when doing a lookup 
 
 .stop
 

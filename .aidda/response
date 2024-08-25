@@ -1,3 +1,5 @@
+Blank line
+
 File: /home/stevegt/lab/grid-cli/v2/doc/326-prior.md
 ```
 # Prior Art in Decentralized Trie Data Structures
@@ -27,6 +29,15 @@ Ethereum, a decentralized platform for applications, utilizes a Merkle Patricia 
 1. **Merkle Patricia Trie**:
     - **Decentralization**: State data is stored across multiple nodes in the Ethereum network. Each node maintains a copy of the state trie to validate and propagate transactions.
     - **Trie Structure**: The Patricia Trie combines a prefix tree with hashing, ensuring that data is stored efficiently and securely. This structure supports rapid lookup, insertions, and deletions, which is crucial for the dynamic environment of Ethereum transactions and smart contracts.
+
+### Radix Trees in Distributed Networks
+
+Radix trees, also known as compact prefix trees, are another form of trie used for efficient storage and retrieval in distributed networks. They handle binary data and are particularly useful in scenarios requiring high throughput and exact match searches.
+
+1. **Radix Tree Characteristics**:
+    - **Efficiency**: Radix trees compress common prefixes by storing them in shared nodes, which reduces memory usage and speeds up search operations.
+    - **Scalability**: They can handle a large number of keys efficiently, making them suitable for distributed environments with extensive key spaces.
+    - **Applications**: Used in network routing tables, DNS lookups, and other contexts where quick and precise key retrieval is essential.
 
 ### Corda and Its Radix Trie
 
@@ -68,7 +79,6 @@ Despite the benefits, there are challenges associated with implementing decentra
 ## Conclusion
 
 Decentralized trie data structures offer a robust and efficient means of managing data across distributed networks. Systems such as IPFS, Ethereum, and Corda illustrate the effectiveness of these structures in real-world applications. While challenges exist, the benefits of scalability, fault tolerance, and data integrity make decentralized tries a valuable tool for building resilient and scalable distributed systems.
-
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/326-prior.md
 ```

@@ -8,8 +8,12 @@ Out:
     v2/doc/325-mount.md
 
 Revise v2/doc/325-mount.md
-- describe how the UNIX or Linux kernels or filesystem drivers handle
-  mount points when walking the filesystem tree
+- imagine how the promisegrid kernel might function more similarly to
+  the UNIX or Linux kernels when handling mount points, e.g. maybe it
+  has a mount table
+- but a global promisegrid trie mount table could grow without bound
+  -- no single node will ever know where all tries are rooted
+- imagine a third alternative
 
 .stop
 

@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/329-issues.md
-```
 # Issues, Problems, and Open Questions
 
 ## Review Summary
@@ -103,7 +101,5 @@ The following document reviews the current state of the PromiseGrid documentatio
 - What advanced routing algorithms can be integrated into PromiseGrid to further improve message delivery efficiency?
 
 By addressing these issues, problems, and open questions, the PromiseGrid documentation will be more robust, user-friendly, and technically accurate, aiding developers in effectively utilizing the system.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/329-issues.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/329-issues.md

@@ -3,19 +3,16 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/320-ipc.md
-    v2/doc/321-mach.md
-    v2/doc/322-ports.md
-    v2/doc/323-syscalls.md
-    v2/doc/324-syscalls-sequences.md
-    v2/doc/325-mount.md
-    v2/doc/326-prior.md
+    v2/doc/
 Out: 
-    v2/doc/329-issues.md
+    v2/doc/348-trienode.md
 
-Create v2/doc/329-issues.md
-- review the documentation and provide feedback on issues, problems,
-  open questions
+Create v2/doc/348-trienode.md
+- describe the promisegrid trie node struct
+- a node struct needs a flag signifying
+  whether it is a raw value or a handler to be called to get the value
+- describe the handler call signature; e.g. it likely needs to get the
+  full trie path, both prefix and suffix
 
 .stop
 

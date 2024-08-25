@@ -5,12 +5,11 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/325-mount.md
+    v2/doc/326-prior.md
 
-Revise v2/doc/325-mount.md
-- describe why the promisegrid kernel does not use a UNIX-like
-  mount table; e.g. a global promisegrid trie mount table could grow
-  without bound; no single node will ever know where all tries are rooted
+Create v2/doc/326-prior.md
+- describe any prior art in existing decentralized trie data structures
+- in this context, "decentralized" means no central controlling server
 
 .stop
 

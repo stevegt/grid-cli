@@ -2,7 +2,7 @@
 
 ## Overview
 
-In PromiseGrid, the concept of a mount handler module is vital for managing transitions between different trie structures, such as moving from a root or parent trie to a mounted child trie. This document explores how these transitions are managed and provides detailed examples of the process.
+In PromiseGrid, the concept of a mount handler module is vital for managing transitions between different trie structures, such as moving from a root or parent trie to a mounted child trie. This document explores how these transitions are managed and provides detailed examples of the process. It also explains why PromiseGrid does not use a UNIX-like global mount table.
 
 ## Sequence Matching and Handlers
 
@@ -55,10 +55,44 @@ A mount handler is a module that facilitates the transition from one trie to ano
 
 ### Embedded Mount Handler
 
-In scenarios where the root trie is managed by an embedded handler loaded from the kernel's embedded resources, this handler may be analogous to a boot loader. The embedded trie acts as a miniroot.
+In scenarios where the root trie is managed by an embedded handler loaded from the kernel's embedded resources, this handler may be analogous to a boot loader. The embedded trie is analogous to a mini-root filesystem in the UNIX boot sequence.
 
 - **Kernel Embedded Trie**: Preloaded trie managed by an embedded handler.
 - **Boot Loader Analogy**: The embedded handler initializes the trie structure, ensuring that further mount handlers can link to additional trie resources.
+
+## Global Mount Table vs. PromiseGrid Trie Handling
+
+### Limitations of a UNIX-like Global Mount Table
+
+PromiseGrid does not use a UNIX-like global mount table for several key reasons:
+
+1. **Scalability**:
+   - A global mount table in a decentralized system like PromiseGrid could grow without bound, leading to performance issues.
+   - As the network grows, managing a large global mount table becomes increasingly difficult and inefficient.
+
+2. **Decentralization**:
+   - In PromiseGrid, no single node has complete knowledge of all tries. This decentralized approach ensures that nodes operate independently, without the need for a central repository of mounted filesystems.
+
+3. **Dynamic and Flexible Handling**:
+   - Mount handlers in PromiseGrid allow for dynamic and context-specific transitions between tries. This flexibility aligns with the decentralized and modular nature of the system.
+   - The system can dynamically adapt to changes without requiring updates to a central mount table.
+
+### Benefits of Using Mount Handlers
+
+1. **Local Control**:
+   - Nodes manage their own trie structures and mount points, ensuring local control over resources and data.
+   - This local control reduces dependency on a central authority and aligns with the principles of decentralized governance.
+
+2. **Efficiency and Performance**:
+   - Mount handlers optimize search operations by directing trie transitions efficiently.
+   - The dynamic invocation of mount handlers reduces the overhead associated with maintaining a large, centralized mount table.
+
+3. **Scalability**:
+   - The system can scale organically as nodes independently manage trie transitions and mount points.
+   - This approach supports the growth of the network without performance degradation.
+
+4. **Resilience**:
+   - Decentralized management of mount points enhances the system's resilience to failures. Nodes can continue operating even if other parts of the network experience issues.
 
 ## Practical Example
 
@@ -86,27 +120,6 @@ Imagine a scenario where Node A requests a service from Node B, and the service 
 
 In this process, the mount handler ensures seamless transitions between trie structures, enabling distributed and decentralized search capabilities across multiple trie resources.
 
-### Analyzing UNIX/Linux Kernel Handling of Mount Points
-
-In UNIX and Linux systems, mount points are critical for integrating different filesystem trees. When walking the filesystem tree, the kernel must handle transitions between different mounted filesystems at mount points. Here’s how UNIX or Linux kernels manage these transitions:
-
-1. **Mount Table**:
-   - The kernel maintains a mount table that maps mount points to the mounted filesystems.
-   - Each entry in the mount table identifies the mount point’s directory and the root of the mounted filesystem.
-
-2. **Pathname Resolution**:
-   - When traversing a pathname, if the kernel encounters a directory that is a mount point, it transitions from the current filesystem to the root of the mounted filesystem.
-   - The kernel continues pathname resolution within the new filesystem, seamlessly integrating different filesystems into a unified directory tree.
-
-3. **VFS (Virtual File System)**:
-   - The VFS layer abstracts the specifics of different filesystems, allowing the kernel to treat all filesystems uniformly.
-   - It provides common interfaces for filesystem operations, handling the transitions between filesystems at mount points.
-
-4. **Handling Mount Points**:
-   - During pathname traversal (e.g., `open`, `stat`), the kernel checks the inode of each directory.
-   - If the inode indicates a mount point, the VFS reroutes the traversal to the corresponding mounted filesystem.
-   - This ensures seamless transitions between the filesystem trees of different mounted filesystems.
-
 ## Conclusion
 
-Mount handlers play a critical role in managing transitions between trie structures within the PromiseGrid system. By handling sequence faults and directing searches to appropriate child tries, they ensure efficient and flexible search operations in a decentralized environment. The embedded mount handlers serve as initializers, analogous to boot loaders, setting up the foundational trie structures that other handlers build upon. Additionally, analyzing how UNIX and Linux kernels handle mount points provides insight into managing trie transitions within PromiseGrid.
+Mount handlers play a critical role in managing transitions between trie structures within the PromiseGrid system. By handling sequence faults and directing searches to appropriate child tries, they ensure efficient and flexible search operations in a decentralized environment. The embedded mount handlers serve as initializers, analogous to boot loaders, setting up the foundational trie structures that other handlers build upon. Additionally, by avoiding a UNIX-like global mount table, PromiseGrid maintains a scalable, efficient, and decentralized approach to trie handling.

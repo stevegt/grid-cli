@@ -16,7 +16,7 @@ When a search within a trie reaches the end of a stored sequence (a sequence fau
 ### Example of Sequence Fault Handling
 
 1. **Root Trie Search**:
-   - The system begins searching the root trie for a sequence.
+   - The system searches the root trie for a sequence.
 
 2. **Sequence Fault**:
    - Upon reaching the end of a stored sequence without finding a match, a sequence fault is declared.
@@ -86,7 +86,7 @@ Imagine a scenario where Node A requests a service from Node B, and the service 
 
 In this process, the mount handler ensures seamless transitions between trie structures, enabling distributed and decentralized search capabilities across multiple trie resources.
 
-### How UNIX and Linux Kernels Handle Mount Points
+### Analyzing UNIX/Linux Kernel Handling of Mount Points
 
 In UNIX and Linux systems, mount points are critical for integrating different filesystem trees. When walking the filesystem tree, the kernel must handle transitions between different mounted filesystems at mount points. Here’s how UNIX or Linux kernels manage these transitions:
 
@@ -107,8 +107,6 @@ In UNIX and Linux systems, mount points are critical for integrating different f
    - If the inode indicates a mount point, the VFS reroutes the traversal to the corresponding mounted filesystem.
    - This ensures seamless transitions between the filesystem trees of different mounted filesystems.
 
-By incorporating these principles, PromiseGrid's mount handlers can ensure efficient and transparent transitions between trie structures, similar to how UNIX and Linux systems handle filesystem mount points.
-
 ## Conclusion
 
-Mount handlers play a critical role in managing transitions between trie structures within the PromiseGrid system. By handling sequence faults and directing searches to appropriate child tries, they ensure efficient and flexible search operations in a decentralized environment. The embedded mount handlers serve as initializers, analogous to boot loaders, setting up the foundational trie structures that other handlers build upon.
+Mount handlers play a critical role in managing transitions between trie structures within the PromiseGrid system. By handling sequence faults and directing searches to appropriate child tries, they ensure efficient and flexible search operations in a decentralized environment. The embedded mount handlers serve as initializers, analogous to boot loaders, setting up the foundational trie structures that other handlers build upon. Additionally, analyzing how UNIX and Linux kernels handle mount points provides insight into managing trie transitions within PromiseGrid.

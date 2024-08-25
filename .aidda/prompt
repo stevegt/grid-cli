@@ -8,12 +8,9 @@ Out:
     v2/doc/325-mount.md
 
 Revise v2/doc/325-mount.md
-- imagine how the promisegrid kernel might function more similarly to
-  the UNIX or Linux kernels when handling mount points, e.g. maybe it
-  has a mount table
-- but a global promisegrid trie mount table could grow without bound
-  -- no single node will ever know where all tries are rooted
-- imagine a third alternative
+- describe why the promisegrid kernel does not use a UNIX-like
+  mount table; e.g. a global promisegrid trie mount table could grow
+  without bound; no single node will ever know where all tries are rooted
 
 .stop
 

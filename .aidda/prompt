@@ -8,13 +8,7 @@ Out:
     v2/doc/348-trienode.md
 
 Revise v2/doc/348-trienode.md
-- imagine the interplay between multiple handlers, promises, and their
-  value
-- when having multiple handlers per node, it may be important to do
-  reputation accounting, i.e. keep track of promises filled and
-  broken, as well as the value of each promise, in order to make
-  decisions about which handler(s) to route a message to, or which
-  handler's results to use
+- reputation accounting is done in a ledger or journal
 - the value of a promise might be denominated in a personal currency,
   i.e. points issued by the requestor
 

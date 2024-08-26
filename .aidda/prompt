@@ -5,15 +5,21 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/202-von-neumann.md
+    v2/doc/209-issues.md
 
-Create v2/doc/202-von-neumann.md
-- discuss how promisegrid's (pg's) byte sequence completion maps to a
-  traditional von neumann machine
-- how does pg's memory work in comparison with von neumann?
-- in pg, what is an address?
-- if a pg runtime is running on a von neumann machine, how does pg's
-  memory map to the von neumann memory and disk?
+- discuss issues, drawbacks, and problems with the byte-sequence
+  completion model
+- is there anything that byte-seqence completion cannot effectively
+  compute?
+- is the model too convoluted for implementation on conventional
+  computing hardware and operating systems?
+
+.stop
+
+
+- how would a conventional operating system or application be hosted
+  on pg?  i.e. how does a program written from von neumann
+  architecture map to the pg execution layer?
 
 
 Revise v2/doc/348-trienode.md

@@ -1,6 +1,3 @@
-<blank line>
-File: /home/stevegt/lab/grid-cli/v2/doc/202-von-neumann.md
-```markdown
 # PromiseGrid and the Von Neumann Architecture
 
 ## Introduction
@@ -39,7 +36,7 @@ A Von Neumann machine is based on the following fundamental components:
 
 - **Result Storage**:
     - In Von Neumann architecture, results are stored back in memory.
-    - In PromiseGrid, results are either cached for future reference or routed to other nodes for further processing.
+    - In PromiseGrid, results are cached in the decentralized trie structure.
 
 ## Memory in PromiseGrid vs. Von Neumann
 
@@ -47,6 +44,7 @@ A Von Neumann machine is based on the following fundamental components:
 
 - **Unified Storage**: Von Neumann machines use a unified memory for both instructions and data.
 - **Linear Addressing**: Memory is addressed linearly using numeric addresses.
+- **Finite Capacity**: Memory capacity is limited by the address space and physical storage.
 
 ### Memory in PromiseGrid
 
@@ -58,11 +56,19 @@ A Von Neumann machine is based on the following fundamental components:
     - Memory in PromiseGrid is represented using a trie structure, which allows for efficient storage and retrieval of byte sequences.
     - Each node in the trie could correspond to a piece of code or data, rooted and referenced through its unique hash, enabling flexible and dynamic data access.
 
+3. **Decentralized Storage**:
+    - Memory in PromiseGrid is distributed across nodes in the network, ensuring fault tolerance and scalability.
+    - The trie structure enables efficient traversal and retrieval of data, promoting decentralized computation.
+
+4. **Infinite Scalability**:
+    - PromiseGrid's memory is theoretically infinite, as it can scale horizontally by adding more nodes to the network.
+    - In practice, the growth rate of the grid may outpace the bandwidth of any single node, enabling the grid's capacity to be relatively unbounded from the perspective of any single node.
+
 ### Addressing in PromiseGrid
 
 1. **Addresses as Content Hashes**:
     - Unlike Von Neumann's linear addressing, addresses in PromiseGrid are content hashes derived from the data or code itself.
-    - This means the location of a piece of data is determined by hashing its content, ensuring unique and collision-resistant references.
+    - This means the location of a piece of data is determined by hashing its content, enabling unique and collision-resistant references.
 
 2. **Dynamic and Decentralized**:
     - Addressing in PromiseGrid is inherently dynamic, as the hash represents not only the data's location but also its integrity.
@@ -90,7 +96,7 @@ When a PromiseGrid runtime operates on a traditional Von Neumann machine, the ex
 
 1. **Virtualization**:
     - PromiseGrid runtime leverages virtual memory management of the hosting Von Neumann machine.
-    -  Byte sequences and trie nodes are stored in the host machine's memory, using content-addressable principles within the virtual memory constructs.
+    - Byte sequences and trie nodes are stored in the host machine's memory, using content-addressable principles within the virtual memory constructs.
 
 2. **Disk Storage**:
     - PromiseGrid can utilize the host machine's disk for persistent storage, employing the Origin Private File System (OPFS) or similar mechanisms to abstract filesystem interactions.
@@ -119,7 +125,3 @@ When a PromiseGrid runtime operates on a traditional Von Neumann machine, the ex
 ## Conclusion
 
 PromiseGrid's design, emphasizing byte sequence completion and decentralized storage, maps effectively onto the traditional Von Neumann architecture. By leveraging content-addressable memory and flexible addressing, PromiseGrid enhances data integrity and dynamic execution. When deployed on a Von Neumann machine, PromiseGrid efficiently utilizes the host's memory and processing capabilities while maintaining its decentralized and promise-based computation model.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/202-von-neumann.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/202-von-neumann.md

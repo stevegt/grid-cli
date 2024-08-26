@@ -9,8 +9,6 @@ Out:
 
 Revise v2/doc/348-trienode.md
 - pros and cons of having multiple handlers per node
-- fix the handler call signature; e.g. it gets the prefix as a []byte
-  and the remainder of the full trie path as an io.Reader
 
 .stop
 

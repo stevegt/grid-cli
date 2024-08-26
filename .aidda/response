@@ -1,5 +1,6 @@
+ 
 File: /home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
-```markdown
+```
 # PromiseGrid Trie Node Structure
 
 ## Introduction
@@ -18,7 +19,7 @@ type TrieNode struct {
     Children   map[byte]*TrieNode    // Map of child nodes
     IsHandler  bool                  // Flag indicating if this node is a handler
     RawValue   interface{}           // Raw value if this node is not a handler
-    Handler    func(path string) interface{}  // Handler function if this node is a handler
+    Handler    func(prefix []byte, remainder io.Reader) interface{}  // Handler function if this node is a handler
 }
 ```
 
@@ -43,7 +44,7 @@ type TrieNode struct {
 5. **Handler**:
     - A function that dynamically generates or retrieves the value upon invocation.
     - Used when `IsHandler` is `true`.
-    - The handler requires the full trie path (both prefix and suffix) as an argument for context-sensitive operations.
+    - The handler receives the prefix (path leading to the handler node) as a byte slice and the remainder (additional key parts beyond the handler) as an `io.Reader` for context-sensitive operations.
 
 ## Handler Call Signature
 
@@ -52,12 +53,13 @@ type TrieNode struct {
 The handler is a crucial component in dynamic value retrieval. It enables nodes to return context-specific values when part of the trie is traversed. The handler is defined as follows:
 
 ```go
-type HandlerFunc func(path string) interface{}
+type HandlerFunc func(prefix []byte, remainder io.Reader) interface{}
 ```
 
-### Path Representation
+### Parameters
 
-The `path` parameter provided to the handler function is a string that concatenates the prefix leading to the handler node and the suffix representing any additional key parts beyond the handler. This comprehensive path enables the handler to understand the full context it operates within.
+- **prefix**: A byte slice representing the path leading to the handler node.
+- **remainder**: An `io.Reader` that provides access to the remaining key parts beyond the handler.
 
 ### Example Usage
 
@@ -65,9 +67,11 @@ Consider a scenario where the trie stores various configurations, and each confi
 
 ```go
 // Define a handler function
-func configHandler(fullPath string) interface{} {
+func configHandler(prefix []byte, remainder io.Reader) interface{} {
+    remainderBytes, _ := io.ReadAll(remainder) // Read the remainder of the path
+    fullPath := append(prefix, remainderBytes...)
     // Use the full path to generate or retrieve the value
-    return fmt.Sprintf("Dynamic config for %s", fullPath)
+    return fmt.Sprintf("Dynamic config for %s", string(fullPath))
 }
 
 // Example TrieNode setup
@@ -88,7 +92,7 @@ root.Children[0x01] = configNode
 
 // Traversing the trie and invoking the handler
 path := "/config/somepath"
-result := root.Children[0x01].Handler(path)
+result := root.Children[0x01].Handler([]byte("/config"), strings.NewReader("somepath"))
 fmt.Println(result)  // Output: Dynamic config for /config/somepath
 ```
 
@@ -103,3 +107,4 @@ fmt.Println(result)  // Output: Dynamic config for /config/somepath
 The PromiseGrid Trie Node structure is designed to efficiently handle both static and dynamic values within a decentralized system. By incorporating flags and handler functions, the trie nodes provide a flexible and powerful mechanism for promise management, facilitating quick lookups, efficient storage, and dynamic value generation.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
+```

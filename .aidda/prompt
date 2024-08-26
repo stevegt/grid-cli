@@ -7,7 +7,7 @@ In:
 Out: 
     v2/doc/204-gpt.md
 
-- show pseudocode for how byte sequence completion would work on a GPU 
+- show CUDA (not python) pseudocode for how byte sequence completion would work on a GPU 
 
 .stop
 

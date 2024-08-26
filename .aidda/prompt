@@ -5,20 +5,20 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/209-issues.md
+    v2/doc/204-gpt.md
 
-- discuss issues, drawbacks, and problems with the byte-sequence
-  completion model
-- is there anything that byte-seqence completion cannot effectively
-  compute?
-- is the model too convoluted for implementation on conventional
-  computing hardware and operating systems?
+- discuss the similarity between byte sequence completion and GPT or
+  other ML or AI techniques
+- discuss whether or how byte sequence completion could be sped by the
+  use of a GPU
 
 .stop
 
+Out: 
+    v2/doc/203-vn-guest.md
 
 - how would a conventional operating system or application be hosted
-  on pg?  i.e. how does a program written from von neumann
+  as a guest on promisegrid?  i.e. how does a program written for von neumann
   architecture map to the pg execution layer?
 
 
@@ -30,7 +30,6 @@ Revise v2/doc/348-trienode.md
 
 .stop
 
-discuss the similarity between byte sequence completion and GPT
 
 discuss side effects -- assume every call has a side effect,
 i.e. changes the state of the universe, otherwise why call it?

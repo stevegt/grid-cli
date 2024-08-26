@@ -81,6 +81,41 @@ type HandlerFunc func(prefix []byte, remainder io.Reader) interface{}
 - **prefix**: A byte slice representing the path leading to the handler node.
 - **remainder**: An `io.Reader` that provides access to the remaining key parts beyond the handler.
 
+### Example Usage
+
+Consider a scenario where the trie stores various configurations, and each configuration can be statically defined or dynamically generated:
+
+```go
+// Define a handler function
+func configHandler(prefix []byte, remainder io.Reader) interface{} {
+    remainderBytes, _ := io.ReadAll(remainder) // Read the remainder of the path
+    fullPath := append(prefix, remainderBytes...)
+    // Use the full path to generate or retrieve the value
+    return fmt.Sprintf("Dynamic config for %s", string(fullPath))
+}
+
+// Example TrieNode setup
+root := &TrieNode {
+    KeyPart:   0x00,
+    Children:  make(map[byte]*TrieNode),
+    IsHandler: false,
+}
+
+configNode := &TrieNode {
+    KeyPart:   0x01,
+    Children:  make(map[byte]*TrieNode),
+    IsHandler: true,
+    Handler:   configHandler,
+}
+
+root.Children[0x01] = configNode
+
+// Traversing the trie and invoking the handler
+path := "/config/somepath"
+result := root.Children[0x01].Handler([]byte("/config"), strings.NewReader("somepath"))
+fmt.Println(result)  // Output: Dynamic config for /config/somepath
+```
+
 ## Pros and Cons of Having Multiple Handlers per Node
 
 ### Pros
@@ -118,5 +153,3 @@ type HandlerFunc func(prefix []byte, remainder io.Reader) interface{}
 ## Conclusion
 
 The PromiseGrid Trie Node structure is designed to efficiently handle both static and dynamic values within a decentralized system. By incorporating flags and handler functions, including support for multiple handlers, the trie nodes offer a flexible and powerful mechanism for promise management, ensuring quick lookups, efficient storage, and dynamic value generation. Understanding the pros and cons of multiple handlers per node, along with the importance of reputation accounting, can help in designing a robust and adaptable system.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md

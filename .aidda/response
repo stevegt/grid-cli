@@ -1,6 +1,4 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
-```
+```markdown
 # PromiseGrid Trie Node Structure
 
 ## Introduction
@@ -124,4 +122,3 @@ The PromiseGrid Trie Node structure is designed to efficiently handle both stati
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md

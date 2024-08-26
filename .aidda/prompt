@@ -8,8 +8,8 @@ Out:
     v2/doc/348-trienode.md
 
 Revise v2/doc/348-trienode.md
-- reputation accounting is done in a ledger or journal
-- the value of a promise might be denominated in a personal currency,
+- describe how reputation accounting is done in a ledger or journal
+- the value of a promise is denominated in a personal currency,
   i.e. points issued by the requestor
 
 

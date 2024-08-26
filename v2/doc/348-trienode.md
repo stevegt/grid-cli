@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The PromiseGrid's Trie Node structure is central to efficiently storing and retrieving promises, module hashes, and arguments within the decentralized system. This document details the design and functionalities of the trie node structure, including a flag to signify whether a node represents a raw value or a handler that must be invoked to retrieve the value. Additionally, this document discusses the pros and cons of having multiple handlers per node, along with the importance of reputation accounting when dealing with multiple handlers.
+The PromiseGrid's Trie Node structure is central to efficiently storing and retrieving promises, module hashes, and arguments within the decentralized system. This document details the design and functionalities of the trie node structure, including a flag to signify whether a node represents a raw value or a handler that must be invoked to retrieve the value. Additionally, this document discusses the pros and cons of having multiple handlers per node, along with the importance of reputation accounting (done in a ledger or journal) when dealing with multiple handlers.
 
 ## Trie Node Structure
 
@@ -51,7 +51,7 @@ type TrieNode struct {
 
 7. **Reputation**:
     - Stores reputation statistics for each handler in the case of multiple handlers.
-    - Keeps track of promises filled and broken, as well as the value of each promise.
+    - Keeps track of promises filled and broken, as well as the value of each promise (which might be denominated in a personal currency or points issued by the requestor).
     - Used for making decisions about which handler(s) to route a message to or which handler's results to use.
 
 ### Reputation Structure

@@ -5,7 +5,20 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/348-trienode.md
+    v2/doc/201-computable.md
+
+Create v2/doc/201-computable.md
+- discuss the similarity between lambda calculus, universal turing
+  machines, and promisegrid's byte sequence completion
+
+.stop
+
+Create v2/doc/202-von-neumann.md
+- discuss how promisegrid's (pg's) byte sequence completion maps to a
+  traditional von neumann machine
+- how does pg's memory work?
+- in pg, what is an address?
+
 
 Revise v2/doc/348-trienode.md
 - describe how reputation accounting is done in a ledger or journal

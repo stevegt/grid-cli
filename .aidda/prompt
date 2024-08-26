@@ -7,12 +7,10 @@ In:
 Out: 
     v2/doc/348-trienode.md
 
-Create v2/doc/348-trienode.md
-- describe the promisegrid trie node struct
-- a node struct needs a flag signifying
-  whether it is a raw value or a handler to be called to get the value
-- describe the handler call signature; e.g. it likely needs to get the
-  full trie path, both prefix and suffix
+Revise v2/doc/348-trienode.md
+- pros and cons of having multiple handlers per node
+- fix the handler call signature; e.g. it gets the prefix as a []byte
+  and the remainder of the full trie path as an io.Reader
 
 .stop
 

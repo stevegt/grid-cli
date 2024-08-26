@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
-```markdown
 # PromiseGrid Trie Node Structure
 
 ## Introduction
@@ -101,5 +99,3 @@ fmt.Println(result)  // Output: Dynamic config for /config/somepath
 ## Conclusion
 
 The PromiseGrid Trie Node structure is designed to efficiently handle both static and dynamic values within a decentralized system. By incorporating flags and handler functions, the trie nodes provide a flexible and powerful mechanism for promise management, facilitating quick lookups, efficient storage, and dynamic value generation.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md

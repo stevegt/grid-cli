@@ -5,19 +5,15 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/201-computable.md
-
-Create v2/doc/201-computable.md
-- discuss the similarity between lambda calculus, universal turing
-  machines, and promisegrid's byte sequence completion
-
-.stop
+    v2/doc/202-von-neumann.md
 
 Create v2/doc/202-von-neumann.md
 - discuss how promisegrid's (pg's) byte sequence completion maps to a
   traditional von neumann machine
-- how does pg's memory work?
+- how does pg's memory work in comparison with von neumann?
 - in pg, what is an address?
+- if a pg runtime is running on a von neumann machine, how does pg's
+  memory map to the von neumann memory and disk?
 
 
 Revise v2/doc/348-trienode.md

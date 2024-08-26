@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/201-computable.md
-```
 # Computable Systems: Lambda Calculus, Universal Turing Machines, and PromiseGrid's Byte Sequence Completion
 
 ## Introduction
@@ -59,5 +57,3 @@ Consider the task of evaluating a function `f(x)`:
 ## Conclusion
 
 By examining lambda calculus, universal Turing machines, and PromiseGrid's byte sequence completion, we see a unified landscape of computation expressed in diverse forms. PromiseGrid's approach stands out by integrating dynamic adaptation and decentralization, offering a powerful model for future computational systems. Understanding these parallels allows us to appreciate the depth and versatility of computational theories and their practical implementations in novel systems like PromiseGrid.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/201-computable.md

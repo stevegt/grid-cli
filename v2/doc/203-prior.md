@@ -21,6 +21,7 @@ Generative Pre-trained Transformers (GPT) are AI models that generate human-like
 
 - **Key Example**: OpenAI’s GPT-3.
     - **Details**: GPT-3 uses a transformer architecture to predict the next token in a sequence of text. The model is pre-trained on vast amounts of textual data to understand and generate natural language sequences.
+    - **Multiple Completions**: GPT models like GPT-3 can return multiple potential continuations of a given input, each with an associated likelihood. This feature allows for the exploration of different narrative possibilities or responses.
 
 ### Reed-Solomon Codes
 Reed-Solomon codes are error-correcting codes used in digital data storage and transmission. These codes represent data as sequences of polynomial coefficients.
@@ -45,6 +46,7 @@ Markov chains model sequences of states with probabilities. They are used in var
 
 - **Key Example**: Hidden Markov Models (HMM) in speech recognition.
     - **Details**: HMMs model the sequence of spoken words based on the probabilities of transitions between phonemes. This allows the system to predict and recognize spoken language sequences accurately.
+    - **Reputation as Markov Probabilities**: In a decentralized system like PromiseGrid, Markov probabilities may be tied to the reputation of nodes or modules, influencing the likelihood of selecting certain paths or completions based on historical performance.
 
 ## Byte Sequence Completion in the Chomsky Hierarchy
 
@@ -88,16 +90,16 @@ In other words, a bipartite graph is a "matching" graph where edges connect vert
 
 Markov Chains can be explored more in the context of PromiseGrid to investigate the potential use of reputation as Markov probabilities. In such a system:
 
-- **Reputation-Based Transition Probabilities**:  Paths with higher reputation (probabilities) could represent more trustworthy or reliable completions.
+- **Reputation-Based Transition Probabilities**: Paths with higher reputation (probabilities) could represent more trustworthy or reliable completions.
     - **Example**: A module with a higher reputation may have a higher probability of being selected for fulfilling promises.
     - **Example**: A kernel might return multiple completions; the completion with the highest reputation might be selected by the caller.
     - **Example**: A kernel might return multiple completions; the caller might use its own exchange-rate tables to calculate the reputation of each completion and select the one with the highest score.
 
 ### Computational Theory Behind Byte Sequence Continuation
 
-Byte sequence continuation works based on the principles of pattern recognition and matching, common in computational theory. These methods rely on previously seen sequences to predict or generate plausible continuations. 
+Byte sequence continuation works based on the principles of pattern recognition and matching, common in computational theory. These methods rely on previously seen sequences to predict or generate plausible continuations.
 
-### Turing Completeness 
+### Turing Completeness
 
 Byte sequence completion can be considered Turing-complete or Turing equivalent due to its ability to express and compute any computable function given appropriate encoding and enough resources. This capability ensures that PromiseGrid's byte sequence completion approach can perform complex computations within its decentralized architecture.
 

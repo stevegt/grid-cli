@@ -92,3 +92,81 @@ PromiseGrid (PG) is a decentralized computation platform that diverges from trad
 ## Conclusion
 
 PromiseGrid offers a unique approach to hosting conventional operating systems or applications as guests by leveraging byte sequence completion and decentralized storage. By mapping traditional Von Neumann functions to PromiseGrid's execution layer, it supports efficient data management and fault tolerance while maintaining flexibility and dynamic execution capabilities.
+
+## Container Management on PromiseGrid
+
+PromiseGrid (PG) is a platform inspired by decentralized computation principles. This document explores how a container might be hosted as a guest on PromiseGrid. Specifically, we will investigate how container image layers could be stored and loaded as byte sequences, and how the container runtime could update the writable layer to provide persistent storage and container mobility across PromiseGrid nodes.
+
+## Container Image Storage and Loading
+
+### Image Layers as Byte Sequences
+
+Containers are composed of layers, each layer representing a set of filesystem changes. In PromiseGrid, these layers can be stored and managed as byte sequences. Here's how it might work:
+
+1. **Layer Storage**:
+    - Each layer is stored as a unique byte sequence. Layers are referenced using content hashes, ensuring data integrity and easy retrieval.
+    - Layers are stored in a decentralized manner, distributed across multiple nodes to enhance fault tolerance and scalability.
+
+2. **Layer Loading**:
+    - When a container is instantiated, its image layers are fetched from the network using their content hashes.
+    - The layers are assembled into a complete filesystem on the local node, preparing the container for execution.
+
+3. **Efficient Data Retrieval**:
+    - Content-addressable storage ensures efficient retrieval of layers. Layers previously downloaded and stored locally can be reused, reducing network overhead.
+
+### Example
+
+Let's consider a container with three layers:
+- Base Layer: Contains the OS.
+- Layer 1: Contains application dependencies.
+- Layer 2: Contains the application itself.
+
+In PromiseGrid, these layers would be stored and retrieved as follows:
+
+1. **Storage**:
+    - Each layer is converted to a byte sequence.
+    - Byte sequences are stored distributedly across different nodes using content hashes.
+
+2. **Retrieval**:
+    - When the container is needed, its layers are retrieved using their content hashes.
+    - The byte sequences are reassembled to form the container's filesystem.
+
+## Writable Layer Management
+
+### Log-Structured Filesystem for Writable Layer
+
+To provide a writeable layer for containers that enables persistent storage and mobility, a log-structured filesystem approach is a viable option. Here's how it can be implemented in PromiseGrid.
+
+1. **Log-structured Filesystem (LFS)**:
+    - Changes to the filesystem (writes) are appended to a log rather than modifying files in place. This approach is efficient for capturing deltas and supports quick snapshots.
+    - Logs can be segmented and stored as byte sequences, allowing distributed nodes to manage parts of the writable layer. 
+
+2. **Persistence**:
+    - When a container writes data, the changes are captured in the log. This log is periodically committed and distributed to other nodes.
+    - This mechanism ensures that the writable layer persists even if the container is moved or the node fails.
+
+3. **Mobility**:
+    - Containers can be moved across different nodes. Since the writable layer is managed via logs, the logs can be transferred to the new node, reassembling the filesystem state.
+    - Log entries are content-addressed, allowing efficient transfer and reassembly.
+
+### Example Implementation
+
+Imagine a container running a database with a writable layer storing its current state:
+
+1. **Initial Write**:
+    - A write operation modifies the database.
+    - The change is captured and appended to the log as a byte sequence.
+
+2. **Log Commit**:
+    - Periodically, the log is committed and its entries are distributed to other nodes for redundancy.
+    - Each log entry is content-addressed, ensuring integrity.
+
+3. **Container Migration**:
+    - The container needs to be moved to another node.
+    - The log entries are transferred to the target node.
+    - At the target node, the log is replayed to reassemble the writable layer, maintaining the state of the database.
+
+## Conclusion
+
+Hosting conventional operating systems or applications as guests on PromiseGrid involves efficient handling of container image layers and managing a writeable layer. By storing image layers as byte sequences and using a log-structured filesystem for the writable layer, PromiseGrid can ensure persistent storage, efficient data retrieval, and container mobility. This decentralized approach leverages the strengths of PromiseGrid to provide robust and scalable container management.
+

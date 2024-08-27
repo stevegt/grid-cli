@@ -8,9 +8,14 @@ Out:
     v2/doc/203-prior.md
 
 - is there any prior art related to general computation via byte
-  sequence completion?
-- what are some existing examples of projects, methods, or concepts
-  that use the completion of byte sequences to do computation?
+  sequence completion in which the input sequence is assumed to be the
+  prefix of the desired sequence?
+- what is the Hamiltonian path problem?
+- what is a sparse bipartite graph?
+- explore Markov Chains more in the context of promisegrid -- is it
+  possible that reputation is usable as markov probability?
+- what is the computational theory behind why byte sequence
+  continuation works?  why is it turing-complete or turing equivalent?
 
 .stop
 

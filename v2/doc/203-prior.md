@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/203-prior.md
-```markdown
 # Existing Examples of Projects, Methods, or Concepts Using Byte Sequence Completion for Computation
 
 Byte sequence completion as a computational method encompasses various interdisciplinary applications. This document explores notable examples and prior art in this domain, highlighting techniques and projects using byte sequences for general computation. The following sections will cover the key areas where byte sequence completion is applied.
@@ -53,6 +50,3 @@ Markov chains model sequences of states with probabilities. They are used in var
 
 The computational methodology of byte sequence completion is prevalent across diverse fields such as DNA computing, error-correcting codes, AI models, blockchain technology, and Markov chains. These examples illustrate the broad applicability and potential of sequence-based computation for solving complex problems.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/203-prior.md
-```

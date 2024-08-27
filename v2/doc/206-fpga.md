@@ -1,6 +1,3 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/206-fpga.md
-```markdown
 # FPGA's Architecture and Prefix Matching
 
 ## Introduction
@@ -98,7 +95,3 @@ endmodule
 ## Conclusion
 
 FPGAs offer a robust platform for implementing prefix trie searches and other prefix matching techniques. Their architecture supports high degrees of parallelism, customization, and efficiency, making them ideal for data-intensive and real-time applications. By leveraging configurable logic blocks, programmable interconnects, and dedicated memory resources, FPGAs can perform prefix matching tasks efficiently, providing significant performance advantages over traditional CPU-based implementations.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/206-fpga.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/206-fpga.md

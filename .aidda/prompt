@@ -5,10 +5,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/206-fpga.md
+    v2/doc/350-bloom.md
 
-- how does a FPGA's architecture support either prefix trie search or
-  other prefix matching?
+- how does a bloom filter's architecture support byte sequence prefix
+  matching and completion?
 
 .stop
 

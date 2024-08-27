@@ -5,17 +5,25 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
+    v2/doc/207-vn-guest.md
+
+- imagine how a conventional operating system or application might be hosted
+  as a guest on promisegrid (pg).  i.e. how might a program written for von neumann
+  architecture map to the pg execution layer, if the pg memory is
+  based on sequence completion?
+
+.stop
+
+Out: 
     v2/doc/203-prior.md
+
 
 - add more prior art related to general computation via byte
   sequence completion in which the continuation is at the end of the
   sequence.
 
-.stop
-
 - explore in more depth the idea of the promisegrid kernel returning
   multiple completions to the caller
-
 
 - explore the idea of the caller providing its own exchange rate table
   to the promisegrid kernel, and the kernel selecting the best completion
@@ -31,12 +39,6 @@ Out:
 
 .stop
 
-Out: 
-    v2/doc/203-vn-guest.md
-
-- how would a conventional operating system or application be hosted
-  as a guest on promisegrid?  i.e. how does a program written for von neumann
-  architecture map to the pg execution layer?
 
 
 Revise v2/doc/348-trienode.md

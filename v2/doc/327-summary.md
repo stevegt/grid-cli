@@ -2,7 +2,7 @@
 
 ## PromiseGrid Byte Sequence Completion Overview
 
-PromiseGrid's byte sequence completion design enables efficient and dynamic interactions within a decentralized system. This approach focuses on completing sequences of bytes to interpret and execute tasks. Leveraging this method ensures robust message handling, modularity, and scalability.
+PromiseGrid's byte sequence completion design enables efficient and dynamic interactions within a decentralized system. This approach focuses on completing sequences of bytes to interpret and execute tasks and/or retrieve data. This method enables modularity and scalability in message handling, both on the wire and internally in a decentralized microkernel.
 
 ## Relationship to Turing Machines and Lambda Calculus
 

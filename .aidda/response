@@ -1,50 +1,69 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md
-```markdown
-# Side Effects in PromiseGrid
+### Table of Contents
 
-## Assumption of Side Effects
+1. [Introduction](#introduction)
+2. [Design Notes](#design-notes)
+3. [Module Integration](#module-integration)
+4. [Capability Tokens](#capability-tokens)
+5. [Data Flow and Sequence Matching](#data-flow-and-sequence-matching)
+6. [Inter-Process Communication (IPC)](#inter-process-communication-ipc)
+7. [Sequence Graphs](#sequence-graphs)
+8. [Hybrid DHT and Open Market](#hybrid-dht-and-open-market)
+9. [Persisting the Trie to Disk](#persisting-the-trie-to-disk)
+10. [Advanced Configuration](#advanced-configuration)
 
-In PromiseGrid, it is essential to assume that every call has a side effect, meaning it changes the state of the universe. This assumption is foundational because if a call had no side effect, there would be no reason to make it. Side effects are central to the functionality of PromiseGrid, as they represent the changes and actions that occur within the system through promise fulfillment.
+### Design Notes
 
-### Significance of Side Effects
+Includes detailed notes on the design philosophy and architectural principles guiding PromiseGrid. 
 
-Making promises and fulfilling them inherently implies state changes. When a promise is made, it sets the expectation that something will happen or some state will change once the promise is fulfilled. This change could be anything from updating a data record, sending a message, or modifying configuration settings. By design, these side effects are what drive the system forward and enable it to perform meaningful tasks.
+- [Design Overview](./doc/00.md)
+- [Discussion Notes](./doc/01.md)
 
-### Managing Side Effects
+### Module Integration
 
-To ensure that side effects are handled correctly, PromiseGrid employs several mechanisms:
-1. **Logging and Auditing**: Every promise and its resulting side effect are logged, allowing for a robust audit trail. This logging is crucial for maintaining accountability and tracing the effects of promises.
-2. **Consistency Checks**: The system regularly performs consistency checks to ensure that the state changes resulting from promises are coherent and do not result in conflicts.
-3. **Conflict Resolution**: When conflicts or inconsistencies are detected, specific modules or mechanisms are responsible for resolving them, ensuring that the system remains stable and reliable.
+Discusses strategies for effective module integration, ensuring modular, flexible, and decentralized processing.
 
-## Relationships Between Promises, Reputation, and Side Effects
+- [Cache and Module Handling](./doc/02.md)
+- [Advanced Discussions](./doc/03.md)
+- [Module Integration Concepts](./doc/04.md)
 
-In PromiseGrid, the interplay between promises, reputation, and side effects is critical. Each aspect influences and supports the others, creating a robust and self-regulating system.
+### Capability Tokens
 
-### Promise and Side Effect Guarantees
+Details the use and implementation of self-contained capability tokens in PromiseGrid. Tokens manage permissions and identity securely.
 
-When a module makes a promise, it implicitly guarantees that a particular side effect will occur upon fulfillment. This guarantee forms the basis for trust within the system. Users and other modules rely on these promises to function correctly, knowing that the promised side effects will be realized.
+- [Capability Tokens and Prior Art](./doc/150-capability-tokens.md)
 
-### Reputation as a Measure of Reliability
+### Data Flow and Sequence Matching
 
-Reputation in PromiseGrid acts as a measure of how reliably a module or node fulfills its promises and manages side effects. A high reputation indicates a history of successfully fulfilling promises and causing the expected side effects. Conversely, a low reputation signals frequent breakages of promises or inconsistent side effects, making the entity less trustworthy.
+Explores the techniques of sequence matching, data structures like tries and graphs, and their applications.
 
-#### How Reputation Affects Promises and Side Effects
+- [Introduction to Sequence Matching](./doc/200-sequence.md)
+- [Graph or Node-Based Representation](./doc/210-sequence-graph.md)
 
-1. **Decision Making**: Reputation impacts decision-making within the system. Nodes or modules with higher reputations are more likely to be chosen for critical tasks, as their side effects are deemed more reliable.
-2. **Priority Handling**: Promises from high-reputation entities can be prioritized, ensuring that their side effects are applied swiftly to maintain system efficiency.
-3. **Accountability**: Breakages in promises (i.e., unfulfilled side effects) negatively impact reputation, providing a self-regulating mechanism that discourages unreliable behavior.
+### Inter-Process Communication (IPC)
 
-### Promise and Side Effect Documentation
+Inter-Process Communication is critical for a microkernel architecture, facilitating communication between various modules or components within the PromiseGrid.
 
-For each promise, the associated side effects should be well-documented. This documentation includes a description of the expected state changes and any potential impact on other parts of the system. By clearly defining the side effects, the system ensures transparency and predictability, making it easier to trust and verify the promises made.
+- [IPC in PromiseGrid](./doc/320-ipc.md)
 
-### Example of Interplay:
+### Sequence Graphs
 
-Consider a scenario where a node promises to update a database record. The side effect of this promise would be the actual updating of the record. If the node consistently fulfills such promises, its reputation would improve, leading to more trust and potential prioritization in future tasks. Conversely, failing to update the record or causing inconsistencies would harm its reputation, making it less likely to be trusted with similar tasks.
+Details on implementing sequence matchers using graph-based structures within PromiseGrid.
 
-## Conclusion
+- [Sequence Matching Implementation](./doc/220-graph.md)
+- [Advanced Sequence Matching Concepts](./doc/221-graph.md)
 
-Assuming side effects are an inherent part of every call in PromiseGrid underscores the importance of promises and their fulfillment. The relationship between promises, reputation, and side effects creates a system where trust, reliability, and accountability are paramount. By ensuring side effects are managed and documented correctly, PromiseGrid maintains a robust and efficient framework for decentralized operations. 
+### Hybrid DHT and Open Market
+
+Combines DHT with an open market system to leverage decentralized storage and lookup efficiency.
+
+- [Hybrid DHT and Market Design](./doc/343-dht.md)
+- [Pure Market Design](./doc/344-market.md)
+
+### Persisting the Trie to Disk
+
+Describes various options for persisting the trie data structure to disk within PromiseGrid.
+
+- [Decentralized Trie](./doc/345-dtrie.md)
+- [Persistence Strategies](./doc/346-persist.md)
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/README.md

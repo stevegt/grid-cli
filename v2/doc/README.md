@@ -1,4 +1,4 @@
-## PromiseGrid v2 Documentation
+## PromiseGrid grid-cli v2 Documentation
 
 ### Table of Contents
 

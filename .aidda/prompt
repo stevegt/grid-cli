@@ -7,6 +7,7 @@ In:
 Out:
     v2/doc/README.md
 
+Update v2/doc/README.md:
 - update the table of contents
 - include links to all other markdown files
 

@@ -1,9 +1,8 @@
 # PromiseGrid Byte Sequence Completion Design
 
-
 ## PromiseGrid Byte Sequence Completion Overview
 
-PromiseGrid's byte sequence completion design enables efficient and dynamic interactions within a decentralized system. This approach focuses on completing sequences of bytes to interpret and execute tasks. Leveraging this method ensures robust message handling, modularity, and scalability. 
+PromiseGrid's byte sequence completion design enables efficient and dynamic interactions within a decentralized system. This approach focuses on completing sequences of bytes to interpret and execute tasks. Leveraging this method ensures robust message handling, modularity, and scalability.
 
 ## Relationship to Turing Machines and Lambda Calculus
 
@@ -25,22 +24,35 @@ PromiseGrid's byte sequence completion design enables efficient and dynamic inte
    - The byte sequence completion method shares similarities with GPT, where the next token (or byte) in a sequence is predicted based on the previous tokens. GPT models enhance the flow of natural language, while PromiseGrid enhances system interactions by completing byte sequences.
    - Both techniques rely on pattern recognition and context, ensuring coherent and meaningful outputs during predictions or completions.
 
+### Current Embedding Model Token Namespace
+
+OpenAI's current embedding model uses a token namespace where each token is represented by a 16-bit integer. This integer size allows for a token space of up to 65,536 unique tokens, providing a vast array of possible embeddings for language representations. 
+
 ## Universality of Byte Sequence Completion
 
 PromiseGrid's approach to byte sequence completion provides a universal method for computation:
 
 1. **Versatility**
    - Any computational task or function can be encoded as a sequence of bytes. The system's ability to interpret and complete these sequences ensures that various computational tasks can be handled dynamically.
+
+## PromiseGrid as a Superset of GPT-based LLMs
+
+Given that a byte is smaller than OpenAI's current token integer size, and considering that PromiseGrid's low-level computation model is byte sequence completion, it is conceivable that:
+
+1. **PromiseGrid Module as a GPT**
+   - A PromiseGrid module can be implemented as a Generative Pre-trained Transformer (GPT), enabling it to perform advanced language modeling and sequence prediction tasks within the grid.
    
+2. **Superset Capabilities**
+   - The grid as a whole is a superset of a GPT-based Large Language Model (LLM) in terms of completion algorithms. This means that PromiseGrid can handle not only language tasks but also a wide range of computational problems represented through byte sequences.
+
 ## Byte Sequence Messages for Network and Kernel Communications
 
 1. **Inter-Host Communication**
-   - Byte sequence messages are transmitted between hosts over the network.  The kernel itself does not know or care what the content or meaning of a sequence is -- the goal is simply completion.
+   - Byte sequence messages are transmitted between hosts over the network. The kernel itself does not know or care what the content or meaning of a sequence is -- the goal is simply completion.
 
 2. **Intra-Kernel Communication**
    - Within the kernel, byte sequence messages facilitate communication between modules. This modular approach ensures that tasks are delegated efficiently, with each module handling specific sequences.
-   - Modules themselves do know what a given sequence means, and can
-     complete and/or act accordingly.
+   - Modules themselves do know what a given sequence means, and can complete and/or act accordingly.
 
 ## Kernel IPC Design and Microkernels
 
@@ -53,7 +65,7 @@ PromiseGrid's Inter-Process Communication (IPC) design is influenced by concepts
    - Each module functions independently, akin to how services and drivers operate in microkernels. This modularity promotes scalability and maintainability, essential for decentralized systems.
    
 3. **Security and Efficiency**
-   - The capabilities-as-promises security model means modules make promises via messages, and fulfill them later when invoked by other messages
+   - The capabilities-as-promises security model means modules make promises via messages, and fulfill them later when invoked by other messages.
    - The "kernel only knows bytes" and "modules understand sequences" aligns with a microkernel's principle of providing minimal and secure core functionalities while delegating most tasks to user-space modules.
 
 ## Conclusion

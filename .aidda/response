@@ -1,3 +1,4 @@
+    
 File: /home/stevegt/lab/grid-cli/v2/doc/203-prior.md
 ```
 # Existing Examples of Projects, Methods, or Concepts Using Byte Sequence Completion for Computation
@@ -36,7 +37,6 @@ LDPC codes are a class of linear error-correcting codes that utilize sparse bipa
 
 - **Key Example**: Application in 5G cellular networks.
     - **Details**: LDPC codes represent data as sequences within a bipartite graph. These graphs are used to efficiently decode transmitted data, correcting errors caused by transmission noise.
-    - **Caller-Defined Tables**: Advanced LDPC systems may allow the customization of exchange rate tables by the caller, thus optimizing the decoding process based on specific criteria or constraints.
 
 ### Blockchain and Hash Functions
 Blockchain technology applies hash functions to sequences of data to create immutable ledgers. Each block in a blockchain uses the hash of the previous block's data, ensuring sequence integrity.
@@ -94,8 +94,10 @@ In other words, a bipartite graph is a "matching" graph where edges connect vert
 Markov Chains can be explored more in the context of PromiseGrid to investigate the potential use of reputation as Markov probabilities. In such a system:
 
 - **Reputation-Based Transition Probabilities**: Paths with higher reputation (probabilities) could represent more trustworthy or reliable completions.
+    - **Example**: A module with a higher reputation may have a higher probability of being selected for fulfilling promises.
     - **Example**: A kernel might return multiple completions; the completion with the highest reputation might be selected by the caller.
     - **Example**: A kernel might return multiple completions; the caller might use its own exchange-rate tables to calculate the reputation of each completion and select the one with the highest score.
+
 
 ### Computational Theory Behind Byte Sequence Continuation
 

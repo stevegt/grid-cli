@@ -95,6 +95,7 @@ Markov Chains can be explored more in the context of PromiseGrid to investigate 
     - **Example**: A kernel might return multiple completions; the completion with the highest reputation might be selected by the caller.
     - **Example**: A kernel might return multiple completions; the caller might use its own exchange-rate tables to calculate the reputation of each completion and select the one with the highest score.
 
+
 ### Computational Theory Behind Byte Sequence Continuation
 
 Byte sequence continuation works based on the principles of pattern recognition and matching, common in computational theory. These methods rely on previously seen sequences to predict or generate plausible continuations.

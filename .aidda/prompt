@@ -7,9 +7,11 @@ In:
 Out: 
     v2/doc/203-prior.md
 
-- do not remove existing text
 - explore in more depth the idea of the promisegrid kernel returning
   multiple completions to the caller
+
+.stop
+
 - explore the idea of the caller providing its own exchange rate table
   to the promisegrid kernel, and the kernel selecting the best completion
   accordingly

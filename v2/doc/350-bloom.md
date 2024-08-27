@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/350-bloom.md
-```
 # Bloom Filter Architecture for Byte Sequence Prefix Matching and Completion
 
 ## Overview
@@ -102,6 +100,3 @@ A Bloom filter is a space-efficient probabilistic data structure designed to tes
 ## Conclusion
 
 Implementing Bloom filters for byte sequence prefix matching and completion in PromiseGrid leverages their space and time efficiency properties. This improves the system's performance, reducing unnecessary queries and speeding up data retrieval. By carefully designing and integrating Bloom filters, PromiseGrid can handle large datasets efficiently while maintaining a balance between speed and accuracy for prefix matching and sequence completion tasks.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/350-bloom.md
-```

@@ -5,10 +5,12 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/350-bloom.md
+    v2/doc/203-prior.md
 
-- how does a bloom filter's architecture support byte sequence prefix
-  matching and completion?
+- is there any prior art related to general computation via byte
+  sequence completion?
+- what are some existing examples of projects, methods, or concepts
+  that use the completion of byte sequences to do computation?
 
 .stop
 

@@ -32,18 +32,15 @@ PromiseGrid's approach to byte sequence completion provides a universal method f
 1. **Versatility**
    - Any computational task or function can be encoded as a sequence of bytes. The system's ability to interpret and complete these sequences ensures that various computational tasks can be handled dynamically.
    
-2. **Consistency**
-   - The use of content-addressable storage and consistent hashing guarantees the integrity and consistency of interactions. This makes PromiseGrid's sequence completion method reliable across different contexts and tasks.
-
 ## Byte Sequence Messages for Network and Kernel Communications
 
 1. **Inter-Host Communication**
-   - Byte sequence messages are transmitted between hosts over the network. The promise-based approach ensures that messages are complete and verifiable, enhancing trust and security in decentralized communications.
-   - Sequence completion allows for dynamic adjustments and efficient routing of messages, ensuring optimal performance in networked environments.
+   - Byte sequence messages are transmitted between hosts over the network.  The kernel itself does not know or care what the content or meaning of a sequence is -- the goal is simply completion.
 
 2. **Intra-Kernel Communication**
    - Within the kernel, byte sequence messages facilitate communication between modules. This modular approach ensures that tasks are delegated efficiently, with each module handling specific sequences.
-   - The kernel's internal message handling benefits from the same principles of sequence completion, ensuring robust and flexible intra-kernel interactions.
+   - Modules themselves do know what a given sequence means, and can
+     complete and/or act accordingly.
 
 ## Kernel IPC Design and Microkernels
 

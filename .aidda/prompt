@@ -7,9 +7,11 @@ In:
 Out: 
     v2/doc/203-prior.md
 
-- is there any prior art related to general computation via byte
+- describe more prior art related to general computation via byte
   sequence completion in which the input sequence is assumed to be the
-  prefix of the desired sequence?
+  prefix of the desired sequence; e.g. DNA completion is at both ends
+  of the sequence, right?  what about only continuation at the tail
+  end?
 - what is the Hamiltonian path problem?
 - what is a sparse bipartite graph?
 - explore Markov Chains more in the context of promisegrid -- is it

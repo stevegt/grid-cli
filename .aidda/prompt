@@ -5,6 +5,14 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
+    v2/doc/README.md
+
+- update the table of contents
+- include links to all other markdown files
+
+.stop
+
+Out:
     v2/doc/327-summary.md
 
 - discuss the token namespace (integer bit size) of Openai's current

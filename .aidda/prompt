@@ -3,12 +3,17 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/
+    v2/doc/207-vn-guest.md
 Out: 
     v2/doc/207-vn-guest.md
 
-- imagine how deletions will work in a log-structured writeable
-  container layer hosted as byte sequence on pg 
+- imagine how file deletions will work in a log-structured writeable
+  container layer hosted as a byte sequence on pg.  i.e. how is
+  underlying disk space recovered when a large file is deleted?  is a
+  new sequence created?  is a layer perhaps represented as a sequence
+  of log hashes, such that if freed space is vacuumed, a new log gets
+  created and is able to be found by completing the sequence of log
+  hashes?
 
 .stop
 

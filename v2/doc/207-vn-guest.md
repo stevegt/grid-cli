@@ -89,10 +89,6 @@ PromiseGrid (PG) is a decentralized computation platform that diverges from trad
     - PromiseGrid ensures data integrity through content hashes, even when distributed across the host machine's memory and disk.
     - Combining deterministic access of Von Neumann memory with the consistency of content-addressable storage.
 
-## Conclusion
-
-PromiseGrid offers a unique approach to hosting conventional operating systems or applications as guests by leveraging byte sequence completion and decentralized storage. By mapping traditional Von Neumann functions to PromiseGrid's execution layer, it supports efficient data management and fault tolerance while maintaining flexibility and dynamic execution capabilities.
-
 ## Container Management on PromiseGrid
 
 PromiseGrid (PG) is a platform inspired by decentralized computation principles. This document explores how a container might be hosted as a guest on PromiseGrid. Specifically, we will investigate how container image layers could be stored and loaded as byte sequences, and how the container runtime could update the writable layer to provide persistent storage and container mobility across PromiseGrid nodes.

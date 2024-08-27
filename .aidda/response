@@ -1,6 +1,6 @@
-
+ 
 File: /home/stevegt/lab/grid-cli/v2/doc/203-prior.md
-```markdown
+```
 # Existing Examples of Projects, Methods, or Concepts Using Byte Sequence Completion for Computation
 
 Byte sequence completion as a computational method encompasses various interdisciplinary applications. This document explores notable examples and prior art in this domain, highlighting techniques and projects using byte sequences for general computation. The following sections will cover the key areas where byte sequence completion is applied.
@@ -56,3 +56,4 @@ The computational methodology of byte sequence completion is prevalent across di
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/203-prior.md
 ```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/203-prior.md

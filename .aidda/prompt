@@ -7,10 +7,8 @@ In:
 Out: 
     v2/doc/205-gpu.md
 
-- describe the basic principles of a GPU
-- how does a GPU differ from a CPU?
-- how does a GPU's architecture enable more efficient byte sequence
-  completion?
+- how does a GPU's architecture support either prefix trie search or
+  other prefix matching?
 
 .stop
 

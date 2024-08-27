@@ -7,19 +7,22 @@ In:
 Out: 
     v2/doc/203-prior.md
 
+- where is byte sequence completion in chomsky's hierarchy? is it more
+  capable than a FSM or DFA?
+
+.stop
+
 - describe more prior art related to general computation via byte
   sequence completion in which the input sequence is assumed to be the
   prefix of the desired sequence; e.g. DNA completion is at both ends
   of the sequence, right?  what about only continuation at the tail
   end?
+
 - explore in more depth the idea of returning multiple completions 
 - explore the idea of the caller providing its own exchange rate table
   to the kernel, and the kernel selecting the best completion
   accordingly
-- where is byte sequence completion in chomsky's hierarchy? is it more
-  capable than a FSM or DFA?
 
-.stop
 
 Out: 
     v2/doc/204-gpt.md

@@ -4,43 +4,43 @@ Byte sequence completion as a computational method encompasses various interdisc
 
 ## Prior Art Related to General Computation via Byte Sequence Completion
 
-### 1. DNA Computing
+### DNA Computing
 DNA computing is a form of computation that uses DNA, biochemistry, and molecular biology hardware instead of traditional electronic computing. DNA computing leverages the natural ability of DNA to form complementary base pairs to perform computational tasks.
 
 - **Key Example**: Leonard Adleman’s experiment on solving the Hamiltonian path problem using DNA molecules is a foundational example of using sequences (DNA strands) for computation.
     - **Details**: DNA strands representing possible solutions to the problem were combined in a test tube. Molecular biology techniques were then used to select the solution that satisfied the constraints of the Hamiltonian path problem.
 
-### 2. Genetic Algorithms
+### Genetic Algorithms
 Genetic algorithms use sequences (chromosomes) and apply operators such as mutation, crossover, and selection to evolve solutions to computational problems.
 
 - **Key Example**: John Holland's development of genetic algorithms in the 1960s and 1970s.
     - **Details**: Solutions are encoded as binary sequences (chromosomes). Through iteration, genetic algorithms apply crossover and mutation to generate new sequences, selecting the ones that best solve the given problem.
 
-### 3. Generative Pre-trained Transformers (GPT)
+### Generative Pre-trained Transformers (GPT)
 Generative Pre-trained Transformers (GPT) are AI models that generate human-like text based on input sequences. These models use tokens or byte sequences to predict the continuation of text sequences.
 
 - **Key Example**: OpenAI’s GPT-3.
     - **Details**: GPT-3 uses a transformer architecture to predict the next token in a sequence of text. The model is pre-trained on vast amounts of textual data to understand and generate natural language sequences.
 
-### 4. Reed-Solomon Codes
+### Reed-Solomon Codes
 Reed-Solomon codes are error-correcting codes used in digital data storage and transmission. These codes represent data as sequences of polynomial coefficients.
 
 - **Key Example**: Use in QR codes and compact discs (CDs).
     - **Details**: Data is encoded as a sequence of polynomial coefficients. Reed-Solomon codes can detect and correct errors by interpreting the sequence and applying algebraic techniques, ensuring data integrity in noisy channels.
 
-### 5. LDPC Codes (Low-Density Parity-Check Codes)
+### LDPC Codes (Low-Density Parity-Check Codes)
 LDPC codes are a class of linear error-correcting codes that utilize sparse bipartite graphs to represent sequences. They are highly efficient for error detection and correction in digital communication systems.
 
 - **Key Example**: Application in 5G cellular networks.
     - **Details**: LDPC codes represent data as sequences within a bipartite graph. These graphs are used to efficiently decode transmitted data, correcting errors caused by transmission noise.
 
-### 6. Blockchain and Hash Functions
+### Blockchain and Hash Functions
 Blockchain technology applies hash functions to sequences of data to create immutable ledgers. Each block in a blockchain uses the hash of the previous block's data, ensuring sequence integrity.
 
 - **Key Example**: Bitcoin's blockchain.
     - **Details**: Each block contains a hash of the previous block's header. This sequence of hashes creates a secure and immutable chain of data, ensuring the integrity and chronological order of transactions.
 
-### 7. Markov Chains
+### Markov Chains
 Markov chains model sequences of states with probabilities. They are used in various applications for predicting sequences based on the current state and historical data.
 
 - **Key Example**: Hidden Markov Models (HMM) in speech recognition.

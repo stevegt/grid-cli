@@ -7,8 +7,11 @@ In:
 Out: 
     v2/doc/203-prior.md
 
-- where is byte sequence completion in chomsky's hierarchy? is it more
-  capable than a FSM or DFA?
+- do not remove existing text
+- explore in more depth the idea of returning multiple completions 
+- explore the idea of the caller providing its own exchange rate table
+  to the kernel, and the kernel selecting the best completion
+  accordingly
 
 .stop
 
@@ -17,12 +20,6 @@ Out:
   prefix of the desired sequence; e.g. DNA completion is at both ends
   of the sequence, right?  what about only continuation at the tail
   end?
-
-- explore in more depth the idea of returning multiple completions 
-- explore the idea of the caller providing its own exchange rate table
-  to the kernel, and the kernel selecting the best completion
-  accordingly
-
 
 Out: 
     v2/doc/204-gpt.md

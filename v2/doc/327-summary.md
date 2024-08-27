@@ -53,7 +53,8 @@ PromiseGrid's Inter-Process Communication (IPC) design is influenced by concepts
    - Each module functions independently, akin to how services and drivers operate in microkernels. This modularity promotes scalability and maintainability, essential for decentralized systems.
    
 3. **Security and Efficiency**
-   - The promise-based method ensures secure and verifiable communications. Modules make and fulfill promises upon invocations, aligning with the microkernel's principle of providing minimal and secure core functionalities while delegating most tasks to user-space modules.
+   - The capabilities-as-promises security model means modules make promises via messages, and fulfill them later when invoked by other messages
+   - The "kernel only knows bytes" and "modules understand sequences" aligns with a microkernel's principle of providing minimal and secure core functionalities while delegating most tasks to user-space modules.
 
 ## Conclusion
 

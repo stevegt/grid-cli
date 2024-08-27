@@ -1,6 +1,5 @@
-<|vq_10178|>
 File: /home/stevegt/lab/grid-cli/v2/doc/README.md
-```
+```markdown
 ## PromiseGrid grid-cli v2 Documentation
 
 ### Table of Contents
@@ -70,5 +69,14 @@ Describes various options for persisting the trie data structure to disk within 
 
 - [Decentralized Trie](./doc/345-dtrie.md)
 - [Persistence Strategies](./doc/346-persist.md)
+
+### Advanced Configuration
+
+Additional configuration details for specialized use cases in PromiseGrid.
+
+- [Technical Overview of GPUs and Their Architecture](./doc/205-gpu.md)
+- [FPGA Architecture and Prefix Matching](./doc/206-fpga.md)
+- [Implementing Bloom Filters](./doc/350-bloom.md)
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/README.md
+```

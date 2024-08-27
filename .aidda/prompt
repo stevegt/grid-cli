@@ -5,9 +5,9 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/205-gpu.md
+    v2/doc/206-fpga.md
 
-- how does a GPU's architecture support either prefix trie search or
+- how does a FPGA's architecture support either prefix trie search or
   other prefix matching?
 
 .stop

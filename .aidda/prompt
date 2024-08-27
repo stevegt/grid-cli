@@ -7,17 +7,14 @@ In:
 Out:
     v2/doc/327-summary.md
 
-- Write a summary of promisegrid's byte sequence completion design, for
-  a less technical audience.
-- Mention the relationship between sequence completion, turing
-  machines, and lambda calculus
-- mention similarities to DNA and other techniques
-- mention the strong similarity to GPT
-- mention the universality of byte sequence completion
-- mention the use of byte sequence messages both between hosts over
-  the network and between modules in the kernel
-- mention the relationship between promisegrid's kernel IPC design and
-  the Mach and other microkernels
+- discuss the token namespace (integer bit size) of Openai's current
+  embedding model
+- discuss the fact that, if promisegrid's low-level computation model
+  is byt sequence completion, and if a byte is smaller than openai's
+  current token interger size, then it's concievable that (1) a
+  promisegrid module can be easily implemented as a GPT, and (2) the
+  grid as a whole is a superset of a GPT-based LLM in terms of
+  completion algorithms
 
 .stop
 

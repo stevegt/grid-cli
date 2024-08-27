@@ -1,6 +1,3 @@
-<blank line>
-File: /home/stevegt/lab/grid-cli/v2/doc/207-vn-guest.md
-```markdown
 # Hosting Conventional Operating Systems or Applications as Guests on PromiseGrid
 
 ## Introduction
@@ -95,7 +92,3 @@ PromiseGrid (PG) is a decentralized computation platform that diverges from trad
 ## Conclusion
 
 PromiseGrid offers a unique approach to hosting conventional operating systems or applications as guests by leveraging byte sequence completion and decentralized storage. By mapping traditional Von Neumann functions to PromiseGrid's execution layer, it supports efficient data management and fault tolerance while maintaining flexibility and dynamic execution capabilities.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/207-vn-guest.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/207-vn-guest.md

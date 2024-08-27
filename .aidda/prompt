@@ -7,10 +7,12 @@ In:
 Out: 
     v2/doc/207-vn-guest.md
 
-- imagine how a conventional operating system or application might be hosted
-  as a guest on promisegrid (pg).  i.e. how might a program written for von neumann
-  architecture map to the pg execution layer, if the pg memory is
-  based on sequence completion?
+- imagine how a container might be hosted as a guest on promisegrid
+  (pg).  i.e. how might the container's image layers be stored and
+  loaded as byte sequences?  how might the container runtime update
+  the writeable layer in order to provide persistent storage and
+  container mobility across pg nodes?  e.g. is a log-structured
+  filesystem approach a possible idea? 
 
 .stop
 

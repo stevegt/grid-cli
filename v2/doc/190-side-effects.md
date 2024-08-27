@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md
-```markdown
 # Side Effects in PromiseGrid
 
 ## Assumption of Side Effects
@@ -12,10 +10,8 @@ Making promises and fulfilling them inherently implies state changes. When a pro
 
 ### Managing Side Effects
 
-To ensure that side effects are handled correctly, PromiseGrid employs several mechanisms:
-1. **Logging and Auditing**: Every promise and its resulting side effect are logged, allowing for a robust audit trail. This logging is crucial for maintaining accountability and tracing the effects of promises.
-2. **Consistency Checks**: The system regularly performs consistency checks to ensure that the state changes resulting from promises are coherent and do not result in conflicts.
-3. **Conflict Resolution**: When conflicts or inconsistencies are detected, specific modules or mechanisms are responsible for resolving them, ensuring that the system remains stable and reliable.
+Axiom: Every call has a side effect.
+Axiom: Side effects are never fully known, because they can change state outside the system.
 
 ## Relationships Between Promises, Reputation, and Side Effects
 
@@ -23,7 +19,7 @@ In PromiseGrid, the interplay between promises, reputation, and side effects is 
 
 ### Promise and Side Effect Guarantees
 
-When a module makes a promise, it implicitly guarantees that a particular side effect will occur upon fulfillment. This guarantee forms the basis for trust within the system. Users and other modules rely on these promises to function correctly, knowing that the promised side effects will be realized.
+When a module makes a promise, it implicitly guarantees that a particular side effect will occur upon fulfillment. This guarantee forms the basis for trust within the system. Users and other modules rely on these promises to function correctly, knowing that the promised side effects should be realized.  XXX
 
 ### Reputation as a Measure of Reliability
 
@@ -46,5 +42,3 @@ Consider a scenario where a node promises to update a database record. The side 
 ## Conclusion
 
 Assuming side effects are an inherent part of every call in PromiseGrid underscores the importance of promises and their fulfillment. The relationship between promises, reputation, and side effects creates a system where trust, reliability, and accountability are paramount. By ensuring side effects are managed and documented correctly, PromiseGrid maintains a robust and efficient framework for decentralized operations. 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md

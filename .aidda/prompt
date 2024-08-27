@@ -4,6 +4,14 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out:
+    v2/doc/README.md
+
+- update the table of contents
+- include links to all other markdown files
+
+.stop
+
 Out: 
     v2/doc/190-side-effects.md
 
@@ -232,7 +240,3 @@ Revise 347-dtrie.md:
   kernel handles disk and network I/O.  the trie code does not import
   any opfs or afero library; file and network I/O are the
   responsibility of other microkernel services.
-
-Revise v2/doc/README.md: 
-- update the table of contents
-- include links to all other markdown files

@@ -12,12 +12,12 @@ Out:
   prefix of the desired sequence; e.g. DNA completion is at both ends
   of the sequence, right?  what about only continuation at the tail
   end?
-- what is the Hamiltonian path problem?
-- what is a sparse bipartite graph?
-- explore Markov Chains more in the context of promisegrid -- is it
-  possible that reputation is usable as markov probability?
-- what is the computational theory behind why byte sequence
-  continuation works?  why is it turing-complete or turing equivalent?
+- explore in more depth the idea of returning multiple completions 
+- explore the idea of the caller providing its own exchange rate table
+  to the kernel, and the kernel selecting the best completion
+  accordingly
+- where is byte sequence completion in chomsky's hierarchy? is it more
+  capable than a FSM or DFA?
 
 .stop
 

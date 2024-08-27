@@ -5,9 +5,20 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
+    v2/doc/205-gpu.md
+
+- describe the basic principles of a GPU
+- how does a GPU differ from a CPU?
+- how does a GPU's architecture enable more efficient byte sequence
+  completion?
+
+.stop
+
+Out: 
     v2/doc/204-gpt.md
 
 - show CUDA (not python) pseudocode for how byte sequence completion would work on a GPU 
+- would it use a trie structure in GPU RAM?
 
 .stop
 

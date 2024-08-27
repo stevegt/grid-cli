@@ -9,12 +9,14 @@ DNA computing is a form of computation that uses DNA, biochemistry, and molecula
 
 - **Key Example**: Leonard Adleman’s experiment on solving the Hamiltonian path problem using DNA molecules is a foundational example of using sequences (DNA strands) for computation.
     - **Details**: DNA strands representing possible solutions to the problem were combined in a test tube. Molecular biology techniques were then used to select the solution that satisfied the constraints of the Hamiltonian path problem.
+    - **Completion Mechanism**: DNA computing achieves completion at both ends of the sequence.
 
 ### Genetic Algorithms
 Genetic algorithms use sequences (chromosomes) and apply operators such as mutation, crossover, and selection to evolve solutions to computational problems.
 
 - **Key Example**: John Holland's development of genetic algorithms in the 1960s and 1970s.
     - **Details**: Solutions are encoded as binary sequences (chromosomes). Through iteration, genetic algorithms apply crossover and mutation to generate new sequences, selecting the ones that best solve the given problem.
+    - **Completion Mechanism**: In genetic algorithms, completion is typically focused on evolving sequences towards optimized solutions, normally targeting existing byte positions in the sequence, though there is a possibility that GA could be used to extend the tail or head.
 
 ### Generative Pre-trained Transformers (GPT)
 Generative Pre-trained Transformers (GPT) are AI models that generate human-like text based on input sequences. These models use tokens or byte sequences to predict the continuation of text sequences.
@@ -22,12 +24,14 @@ Generative Pre-trained Transformers (GPT) are AI models that generate human-like
 - **Key Example**: OpenAI’s GPT-3.
     - **Details**: GPT-3 uses a transformer architecture to predict the next token in a sequence of text. The model is pre-trained on vast amounts of textual data to understand and generate natural language sequences.
     - **Multiple Completions**: GPT models like GPT-3 can return multiple potential continuations of a given input, each with an associated likelihood. This feature allows for the exploration of different narrative possibilities or responses.
+    - **Completion Mechanism**: GPT models like GPT-3 focus on continuation at the tail end of the sequence, predicting subsequent tokens based on preceding context.
 
 ### Reed-Solomon Codes
 Reed-Solomon codes are error-correcting codes used in digital data storage and transmission. These codes represent data as sequences of polynomial coefficients.
 
 - **Key Example**: Use in QR codes and compact discs (CDs).
     - **Details**: Data is encoded as a sequence of polynomial coefficients. Reed-Solomon codes can detect and correct errors by interpreting the sequence and applying algebraic techniques, ensuring data integrity in noisy channels.
+    - **Completion Mechanism**: Reed-Solomon codes apply completion throughout the sequence to correct errors and restore the original data.
 
 ### LDPC Codes (Low-Density Parity-Check Codes)
 LDPC codes are a class of linear error-correcting codes that utilize sparse bipartite graphs to represent sequences. They are highly efficient for error detection and correction in digital communication systems.
@@ -40,6 +44,7 @@ Blockchain technology applies hash functions to sequences of data to create immu
 
 - **Key Example**: Bitcoin's blockchain.
     - **Details**: Each block contains a hash of the previous block's header. This sequence of hashes creates a secure and immutable chain of data, ensuring the integrity and chronological order of transactions.
+    - **Completion Mechanism**: Blockchain builds the sequence at the end of the chain.
 
 ### Markov Chains
 Markov chains model sequences of states with probabilities. They are used in various applications for predicting sequences based on the current state and historical data.
@@ -47,6 +52,7 @@ Markov chains model sequences of states with probabilities. They are used in var
 - **Key Example**: Hidden Markov Models (HMM) in speech recognition.
     - **Details**: HMMs model the sequence of spoken words based on the probabilities of transitions between phonemes. This allows the system to predict and recognize spoken language sequences accurately.
     - **Reputation as Markov Probabilities**: In a decentralized system like PromiseGrid, Markov probabilities may be tied to the reputation of nodes or modules, influencing the likelihood of selecting certain paths or completions based on historical performance.
+    - **Completion Mechanism**: Markov chains continue sequences at the tail end, using probabilistic methods to predict subsequent states.
 
 ## Byte Sequence Completion in the Chomsky Hierarchy
 
@@ -94,7 +100,6 @@ Markov Chains can be explored more in the context of PromiseGrid to investigate 
     - **Example**: A module with a higher reputation may have a higher probability of being selected for fulfilling promises.
     - **Example**: A kernel might return multiple completions; the completion with the highest reputation might be selected by the caller.
     - **Example**: A kernel might return multiple completions; the caller might use its own exchange-rate tables to calculate the reputation of each completion and select the one with the highest score.
-
 
 ### Computational Theory Behind Byte Sequence Continuation
 

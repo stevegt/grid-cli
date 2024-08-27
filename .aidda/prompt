@@ -7,11 +7,9 @@ In:
 Out: 
     v2/doc/203-prior.md
 
-- describe more prior art related to general computation via byte
-  sequence completion in which the input sequence is assumed to be the
-  prefix of the desired sequence; e.g. DNA completion is at both ends
-  of the sequence, right?  what about only continuation at the tail
-  end?
+- add more prior art related to general computation via byte
+  sequence completion in which the continuation is at the end of the
+  sequence.
 
 .stop
 

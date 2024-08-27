@@ -3,17 +3,16 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/207-vn-guest.md
+    v2/doc/
 Out: 
-    v2/doc/207-vn-guest.md
+    v2/doc/190-side-effects.md
 
-- imagine how file deletions will work in a log-structured writeable
-  container layer hosted as a byte sequence on pg.  i.e. how is
-  underlying disk space recovered when a large file is deleted?  is a
-  new sequence created?  is a layer perhaps represented as a sequence
-  of log hashes, such that if freed space is vacuumed, a new log gets
-  created and is able to be found by completing the sequence of log
-  hashes?
+- discuss side effects in promisegrid -- assume every call has a side
+  effect, i.e. changes the state of the universe, otherwise why call
+  it?
+- imagine a relationship between promises, reputation, and side
+  effects, e.g. is there a promise made about side effects or the lack
+  thereof?
 
 .stop
 
@@ -49,12 +48,6 @@ Revise v2/doc/348-trienode.md
 - the value of a promise is denominated in a personal currency,
   i.e. points issued by the requestor
 
-
-.stop
-
-
-discuss side effects -- assume every call has a side effect,
-i.e. changes the state of the universe, otherwise why call it?
 
 Out: 
     v2/doc/324-syscalls-sequences.md

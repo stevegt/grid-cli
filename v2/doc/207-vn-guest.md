@@ -131,11 +131,13 @@ In PromiseGrid, these layers would be stored and retrieved as follows:
 
 ### Log-Structured Filesystem for Writable Layer
 
-To provide a writeable layer for containers that enables persistent storage and mobility, a log-structured filesystem approach is a viable option. Here's how it can be implemented in PromiseGrid.
+To provide a writable layer for containers that enables persistent storage and mobility, a log-structured filesystem approach is a viable option. Here's how it can be implemented in PromiseGrid.
 
 1. **Log-structured Filesystem (LFS)**:
     - Changes to the filesystem (writes) are appended to a log rather than modifying files in place. This approach is efficient for capturing deltas and supports quick snapshots.
     - Logs can be segmented and stored as byte sequences, allowing distributed nodes to manage parts of the writable layer. 
+    - there is a superlog that lists the hashes of the logs in order;
+      this allows for space reclamation and log compaction.
 
 2. **Persistence**:
     - When a container writes data, the changes are captured in the log. This log is periodically committed and distributed to other nodes.
@@ -144,6 +146,11 @@ To provide a writeable layer for containers that enables persistent storage and 
 3. **Mobility**:
     - Containers can be moved across different nodes. Since the writable layer is managed via logs, the logs can be transferred to the new node, reassembling the filesystem state.
     - Log entries are content-addressed, allowing efficient transfer and reassembly.
+
+4. **Handling File Deletions**:
+    - When a large file is deleted, the associated space within the log is not immediately reclaimed.
+    - Periodic log compaction or vacuuming processes identify and remove stale log entries, creating new log segments.
+    - These new log segments are found by updating the sequence of log hashes, ensuring the integrity and continuity of the container's writable layer.
 
 ### Example Implementation
 
@@ -162,7 +169,12 @@ Imagine a container running a database with a writable layer storing its current
     - The log entries are transferred to the target node.
     - At the target node, the log is replayed to reassemble the writable layer, maintaining the state of the database.
 
+4. **File Deletion and Space Reclamation**:
+    - When a large file is deleted, the event is noted in the log.
+    - During scheduled compaction, the log identifies and removes the references to the deleted file.
+    - A new log segment is created, and the sequence of log hashes is updated, enabling the recovery of the underlying disk space.
+
 ## Conclusion
 
-Hosting conventional operating systems or applications as guests on PromiseGrid involves efficient handling of container image layers and managing a writeable layer. By storing image layers as byte sequences and using a log-structured filesystem for the writable layer, PromiseGrid can ensure persistent storage, efficient data retrieval, and container mobility. This decentralized approach leverages the strengths of PromiseGrid to provide robust and scalable container management.
+Hosting conventional operating systems or applications as guests on PromiseGrid involves efficient handling of container image layers and managing a writable layer. By storing image layers as byte sequences and using a log-structured filesystem for the writable layer, PromiseGrid can ensure persistent storage, efficient data retrieval, and container mobility. This decentralized approach leverages the strengths of PromiseGrid to provide robust and scalable container management.
 

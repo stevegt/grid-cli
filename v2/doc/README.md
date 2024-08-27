@@ -13,6 +13,8 @@
 9. [Persisting the Trie to Disk](#persisting-the-trie-to-disk)
 10. [Advanced Configuration](#advanced-configuration)
 
+## Introduction
+
 ### Design Notes
 
 Includes detailed notes on the design philosophy and architectural principles guiding PromiseGrid. 

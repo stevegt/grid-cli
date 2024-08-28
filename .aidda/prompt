@@ -7,8 +7,16 @@ In:
 Out:
     v2/doc/360-genetic-algo.md
 
-- imagine how a genetic algorithm process would work in the grid's
-  byte-sequence completion computing model
+Revise v2/doc/360-genetic-algo.md
+- consider the fact that, in a sequence-completion model of
+  computation, the sequence head will tend to be more stable than the
+  tail
+- consider the fact that, in promisegrid, we need the head of the
+  sequence to identify thr routing to the correct module that will
+  handle the rest of the sequence
+- perhaps the tail of a byte sequences is the DNA, while the head of a byte
+  sequence identifies the fitness function
+- imagine other ways of doing this
 
 .stop
 

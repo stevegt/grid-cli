@@ -8,16 +8,9 @@ Out:
     v2/doc/360-genetic-algo.md
 
 Revise v2/doc/360-genetic-algo.md:
-- improve the document
-- consider the fact that, in a sequence-completion model of
-  computation, a sequence head will tend to be more stable than the
-  tail
-- consider the fact that, in promisegrid, we need the head of the
-  sequence to identify thr routing to the correct module that will
-  handle the rest of the sequence
-- perhaps the tail of a byte sequences is the DNA, while the head of a byte
-  sequence identifies the fitness function
-- imagine other ways of doing this
+- different parts of the document conflict with each other; find and
+  reconcile those parts 
+- preserve the concept of a stable head and evolving tail
 
 .stop
 

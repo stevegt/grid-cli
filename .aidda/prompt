@@ -10,7 +10,6 @@ Out:
 Revise v2/doc/360-genetic-algo.md:
 - different parts of the document conflict with each other; find and
   reconcile those parts 
-- preserve the concept of a stable head and evolving tail
 
 .stop
 

@@ -35,10 +35,10 @@ In the context of PromiseGrid's byte-sequence completion model, genetic algorith
 ### Process Outline
 
 1. **Initialization**:
-   - Generate an initial population of random byte sequences.
+   - Generate an initial population of XXX
    
 2. **Fitness Evaluation**:
-   - Evaluate the fitness of each byte sequence (chromosome) using a predefined fitness function.
+   - Evaluate the fitness of each byte sequence (chromosome) using XXX
    
 3. **Selection**:
    - Select the best-fit sequences for reproduction based on their fitness scores.
@@ -50,204 +50,37 @@ In the context of PromiseGrid's byte-sequence completion model, genetic algorith
    - Introduce random modifications to certain byte sequences to preserve genetic diversity.
    
 6. **Completion and Evaluation**:
-   - Use byte-sequence completion to interpret and potentially execute the generated sequences.
+   - Use byte-sequence completion to interpret or execute the generated sequences.
    
 7. **Iteration**:
    - Repeat the fitness evaluation, selection, crossover, and mutation processes over several generations until a stopping criterion is met (e.g., a solution is found or a maximum number of generations is reached).
 
-### Detailed Example
 
-Here's a step-by-step example of how a genetic algorithm can be implemented in PromiseGrid's model:
+### Stability of Sequence Heads and Evolving Tails
+
+In PromiseGrid, the genetic algorithm process is designed to accommodate sequences by treating the head as stable and the tail as evolving:
+
+1. **Stable Head**:
+   - The head contains sequences that are less likely to change frequently. This stable component could define a key part of the application's logic or identify the fitness function.
+   
+2. **Evolving Tail**:
+   - The tail contains sequences subject to genetic operations (crossover and mutation). These parts evolve over successive generations to improve fitness.
+
+### Process Outline in PromiseGrid
 
 1. **Initialization**:
-    - Create a population of 100 random byte sequences, each consisting of 256 bytes.
-
-    ```go
-    import (
-        "crypto/rand"
-        "fmt"
-    )
-
-    func initializePopulation(size int, length int) [][]byte {
-        population := make([][]byte, size)
-        for i := range population {
-            population[i] = make([]byte, length)
-            rand.Read(population[i])
-        }
-        return population
-    }
-
-    func main() {
-        population := initializePopulation(100, 256)
-        fmt.Printf("Initial Population: %x\n", population)
-    }
-    ```
-
-2. **Fitness Evaluation**:
-    - Define a fitness function that assigns a score to each byte sequence based on a specific criterion (e.g., proximity to a target sequence).
-
-    ```go
-    func fitness(sequence []byte, target []byte) int {
-        score := 0
-        for i, b := range sequence {
-            if b == target[i] {
-                score++
-            }
-        }
-        return score
-    }
-
-    func main() {
-        target := []byte("target-sequence")
-        population := initializePopulation(100, 256)
-        for _, sequence := range population {
-            score := fitness(sequence, target)
-            fmt.Printf("Sequence: %x, Fitness: %d\n", sequence, score)
-        }
-    }
-    ```
-
-3. **Selection**:
-    - Select the top 50% of sequences based on their fitness scores for reproduction.
-
-    ```go
-    import "sort"
-
-    type Individual struct {
-        Sequence []byte
-        Fitness  int
-    }
-
-    func selectFittest(population [][]byte, target []byte) [][]byte {
-        individuals := make([]Individual, len(population))
-        for i, sequence := range population {
-            individuals[i] = Individual{Sequence: sequence, Fitness: fitness(sequence, target)}
-        }
-        sort.Slice(individuals, func(i, j int) bool {
-            return individuals[i].Fitness > individuals[j].Fitness
-        })
-        fittest := make([][]byte, len(population)/2)
-        for i := range fittest {
-            fittest[i] = individuals[i].Sequence
-        }
-        return fittest
-    }
-
-    func main() {
-        target := []byte("target-sequence")
-        population := initializePopulation(100, 256)
-        for generation := 0; generation < 100; generation++ {
-            population = selectFittest(population, target)
-            // Continue with crossover and mutation...
-        }
-    }
-    ```
-
-4. **Crossover**:
-    - Combine pairs of selected sequences to produce offspring.
-
-    ```go
-    func crossover(parent1, parent2 []byte) ([]byte, []byte) {
-        crossoverPoint := len(parent1) / 2
-        child1 := append(parent1[:crossoverPoint], parent2[crossoverPoint:]...)
-        child2 := append(parent2[:crossoverPoint], parent1[crossoverPoint:]...)
-        return child1, child2
-    }
-
-    func crossoverPopulation(population [][]byte) [][]byte {
-        offspring := make([][]byte, 0, len(population))
-        for i := 0; i < len(population); i += 2 {
-            child1, child2 := crossover(population[i], population[i+1])
-            offspring = append(offspring, child1, child2)
-        }
-        return offspring
-    }
-
-    func main() {
-        target := []byte("target-sequence")
-        population := initializePopulation(100, 256)
-        for generation := 0; generation < 100; generation++ {
-            population = selectFittest(population, target)
-            population = crossoverPopulation(population)
-            // Continue with mutation...
-        }
-    }
-    ```
-
-5. **Mutation**:
-    - Randomly mutate certain byte sequences.
-
-    ```go
-    func mutate(sequence []byte, mutationRate float64) {
-        for i := range sequence {
-            if rand.Float64() < mutationRate {
-                sequence[i] = byte(rand.Intn(256))
-            }
-        }
-    }
-
-    func mutatePopulation(population [][]byte, mutationRate float64) {
-        for _, sequence := range population {
-            mutate(sequence, mutationRate)
-        }
-    }
-
-    func main() {
-        target := []byte("target-sequence")
-        population := initializePopulation(100, 256)
-        mutationRate := 0.01
-        for generation := 0; generation < 100; generation++ {
-            population = selectFittest(population, target)
-            population = crossoverPopulation(population)
-            mutatePopulation(population, mutationRate)
-            // Evaluate fitness and repeat...
-        }
-    }
-    ```
-
-6. **Completion and Evaluation**:
-    - Use byte-sequence completion to interpret generated sequences.
-
-    ```go
-    func byteSequenceCompletion(sequence []byte) {
-        // Implement the completion logic here
-    }
-
-    func main() {
-        target := []byte("target-sequence")
-        population := initializePopulation(100, 256)
-        mutationRate := 0.01
-        for generation := 0; generation < 100; generation++ {
-            population = selectFittest(population, target)
-            population = crossoverPopulation(population)
-            mutatePopulation(population, mutationRate)
-            for _, sequence := range population {
-                byteSequenceCompletion(sequence)
-            }
-        }
-    }
-    ```
-
-## Byte Sequence Genetic Algorithm Application in PromiseGrid
-
-### Stability of Sequence Heads
-
-In the PromiseGrid model of computation, a sequence head tends to be more stable than the tail. This stability can be leveraged to identify the appropriate routing to the correct module that will handle the rest of the sequence.
-
-### Sequence Identification
-
-In PromiseGrid, the head of the sequence can identify the fitness function, while the tail can represent the DNA or the evolving part of the sequence.
-
-1. **Head Identification**:
-    - The head of the byte sequence can identify the fitness function or the specific module responsible for handling sequence completion.
+   - Generate initial byte sequences consisting of stable heads and evolving tails.
    
-2. **Tail DNA**:
-    - The tail of the byte sequence represents the evolving part of the sequence, which can be subjected to genetic operations like crossover and mutation.
+2. **Fitness Evaluation**:
+   - Evaluate the fitness based on the entire byte sequence, with special considerations given to the tail.
+   
+3. **Selection, Crossover, and Mutation**:
+   - Apply genetic operations primarily on the tail while preserving the stability of the head.
 
-### Application Example
+### Example Application
 
 1. **Initialization with Head and Tail**:
-    - Initialize byte sequences with a stable head representing the fitness function and a mutable tail for evolutionary operations.
+    - Initialize byte sequences with a stable head and a mutable tail for evolutionary operations.
 
     ```go
     func initializePopulationWithHead(size int, head []byte, tailLength int) [][]byte {
@@ -313,7 +146,7 @@ In PromiseGrid, the head of the sequence can identify the fitness function, whil
     }
 
     func crossoverWithHead(parent1, parent2, head []byte) ([]byte, []byte) {
-        crossoverPoint := len(parent1) / 2
+        crossoverPoint := len(head) + (len(parent1)-len(head))/2
         child1 := append(head, append(parent1[len(head):crossoverPoint], parent2[crossoverPoint:]...)...)
         child2 := append(head, append(parent2[len(head):crossoverPoint], parent1[crossoverPoint:]...)...)
         return child1, child2

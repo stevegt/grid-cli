@@ -1,5 +1,6 @@
+  
 File: /home/stevegt/lab/grid-cli/v2/doc/360-genetic-algo.md
-```markdown
+```
 # Genetic Algorithm Process in PromiseGrid's Byte-Sequence Completion Model
 
 ## Overview
@@ -232,24 +233,31 @@ Here's a step-by-step example of how a genetic algorithm can be implemented in P
 
 ## Byte Sequence Genetic Algorithm Application in PromiseGrid
 
-### Stability of Sequence Heads
+### Stability of Sequence Heads and Evolving Tails
 
-In the PromiseGrid model of computation, a sequence head tends to be more stable than the tail. This stability can be leveraged to identify the appropriate routing to the correct module that will handle the rest of the sequence.
+In PromiseGrid, the genetic algorithm process is designed to accommodate sequences by treating the head as stable and the tail as evolving:
 
-### Sequence Identification
-
-In PromiseGrid, the head of the sequence can identify the fitness function, while the tail can represent the DNA or the evolving part of the sequence.
-
-1. **Head Identification**:
-    - The head of the byte sequence can identify the fitness function or the specific module responsible for handling sequence completion.
+1. **Stable Head**:
+   - The head contains sequences that are less likely to change frequently. This stable component could define a key part of the application's logic or identify the fitness function.
    
-2. **Tail DNA**:
-    - The tail of the byte sequence represents the evolving part of the sequence, which can be subjected to genetic operations like crossover and mutation.
+2. **Evolving Tail**:
+   - The tail contains sequences subject to genetic operations (crossover and mutation). These parts evolve over successive generations to improve fitness.
 
-### Application Example
+### Process Outline in PromiseGrid
+
+1. **Initialization**:
+   - Generate initial byte sequences consisting of stable heads and evolving tails.
+   
+2. **Fitness Evaluation**:
+   - Evaluate the fitness based on the entire byte sequence, with special considerations given to the tail.
+   
+3. **Selection, Crossover, and Mutation**:
+   - Apply genetic operations primarily on the tail while preserving the stability of the head.
+
+### Example Application
 
 1. **Initialization with Head and Tail**:
-    - Initialize byte sequences with a stable head representing the fitness function and a mutable tail for evolutionary operations.
+    - Initialize byte sequences with a stable head and a mutable tail for evolutionary operations.
 
     ```go
     func initializePopulationWithHead(size int, head []byte, tailLength int) [][]byte {
@@ -315,7 +323,7 @@ In PromiseGrid, the head of the sequence can identify the fitness function, whil
     }
 
     func crossoverWithHead(parent1, parent2, head []byte) ([]byte, []byte) {
-        crossoverPoint := len(parent1) / 2
+        crossoverPoint := len(head) + (len(parent1)-len(head))/2
         child1 := append(head, append(parent1[len(head):crossoverPoint], parent2[crossoverPoint:]...)...)
         child2 := append(head, append(parent2[len(head):crossoverPoint], parent1[crossoverPoint:]...)...)
         return child1, child2
@@ -349,5 +357,7 @@ In PromiseGrid, the head of the sequence can identify the fitness function, whil
 ## Conclusion
 
 By leveraging PromiseGrid's byte-sequence completion computing model, genetic algorithms can be effectively implemented and optimized. The model's inherent stability in sequence heads enables efficient routing and module handling, while genetic operations applied to sequence tails allow for dynamic evolution of solutions. This approach offers a flexible, efficient, and scalable framework for evolutionary computing within a decentralized system.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/360-genetic-algo.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/360-genetic-algo.md

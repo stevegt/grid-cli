@@ -231,5 +231,3 @@ Here's a step-by-step example of how a genetic algorithm can be implemented in P
 ## Conclusion
 
 By leveraging PromiseGrid's byte-sequence completion computing model, genetic algorithms can be effectively implemented and optimized. This approach allows for flexible, efficient, and scalable evolutionary computing within a decentralized system.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/360-genetic-algo.md

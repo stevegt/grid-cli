@@ -7,9 +7,10 @@ In:
 Out:
     v2/doc/360-genetic-algo.md
 
-Revise v2/doc/360-genetic-algo.md
+Revise v2/doc/360-genetic-algo.md:
+- improve the document
 - consider the fact that, in a sequence-completion model of
-  computation, the sequence head will tend to be more stable than the
+  computation, a sequence head will tend to be more stable than the
   tail
 - consider the fact that, in promisegrid, we need the head of the
   sequence to identify thr routing to the correct module that will

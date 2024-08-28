@@ -5,13 +5,20 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
+    v2/doc/360-genetic-algo.md
+
+- imagine how a genetic algorithm process would work in the grid's
+  byte-sequence completion computing model
+
+.stop
+
     v2/doc/README.md
 
 Update v2/doc/README.md:
 - update the table of contents
 - include links to all other markdown files
 
-.stop
+
 
 Out:
     v2/doc/327-summary.md

@@ -35,10 +35,10 @@ In the context of PromiseGrid's byte-sequence completion model, genetic algorith
 ### Process Outline
 
 1. **Initialization**:
-   - Generate an initial population of XXX
+   - Generate an initial population of byte sequences, with each sequence consisting of stable heads and evolving tails.
    
 2. **Fitness Evaluation**:
-   - Evaluate the fitness of each byte sequence (chromosome) using XXX
+   - Evaluate the fitness of each byte sequence (chromosome) using the predefined fitness function that is referenced by the head.
    
 3. **Selection**:
    - Select the best-fit sequences for reproduction based on their fitness scores.
@@ -54,7 +54,6 @@ In the context of PromiseGrid's byte-sequence completion model, genetic algorith
    
 7. **Iteration**:
    - Repeat the fitness evaluation, selection, crossover, and mutation processes over several generations until a stopping criterion is met (e.g., a solution is found or a maximum number of generations is reached).
-
 
 ### Stability of Sequence Heads and Evolving Tails
 

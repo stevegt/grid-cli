@@ -5,11 +5,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/360-genetic-algo.md
+    v2/doc/203-markov.md
 
-Revise v2/doc/360-genetic-algo.md:
-- different parts of the document conflict with each other; find and
-  reconcile those parts 
+- imagine how a markov decision process would function using
+  promisegrid's byte sequence completion model
 
 .stop
 

@@ -22,6 +22,11 @@ func generateReadme(files []MarkdownFile) string {
 	sb.WriteString("## PromiseGrid grid-cli v2 Documentation\n\n")
 	sb.WriteString("### Table of Contents\n\n")
 
+	// - the table of contents is a markdown table with two columns: link and heading
+	// - the link is a markdown link to the file
+	sb.WriteString("| File | Subject |\n")
+	sb.WriteString("| ---- | ------- |\n")
+
 	for _, file := range files {
 		// Extract the first heading from the markdown file
 		// This will be used as the section title in the table of contents
@@ -32,15 +37,8 @@ func generateReadme(files []MarkdownFile) string {
 		}
 		// create the title and link for the markdown file
 		relativePath := strings.TrimPrefix(file.Path, "./")
-		// the line format is space-padded link followed by the heading
-		linkColWidth := 25
-		linkLen := len(file.Name)
-		padLen := linkColWidth - linkLen
-		Assert(padLen >= 0, "linkColWidth is too small")
-		pad := strings.Repeat(" ", padLen)
-		link := fmt.Sprintf("[%s](./%s)%s", file.Name, relativePath, pad)
-		line := fmt.Sprintf("- %-20s -- %s\n", link, heading)
-		//
+		link := fmt.Sprintf("[%s](./%s)", file.Name, relativePath)
+		line := fmt.Sprintf("| %s | %s |\n", link, heading)
 		sb.WriteString(line)
 	}
 

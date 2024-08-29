@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/203-markov.md
-```
 # Markov Decision Process Using PromiseGrid's Byte Sequence Completion Model
 
 ## Overview
@@ -20,7 +18,7 @@ An MDP is a mathematical framework for modeling decision-making situations where
 
 ### State Representation and Transition
 
-Each state in the MDP can be represented as a unique byte sequence. The transitions between states, driven by actions, are modeled through sequence completion, where actions modify the byte sequence to generate the next state.
+A sequence of states in an MDP can be represented as a sequence of bytes.  The bytes in the sequence can represent the transition functions and parameters that are used to reach each successive state.  Alternatively, a sequence of transitions can also be summarized (checkpointed) by a byte sequence that represents the ending state, or a hash of a larger blob that represents the ending state; the hash itself can be stored in the trie as a byte sequence, e.g. encoded using multibase and multihash.
 
 ### Sequence Completion for Actions
 
@@ -29,12 +27,15 @@ In PromiseGrid, actions in the MDP context correspond to completing byte sequenc
 ### Process Outline
 
 1. **State Initialization**:
-    - Initialize the MDP by defining the states as unique byte sequences.
-    - Assign each state a corresponding module or handler that will process state transitions.
+    - Initialize the MDP by defining the starting state as a unique byte sequence.
+    - Design or assign modules or handler that will process state transitions.
 
 2. **Action Execution**:
-    - Encode actions as modifications or additions to the byte sequences representing the states.
+    - Encode actions as the starting byte sequence, extended by the
+      transition function and parameters.
     - Use the sequence completion mechanism to apply actions and determine new states.
+    - Alternatively, the transition function might come first in the
+      byte sequence, and the previous state is a parameter to the transition function.
 
 3. **Transition and Reward**:
     - Define a transition function that maps current state-action pairs to new states using byte sequence completion.
@@ -137,6 +138,3 @@ Consider an example where an agent navigates a grid and receives rewards for rea
 ## Conclusion
 
 The Markov Decision Process implementation using PromiseGrid’s byte sequence completion model leverages the system’s decentralized, modular, and scalable framework to optimize decision-making. By representing states, actions, transitions, and rewards as byte sequences and utilizing dynamic sequence completion, PromiseGrid enables efficient and effective MDP solutions adaptable to various applications.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/203-markov.md
-```

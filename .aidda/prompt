@@ -7,8 +7,8 @@ In:
 Out:
     v2/doc/203-markov.md
 
-- imagine how a markov decision process would function using
-  promisegrid's byte sequence completion model
+Revise v2/doc/203-markov.md
+- find and resolve discrepancies in the document.
 
 .stop
 

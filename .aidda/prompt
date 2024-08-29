@@ -8,12 +8,8 @@ Out:
     v2/doc/347-dtrie.md
 
 Revise 347-dtrie.md:
-- treat lazy-loading a node from disk the same as lazy-loading a node
-  from a remote host over the network; both are IO-bound.  in both
-  cases, an in-memory trie miss generates a call via the kernel.  the
-  kernel handles disk and network I/O.  the trie code does not import
-  any opfs or afero library; file and network I/O are the
-  responsibility of other microkernel services.
+- describe how modules call back to the kernel to handle disk and
+  network I/O; model the behavior after existing microkernels
 
 
 .stop

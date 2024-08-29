@@ -1,85 +1,14 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/README/main.go
-```go
-package main
 
-import (
-	"os"
-	"io/ioutil"
-	"path/filepath"
-	"strings"
-	"fmt"
-)
-
-// Structure to hold information about a Markdown file
-type MarkdownFile struct {
-	Name string
-	Path string
-}
-
-// Function to generate a table of contents and links to all Markdown files
-func generateReadme(files []MarkdownFile) string {
-	var sb strings.Builder
-	sb.WriteString("## PromiseGrid grid-cli v2 Documentation\n\n")
-	sb.WriteString("### Table of Contents\n\n")
-
-	for _, file := range files {
-		// Create a link for each markdown file
-		relativePath := strings.TrimPrefix(file.Path, "./")
-		link := fmt.Sprintf("- [%s](./%s)\n", file.Name, relativePath)
-		sb.WriteString(link)
-	}
-
-	sb.WriteString("\n")
-
-	return sb.String()
-}
-
-// Function to recursively scan the directory and find all Markdown files
-func scanDirectory(directory string) ([]MarkdownFile, error) {
-	var files []MarkdownFile
-
-	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && filepath.Ext(path) == ".md" {
-			files = append(files, MarkdownFile{
-				Name: strings.TrimSuffix(info.Name(), filepath.Ext(info.Name())),
-				Path: path,
-			})
-		}
-		return nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return files, nil
-}
-
-func main() {
-	// Specify the root documentation directory
-	directory := "./"
-
-	// Scan the directory for Markdown files
-	files, err := scanDirectory(directory)
-	if err != nil {
-		fmt.Println("Error scanning directory:", err)
-		os.Exit(1)
-	}
-
-	// Generate the README content
-	readmeContent := generateReadme(files)
-
-	// Write the generated content to the README.md file
-	err = ioutil.WriteFile("README.md", []byte(readmeContent), 0644)
-	if err != nil {
-		fmt.Println("Error writing README.md:", err)
-		os.Exit(1)
-	}
-
-	fmt.Println("README.md successfully generated.")
-}
+File: /home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/README/main.go
+### Treating Lazy-Loading from Disk and Network 
+
+In the PromiseGrid system, lazy-loading a node from disk should be treated the same as lazy-loading a node from a remote host over the network; both are IO-bound operations. 
+
+- In both cases, an in-memory trie miss generates a call via the kernel.
+- The kernel handles disk and network I/O.
+- The trie code does not import any OPFS or `afero` library; file and network I/O are the responsibility of other microkernel services.
+
+This approach ensures that the trie code remains focused on its primary responsibility—efficiently managing in-memory trie data structures—while delegating I/O operations to dedicated microkernel services. This separation of concerns leads to cleaner, more maintainable code and leverages the existing microkernel services for handling diverse I/O operations.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/347-dtrie.md

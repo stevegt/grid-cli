@@ -5,57 +5,16 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/README/main.go
+    v2/doc/347-dtrie.md
 
-Write Go code that will examine all markdown documents and generate a
-README.md containing a table of contents and links to all markdown
-files.
+Revise 347-dtrie.md:
+- treat lazy-loading a node from disk the same as lazy-loading a node
+  from a remote host over the network; both are IO-bound.  in both
+  cases, an in-memory trie miss generates a call via the kernel.  the
+  kernel handles disk and network I/O.  the trie code does not import
+  any opfs or afero library; file and network I/O are the
+  responsibility of other microkernel services.
 
-.stop
-
-Out:
-    v2/doc/910-axioms.md
-
-- find all fundamental axioms in the input files, and list them in
-  910-axioms.md
-- only include axioms that are based on known and accepted theory in computer science, math, logic, etc.
-
-Extend 910-axioms.md:
-- add more promisegrid axioms; include only those axioms that are based on known and
-  accepted science
-
-
-
-.stop
-
-Create 920-assumptions.md
-
-Create 930-stories.md
-
-
-    v2/doc/README.md
-
-
-
-Out:
-    v2/doc/327-summary.md
-
-- discuss the token namespace (integer bit size) of Openai's current
-  embedding model
-- discuss the fact that, if promisegrid's low-level computation model
-  is byt sequence completion, and if a byte is smaller than openai's
-  current token interger size, then it's concievable that (1) a
-  promisegrid module can be easily implemented as a GPT, and (2) the
-  grid as a whole is a superset of a GPT-based LLM in terms of
-  completion algorithms
-
-.stop
-
-Out:
-    v2/doc/README.md
-
-- update the table of contents
-- include links to all other markdown files
 
 .stop
 
@@ -184,14 +143,6 @@ XIn: v2/doc/
 XOut: v2/doc/README.md 
     v2/doc/320-ipc.md 
 
-Revise 347-dtrie.md:
-- treat lazy-loading a node from disk the same as lazy-loading a node
-  from a remote host over the network; both are IO-bound.  in both
-  cases, an in-memory trie miss generates a call via the kernel.  the
-  kernel handles disk and network I/O.  the trie code does not import
-  any opfs or afero library; file and network I/O are the
-  responsibility of other microkernel services.
-
 Revise v2/doc/README.md: 
 - update the table of contents
 - include links to all other markdown files
@@ -287,3 +238,21 @@ Revise 347-dtrie.md:
   kernel handles disk and network I/O.  the trie code does not import
   any opfs or afero library; file and network I/O are the
   responsibility of other microkernel services.
+
+Out:
+    v2/doc/910-axioms.md
+
+- find all fundamental axioms in the input files, and list them in
+  910-axioms.md
+- only include axioms that are based on known and accepted theory in computer science, math, logic, etc.
+
+Extend 910-axioms.md:
+- add more promisegrid axioms; include only those axioms that are based on known and
+  accepted science
+
+
+
+Create 920-assumptions.md
+
+Create 930-stories.md
+

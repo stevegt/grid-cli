@@ -32,8 +32,16 @@ func generateReadme(files []MarkdownFile) string {
 		}
 		// create the title and link for the markdown file
 		relativePath := strings.TrimPrefix(file.Path, "./")
-		link := fmt.Sprintf("- [%s](./%s)\n", heading, relativePath)
-		sb.WriteString(link)
+		// the line format is space-padded link followed by the heading
+		linkColWidth := 25
+		linkLen := len(file.Name)
+		padLen := linkColWidth - linkLen
+		Assert(padLen >= 0, "linkColWidth is too small")
+		pad := strings.Repeat(" ", padLen)
+		link := fmt.Sprintf("[%s](./%s)%s", file.Name, relativePath, pad)
+		line := fmt.Sprintf("- %-20s -- %s\n", link, heading)
+		//
+		sb.WriteString(line)
 	}
 
 	sb.WriteString("\n")

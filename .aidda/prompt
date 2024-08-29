@@ -8,10 +8,6 @@ Out:
     v2/doc/910-axioms.md
 
 Revise 910-axioms.md:
-- update the cache axioms based on the assumption that the cache is a
-  byte sequence completion decentralized trie
-- revisit the accept and ant routing language given the newer focus on
-  byte sequence completion
 - remove axioms that are not based on known and accepted theory in computer
   science, math, logic, etc.
 

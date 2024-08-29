@@ -1,28 +1,44 @@
+
 File: /home/stevegt/lab/grid-cli/v2/doc/910-axioms.md
 ```
-# Axioms in PromiseGrid
+# Axioms 
 
 ## Definition of "Axiom"
 
 An axiom is a statement or proposition that is regarded as being established, accepted, or self-evidently true. In the context of PromiseGrid, axioms define the fundamental principles and assumptions upon which the system is built. These foundational truths guide the design, implementation, and operation of the PromiseGrid framework.
 
-### Example Axioms in PromiseGrid
+### Axioms in PromiseGrid
 
 1. **Decentralization Axiom**:
-   - The system must function without reliance on any single centralized control or authority, ensuring distributed ownership and operation.
+   - The system must function without reliance on any single centralized control or authority, enabling distributed ownership and operation.
 
 2. **Promise-Based Interaction Axiom**:
    - All interactions within the system are based on promises. A response to any action or request must itself be a promise.
 
 3. **Content-Addressable Storage Axiom**:
-   - Data and code within the system are addressed by their content rather than by their location or name, promoting integrity and consistency.
+   - Data and code within the system are addressed by their content rather than by their location or name.
 
 4. **Modularity Axiom**:
-   - The system is composed of modular components that can operate independently, yet coherently, within the framework.
-   
-5. **Security Axiom**:
-   - Security must be an inherent feature of the system, ensuring that all communications and data handling are conducted securely and reliably.
+   - The system is composed of modular components that can be developed and upgraded independently while maintaining interoperability.
 
-These axioms serve as the guiding principles behind the development and evolution of PromiseGrid, ensuring adherence to its core values and objectives.
+5. **Security and Integrity Axiom**:
+   - Security and data integrity must be ensured through robust cryptographic methods, including hashing and encryption for both data storage and communication.
+
+6. **Scalability and Performance Axiom**:
+   - The system must be designed for scalability, supporting efficient operation across a wide range of network sizes and performance requirements.
+
+7. **Dynamic Adaptation Axiom**:
+   - The system must support dynamic adaptation, enabling modules and nodes to update capabilities and configurations in response to changing conditions and demands.
+
+8. **Transparency and Auditability Axiom**:
+   - Actions within the system must be transparent and auditable, ensuring accountability through comprehensive logging and monitoring.
+
+9. **Efficiency Axiom**:
+   - Resource usage, including computation and storage, must be optimized to ensure efficiency, reducing overhead, and maximizing system performance.
+
+10. **Resilience and Fault Tolerance Axiom**:
+    - The system must be resilient to failures and include fault tolerance mechanisms to ensure continued operation and data availability despite node or network failures.
+
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/910-axioms.md
+```

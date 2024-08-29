@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/README/main.go
-```go
 package main
 
 import (
@@ -81,5 +79,3 @@ func main() {
 
 	fmt.Println("README.md successfully generated.")
 }
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/README/main.go

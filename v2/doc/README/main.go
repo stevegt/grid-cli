@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"os"
-	"io/ioutil"
 	"path/filepath"
 	"strings"
-	"fmt"
+
+	. "github.com/stevegt/goadapt"
 )
 
 // Structure to hold information about a Markdown file
@@ -21,15 +23,54 @@ func generateReadme(files []MarkdownFile) string {
 	sb.WriteString("### Table of Contents\n\n")
 
 	for _, file := range files {
-		// Create a link for each markdown file
+		// Extract the first heading from the markdown file
+		// This will be used as the section title in the table of contents
+		heading, err := extractFirstHeading(file.Path)
+		if err != nil {
+			fmt.Println("Error extracting first heading:", err)
+			os.Exit(1)
+		}
+		// create the title and link for the markdown file
 		relativePath := strings.TrimPrefix(file.Path, "./")
-		link := fmt.Sprintf("- [%s](./%s)\n", file.Name, relativePath)
+		link := fmt.Sprintf("- [%s](./%s)\n", heading, relativePath)
 		sb.WriteString(link)
 	}
 
 	sb.WriteString("\n")
 
 	return sb.String()
+}
+
+// Function to extract the first heading from a Markdown file
+func extractFirstHeading(path string) (string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	// Read the file line by line until we find a heading
+	var heading string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// get next line
+		line := scanner.Text()
+		if strings.HasPrefix(line, "#") {
+			// remove any leading whitespace and hash symbols
+			// - there may be more than one hash symbol; we want to
+			// remove all of them
+			heading = strings.TrimLeft(line, " #")
+			break
+		}
+	}
+	err = scanner.Err()
+	Ck(err)
+
+	if heading == "" {
+		heading = path
+	}
+
+	return heading, nil
 }
 
 // Function to recursively scan the directory and find all Markdown files
@@ -58,7 +99,7 @@ func scanDirectory(directory string) ([]MarkdownFile, error) {
 
 func main() {
 	// Specify the root documentation directory
-	directory := "./"
+	directory := os.Args[1]
 
 	// Scan the directory for Markdown files
 	files, err := scanDirectory(directory)
@@ -70,12 +111,6 @@ func main() {
 	// Generate the README content
 	readmeContent := generateReadme(files)
 
-	// Write the generated content to the README.md file
-	err = ioutil.WriteFile("README.md", []byte(readmeContent), 0644)
-	if err != nil {
-		fmt.Println("Error writing README.md:", err)
-		os.Exit(1)
-	}
-
-	fmt.Println("README.md successfully generated.")
+	// Write the generated content to stdout
+	fmt.Print(readmeContent)
 }

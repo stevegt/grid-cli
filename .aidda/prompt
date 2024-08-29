@@ -7,9 +7,16 @@ In:
 Out:
     v2/doc/910-axioms.md
 
-Revise 910-axioms.md:
-- remove axioms that are not based on known and accepted theory in computer
-  science, math, logic, etc.
+Create 910-axioms.md:
+- define "axiom"
+
+.stop
+
+- find all fundamental axioms in the input files, and list them in
+  910-axioms.md
+- only include axioms that are based on known and accepted theory in computer science, math, logic, etc.
+
+
 
 .stop
 

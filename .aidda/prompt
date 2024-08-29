@@ -7,8 +7,9 @@ In:
 Out:
     v2/doc/910-axioms.md
 
-Create 910-axioms.md:
-- define "axiom"
+Extend 910-axioms.md:
+- add more promisegrid axioms; include only those axioms that are based on known and
+  accepted science
 
 .stop
 

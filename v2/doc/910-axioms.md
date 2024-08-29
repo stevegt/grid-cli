@@ -1,6 +1,3 @@
-<blank line>
-File: /home/stevegt/lab/grid-cli/v2/doc/910-axioms.md
-```markdown
 # Fundamental Axioms in PromiseGrid
 
 This document lists the fundamental axioms that form the basis of the PromiseGrid architecture and operation, extracted from various design and discussion documents.
@@ -79,7 +76,3 @@ This document lists the fundamental axioms that form the basis of the PromiseGri
 ## Conclusion
 
 By integrating these fundamental axioms, PromiseGrid ensures a robust, flexible, and efficient system for decentralized governance and cooperation. This axiom-driven approach underpins the trust, scalability, and adaptability of PromiseGrid's architecture and operational mechanisms.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/910-axioms.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/910-axioms.md

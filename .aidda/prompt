@@ -5,12 +5,19 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/203-markov.md
+    v2/doc/910-axioms.md
 
-Revise v2/doc/203-markov.md
-- find and resolve discrepancies in the document.
+Create 910-axioms.md:
+- find all fundamental axioms in the input files, and list them in
+  910-axioms.md
+
 
 .stop
+
+Create 920-assumptions.md
+
+Create 930-stories.md
+
 
     v2/doc/README.md
 

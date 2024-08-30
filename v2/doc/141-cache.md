@@ -4,63 +4,85 @@
 
 In the PromiseGrid Kernel, caching and module handling are crucial for optimizing the retrieval and execution of data. This document outlines the strategies and implementation details for these systems, emphasizing their alignment with decentralized governance and microkernel architectural principles.
 
-## kernel services
+## Kernel Services
 
-- the kernel **MUST** provide a built-in cache for efficient data retrieval and storage.
-- the built-in cache **SHOULD** be loaded from embedded resources using Go's `embed` feature.
-- the built-in cache **MUST** include one or more modules (microkernel services) for handling filesystem and network access, dependent on which platform the kernel is running on (WASM, Linux, Windows, etc.)
+- The kernel **MUST** provide a built-in cache for efficient data retrieval and storage.
+- The built-in cache **SHOULD** be loaded from embedded resources using Go's `embed` feature.
+- The built-in cache **MUST** include one or more modules (microkernel services) for handling filesystem and network access, dependent on which platform the kernel is running on (WASM, Linux, Windows, etc.)
 - The filesystem module(s) **MAY** use the Origin Private File System (OPFS) for disk file access when running in WASM, and **MAY** use the `afero` library to abstract filesystem interactions.
 - The network module(s) **MAY** use XXX for network access when running in WASM, and **MAY** use the `net` package for network interactions when native.
 
 ## Cache Structures
 
-2. **Multiple Caches**:
-    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-    - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
+### Built-In and Modular Cache
+
+1. **Multiple Caches**:
+   - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+   - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
+
+2. **Filesystem Integration**:
+   - Non-sandboxed modules **MAY** use the Origin Private File System (OPFS) for disk file access.
+   - Non-sandboxed modules **MAY** utilize the `afero` library to abstract filesystem interactions, ensuring compatibility across different platforms.
 
 ## Treating Modules as Caches
 
+### Unified Interface for Cache and Function Calls
+
 1. **Role of Modules**:
-    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
+   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
+   - Modules **MAY** contribute to the cache or provide the requested data dynamically.
 
 2. **Unified Interface**:
-    - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as hashed function calls. The caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
+   - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completions. The caller sends a message consisting of a byte sequence and receives a message containing the remainder of the sequence.
+
+## internal channels, external function calls
+
+- internally, the kernel uses Go channels 
+- all modules communicate with the kernel using functions calls and
+  callbacks
+
 
 ## Acceptance and Promises
 
+### Acceptance as Promise
+
 1. **Acceptance Criteria**:
-    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
-    - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
+   - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
+   - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
 
-2. **Promises as Acceptance**:
-    - The `Accept` function returns a promise message that includes whether the module accepts the request and any relevant metadata. If `HandleMessage` fails, it is considered a broken promise.
+2. **Promise-Based Acceptance**:
+   - The `Accept` function returns a promise message including details on whether the module accepts the request and any relevant metadata. If `HandleMessage` fails, it is considered a broken promise.
 
-3. **Ant Routing Mechanism**:
-    - The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing. In the future, similar calls follow the same path to the same module.
-    - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
+### Ant Routing Mechanism
 
-## Integration with Church, Turing, and Chomsky's Concept of "Accept"
+3. **Dynamic Routing and Optimization**:
+   - The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing. Similar future calls follow the same paths to the same module.
+   - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
+
+## Integration with Computational Theory
+
+### Alignment with Church, Turing, and Chomsky's "Accept" Concept
 
 1. **Computational Theory**:
-    - The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory and languages, where an automaton or machine accepts an input if it reaches an accepting state.
-    - In PromiseGrid, modules act as recognizers for specific tasks based on the promise hash, module hash, and arguments.
+   - The term "accept" aligns with the computational theory usage (Church, Turing, Chomsky), where an automaton or machine accepts an input if it reaches an accepting state.
+   - In PromiseGrid, modules act as recognizers for specific tasks based on the promise hash, module hash, and arguments.
 
 2. **Promises All the Way Down**:
-    - The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
-    - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
+   - The "promises all the way down" concept integrates acceptance as a promise message, enhancing robustness and trustworthiness.
+   - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
 
 ## Kernel's Dynamic Syscall Tree
 
+### Dynamic and Optimized Message Routing
+
 1. **Syscall Tree and Acceptance History**:
-    - The acceptanceHist and syscallTable **SHOULD BE** the same. This dynamic syscall tree **SHOULD** store acceptance history for all modules.
-    - The kernel **SHOULD** store positive and negative acceptance history for all modules such that when it receives a message, it can look up which modules accept the leading parms, skip the modules that reject the leading parms, and call accepting modules, providing the full set of parms.
-    - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
-    - The kernel **MUST** route messages to the module whose syscall tree key matches the most leading parameter components, optimizing routing and reducing redundant checks.
+   - The kernel **SHOULD** use a dynamic syscall table to store both positive and negative acceptance histories for all modules.
+   - This table **SHOULD** start empty and be populated as the kernel handles messages, consulting built-in and other modules.
+   - Messages **MUST** be routed to the module whose syscall tree key matches the most leading parameters, optimizing routing efficiency and reducing redundant checks.
 
 ## Conclusion
 
-The design of caching, module handling, and promise-based acceptance in the PromiseGrid Kernel ensures a robust, flexible, and efficient system for decentralized governance and cooperation. By treating acceptance as a promise and integrating a hierarchical syscall tree with ant routing mechanisms, the kernel maintains trust, accountability, and optimized performance consistent with principles of computational theory and modular architecture.
+The PromiseGrid Kernel's design for caching, module handling, and promise-based acceptance ensures a robust, flexible, and efficient system for decentralized governance and cooperation. By treating acceptance as a promise and integrating a hierarchical syscall tree with ant routing mechanisms, the kernel maintains trust, accountability, and optimized performance, consistent with principles of computational theory and modular architecture.
 
 ## Q&A
 
@@ -68,7 +90,7 @@ The design of caching, module handling, and promise-based acceptance in the Prom
 
 - Are there any known microkernel architectures that use a capability-based security model? If so, how do they handle permissions and access control?
 
-Yes, there are known microkernel architectures that use a capability-based security model. One notable example is the **seL4** microkernel. 
+Yes, there are known microkernel architectures that use a capability-based security model. One notable example is the **seL4** microkernel.
 - **seL4**: It's a high-assurance, high-performance microkernel developed with a strong focus on security and formal verification. In seL4, capabilities are used to control access to kernel objects, providing fine-grained access control. These capabilities are unforgeable tokens that describe what operations can be performed on objects (such as memory segments, threads, and IPC channels). The kernel maintains the mapping and distribution of these capabilities, ensuring that only authorized entities can access and manipulate kernel resources.
 
 Handling Permissions and Access Control in **seL4**:
@@ -105,6 +127,8 @@ Microkernels interact with userland drivers through a well-defined communication
 
 In summary, userland drivers typically register with the kernel, which then maps their address spaces and sets up communication channels. These drivers can be dynamically loaded, allowing the kernel to extend its capabilities without needing to know about the driver specifics in advance.
 
+### Caches, Invocation, and Logging
+
 ### How do we know when we need to load a module from the cache, execute it, and store the result back in the cache?
 
 In the PromiseGrid Kernel, the determination of when to load a module from the cache, execute it, and store the result back in the cache follows a systematic approach:
@@ -119,20 +143,23 @@ In the PromiseGrid Kernel, the determination of when to load a module from the c
 
 By following this procedure, the PromiseGrid Kernel ensures efficient use of the cache while leveraging modular execution to handle cache misses. This approach harmonizes decentralized cache handling with the overall system's modular and promise-based architecture.
 
-### Cache features and capabilities 
+## Open Questions About Caching Mechanisms
 
 - Does the cache even need to know anything about modules, or is it just a simple nested key-value store?
 
-The cache in the PromiseGrid kernel is designed to be a simple nested key-value store that focuses on storing and retrieving messages based on their positional parameters. It does not need to be aware of the specifics of modules, promises, or protocols. Its primary role is to facilitate efficient retrieval of responses to hashed function calls, and it can be extended with capability-based security mechanisms if needed. The actual handling of permissions and validation of capabilities can be delegated to modules, maintaining a clean separation of concerns.
+The cache in the PromiseGrid kernel is designed to be a simple trie; facilitating the efficient completion of byte sequences. It is not
+necessary for the cache to know about the specifics of modules,
+promises, or protocols; it primarily manages the storage and retrieval of messages.
 
-## Open Questions
+- trie nodes should have a handlers slice
 
-- It sounds like a cache node struct might include a field that marks or flags the node as being an executable, an argument, or a result message. Is that a good design?  Or is it better to assume that the first key field is always an executable and the remaining fields are positional arguments?  
+### Example of How the System Can Handle Cache and Module Execution:
 
-- The cache stores messages intact, so the cache index tree is built from the message's positional parameters, starting with the first parameter in position zero, which we've been calling the promise hash. It appears that the cache knows very little about protocols, promises, or anything else other than the positional parameters of the message. The cache is a simple nested key-value store. The value is the message, and the key is the message's parameters.
-
-- As far as permissions and capabilities go, we might have a situation where a cache key or value is encrypted, and the cache node is unlocked by a capability. This would be a way to implement a capability-based security model; the capability would be a key that is used by the kernel to unlock the cache node.
-- Alternatively, the kernel knows nothing about capabilities, and it is up to modules to verify that the caller has the necessary permissions to access a resource. This would be a more traditional capability model, where the capability is a token that is passed to the module, and the module verifies the token before granting access to the resource.
+- **Message Processing Flow**:
+  - The system receives a message with a byte sequence.
+  - The leading bytes are used for cache lookup.
+  - On a cache miss, the kernel invokes the appropriate module to handle or complete the message.
+  - The result is stored back in the trie for future lookups.
 
 ### Example Conversation Flow
 
@@ -173,5 +200,4 @@ To illustrate how the cache and promise-based handling work in practice, let's c
     - The promise made by Node B to provide the weather data is fulfilled.
 
 In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests efficiently and reliably.
-
 

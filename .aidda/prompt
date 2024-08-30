@@ -5,19 +5,19 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
+    v2/doc/01.md
+
+- merge 141-cache.md into 01.md 
+- improve 01.md
+
+.stop
+
+Out:
     v2/doc/141-cache.md
 
 - merge 01.md into 141-cache.md
 - improve 141-cache.md
 
-
-.stop
-
-Out:
-    v2/doc/01.md
-
-- merge 141-cache.md into 01.md 
-- improve 01.md
 
 .stop
 

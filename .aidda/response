@@ -4,16 +4,9 @@ File: /home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
 
 ## Cache Design and Lookup
 - Refactor the cache design to use byte sequence completion for key management.
-  - Ensure conversion from `/`-separated cache keys to byte sequence completion.
+  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
   - Document the byte sequence management strategy.
 - Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
-  - Individual bytes represent components in the sequence.
-  - Ensure the cache mechanism supports URL-encoded arguments while converting them to byte sequences.
-
-## Hierarchical Syscall Tree
-- Redesign the syscall tree to leverage byte sequence completion.
-  - Cache sequences such that the completion of byte sequences aligns with routing to syscall handlers.
-  - Optimize tree traversal logic to efficiently handle byte sequence matches.
 
 ## Dynamic Acceptance History and Syscall Table
 - Revamp the acceptance history mechanism to track byte sequence completions.

@@ -2,7 +2,7 @@
 
 ## Cache Design and Lookup
 - Refactor the cache design to use byte sequence completion for key management.
-  - remove refernces to `/`-separated cache keys to byte sequence completion.
+  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
   - Document the byte sequence management strategy.
 - Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
 

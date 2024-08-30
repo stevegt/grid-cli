@@ -51,9 +51,9 @@
 | Genetic Algorithm Process in PromiseGrid's Byte-Sequence Completion Model | [360-genetic-algo](./360-genetic-algo.md) |
 | Axioms  | [910-axioms](./910-axioms.md) |
 | Goals  | [940-goals](./940-goals.md) |
+| TODO List for Implementing PromiseGrid Kernel | [999-TODO](./999-TODO.md) |
 | PromiseGrid Design | [DESIGN](./DESIGN.md) |
 | Cache and Module Handling in the PromiseGrid Kernel | [DISCUSS](./DISCUSS.md) |
 | README.md | [README](./README.md) |
-| TODO List for Implementing PromiseGrid Kernel | [TODO](./TODO.md) |
 | Cache and Promise Handling in the PromiseGrid Kernel | [cache](./cache.md) |
 

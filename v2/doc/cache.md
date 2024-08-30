@@ -6,10 +6,6 @@ In the PromiseGrid Kernel, caching and module handling are crucial for optimizin
 
 ## Cache Structures
 
-1. **Directory Tree Structure**:
-    - The cache **SHOULD BE** a directory tree rather than an in-memory map. This structure ensures persistent storage and efficient management of large datasets.
-    - Cache keys **MUST** use filesystem separators (`/`) between each key component, and arguments **MUST** be URL-encoded when building the cache key to handle special characters safely.
-
 2. **Multiple Caches**:
     - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
     - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.

@@ -8,10 +8,6 @@ This document consolidates advanced discussions from previous versions and integ
 
 The kernel MUST treat modules as caches. In the event of a cache miss, the kernel MUST consult one or more modules to retrieve the requested value.
 
-1. **Cache Keys**:
-    - The cache key MUST use filesystem separators (e.g., `/`) between each key component. Arguments MUST be URL-encoded when building the cache key to handle characters such as `/` that are unsafe in file or directory names.
-    - Example: A cache key might be `promiseHash/moduleHash/arg1/arg2`.
-
 2. **Consulting Modules as Caches**:
     - Modules act as part of the cache mechanism. On a cache miss, the kernel consults one or more modules to retrieve the requested value.
     - The cache lookup function takes multiple arguments: `promiseHash`, `moduleHash`, and zero or more arguments from the caller’s message.
@@ -23,7 +19,6 @@ In the context of the PromiseGrid Kernel, the cache plays a critical role in opt
 
 1. **Cache Structures**:
    - The cache **SHOULD BE** a directory tree rather than an in-memory map.
-   - Cache keys **MUST** use filesystem separators (`/`) between each key component and arguments **MUST** be URL-encoded when building the cache key, in order to safely handle characters in file or directory names.
    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
 
 2. **Integration with Modules**:
@@ -50,12 +45,9 @@ Integrating a module-based architecture for network communications ensures modul
 
 ### Ant Routing Mechanism: The Syscall Tree
 
-The syscall tree acts like an "ant routing" mechanism:
+The cache tree acts like an "ant routing" mechanism:
 
-1. **Hierarchy and Routing**:
-    - The syscall tree uses hierarchical keys. Each node in the tree represents a level of parameter matching.
     - On a cache miss, the kernel routes the message to the module whose syscall tree key matches the most leading parameter components.
-    - Example: If no exact match exists for `promiseHash/moduleHash/arg1/arg2`, but a node matches `promiseHash/moduleHash/arg1`, the kernel routes the message through that path.
 
 2. **Acceptance as a Promise**:
     - Modules define an `Accept()` function that encompasses the acceptance criteria for promises, module hashes, and arguments.

@@ -4,8 +4,16 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out:
+    v2/doc/999-TODO.md
 
-- which file is most similar to cache.md?
+- update TODO.md
+- list the files that need to be revised to replace the idea of 
+  /-separated cache keys with the byte sequence completion model
+
+.stop
+
+- merge 01.md into cache.md
 
 
 .stop

@@ -1,3 +1,5 @@
+ 
+File: /home/stevegt/lab/grid-cli/v2/doc/141-cache.md
 ```markdown
 # Cache and Promise Handling in the PromiseGrid Kernel
 
@@ -7,10 +9,14 @@ In the PromiseGrid Kernel, caching and module handling are crucial for optimizin
 
 ## Cache Structures
 
+1. **Directory Tree Structure**:
+    - The cache **SHOULD BE** a directory tree rather than an in-memory map. This structure ensures persistent storage and efficient management of large datasets.
+    - Cache keys **MUST** use filesystem separators (`/`) between each key component, and arguments **MUST** be URL-encoded when building the cache key to handle special characters safely.
+
 2. **Multiple Caches**:
     - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
     - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
-    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
+    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** use the `afero` library to abstract filesystem interactions.
 
 ## Treating Modules as Caches
 
@@ -166,10 +172,10 @@ To illustrate how the cache and promise-based handling work in practice, let's c
     - Node A receives the response message containing the current weather data for `Location X`.
     - The promise made by Node B to provide the weather data is fulfilled.
 
-In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests effic
-iently and reliably.
+In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests efficiently and reliably.
 
 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/cache.md
-```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/141-cache.md
+``` 
+EOF_/home/stevegt/lab/grid-cli/v2/doc/141-cache.md

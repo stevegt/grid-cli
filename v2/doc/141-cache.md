@@ -4,12 +4,19 @@
 
 In the PromiseGrid Kernel, caching and module handling are crucial for optimizing the retrieval and execution of data. This document outlines the strategies and implementation details for these systems, emphasizing their alignment with decentralized governance and microkernel architectural principles.
 
+## kernel services
+
+- the kernel **MUST** provide a built-in cache for efficient data retrieval and storage.
+- the built-in cache **SHOULD** be loaded from embedded resources using Go's `embed` feature.
+- the built-in cache **MUST** include one or more modules (microkernel services) for handling filesystem and network access, dependent on which platform the kernel is running on (WASM, Linux, Windows, etc.)
+- The filesystem module(s) **MAY** use the Origin Private File System (OPFS) for disk file access when running in WASM, and **MAY** use the `afero` library to abstract filesystem interactions.
+- The network module(s) **MAY** use XXX for network access when running in WASM, and **MAY** use the `net` package for network interactions when native.
+
 ## Cache Structures
 
 2. **Multiple Caches**:
     - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
     - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
-    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
 
 ## Treating Modules as Caches
 
@@ -165,7 +172,6 @@ To illustrate how the cache and promise-based handling work in practice, let's c
     - Node A receives the response message containing the current weather data for `Location X`.
     - The promise made by Node B to provide the weather data is fulfilled.
 
-In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests effic
-iently and reliably.
+In this flow, every message exchanged is a promise, an assertion of truth, and the system leverages the cache and modules to handle requests efficiently and reliably.
 
 

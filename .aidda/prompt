@@ -7,9 +7,9 @@ In:
 Out:
     v2/doc/999-TODO.md
 
-- update TODO.md
-- list the files that need to be revised to replace the idea of 
-  /-separated cache keys with the byte sequence completion model
+- update TODO.md based on the newer design of byte sequence
+  completion, replacing the idea of /-separated cache keys 
+- list the files that need to be revised 
 
 .stop
 

@@ -4,12 +4,8 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
-Out: 
-    v2/doc/347-dtrie.md
 
-Revise 347-dtrie.md:
-- describe how modules call back to the kernel to handle disk and
-  network I/O; model the behavior after existing microkernels
+- which file is most similar to cache.md?
 
 
 .stop

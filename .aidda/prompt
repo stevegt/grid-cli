@@ -9,8 +9,8 @@ Out:
 
 Discuss why WASM is a reasonable choice for implementing a
 module-based decentralized system incorporating both browser-based and
-standalone nodes.  Include a discussion of plugin architectures,
-particularly in Go.
+standalone nodes.  Include a discussion of why Go's native plugin
+architecture is less flexible, and how WASM is a better choice.
 
 .stop
 

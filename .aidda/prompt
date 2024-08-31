@@ -6,12 +6,17 @@ In:
     v2/doc/
 Out:
     v2/doc/200-sequence.md
+    v2/doc/999-TODO.md
 
 - improve the documentation
 - resolve or discuss inconsistencies and internal conflict
 - resolve or discuss illogical statements
 - add recommendations
 - add open questions
+
+Also, in 999-TODO.md, list the documents that are most similar to each
+other and that could be merged.  
+
 
 .stop
 

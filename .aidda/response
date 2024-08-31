@@ -1,4 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md
 ```markdown
 # Sequence Matchers and Their Implementations
 
@@ -189,5 +188,5 @@ In the context of sequence matching, a graph or node-based representation can pr
 
 Implementing a cache as a sequence matcher involves leveraging sophisticated data structures and algorithms to efficiently manage and retrieve sequences based on partial inputs. Drawing inspiration from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, can provide a robust foundation for this capability. The use of hashing algorithms, as illustrated by BLAST, enables rapid search and retrieval through efficient organization of sequences.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/200-sequence.md
 ```

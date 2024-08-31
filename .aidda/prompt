@@ -7,8 +7,11 @@ In:
 Out:
     v2/doc/380-kernel.md
 
-- imagine: does the kernel use Go channels internally, and functions and
-    callbacks to communicate with modules?
+Imagine answers to the following questions:
+- does the kernel use Go channels internally, and functions and
+  callbacks to communicate with modules?
+- what algorithms does the kernel include?
+- does the kernel know anything about capability tokens?
 
 .stop
 

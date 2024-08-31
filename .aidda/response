@@ -1,4 +1,4 @@
-Here is the complete file with the requested internal details of the PromiseGrid Kernel:
+Here is the requested file with the required changes:
 
 File: /home/stevegt/lab/grid-cli/v2/doc/380-kernel.md
 ```
@@ -95,4 +95,3 @@ The PromiseGrid kernel serves as the backbone of the system, managing core funct
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/380-kernel.md
-```

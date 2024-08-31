@@ -11,12 +11,12 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
 1. **Message Handling**:
     - The kernel is responsible for routing incoming messages based on their byte sequences. It ensures each message reaches the appropriate module for processing.
     - It employs a trie-based structure for efficient sequence matching and completion, dynamically adapting to new sequences and optimizing future lookups.
-    - **Caching**: The kernel dynamically handles message caching, ensuring rapid retrieval and minimized redundant processing.
+    - **Caching**: The kernel handles caching dynamically, ensuring rapid retrieval and minimized redundant processing.
 
 2. **Inter-Process Communication (IPC)**:
-    - Manages IPC mechanisms within the system, facilitating communication between different modules.
-    - Provides standardized ports for message passing, ensuring seamless interactions between various components.
-    - The kernel uses calls and callbacks to transfer messages between user-space modules and kernel services efficiently.
+    - Manages internal IPC mechanisms, facilitating communication between different modules using Go channels, functions, and callbacks.
+    - Ensures standardized ports for message passing, enabling seamless interactions between various components.
+    - The kernel employs calls and callbacks to transfer messages between user-space modules and kernel services efficiently.
     - **Ports Explained**: Each module is allocated standard ports analogous to stdin, stdout, and stderr at load time. Additionally, modules can dynamically request other ports as needed, and these ports serve as conduits for message-passing between modules. This setup ensures modularity and flexibility in communication.
 
 3. **Resource Management**:
@@ -37,6 +37,10 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
 6. **Promise Handling**:
     - Central to the system's functioning, the kernel handles promises made by modules. It maintains a record of promises, tracks their fulfillment, and manages broken promises.
     - **Promise Management**: The completion statuses and content of promises are stored within the trie, allowing efficient tracking and retrieval of promise states.
+
+7. **Algorithmic Functions**:
+    - The kernel includes essential algorithms for sequence matching, resource management, and security enforcement.
+    - **Integration**: These algorithms are executed internally to optimize the overall system performance.
 
 ### Delegation to Modules
 
@@ -69,6 +73,11 @@ While the kernel handles core functionalities, it delegates specific operations 
     - The kernel provides the infrastructure for running application-specific logic but does not implement the logic itself.
     - This logic resides within application modules and external services interfaced by these modules.
     - **Example**: Business logic for processing transactions is implemented in application modules, which the kernel invokes based on message sequences.
+
+4. **Capability Tokens**:
+    - The kernel does not manage capability tokens directly. Instead, modules handling security and authentication manage these tokens.
+    - The kernel ensures these modules have the necessary context and permissions to manage capability tokens securely.
+    - **Example**: A security module handles the issuance, validation, and revocation of capability tokens, while the kernel routes related requests to this module.
 
 ### Example Illustrations
 

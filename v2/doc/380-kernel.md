@@ -15,8 +15,8 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
 2. **Inter-Process Communication (IPC)**:
     - Manages IPC mechanisms within the system, facilitating communication between different modules.
     - Provides standardized ports for message passing, ensuring seamless interactions between various components.
-    - XXX describe ports
     - The kernel uses calls and callbacks to transfer messages between user-space modules and kernel services efficiently.
+    - **Ports Explained**: Each module is allocated standard ports analogous to stdin, stdout, and stderr at load time. Additionally, modules can dynamically request other ports as needed, and these ports serve as conduits for message-passing between modules. This setup ensures modularity and flexibility in communication.
 
 3. **Resource Management**:
     - Allocates and manages resources required for modules to function effectively.
@@ -25,18 +25,16 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
 4. **Security and Validation**:
     - Enforces security protocols to protect against unauthorized access and data tampering.
     - Validates the integrity of incoming messages and requests before routing them to the appropriate handlers.
-    - XXX why and how, or don't do it in the kernel
-    - XXX internal firewall, IPC message filter?
+    - **Security Implementation**: The kernel deploys an internal firewall and IPC message filter to scrutinize and validate messages, ensuring they meet predefined security criteria.
 
 5. **Cache Management**:
     - Implements and manages the system's cache, treating modules as caches and consulting them in the event of cache misses.
     - Ensures efficient data retrieval and storage by dynamically maintaining and updating the cache.
-    - XXX how?
+    - **Cache Mechanism**: The kernel uses a trie-based structure to manage cached data, indexing disk and network caches dynamically and hierarchically.
 
 6. **Promise Handling**:
     - Central to the system's functioning, the kernel handles promises made by modules. It maintains a record of promises, tracks their fulfillment, and manages broken promises.
-    - XXX how?
-    - Uses the trie-based structure to store and track promise completions efficiently.
+    - **Promise Management**: The completion statuses and content of promises are stored within the trie, allowing efficient tracking and retrieval of promise states.
 
 ### Delegation to Modules
 
@@ -71,14 +69,12 @@ While the kernel handles core functionalities, it delegates specific operations 
 1. **Cache Miss Handling**:
     - Upon a cache miss, the kernel does not fetch the requested data itself. Instead, it consults one or more modules that can provide the data dynamically.
     - Modules may then contribute the data back to the kernel, which updates the cache accordingly.
-    - XXX conflict:  does the kernel update its cache, or does the module update its own cache?
 
 2. **Error Logging and Handling**:
     - While the kernel may track and report errors, detailed logging and specific error handling processes are managed by modules.
-    - XXX example
-    - This separation ensures that the kernel remains lightweight and efficient while modules handle more complex error resolution tasks.
+    - **Example**: If a module fails to fulfill a promise, it sends an error message to the kernel's stderr equivalent port. The kernel logs this error and routes it to an appropriate error-handling module for resolution. This architecture ensures that error management remains modular and extensible.
 
 ## Conclusion
 
-The PromiseGrid kernel serves as the backbone of the system, managing core functionalities such as message handling, IPC, resource management, and promise handling. It delegates specific tasks like network communication, file access, and application logic to specialized modules, ensuring a modular and flexible architecture. By clearly defining its roles and responsibilities, the kernel ensures an efficient and scalable operation of the PromiseGrid system.
+The PromiseGrid kernel serves as the backbone of the system, managing core functionalities such as message handling, IPC, resource management, and promise handling. It delegates specific tasks like network communication, file access, and application logic to specialized modules, ensuring a modular and flexible architecture. By clearly defining its roles and responsibilities, the kernel ensures the efficient and scalable operation of the PromiseGrid system.
 

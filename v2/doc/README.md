@@ -7,6 +7,7 @@
 | Design and Discussion Notes | [001-design](./001-design.md) |
 | PromiseGrid Design | [002-design](./002-design.md) |
 | Cache and Module Handling in the PromiseGrid Kernel | [003-design](./003-design.md) |
+| Cache and Module Handling in the PromiseGrid Kernel | [004-discuss](./004-discuss.md) |
 | Design and Discussion Notes from All Files | [010-cache](./010-cache.md) |
 | Background and Evolution of the Project | [010-context](./010-context.md) |
 | Cache and Promise Handling in the PromiseGrid Kernel | [011-cache](./011-cache.md) |
@@ -28,7 +29,7 @@
 | Issues, Drawbacks, and Problems with the Byte-Sequence Completion Model | [209-issues](./209-issues.md) |
 | Sequence Matchers and Their Implementations | [210-sequence-graph](./210-sequence-graph.md) |
 | Sequence Matching Graph Documentation | [220-graph](./220-graph.md) |
-| 221-graph.md | [221-graph](./221-graph.md) |
+| Sequence Matching Graph for PromiseGrid | [221-graph](./221-graph.md) |
 | Synthesis of Concepts in PromiseGrid Design | [300-synthesis](./300-synthesis.md) |
 | Inter-Process Communication (IPC) in PromiseGrid | [320-ipc](./320-ipc.md) |
 | Mach Ports, Messages, and Message Format | [321-mach](./321-mach.md) |
@@ -51,9 +52,10 @@
 | PromiseGrid Trie Node Structure | [348-trienode](./348-trienode.md) |
 | Bloom Filter Architecture for Byte Sequence Prefix Matching and Completion | [350-bloom](./350-bloom.md) |
 | Genetic Algorithm Process in PromiseGrid's Byte-Sequence Completion Model | [360-genetic-algo](./360-genetic-algo.md) |
+| Module-Based Decentralized System Using WASM | [370-wasm](./370-wasm.md) |
+| PromiseGrid Kernel | [380-kernel](./380-kernel.md) |
 | Axioms  | [910-axioms](./910-axioms.md) |
 | Goals  | [940-goals](./940-goals.md) |
 | TODO List for Implementing PromiseGrid Kernel | [999-TODO](./999-TODO.md) |
-| Cache and Module Handling in the PromiseGrid Kernel | [DISCUSS](./DISCUSS.md) |
 | README.md | [README](./README.md) |
 

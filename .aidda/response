@@ -1,9 +1,6 @@
-You requested updates to your documentation, specifically to improve content based on resolving inconsistencies and adding open questions.
-Below is the updated documentation file.
 
-File: /home/stevegt/lab/grid-cli/160-hotswap.md
+File: /home/stevegt/lab/grid-cli/v2/doc/160-hotswap.md
 ```markdown
-
 ## Supercomputer and Mainframe Systems with Hot-Swappable Modules
 
 ### Overview
@@ -72,14 +69,5 @@ The concept of modules advertising their capabilities and degraded states upon f
 3. **Autonomy**: Modules operate autonomously but within the framework of the grid, supporting decentralized governance by allowing modules to self-manage and report.
 
 By integrating these concepts, PromiseGrid aligns with the principles of high-reliability systems while fostering a robust, self-governing, and adaptable decentralized computation grid.
-
-### Open Questions
-1. What are the key challenges in ensuring seamless dynamic reconfiguration in decentralized systems like PromiseGrid, and how can they be addressed?
-2. How can the self-reporting of degraded modes be optimized to minimize performance impacts and ensure timely system adjustments?
-3. What mechanisms can be implemented to validate and verify the capabilities and requirements advertised by newly added or reconfigured modules?
-4. How can the governance model be enhanced to better handle disputes or inconsistencies between modules regarding their capabilities or degraded states?
-5. Are there any security risks associated with the self-advertisement of modules, and what measures can mitigate these risks?
-
 ```
-EOF_/home/stevegt/lab/grid-cli/160-hotswap.md
-```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/160-hotswap.md

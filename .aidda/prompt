@@ -5,7 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/160-hotswap.md
+    v2/doc/150-capability-tokens.md
 
 Improve the documentation.  
 - resolve or discuss inconsistencies

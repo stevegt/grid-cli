@@ -1,4 +1,3 @@
-
 ## Supercomputer and Mainframe Systems with Hot-Swappable Modules
 
 ### Overview

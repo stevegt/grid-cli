@@ -8,6 +8,7 @@ Out:
     v2/doc/380-kernel.md
 
 - Improve the document
+- answer the issues marked with XXX
 - make technical recommendations
 - Discuss the role and responsibilities of the PromiseGrid kernel.
 - Include a discussion of what the kernel is *not* responsible for,

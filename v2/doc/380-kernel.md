@@ -15,7 +15,8 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
 2. **Inter-Process Communication (IPC)**:
     - Manages IPC mechanisms within the system, facilitating communication between different modules.
     - Provides standardized ports for message passing, ensuring seamless interactions between various components.
-    - XXX descibe ports
+    - XXX describe ports
+    - The kernel uses calls and callbacks to transfer messages between user-space modules and kernel services efficiently.
 
 3. **Resource Management**:
     - Allocates and manages resources required for modules to function effectively.

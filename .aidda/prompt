@@ -4,10 +4,21 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out:
+    v2/doc/320-ipc.md
+
+Replace channels with io.Readers. Discuss non-blocking reads of an
+io.Reader in Go.  Discuss how the kernal is able to balance resources
+used by modules by controlling message routing and io.Reader timeouts.
+
+.stop
 
 Which files most discuss using channels internally within the kernel?
 
-.stop
+1. `/home/stevegt/lab/grid-cli/v2/doc/320-ipc.md`
+2. `/home/stevegt/lab/grid-cli/v2/doc/323-syscalls.md`
+3. `/home/stevegt/lab/grid-cli/v2/doc/380-kernel.md`
+
 
 Out:
     v2/doc/410-zkp.md

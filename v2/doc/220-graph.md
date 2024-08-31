@@ -1,3 +1,4 @@
+
 ### Sequence Matching Graph Documentation
 
 #### 1. Overview
@@ -176,7 +177,3 @@ Consider a scenario where the input fragment is "CGTA":
 
 By following these steps, the PromiseGrid system can efficiently handle and match sequence fragments, even with unknown leading characters, ensuring robust sequence matching capabilities.
 
-This practical approach, combined with the theoretical foundations and implementation details, provides a comprehensive understanding of sequence matching within the PromiseGrid system.
-
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/220-graph.md

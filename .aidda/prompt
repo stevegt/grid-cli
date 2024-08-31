@@ -5,7 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/220-graph.md
+    v2/doc/300-synthesis.md
     v2/doc/999-TODO.md
 
 - improve the documentation

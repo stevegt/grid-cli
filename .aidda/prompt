@@ -7,7 +7,7 @@ In:
 Out:
     v2/doc/410-zkp.md
 
-- Do ZKPs always involve a challenge?
+- Do ZKPs always involve multiple challenge rounds?
 - Improve the example marked with XXX -- imagine a specific proof. 
 
 .stop

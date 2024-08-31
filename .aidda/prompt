@@ -7,8 +7,8 @@ In:
 Out:
     v2/doc/410-zkp.md
 
-Describe how zero-knowlege proofs work, using an Alice, Bob, Carol
-analogy.
+Add another example of how zero-knowlege proofs work, using a byte
+sequence completion scenario.
 
 .stop
 

@@ -4,12 +4,14 @@
 
 | Subject | File |
 | ---- | ------- |
-| Design and Discussion Notes | [00](./00.md) |
-| Design and Discussion Notes from All Files | [01](./01.md) |
+| Design and Discussion Notes | [001-design](./001-design.md) |
+| PromiseGrid Design | [002-design](./002-design.md) |
+| Cache and Module Handling in the PromiseGrid Kernel | [003-design](./003-design.md) |
+| Design and Discussion Notes from All Files | [010-cache](./010-cache.md) |
 | Background and Evolution of the Project | [010-context](./010-context.md) |
-| Cache and Module Handling in the PromiseGrid Kernel | [02](./02.md) |
-| Advanced Discussions on Caching, Promises, and Governance in PromiseGrid | [03](./03.md) |
-| Module Integration and Advanced Concepts | [04](./04.md) |
+| Cache and Promise Handling in the PromiseGrid Kernel | [011-cache](./011-cache.md) |
+| Advanced Discussions on Caching, Promises, and Governance in PromiseGrid | [013-cache](./013-cache.md) |
+| Module Integration and Advanced Concepts | [014-cache](./014-cache.md) |
 | Module Integration and Advanced Concepts | [140-cache](./140-cache.md) |
 | Capability Tokens and Prior Art | [150-capability-tokens](./150-capability-tokens.md) |
 | Supercomputer and Mainframe Systems with Hot-Swappable Modules | [160-hotswap](./160-hotswap.md) |
@@ -52,8 +54,6 @@
 | Axioms  | [910-axioms](./910-axioms.md) |
 | Goals  | [940-goals](./940-goals.md) |
 | TODO List for Implementing PromiseGrid Kernel | [999-TODO](./999-TODO.md) |
-| PromiseGrid Design | [DESIGN](./DESIGN.md) |
 | Cache and Module Handling in the PromiseGrid Kernel | [DISCUSS](./DISCUSS.md) |
 | README.md | [README](./README.md) |
-| Cache and Promise Handling in the PromiseGrid Kernel | [cache](./cache.md) |
 

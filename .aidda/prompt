@@ -7,8 +7,7 @@ In:
 Out:
     v2/doc/410-zkp.md
 
-Add another example of how zero-knowlege proofs work, using a byte
-sequence completion scenario.
+Improve the example marked with XXX -- imagine a specific proof.
 
 .stop
 

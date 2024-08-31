@@ -1,5 +1,34 @@
 # TODO List for Implementing PromiseGrid Kernel
 
+## General Improvements
+- Improve documentation clarity and consistency.
+- Resolve internal inconsistencies and discuss any remaining conflicts.
+- Add logical statements and recommendations in technical sections.
+- Include open-ended questions to provoke further discussion and exploration.
+
+## Documentation Refinements
+- Identify and resolve any conflicting information within the documentation.
+- Ensure all statements are logical and support the overall system architecture.
+- Add recommendations and best practices based on the current design.
+- List documents that are most similar and could be merged.
+
+## Sections to Merge
+- Merge similar documents for coherence and simplification:
+  - 001-design.md and 002-design.md: Both outline PromiseGrid’s design principles and core concepts.
+  - 003-design.md and 010-cache.md: Both focus on cache and module handling within PromiseGrid.
+  - 011-cache.md, 013-cache.md, and 014-cache.md: All discuss caching mechanisms and promise handling in-depth.
+  - 190-side-effects.md and 201-computable.md: Both explore theoretical aspects of PromiseGrid’s model.
+  - 207-vn-guest.md and 202-von-neumann.md: Discuss hosting conventional systems on PromiseGrid.
+
+## Detailed Task List
+- Review the documentation for:
+  - Logical flow and coherence.
+  - Consistency in terminology usage.
+- Resolve any discrepancies or conflicting ideas.
+- Detailed descriptions for some of the strategies and methods mentioned:
+  - Implement example-based explanations wherever possible.
+  - Provide case studies and visual aids to enhance understanding.
+
 ## Cache Design and Lookup
 - Refactor the cache design to use byte sequence completion for key management.
   - Remove references to `/`-separated cache keys and transition to byte sequence completion.

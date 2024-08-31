@@ -1,150 +1,85 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/003-design.md
+You requested updates to your documentation, specifically to improve content based on resolving inconsistencies and adding open questions.
+Below is the updated documentation file.
+
+File: /home/stevegt/lab/grid-cli/160-hotswap.md
 ```markdown
-## Cache and Module Handling in the PromiseGrid Kernel
 
-### Introduction
+## Supercomputer and Mainframe Systems with Hot-Swappable Modules
 
-In the PromiseGrid Kernel, caching and module handling are central to optimizing and managing the execution and storage of data. This document discusses the strategies and implementation details of these mechanisms, highlighting their alignment with decentralized governance and microkernel architecture principles.
+### Overview
 
-### Cache Structures
+Several advanced supercomputer and mainframe systems utilize hot-swappable, upgradeable modules that advertise their own capabilities and requirements upon insertion and self-describe their degraded modes when they encounter failures. These systems dynamically reconfigure themselves to accommodate new modules and can detect and respond to their removal.
 
-1. **Directory Tree Structure**:
-    - The cache **SHOULD BE** a directory tree rather than an in-memory map. This approach ensures persistent storage and efficient management of large datasets.
-    - Cache keys **MUST** use filesystem separators (`/`) between each key component, and arguments **MUST** be URL-encoded when building the cache key to handle special characters safely.
+### Examples of Systems
 
-2. **Multiple Caches**:
-    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-    - The kernel **SHOULD** load the built-in cache from embedded resources using Go's `embed` feature.
-    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
+1. **IBM zSeries Mainframes**:
+    - **Modular Design**: IBM's zSeries mainframes, such as the z14 and z15, use modular components for CPUs, memory, and I/O subsystems. These components are designed to be hot-swappable.
+    - **Dynamic Reconfiguration**: The system can dynamically reconfigure itself when a new module is added. The new module broadcasts its capabilities (e.g., processing power, memory capacity) to the system.
+    - **Failure Management**: When a module fails, it advertises its degraded state, and the system responds by rerouting tasks to operational modules. This ensures continuous operation without significant performance degradation.
+    - **Capabilities and Requirements**: Upon insertion, modules advertise their capabilities and requirements, such as power consumption and cooling needs, enabling the system to adjust resource allocation dynamically.
 
-### Treating Modules as Caches
+2. **Cray XC Series Supercomputers**:
+    - **Hot-Swappable Blades**: Cray's XC series supercomputers use hot-swappable blades for computational and networking tasks.
+    - **Dynamic System Configuration**: The system's software layer dynamically recognizes and configures new blades, integrating them into the computational framework seamlessly.
+    - **Degraded Mode Advertisement**: Components in the Cray XC series automatically report failures and their new operational status. The system adjusts workloads and schedules maintenance as needed.
+    - **Resource Advertisement**: Each blade communicates its processing capabilities and networking requirements upon connection, facilitating optimal system performance and resource utilization.
 
-1. **Role of Modules**:
-    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
+3. **HPE Superdome Flex**:
+    - **Upgradeable Modules**: HPE's Superdome Flex servers support hot-swappable modules for CPUs, memory, and I/O, allowing for easy upgrades and maintenance.
+    - **Self-Configuration**: The system automatically recognizes new modules, integrates their capabilities, and reconfigures to maximize efficiency.
+    - **Fault Tolerance**: When a module fails, it signals its degraded mode to the system. Remaining modules redistribute tasks and maintain service continuity.
+    - **Capability Advertisement**: Modules advertise their capabilities (e.g., compute power, memory size) and resource requirements, allowing the system to balance loads and allocate resources effectively.
 
-2. **Unified Interface**:
-    - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as hashed function calls. The caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
+### Dynamic Reconfiguration and Removal Detection
 
-### Acceptance and Promises
-
-1. **Acceptance Criteria**:
-    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
-    - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
-
-2. **Promises as Acceptance**:
-    - The `Accept` function returns a promise message that includes whether the module accepts the request and any relevant metadata. If `HandleMessage` fails, it is considered a broken promise.
-
-3. **Ant Routing Mechanism**:
-    - The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing. In the future, similar calls follow the same path to the same module.
-    - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
-
-### Integration with Church, Turing, and Chomsky's Concept of "Accept"
-
-1. **Computational Theory**:
-    - The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory and languages, where an automaton or machine accepts an input if it reaches an accepting state.
-    - In PromiseGrid, modules act as recognizers for specific tasks, based on the promise hash, module hash, and arguments.
-
-2. **Promises All the Way Down**:
-    - The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
-    - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
-
-### Kernel's Dynamic Syscall Tree
-
-1. **Syscall Table and Acceptance History**:
-    - The kernel **SHOULD** use a dynamic syscall table to store positive and negative acceptance history for all modules.
-    - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
-    - The kernel **MUST** route messages to the module whose syscall table key matches the most leading parameters components, optimizing routing and reducing redundant checks.
-
-### Combining Accept and HandleMessage Functions
-
-#### Pros and Cons of Separate `Accept()` and `HandleMessage()` Functions versus a Single Function
-
-##### Combined Function:
-
-1. **Simplicity**: Combines decision-making and handling into a single function.
-2. **Consistency**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency and reducing logic duplication.
-3. **Efficiency**: Eliminates redundant checks by combining acceptance and handling.
-
-##### Separate Functions:
-
-1. **Clarity**: Maintains clear separation between decision-making and handling logic.
-2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
-3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
-
-### Acceptance as Promise
-
-Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
-
-1. **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the message.
-2. **Handling as Promise Fulfillment**: `HandleMessage` attempts to fulfill this promise. If it fails (breaking the promise), it is logged and handled appropriately.
-
-### Proposed Dynamic Syscall Table and Ant Routing
-
-Implementing a dynamic syscall table with ant routing involves:
-
-1. **Hierarchical Syscall Tree**: Each node in the tree can have multiple children representing different components of the parameters (`parms`).
-2. **Caching Successful Paths**: Cache successful paths to optimize future routing based on leading parameter sequences.
-3. **Populating During Operation**: The syscall tree starts empty and is populated during operation as modules accept and handle messages.
-
-### Examples of Unified and Separate Function Approaches
-
-**Combined Function:
-
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to process message, which includes accepting and handling
-    // Return a promise message with acceptance and handling results or errors
-}
-```
-
-**Separate Functions:
-
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to accept or reject based on parms
-}
-
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic to handle the message following acceptance
-}
-```
+- **Insertion and Self-Advertisement**: When a new module is inserted, it sends a message to the system controller, advertising its capabilities, such as processing speed, memory size, and other resources. It also specifies its operational requirements, like power and cooling needs.
+- **Dynamic System Reconfiguration**: The system controller dynamically updates the system configuration to utilize the new module fully. This might involve redistributing workloads, updating internal routing tables, or reallocating memory.
+- **Degraded Modes and Failure Handling**: If a module fails, it sends a degraded mode message to the system controller, describing its reduced capabilities. The controller then reroutes tasks from the failed module to other operational modules to maintain performance and reliability.
+- **Module Removal Detection**: When a module is removed, it signals its disengagement to the system controller. The controller then adjusts the system configuration to operate without the module, redistributing tasks and resources as needed to prevent service interruption.
 
 ### Conclusion
 
-By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
+The use of hot-swappable, upgradeable modules in supercomputer and mainframe systems like IBM zSeries, Cray XC, and HPE Superdome Flex highlights the importance of dynamic reconfiguration and real-time failure management. These capabilities ensure high availability, scalability, and efficient resource utilization, making them essential for modern computational requirements.
+
+## Deferred System Comparison
+
+### Hot-Swappable, Upgradeable Modules
+
+PromiseGrid modules are analogous to systems used in high-reliability environments like supercomputers or mainframe systems. These systems employ hot-swappable, upgradeable modules designed for continuous operation and flexibility. Here’s how PromiseGrid aligns with these concepts:
+
+1. **Module Capabilities and Requirements**:
+    - In supercomputers and mainframe systems, modules advertise their capabilities and requirements upon insertion.
+    - Similarly, PromiseGrid modules advertise their own capabilities (e.g., functions they can perform) and requirements (e.g., resources needed) upon activation or registration within the grid.
+
+2. **Degraded Modes and Failure Management**:
+    - High-reliability systems can continue operating in a degraded mode when a module fails, advertising this degraded state for system-wide awareness.
+    - PromiseGrid modules also advertise their degraded modes in case of failure, allowing the grid to adjust dynamically. This ensures that the grid remains operational even when parts of it are in failure.
+
+3. **Dynamic Reconfiguration**:
+    - Supercomputers and mainframe systems support dynamic reconfiguration to integrate or remove modules without shutting down.
+    - PromiseGrid supports dynamic module registration and deregistration, allowing the grid to adapt to changes in real-time without requiring a complete restart.
+
+4. **Hot-Swapping**:
+    - Hot-swapping involves replacing or adding modules to a system without interrupting its operation.
+    - PromiseGrid allows the dynamic inclusion of modules, enabling seamless updates and scaling without disrupting ongoing processes.
+
+### Governance and Trust
+
+The concept of modules advertising their capabilities and degraded states upon failure in PromiseGrid ties into broader themes of governance and trust:
+
+1. **Transparency**: Modules providing detailed capability and status information promotes transparency within the grid.
+2. **Trust**: Trust relationships are reinforced as modules self-report their state, ensuring that the grid can rely on accurate, real-time information for decision-making.
+3. **Autonomy**: Modules operate autonomously but within the framework of the grid, supporting decentralized governance by allowing modules to self-manage and report.
+
+By integrating these concepts, PromiseGrid aligns with the principles of high-reliability systems while fostering a robust, self-governing, and adaptable decentralized computation grid.
 
 ### Open Questions
-
-- How can we best handle broken promises effectively?
-- What are the most efficient methods to determine the best route when multiple handlers are available?
-- How should we reconcile byte sequence completion with explicit registration and hash-based routing?
+1. What are the key challenges in ensuring seamless dynamic reconfiguration in decentralized systems like PromiseGrid, and how can they be addressed?
+2. How can the self-reporting of degraded modes be optimized to minimize performance impacts and ensure timely system adjustments?
+3. What mechanisms can be implemented to validate and verify the capabilities and requirements advertised by newly added or reconfigured modules?
+4. How can the governance model be enhanced to better handle disputes or inconsistencies between modules regarding their capabilities or degraded states?
+5. Are there any security risks associated with the self-advertisement of modules, and what measures can mitigate these risks?
 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/003-design.md
+EOF_/home/stevegt/lab/grid-cli/160-hotswap.md
 ```

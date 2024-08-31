@@ -1,1 +1,129 @@
-The file `/home/stevegt/lab/grid-cli/v2/doc/001-design.md` is most similar to the file `/home/stevegt/lab/grid-cli/v2/doc/002-design.md`. Both files cover the design and core concepts of PromiseGrid, including its decentralized architecture, capability-as-promise model, and the modular approach of non-sandboxed modules. They overlap significantly in terms of outlining the kernel's dynamic syscall tree, cache structures, and handling in PromiseGrid. Additionally, both documents discuss the integration of Church, Turing, and Chomsky's concept of "Accept" in the context of computational theory. While there are differences in some sections and levels of detail, their focus and thematic content are closely aligned, making `/home/stevegt/lab/grid-cli/v2/doc/002-design.md` the most similar to `/home/stevegt/lab/grid-cli/v2/doc/001-design.md`.
+File: /home/stevegt/lab/grid-cli/v2/doc/002-design.md
+```markdown
+# PromiseGrid Design
+
+## Overview
+
+PromiseGrid is designed as a decentralized computing, communications, and governance framework, leveraging promise-based interactions and content-addressable storage to create a robust and modular system.
+
+## Core Concepts
+
+1. **Decentralized Architecture**: PromiseGrid operates as a decentralized network where control is distributed among its users, eschewing single entity ownership.
+2. **Capability-as-Promise Model**: Inspired by Promise Theory, capabilities are represented as promises, which can be fulfilled or revoked based on the system's state and requirements.
+3. **Content-Addressable Code**: Both code and data are referenced by their content hashes, facilitating efficient storage and retrieval across the network.
+4. **Promises All the Way Down**: Every interaction in the system hinges on promises, ensuring that responses to promises are also promises, creating a chain of trust and execution.
+5. **Non-Sandboxed Modules**: Like device drivers in a microkernel OS, non-sandboxed modules handle specific operations, such as network communications or file access. The kernel oversees these modules while maintaining overall system control.
+
+## Glossary of Terms and Concepts
+
+- **Decentralized Architecture**: A system design that distributes control among various actors, rather than centralizing it in a single authority.
+- **Capability-as-Promise Model**: A model where capabilities denote promises that can be either fulfilled or revoked.
+- **Content-Addressable Code**: A storage methodology where code and data are indexed and accessed based on their content.
+- **Promises All the Way Down**: A paradigm where every interaction and response within the system is treated as a promise.
+- **Non-Sandboxed Modules**: Modules granted more access and responsibility to manage specific operations, analogous to device drivers, in a controlled manner.
+
+## Flexible Design for Module Registration
+
+### Overview
+
+Modules in PromiseGrid interface with the kernel via explicit registration or through hash-based routing mechanisms. These two primary methods offer distinct advantages and challenges:
+
+### Explicit Module Registration
+
+#### Pros
+1. **Clarity and Explicitness**: Modules report their capabilities, simplifying system understanding and management.
+2. **Fine-Grained Control**: The kernel can enforce rules and constraints based on module capabilities.
+3. **Dynamic Adaptation**: Modules can update their capabilities dynamically, supporting on-the-fly changes.
+
+#### Cons
+1. **Complexity**: Adds complexity to module initialization and management.
+2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
+3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
+
+### Hash-Based Module Routing
+
+#### Pros
+1. **Simplicity**: Cryptographic hashes guide message routing, eliminating explicit registration.
+2. **Efficiency**: Highly efficient due to unique and consistent addressing.
+3. **Decentralized Management**: Modules are self-contained, facilitating independent management.
+
+#### Cons
+1. **Opaque Mapping**: Harder to identify which module handles a message without clear declarations.
+2. **Limited Flexibility**: Dynamic updates require hash changes, reducing adaptability.
+3. **Security Risks**: Must mitigate risks like hash collisions and attacks.
+
+### Combining Both Approaches
+
+A hybrid approach leverages the strengths of both explicit registration and hash-based routing:
+
+1. **Initialization Phase**: Modules register their capabilities during initialization.
+2. **Hash-Based Execution**: Runtime routing employs cryptographic hashes, consulting the registry as needed.
+
+### Nested Messages and Kernel Arbitration
+
+Modules can unwrap nested messages, allowing dynamic and complex interactions. The kernel's arbitration is not final, supporting a modular design where tasks can be delegated further through nested messaging.
+
+#### Implications
+1. **Delegated Control**: Enables modular and extensible system design by delegating tasks.
+2. **Dynamic Message Flows**: Supports flexible message handling based on context.
+3. **Complex Dependency Graphs**: Requires careful management to maintain stability.
+
+### Conclusion
+
+Explicit registration and hash-based routing methods impact system design and functionality significantly. Combining both approaches balances their strengths, enhancing modularity, adaptability, and efficiency. This flexibility, including nested messaging, bolsters PromiseGrid's modular architecture.
+
+## Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
+
+The cache, or syscall tree node structure, is vital for PromiseGrid's operation. It acts as a hierarchical routing mechanism, storing successful paths for optimized future lookups.
+
+### Syscall Tree (Ant Routing Mechanism)
+
+1. **Node Structure**:
+    - Nodes have multiple children representing parameter components.
+    - Vertices typically contain hashes for promise hashes, module hashes, and URL-encoded arguments.
+
+2. **Dynamic Population**:
+    - The syscall tree starts empty and populates during operation, consulting built-in and other modules for message handling.
+    - It caches successful paths for optimization.
+
+3. **Acceptance History**:
+    - Stores both positive and negative acceptance history for all modules.
+    - This history is critical for efficient message handling, skipping previously rejecting modules and focusing on accepting ones.
+
+4. **Routing Messages**:
+    - Kernel looks up the syscall tree to find the longest matching parameter sequence, dynamically optimizing future routing.
+
+### Messages and Promises
+
+1. **Unified Message Structure**:
+    - `Message` structure includes promise as the first element in `Parms`, routing or discarding based on the leading promise.
+
+### Multihash, Multibase, and Multicodec
+
+PromiseGrid leverages multihash and multibase to autodetect hash formats, enhancing compatibility and extensibility across various data formats.
+
+### Conclusion
+
+Implementing a hierarchical syscall tree and unified message structure simplifies routing, acceptance, and handling of messages. Embedding acceptance history and known message paths within kernel enhances recognition and validation, ensuring optimal routing within a decentralized governance framework.
+
+### Open Questions
+
+- How to dynamically adjust acceptance criteria to adapt to changing workloads?
+- Mechanisms to handle broken promises effectively?
+- Design implications of separate `Accept()` and `HandleMessage()` methods vis-a-vis promise theory?
+- Determining the best route with multiple handling promises?
+- Managing latency in decentralized, distributed nodes?
+
+## Suggestions for Improving this Document
+
+- Develop comprehensive error handling and logging for broken promises.
+- Add more examples and case studies.
+- Expand on hierarchical syscall tree descriptions.
+- Update sections with new questions arising during implementation.
+- Refine glossary with specialized terms and concepts.
+- Incorporate visual aids to showcase system architecture and data flow.
+
+``` 
+EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md

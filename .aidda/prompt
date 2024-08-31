@@ -5,9 +5,12 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/002-design.md
+    v2/doc/003-design.md
 
-- improve 002-design.md 
+Improve the documentation.  
+- resolve or discuss inconsistencies
+- remove redundant information 
+- add open questions
 
 .stop
 

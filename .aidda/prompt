@@ -9,10 +9,9 @@ Out:
 
 - Improve the document
 - imagine answers to the issues marked with XXX
-- make technical recommendations
-- Discuss the role and responsibilities of the PromiseGrid kernel.
-- Include a discussion of what the kernel is *not* responsible for,
-  such as things that belong in modules.
+- imagine design recommendations
+- imagine the role and responsibilities of the PromiseGrid kernel
+- imagine what the kernel is *not* responsible for, such as things that belong in modules.
 
 .stop
 

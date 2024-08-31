@@ -7,9 +7,8 @@ In:
 Out:
     v2/doc/380-kernel.md
 
-- imagine internal design details of the PromiseGrid kernel
-    - e.g. does it use channels internally, and functions and
-      callbacks to communicate with modules?
+- imagine: does the kernel use Go channels internally, and functions and
+    callbacks to communicate with modules?
 
 .stop
 

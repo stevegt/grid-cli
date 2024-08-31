@@ -1,4 +1,3 @@
- 
 File: /home/stevegt/lab/grid-cli/v2/doc/380-kernel.md
 ```
 # PromiseGrid Kernel
@@ -16,8 +15,8 @@ The PromiseGrid kernel is a crucial component designed to manage the core functi
     - It employs a trie-based structure for efficient sequence matching and completion, dynamically adapting to new sequences and optimizing future lookups.
     - **Caching**: The kernel handles caching dynamically, ensuring rapid retrieval and minimized redundant processing.
 
-2. **Internal Communications**:
-    - Manages internal mechanism, facilitating communication between different modules using Go channels, functions, and callbacks.
+2. **Inter-Process Communication (IPC)**:
+    - Manages internal IPC mechanisms, facilitating communication between different modules using Go channels, functions, and callbacks.
     - Ensures standardized ports for message passing, enabling seamless interactions between various components.
     - The kernel employs calls and callbacks to transfer messages between user-space modules and kernel services efficiently.
     - **Ports Explained**: Each module is allocated standard ports analogous to stdin, stdout, and stderr at load time. Additionally, modules can dynamically request other ports as needed, and these ports serve as conduits for message-passing between modules. This setup ensures modularity and flexibility in communication.
@@ -62,7 +61,7 @@ While the kernel handles core functionalities, it delegates specific operations 
 
 ### Module-Specific Operations
 
-1. **Direct Network Communications**:
+1. **Network Communications**:
     - Direct network communication tasks are handled by dedicated modules, not the kernel.
     - The kernel facilitates the setup and management of these modules, ensuring they have the necessary resources and permissions.
     - **Implementation Example**: A module handles the network stack for sending and receiving packets, while the kernel routes messages to this module as needed.
@@ -103,4 +102,3 @@ The PromiseGrid kernel serves as the backbone of the system, managing core funct
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/380-kernel.md
-```

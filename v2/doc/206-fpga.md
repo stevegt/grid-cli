@@ -7,25 +7,25 @@ Field-Programmable Gate Arrays (FPGAs) are semiconductor devices that can be pro
 ## FPGA Architecture Overview
 
 ### Configurable Logic Blocks (CLBs)
-- FPGAs consist of an array of Configurable Logic Blocks (CLBs) that can be programmed to perform different logic functions.
-- Each CLB contains multiple lookup tables (LUTs), flip-flops, and multiplexers, which can be configured to implement logical operations and data paths.
+- **Description**: FPGAs consist of an array of Configurable Logic Blocks (CLBs) that can be programmed to perform different logic functions.
+- **Components**: Each CLB contains multiple lookup tables (LUTs), flip-flops, and multiplexers, which can be configured to implement logical operations and data paths.
 
 ### Programmable Interconnects
-- The CLBs are connected via a programmable interconnect network, allowing the creation of complex circuits by routing signals between CLBs.
-- The interconnect network provides the flexibility to design custom data paths needed for various applications, including prefix matching algorithms.
+- **Description**: The CLBs are connected via a programmable interconnect network, allowing the creation of complex circuits by routing signals between CLBs.
+- **Features**: The interconnect network provides the flexibility to design custom data paths needed for various applications, including prefix matching algorithms.
 
 ### Memory Elements
-- FPGAs also include memory elements like block RAM (BRAM) and distributed RAM, which can be used to store data structures, including tries.
-- These memory blocks can be configured and accessed dynamically to support efficient data retrieval and storage.
+- **Description**: FPGAs also include memory elements like block RAM (BRAM) and distributed RAM, which can be used to store data structures, including tries.
+- **Capabilities**: These memory blocks can be configured and accessed dynamically to support efficient data retrieval and storage.
 
 ### Dedicated Hardware Blocks
-- FPGAs come with dedicated hardware blocks, such as multipliers, Digital Signal Processing (DSP) slices, and high-speed I/O modules, which help accelerate specific tasks.
+- **Description**: FPGAs come with dedicated hardware blocks, such as multipliers, Digital Signal Processing (DSP) slices, and high-speed I/O modules, which help accelerate specific tasks.
 
 ## Prefix Trie Search on FPGA
 
 ### Parallelism in FPGA
-- FPGAs excel at parallel processing, making them ideal for operations like prefix trie search, where multiple nodes and branches can be evaluated simultaneously.
-- Each node in the trie can be mapped to a CLB, and multiple comparisons can be performed in parallel, significantly speeding up the search process.
+- **Advantage**: FPGAs excel at parallel processing, making them ideal for operations like prefix trie search, where multiple nodes and branches can be evaluated simultaneously.
+- **Implementation**: Each node in the trie can be mapped to a CLB, and multiple comparisons can be performed in parallel, significantly speeding up the search process.
 
 ### Implementation Strategies
 - **Pipelining**: FPGA architectures support deep pipelining, allowing multiple stages of computation to be executed in parallel. Each stage of the trie traversal can be pipelined to ensure high throughput.
@@ -73,16 +73,16 @@ endmodule
 ## Other Prefix Matching Techniques
 
 ### Regular Expression Matching
-- FPGAs can efficiently implement regular expression matching algorithms by leveraging their parallel processing capabilities. 
-- Each part of the regular expression can be mapped to a separate hardware block, allowing simultaneous evaluation of multiple patterns.
+- **Implementation**: FPGAs can efficiently implement regular expression matching algorithms by leveraging their parallel processing capabilities. 
+- **Operation**: Each part of the regular expression can be mapped to a separate hardware block, allowing simultaneous evaluation of multiple patterns.
 
 ### Finite Automata Implementation
-- Prefix matching can also be implemented using finite automata, where states and transitions are mapped onto FPGA resources.
-- The FPGA’s capability to handle concurrent state transitions makes it a powerful platform for implementing complex automata efficiently.
+- **Implementation**: Prefix matching can also be implemented using finite automata, where states and transitions are mapped onto FPGA resources.
+- **Advantage**: The FPGA’s capability to handle concurrent state transitions makes it a powerful platform for implementing complex automata efficiently.
 
 ### Bloom Filters
-- Bloom filters can be used on FPGAs to perform approximate prefix matching.
-- The hash functions required for Bloom filters can be implemented in parallel, ensuring high-speed operations.
+- **Implementation**: Bloom filters can be used on FPGAs to perform approximate prefix matching.
+- **Operation**: The hash functions required for Bloom filters can be implemented in parallel, ensuring high-speed operations.
 
 ## Advantages of Using FPGAs for Prefix Matching
 
@@ -92,6 +92,12 @@ endmodule
 4. **High Throughput**: The ability to process multiple data streams in parallel ensures that FPGAs can handle large volumes of data efficiently.
 5. **Energy Efficiency**: Custom hardware implementations on FPGAs tend to be more energy-efficient, making them suitable for applications where power consumption is a concern.
 
+## Open Questions
+
+1. **Scalability**: How can FPGA implementations of prefix matching be scaled to handle increasingly larger datasets and more complex patterns?
+2. **Adaptability**: How adaptable are FPGA-based implementations to changing requirements and evolving algorithms? Can the reconfiguration be done efficiently in real-time?
+3. **Integration**: How can FPGA implementations be seamlessly integrated into hybrid systems that also incorporate general-purpose processors and GPUs? What are the best practices for such integration?
+
 ## Conclusion
 
-FPGAs offer a robust platform for implementing prefix trie searches and other prefix matching techniques. Their architecture supports high degrees of parallelism, customization, and efficiency, making them ideal for data-intensive and real-time applications. By leveraging configurable logic blocks, programmable interconnects, and dedicated memory resources, FPGAs can perform prefix matching tasks efficiently, providing significant performance advantages over traditional CPU-based implementations.
+FPGAs offer a robust platform for implementing prefix trie searches and other prefix matching techniques. Their architecture supports high parallelism, customization, and efficiency, making them ideal for data-intensive and real-time applications. By leveraging configurable logic blocks, programmable interconnects, and dedicated memory resources, FPGAs can perform prefix matching tasks efficiently, providing significant performance advantages over traditional CPU-based implementations.

@@ -5,7 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/322-ports.md
+    v2/doc/321-mach.md
 
 Give an example workflow of port usage in Mach, e.g. when a process
 sends a message to another process and expects a response.

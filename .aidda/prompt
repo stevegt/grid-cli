@@ -7,9 +7,11 @@ In:
 Out:
     v2/doc/380-kernel.md
 
-Discuss the role and responsibilities of the PromiseGrid kernel.
-Include a discussion of what the kernel is *not* responsible for, such
-as things that belong in modules.
+- Improve the document
+- make technical recommendations
+- Discuss the role and responsibilities of the PromiseGrid kernel.
+- Include a discussion of what the kernel is *not* responsible for,
+  such as things that belong in modules.
 
 .stop
 

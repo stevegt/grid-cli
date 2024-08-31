@@ -5,13 +5,16 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/390-zkos.md
+    v2/doc/400-antikernel.md
 
-    
-analyze and discuss https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf
+- analyze and discuss https://www.iacr.org/archive/ches2016/98130227/98130227.pdf
+- describe Andrew Zonenberg
 
 .stop
 
+analyze and discuss https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf
+
+.stop
 
 Out:
     v2/doc/321-mach.md

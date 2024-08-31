@@ -4,11 +4,13 @@
 
 The Mach microkernel is renowned for its clean and efficient inter-process communication (IPC) mechanism, which is built on the concepts of ports and messages. This documentation aims to explain the architecture and mechanism of Mach ports, the nature of messages, and their format.
 
+The kernel is the only code that runs in privileged or ring 0 mode and is the only code that has access to the bare hardware.
+
 ## Mach Ports
 
 ### What are Mach Ports?
 
-Mach ports are fundamental communication endpoints used in the Mach microkernel. They serve as conduits for messages between different tasks (processes) or threads in the system. Each port is identified by a unique port name (or identifier), enabling tasks to exchange data in a structured and secure manner.
+Mach ports are fundamental communication endpoints used in the Mach microkernel. They serve as conduits for messages between different tasks (processes) or threads in the system. Each port is identified by a unique port name (or identifier), enabling tasks to exchange data in a structured and secure manner. 
 
 ### Characteristics of Mach Ports
 

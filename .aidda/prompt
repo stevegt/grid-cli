@@ -7,11 +7,14 @@ In:
 Out:
     v2/doc/380-kernel.md
 
-- Improve the document
+- imagine internal design details of the PromiseGrid kernel
+    - e.g. does it use channels internally, and functions and
+      callbacks to communicate with modules?
 - imagine answers to the issues marked with XXX
 - imagine design recommendations
 - imagine the role and responsibilities of the PromiseGrid kernel
 - imagine what the kernel is *not* responsible for, such as things that belong in modules.
+- Improve the document
 
 .stop
 

@@ -1,1 +1,165 @@
-The file `/home/stevegt/lab/grid-cli/v2/doc/00.md` is the most similar to `DESIGN.md`. Both files give an introduction to the core concepts and design principals of the project, discussing key architectural aspects such as decentralized architecture, promise-based models, and the handling of modules and capabilities.
+The file `/home/stevegt/lab/grid-cli/v2/doc/002-design.md` is the one most similar to `02.md`. Both documents outline the design of PromiseGrid, focusing on the core concepts, handling of modules as caches, promise-based interactions, and the implementation details within the kernel.
+
+Here are the main changes required to align `01-design.md` with `02.md`, focusing on enhancing the details and creating a more comprehensive integration:
+
+---
+
+1. **Introduction Section**:
+   - Enhance the introduction by emphasizing the goal of PromiseGrid and its core focus areas.
+   
+**Original**:
+```markdown
+# PromiseGrid Design
+
+## Overview
+
+This document outlines the design considerations and architecture for implementing PromiseGrid.
+```
+
+**Enhanced**:
+```markdown
+# Enhanced PromiseGrid Design
+
+## Overview
+
+PromiseGrid is a novel decentralized system aimed at revolutionizing computing and governance through dynamic byte sequence completion and promise-based interactions. This document outlines the design considerations and architectural principles critical to achieving these objectives.
+```
+
+2. **Core Concepts Enhancement**:
+   - Align the core concepts with those detailed in `02.md`, adding more specifics on each concept, like the Capability-as-Promise Model and Non-Sandboxed Modules.
+
+**Original**:
+```markdown
+### Core Concepts
+
+1. **Decentralized Architecture**: PromiseGrid operates as a decentralized computing, communications, and governance system. It is designed to be owned and operated by its users rather than any single entity.
+
+2. **Capability-as-Promise Model**: Capabilities are treated as promises, similar to the concepts from Promise Theory. A capability token represents a promise that can either be fulfilled or revoked.
+```
+
+**Enhanced**:
+```markdown
+### Core Concepts of PromiseGrid
+
+1. **Decentralized Architecture**: PromiseGrid functions as a decentralized computing, communications, and governance system. Unlike traditional centralized systems, it is designed to be owned and operated collectively by its users, ensuring distributed control and negating any single point of ownership.
+
+2. **Capability-as-Promise Model**: Inspired by Promise Theory, PromiseGrid treats capabilities as promises. A capability token acts as a promise that can be either fulfilled or revoked. This model facilitates secure, auditable exchanges of capabilities, enhancing trust and reducing dependency on centralized authorities.
+```
+
+3. **Cache and Promise Handling**:
+   - Expand on the cache structure details, unifying the messaging on treating modules as caches.
+
+**Original**:
+```markdown
+## Core Concepts
+
+### Cache Structures
+
+- There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+```
+
+**Enhanced**:
+```markdown
+### Cache and Promise Handling in the PromiseGrid Kernel
+
+#### Cache Structures
+
+- **Multiple Caches**: PromiseGrid **MAY USE** multiple caches, including both the built-in cache within the kernel and additional caches provided by various modules. The kernel **SHOULD** load caches from embedded resources leveraging Go’s `embed` feature.
+- **Unified Interface for Cache and Function Calls**: From the caller's perspective, there **SHALL BE** no distinction between a cache lookup and a function call. Both operations are treated as byte sequence completion operations, facilitating seamless integration and boosting efficiency.
+```
+
+4. **Detailed Role of Modules**:
+   - Provide a more detailed explanation of modules as caches and their unified interface role, adding examples.
+
+**Original**:
+```markdown
+### Treating Modules as Caches
+
+1. **Role of Modules**:
+    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
+    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
+```
+
+**Enhanced**:
+```markdown
+### Treating Modules as Caches
+
+#### Role of Modules
+
+- The kernel **MUST** treat modules as caches. Upon encountering a cache miss, the kernel will consult relevant modules to retrieve the required value.
+- Modules **MAY** dynamically contribute to the cache or provide data upon request.
+  
+**Example Implementation:**
+
+```go
+type Module interface {
+    Accept(ctx context.Context, parms ...interface{}) (Message, error)
+    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
+}
+
+type DynamicModule struct {
+    dataStore string
+}
+
+func NewDynamicModule(dataStore string) *DynamicModule {
+    return &DynamicModule{dataStore: dataStore}
+}
+
+func (m *DynamicModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic for accepting or rejecting based on parameters
+}
+
+func (m *DynamicModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
+    // Implement logic for handling the message dynamically
+}
+```
+```
+
+5. **Promises and Acceptance**:
+   - Ensure clarity by expanding the explanation on acceptance criteria and integrating with computational theories.
+
+**Original**:
+```markdown
+### Acceptance and Promises
+
+1. **Acceptance Criteria**:
+    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
+```
+
+**Enhanced**:
+```markdown
+### Acceptance and Promises
+
+#### Acceptance Criteria
+
+- **Acceptance Criteria**: Modules **MUST** define clear acceptance criteria for promises, module hashes, and arguments. This can be standardized through an `Accept()` function, simplifying integrations.
+  
+```go
+type AcceptanceCriteria interface {
+    Accept(parms ...interface{}) (Message, error)
+}
+```
+
+- **Promises as Acceptance**: Instead of a boolean, the `Accept` function returns a promise message containing acceptance conditions. This provides richer meta-information and commits the module to processing the message correctly.
+```
+
+6. **Conclusion to Implementation Details**:
+   - Close the document by conclusively tying together the unified message on how PromiseGrid integrates modular design with efficient, decentralized cache and promise handling.
+
+**Original**:
+```markdown
+### Conclusion
+
+The choice between explicit module registration and hash-based routing significantly impacts the design and functionality of the PromiseGrid system. Combining both approaches can provide a balanced solution, leveraging the strengths of each method while mitigating their weaknesses.
+```
+
+**Enhanced**:
+```markdown
+### Conclusion
+
+By integrating modular design principles with a cohesive, decentralized cache and promise handling mechanism, PromiseGrid achieves a balanced, scalable framework. Through carefully aligned routing, acceptance criteria, and promise fulfillment, it ensures trust, accountability, and optimized performance within a decentralized governance structure.
+
+Future enhancements will build on these core principles to further refine and expand PromiseGrid's capabilities, paving the way for robust and flexible decentralized applications.
+```
+
+These changes align the documentation closer to the detailed and comprehensive nature, ensuring clarity and consistency in the presentation of PromiseGrid's design principles and implementation strategies.

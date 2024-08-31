@@ -5,7 +5,16 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 
-what file is DISCUSS.md most similar to?
+which two files are most similar to each other?  your answer must be
+in this format:
+
+```
+Out:
+    file1.md
+    file2.md
+
+Merge file1 and file2.
+```
 
 .stop
 

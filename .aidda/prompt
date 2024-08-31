@@ -10,6 +10,9 @@ Out:
 - imagine internal design details of the PromiseGrid kernel
     - e.g. does it use channels internally, and functions and
       callbacks to communicate with modules?
+
+.stop
+
 - imagine answers to the issues marked with XXX
 - imagine design recommendations
 - imagine the role and responsibilities of the PromiseGrid kernel

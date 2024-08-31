@@ -5,9 +5,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/400-antikernel.md
+    v2/doc/410-zkp.md
 
-- analyze and discuss https://www.iacr.org/archive/ches2016/98130227/98130227.pdf
+Describe how zero-knowlege proofs work, using an Alice, Bob, Carol
+analogy.
 
 .stop
 

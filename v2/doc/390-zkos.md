@@ -1,5 +1,7 @@
 # Analysis and Discussion of the ZKOS Paper
 
+https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf
+
 ## Introduction
 
 The paper "ZKOS: A Privacy-Preserving Decentralized Operating System" authored by Shuo Chen et al. (2020) provides a comprehensive overview of the design and implementation of ZKOS, a decentralized operating system aimed at preserving privacy using Zero-Knowledge Proofs (ZKPs). This analysis distills the key concepts, architectural components, implementation strategies, and challenges discussed in the paper.

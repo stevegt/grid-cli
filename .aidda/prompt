@@ -6,13 +6,14 @@ In:
     v2/doc/
 Out:
     v2/doc/330-messages.md
-    v2/doc/999-TODO.md
 
 - improve the documentation
 - resolve or discuss inconsistencies and internal conflict
 - resolve or discuss illogical statements
 - add recommendations
 - add open questions
+
+.stop
 
 Also, in 999-TODO.md, list the documents that are most similar to each
 other and that could be merged.  

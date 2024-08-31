@@ -1,1 +1,7 @@
-The file most similar to `DISCUSS.md` is `/home/stevegt/lab/grid-cli/v2/doc/003-design.md`. Both files discuss the strategies and implementation details of caching and module handling in the PromiseGrid kernel, underlining their relevance to decentralized governance and microkernel architecture principles.
+```
+Out:
+    011-cache.md
+    013-cache.md
+
+Merge file1 and file2.
+```

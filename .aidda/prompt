@@ -4,16 +4,21 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out:
+    013-cache.md
+
+Merge 011-cache.md and 013-cache.md
+
+.stop
 
 which two files are most similar to each other?  your answer must be
 in this format:
 
 ```
 Out:
-    file1.md
     file2.md
 
-Merge file1 and file2.
+Merge file1.md into file2.md
 ```
 
 .stop

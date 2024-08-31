@@ -5,6 +5,15 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
+    v2/doc/321-mach.md
+
+- in the Mach microkernel, is the kernel the only code that runs in
+  priveliged or ring 0 mode and the only code that has access
+  to the bare hardware?
+
+.stop
+
+Out:
     v2/doc/380-kernel.md
 
 Imagine answers to the following questions:

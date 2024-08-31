@@ -82,5 +82,3 @@ The ZKOS paper presents an innovative approach to building a decentralized, priv
 
 For further exploration, researchers and developers are encouraged to delve into optimizing ZKP algorithms, enhancing system scalability, and improving usability to realize the full potential of privacy-preserving decentralized operating systems.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/390-zkos.md

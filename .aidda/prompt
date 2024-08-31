@@ -5,6 +5,14 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
+    v2/doc/322-ports.md
+
+Give an example workflow of port usage in Mach, e.g. when a process
+sends a message to another process and expects a response.
+
+.stop
+
+Out:
     v2/doc/410-zkp.md
 
 - Do ZKPs always involve multiple challenge rounds?

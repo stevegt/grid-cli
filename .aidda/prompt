@@ -4,8 +4,10 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out:
+    v2/doc/002-design.md
 
-which file is most similar to 002-design.md?
+- improve 002-design.md 
 
 .stop
 

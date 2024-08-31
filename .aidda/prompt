@@ -7,10 +7,8 @@ In:
 Out:
     v2/doc/410-zkp.md
 
-Improve the example marked with XXX -- imagine a specific proof. such
-as a cryptographic or mathematical verification that bob can perform
-without seeing the complete sequence.  Or perhaps the sequence is a
-secret algorithm that produces a result that is easy to verify.
+- Do ZKPs always involve a challenge?
+- Improve the example marked with XXX -- imagine a specific proof. 
 
 .stop
 

@@ -5,7 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/340-magic.md
+    v2/doc/346-persist.md
 
 - improve the documentation
 - resolve or discuss inconsistencies and internal conflict

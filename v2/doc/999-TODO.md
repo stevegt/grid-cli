@@ -1,4 +1,3 @@
-
 # TODO List for Implementing PromiseGrid Kernel
 
 ## General Improvements

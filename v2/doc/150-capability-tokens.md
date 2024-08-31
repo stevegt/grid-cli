@@ -19,7 +19,6 @@ A capability token can be crafted to be self-contained and self-describing by in
    - Checks the permissions described within the token.
    - Confirms the identity of the holder matches the intended recipient.
 
-
 Several systems and frameworks implement self-contained capability tokens:
 
 1. **Macaroons**: These are flexible authorization credentials that support delegation and attenuation. A macaroon is a bearer token that can encapsulate permissions and is augmented with caveats, which are conditions that must be satisfied for the macaroon to be considered valid.
@@ -161,4 +160,11 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 This encoded JWT can be safely used as a URL parameter without further encoding.
 
 Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
+
+### Open Questions
+
+1. **Handling Broken Promises**: What strategies can we implement to handle broken promises effectively? How can we ensure that nodes that consistently break promises have their reputation impacted in a measurable way?
+2. **Determining Best Route**: When multiple handlers are available, how can we determine the most efficient or reliable route for handling a message? Should we prioritize handlers based on historical performance, reputation, or other factors?
+3. **Integration with Other Systems**: How can we better integrate JSON Web Tokens (JWT) and similar systems with PromiseGrid’s architecture? What role should JWT play in managing capabilities within the grid?
+4. **Security Measures**: Given the reliance on module hashes for deterministic execution, what additional security measures can enhance the integrity and trustworthiness of the system? How can we mitigate potential risks associated with hash collisions and tampering? 
 

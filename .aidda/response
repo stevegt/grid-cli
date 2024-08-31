@@ -1,4 +1,5 @@
-```markdown
+File: /home/stevegt/lab/grid-cli/v2/doc/370-modules.md
+```
 # Module-Based Decentralized System Using WASM
 
 ## Introduction
@@ -25,73 +26,26 @@ WASM can interoperate with other languages and technologies, enabling developers
 
 ## Plugin Architectures in Go
 
-Go is a popular language for building backend services due to its concurrency model and performance. Go's plugin architecture can be leveraged to create dynamic and modular systems.
+Go is a popular language for building backend services due to its concurrency model and performance. However, Go's native plugin architecture is somewhat less flexible compared to WASM, and let's explore how WASM provides a broader and more adaptive solution.
 
-### Dynamic Plugin Loading
+### Limitations of Go's Native Plugin Architecture
 
-Go supports the dynamic loading of plugins at runtime through its `plugin` package. This capability allows a system to load and execute modules dynamically, enhancing flexibility and modularity.
+1. **Platform-Specific**:
+   - Go plugins are highly platform-dependent. Plugins compiled on one operating system may not work on another without recompilation, limiting cross-platform functionality.
 
-### Example: Dynamic Plugin in Go
+2. **Incompatibility Across Versions**:
+   - Plugins are often tied to specific versions of Go. Changes in the Go runtime can lead to incompatibilities, requiring plugins to be recompiled for different versions of Go.
 
-Here's a simple example of how to create and use a dynamic plugin in Go:
+3. **Complexity**:
+   - Managing dependencies and ensuring compatibility across different environments can be complex and error-prone.
 
-**Plugin Code (plugin.go):**
+### WASM's Flexibility
 
-```go
-package main
+WASM addresses these limitations by providing a uniform runtime that works consistently across different platforms. This flexibility allows for seamless module integration and dynamic loading in decentralized environments.
 
-import "fmt"
+### Dynamic Module Loading with WASM
 
-// Exported function
-func PrintMessage() {
-    fmt.Println("Hello from the plugin!")
-}
-```
-
-**Build Plugin:**
-
-```sh
-go build -buildmode=plugin -o plugin.so plugin.go
-```
-
-**Main Application (main.go):**
-
-```go
-package main
-
-import (
-    "fmt"
-    "plugin"
-)
-
-func main() {
-    plug, err := plugin.Open("plugin.so")
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-
-    symbol, err := plug.Lookup("PrintMessage")
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-
-    // Assert that loaded symbol is a function
-    printMessage := symbol.(func())
-    printMessage()
-}
-```
-
-### Advantages of Using Plugins in Go
-
-1. **Modularity**: Plugins enable the development of isolated, self-contained modules that can be integrated into the system dynamically.
-2. **Flexibility**: New functionalities can be added or updated without restarting the system.
-3. **Maintainability**: Code can be organized into smaller, manageable pieces, improving maintainability.
-
-## Integrating WASM and Go Plugins
-
-Combining the benefits of WASM and Go plugins can result in a highly versatile and modular decentralized system. By compiling modules to WASM and dynamically loading them using Go's plugin architecture, we can achieve a flexible and efficient execution environment.
+Using WASM, developers can create modules that can be dynamically loaded and executed by a host system. This capability allows for the creation of modular systems where new functionalities can be added or updated without restarting the entire system.
 
 ### Scenario: Decentralized Application
 
@@ -100,10 +54,6 @@ Consider a decentralized application where different nodes perform various tasks
 1. **Module Development**:
    - Develop modules in a high-level language (e.g., Rust, AssemblyScript).
    - Compile modules to WASM.
-
-2. **Dynamic Loading**:
-   - Use Go's plugin architecture to load and execute WASM modules dynamically.
-   - Ensure that the core system manages module interactions and acts as an orchestrator.
 
 **Example Workflow:**
 
@@ -120,7 +70,7 @@ Node A         Node B         Node C
 
 ## Conclusion
 
-WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, and performance. When combined with Go's dynamic plugin architecture, it enables the creation of flexible, modular, and efficient applications. This integration allows developers to leverage the strengths of both technologies to build scalable and maintainable decentralized systems.
+WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, performance, and interoperability. Unlike Go's native plugin architecture, which faces limitations related to platform dependency and version compatibility, WASM offers a more flexible and resilient solution for dynamic module integration and execution.
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/370-modules.md

@@ -5,12 +5,11 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/370-modules.md
+    v2/doc/380-kernel.md
 
-Discuss why WASM is a reasonable choice for implementing a
-module-based decentralized system incorporating both browser-based and
-standalone nodes.  Include a discussion of why Go's native plugin
-architecture is less flexible, and how WASM is a better choice.
+Discuss the role and responsibilities of the PromiseGrid kernel.
+Include a discussion of what the kernel is *not* responsible for, such
+as things that belong in modules.
 
 .stop
 

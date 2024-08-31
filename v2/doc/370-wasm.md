@@ -24,9 +24,24 @@ WASM can interoperate with other languages and technologies, enabling developers
 
 ## Plugin Architectures in Go
 
-Go is a popular language for building backend services due to its concurrency model and performance. Go's has a less-flexible plugin architecture; WASM provides one that is more flexible and heterogeneous.
+Go is a popular language for building backend services due to its concurrency model and performance. However, Go's native plugin architecture is somewhat less flexible compared to WASM, and let's explore how WASM provides a broader and more adaptive solution.
 
-### Dynamic Module Loading
+### Limitations of Go's Native Plugin Architecture
+
+1. **Platform-Specific**:
+   - Go plugins are highly platform-dependent. Plugins compiled on one operating system may not work on another without recompilation, limiting cross-platform functionality.
+
+2. **Incompatibility Across Versions**:
+   - Plugins are often tied to specific versions of Go. Changes in the Go runtime can lead to incompatibilities, requiring plugins to be recompiled for different versions of Go.
+
+3. **Complexity**:
+   - Managing dependencies and ensuring compatibility across different environments can be complex and error-prone.
+
+### WASM's Flexibility
+
+WASM addresses these limitations by providing a uniform runtime that works consistently across different platforms. This flexibility allows for seamless module integration and dynamic loading in decentralized environments.
+
+### Dynamic Module Loading with WASM
 
 Using WASM, developers can create modules that can be dynamically loaded and executed by a host system. This capability allows for the creation of modular systems where new functionalities can be added or updated without restarting the entire system.
 
@@ -53,5 +68,5 @@ Node A         Node B         Node C
 
 ## Conclusion
 
-WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, and performance. 
+WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, performance, and interoperability. Unlike Go's native plugin architecture, which faces limitations related to platform dependency and version compatibility, WASM offers a more flexible and resilient solution for dynamic module integration and execution.
 

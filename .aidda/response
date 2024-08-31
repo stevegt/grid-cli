@@ -1,62 +1,300 @@
-<details>
-<summary>Click to expand the changes</summary>
-
-File: /home/stevegt/lab/grid-cli/v2/doc/340-magic.md
-```markdown
-# Design Discussion on Sequence Matching for Message Handling
+File: /home/stevegt/lab/grid-cli/v2/doc/346-persist.md
+```
+# Persisting the Trie to Disk
 
 ## Introduction
 
-In the context of designing robust message handling mechanisms, an alternative approach involves sequence matching on the message data, byte by byte, to decide how to handle the message. This method diverges from traditional parsing methods and bears similarity to the UNIX/Linux magic number system, which uses the first few bytes of a file to determine its type.
+This document describes various options for persisting the trie data structure to disk within the PromiseGrid system. The design aims to function in both native and WebAssembly (WASM) runtimes. Several strategies are discussed, including the use of the Origin Private File System (OPFS) and the `afero` library.
 
-This document discusses the pros and cons of implementing such a sequence matching approach in PromiseGrid.
+## Design Considerations for Persistence
 
-## Design Overview
+The chosen persistence strategy must meet the following requirements:
+1. **Compatibility**: Works seamlessly in both native and WASM environments.
+2. **Reliability**: Ensures data integrity and durability.
+3. **Performance**: Provides efficient read and write operations.
+4. **Flexibility**: Supports dynamic updates and retrievals.
 
-### Sequence Matching Mechanism
+## Potential Persistence Strategies
 
-Rather than parsing an incoming message, the proposed design involves performing sequence matching on the message data, byte by byte. This approach uses the initial bytes of the message to decide how to handle it, potentially invoking various decoding mechanisms such as multibase/multihash decoding or other future decoding techniques.
+### 1. Origin Private File System (OPFS)
 
-This design is akin to the UNIX/Linux magic number system, defined by `file` and `/etc/magic`, which identifies file types based on their initial bytes.
+**Description**: OPFS is a file system designed for use in web environments, providing secure, performant, and private storage.
 
-Byte sequences might overlap ambiguously. For example, similar initial bytes could represent different message types. Ambiguous sequence patterns are resolved by the first match. The ordering of first match is node-specific; the local node's own configuration determines the order of tries.
+**Advantages**:
+- **Security**: Provides a secure sandboxed environment.
+- **Performance**: Optimized for web performance.
+- **Compatibility**: Works well with WASM.
 
-Complexity in managing a large set of sequence patterns is mitigated by using the decentralized cache to store and retrieve patterns efficiently.  Cache keys are nested and are each one byte in size.  Each byte is "owned" (registered) by one or more modules (handlers).  As a message is processed, each successive byte of the message is looked up as the next, nested, key.  This process proceeds until a lookup fails; on failure, the entire message is routed to the module that owns the most recent byte key that succeeded.  In the case of multiple modules owning the same key, the local node SHALL choose: it MAY route to the first module in the list, or it MAY route to all, or some other heuristic.  XXX revisit this
+**Implementation**:
+- **WASM**: Utilize OPFS directly via JavaScript to interact with the file system.
+- **Native**: Implement a thin abstraction layer to handle file I/O using standard file system calls.
 
-Handling after sequence matching would include any handler's own validation and error detection.  On failure of a handler, the message SHOULD be routed to the next handler in the list.  On failure of all handlers, the message MAY be dropped, and the router (dispatcher) SHOULD generate a new message to register the apparent spam (broken promise?).  XXX revisit this
+### 2. `afero` Library
 
-### Pros of Sequence Matching for Message Handling
+**Description**: `afero` is a filesystem abstraction library for Go, providing a common interface for various file system operations.
 
-1. **Simplicity and Speed**:
-    - **Byte-by-Byte Matching**: By directly matching byte sequences, this approach simplifies the decision-making process, potentially speeding up the message handling by avoiding complex parsing.
-    - **Efficiency**: For known sequences, matching bytes may be quicker than interpreting structured data, leading to faster dispatch of messages.
+**Advantages**:
+- **Abstraction**: Abstracts filesystem operations, making the code agnostic to the underlying storage backend.
+- **Flexibility**: Supports multiple backends like OS file systems, in-memory systems, and more.
+- **Compatibility**: Can be used in native environments; minimal work is needed to extend it to WASM.
 
-2. **Flexibility**:
-    - **Dynamic Adaptability**: The system can accommodate new types of messages and decodings by simply updating the sequence match patterns without altering the core parsing logic.
-    - **Compatibility**: Supports various encoding schemes (multibase, multihash, etc.) by recognizing patterns directly from the byte stream.
+**Implementation**:
+- **WASM**: Create a custom backend for `afero` that communicates with the browser's file API (OPFS).
+- **Native**: Use the default OS filesystem backend or other suitable backends provided by `afero`.
 
-3. **Modular Handling**:
-    - **Future-Proof**: Easier to integrate future decoding mechanisms by adding new sequence patterns.
-    - **Universal Matching**: Allows for a uniform way to handle diverse message formats and structures, enhancing modularity.
+## Example Implementations
 
-4. **Deterministic Execution**:
-    - **Content-Based Dispatch**: Using the initial bytes for dispatch ensures that messages are routed deterministically, reducing ambiguity in handling.
+### OPFS in WASM
 
-### Cons of Sequence Matching for Message Handling
+Here’s an example of interacting with OPFS in a WASM environment:
 
-2. **Security Implications**:
-    - **Tampering Risk**: Matching based on bytes might expose the system to tampering if attackers craft byte sequences to deceive the match routines, potentially leading to security vulnerabilities.
-    - **Insufficient Validation**: Without robust parsing, the system might skip essential validation steps, increasing the risk of processing malformed or malicious messages.
+```javascript
+// JavaScript code to interact with OPFS in a WASM environment
 
-3. **Performance Overhead**:
-    - **Sequence Database Management**: Maintaining and searching a large database of sequence patterns could introduce performance overhead, particularly as the number of patterns grows.
-    - **Resource Intensive**: Repeated sequence matching might consume more resources compared to directly parsing structured messages with known formats.
+async function writeFile(filename, content) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename, { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+}
+
+async function readFile(filename) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename);
+  const file = await fileHandle.getFile();
+  return await file.text();
+}
+```
+
+### `afero` in Native
+
+Here’s an example using `afero` in a native Go application:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/spf13/afero"
+	"os"
+)
+
+func main() {
+	fs := afero.NewOsFs()
+
+	// Writing to the file
+	filePath := "example.txt"
+	err := afero.WriteFile(fs, filePath, []byte("Hello, Afero!"), 0644)
+	if err != nil {
+		fmt.Println("Error writing file:", err)
+		return
+	}
+
+	// Reading from the file
+	content, err := afero.ReadFile(fs, filePath)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+
+	fmt.Println("File content:", string(content))
+}
+```
+
+## Persisting the Trie to Disk in Go
+
+### Lazy-Loading Node Files
+
+In this approach, trie nodes are lazily loaded from the disk as needed. This method ensures that the entire trie is never fully loaded into memory, and only the relevant children nodes are accessed, thereby optimizing memory usage.
+
+Below is a Go code example that demonstrates how to lazily load each trie node from its own file using the `afero` library:
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"github.com/spf13/afero"
+	"io"
+	"path"
+)
+
+type TrieNode struct {
+	Children map[byte]*TrieNode
+	Handlers []Handler
+	Path     string
+	Fs       afero.Fs
+}
+
+type Trie struct {
+	Root    *TrieNode
+	Fs      afero.Fs
+	BaseDir string
+}
+
+type Handler func()
+
+func NewTrie(fs afero.Fs, baseDir string) *Trie {
+	return &Trie{
+		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
+		Fs: fs,
+		BaseDir: baseDir,
+	}
+}
+
+func (t *Trie) Insert(r io.Reader, handler Handler) error {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		if n > 0 {
+			b := buf[0]
+			if _, ok := node.Children[b]; !ok {
+				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
+			}
+			node = node.Children[b]
+		}
+	}
+	node.Handlers = append(node.Handlers, handler)
+	return nil
+}
+
+func (t *Trie) Search(r io.Reader) ([]Handler, error) {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		if n > 0 {
+			b := buf[0]
+			if child, ok := node.Children[b]; ok {
+				if child == nil {
+					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
+					if err != nil {
+						return nil, err
+					}
+					node.Children[b] = loadedNode
+				}
+				node = node.Children[b]
+				if len(node.Handlers) > 0 {
+					return node.Handlers, nil
+				}
+			} else {
+				break
+			}
+		}
+	}
+	return nil, nil
+}
+
+func (t *Trie) SaveNode(node *TrieNode) error {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	if err := enc.Encode(node); err != nil {
+		return err
+	}
+	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
+}
+
+func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
+	if err := t.SaveNode(node); err != nil {
+		return err
+	}
+	for childKey, childNode := range node.Children {
+		if childNode != nil {
+			if err := t.SaveNodesRecursively(childNode); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (t *Trie) Save() error {
+	return t.SaveNodesRecursively(t.Root)
+}
+
+func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
+	data, err := afero.ReadFile(t.Fs, nodePath)
+	if err != nil {
+		return nil, err
+	}
+	buf := bytes.NewBuffer(data)
+	node := &TrieNode{}
+	dec := gob.NewDecoder(buf)
+	if err := dec.Decode(node); err != nil {
+		return nil, err
+	}
+	node.Path = nodePath
+	node.Fs = t.Fs
+	for childKey := range node.Children {
+		node.Children[childKey] = nil // Mark child as needing lazy load
+	}
+	return node, nil
+}
+
+func (t *Trie) Load() error {
+	rootNode, err := t.LoadNode(t.BaseDir)
+	if err != nil {
+		return err
+	}
+	t.Root = rootNode
+	return nil
+}
+
+func main() {
+	fs := afero.NewOsFs()
+	trie := NewTrie(fs, "trie_data")
+
+	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
+	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
+
+	// Save trie to disk
+	if err := trie.Save(); err != nil {
+		fmt.Println("Error saving trie:", err)
+		return
+	}
+
+	// Load trie from disk
+	newTrie := NewTrie(fs, "trie_data")
+	if err := newTrie.Load(); err != nil {
+		fmt.Println("Error loading trie:", err)
+		return
+	}
+
+	// Search in the loaded trie
+	message := bytes.NewReader([]byte{0x01, 0x02})
+	handlers, err := newTrie.Search(message)
+	if err != nil {
+		fmt.Println("Search error:", err)
+		return
+	}
+	if handlers != nil {
+		for _, handler := range handlers {
+			handler()
+		}
+	} else {
+		fmt.Println("No handler found")
+	}
+}
+```
 
 ### Conclusion
 
-The sequence matching approach offers significant flexibility and potential performance advantages for handling diverse message types in PromiseGrid. However, the design must carefully address the complexity, ambiguity, and security implications of this method. Future implementations can leverage pattern databases and robust validation mechanisms to mitigate these challenges.
-
-Overall, while byte-by-byte sequence matching is a promising method for dynamic message handling, it requires careful design considerations to ensure reliability, security, and efficiency in a production environment.
+By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where trie nodes are lazily loaded from disk ensures optimal memory usage and efficient retrieval of parts of the trie.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/340-magic.md
-</details>
+EOF_/home/stevegt/lab/grid-cli/v2/doc/346-persist.md

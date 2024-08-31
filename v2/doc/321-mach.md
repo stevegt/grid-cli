@@ -90,6 +90,68 @@ The layout of a typical Mach message is as follows:
 -------------------------------------------------
 ```
 
+### Example Workflow of Port Usage in Mach
+
+Consider a scenario where Process A sends a message to Process B and expects a response. Below is the step-by-step workflow:
+
+1. **Port Creation**:
+    - Process A and Process B each create their communication ports.
+    ```c
+    mach_port_t portA, portB;
+    mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &portA);
+    mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &portB);
+    ```
+
+2. **Sending a Message**:
+    - Process A constructs and sends a message to Process B.
+    ```c
+    struct message {
+        mach_msg_header_t header;
+        char body[256]; // Example payload
+    } msg;
+
+    msg.header.msgh_size = sizeof(msg);
+    msg.header.msgh_remote_port = portB;
+    msg.header.msgh_local_port = portA; // Reply port
+    msg.header.msgh_bits = MACH_MSGH_BITS_REMOTE(MACH_MSG_TYPE_MAKE_SEND);
+
+    strncpy(msg.body, "Hello, Process B", sizeof(msg.body));
+    mach_msg(&msg.header, MACH_SEND_MSG, msg.header.msgh_size, 0, MACH_PORT_NULL, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
+    ```
+
+3. **Receiving the Message**:
+    - Process B waits and receives the message from Process A.
+    ```c
+    struct message received_msg;
+    mach_msg(&received_msg.header, MACH_RCV_MSG, 0, sizeof(received_msg), portB, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
+
+    printf("Process B received: %s\n", received_msg.body);
+    ```
+
+4. **Sending a Response**:
+    - Process B constructs a response message and sends it back to Process A's reply port.
+    ```c
+    struct message response_msg;
+    response_msg.header.msgh_size = sizeof(response_msg);
+    response_msg.header.msgh_remote_port = portA;
+    response_msg.header.msgh_local_port = MACH_PORT_NULL;
+    response_msg.header.msgh_bits = MACH_MSGH_BITS_REMOTE(MACH_MSG_TYPE_MAKE_SEND);
+
+    strncpy(response_msg.body, "Hello, Process A", sizeof(response_msg.body));
+    mach_msg(&response_msg.header, MACH_SEND_MSG, response_msg.header.msgh_size, 0, MACH_PORT_NULL, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
+    ```
+
+5. **Receiving the Response**:
+    - Process A waits and receives the response from Process B.
+    ```c
+    struct message resp;
+    mach_msg(&resp.header, MACH_RCV_MSG, 0, sizeof(resp), portA, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
+
+    printf("Process A received: %s\n", resp.body);
+    ```
+
+This workflow demonstrates how Mach ports facilitate communication between processes, ensuring structured, secure, and reliable message exchanges.
+
 ## Conclusion
 
 The Mach microkernel's IPC mechanism via ports and messages provides a robust and efficient framework for task communication. Understanding the architecture and format of Mach ports and messages is crucial for developing distributed and modular systems leveraging the Mach microkernel's capabilities.

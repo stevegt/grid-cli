@@ -1,129 +1,150 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/002-design.md
+File: /home/stevegt/lab/grid-cli/v2/doc/003-design.md
 ```markdown
-# PromiseGrid Design
+## Cache and Module Handling in the PromiseGrid Kernel
 
-## Overview
+### Introduction
 
-PromiseGrid is designed as a decentralized computing, communications, and governance framework, leveraging promise-based interactions and content-addressable storage to create a robust and modular system.
+In the PromiseGrid Kernel, caching and module handling are central to optimizing and managing the execution and storage of data. This document discusses the strategies and implementation details of these mechanisms, highlighting their alignment with decentralized governance and microkernel architecture principles.
 
-## Core Concepts
+### Cache Structures
 
-1. **Decentralized Architecture**: PromiseGrid operates as a decentralized network where control is distributed among its users, eschewing single entity ownership.
-2. **Capability-as-Promise Model**: Inspired by Promise Theory, capabilities are represented as promises, which can be fulfilled or revoked based on the system's state and requirements.
-3. **Content-Addressable Code**: Both code and data are referenced by their content hashes, facilitating efficient storage and retrieval across the network.
-4. **Promises All the Way Down**: Every interaction in the system hinges on promises, ensuring that responses to promises are also promises, creating a chain of trust and execution.
-5. **Non-Sandboxed Modules**: Like device drivers in a microkernel OS, non-sandboxed modules handle specific operations, such as network communications or file access. The kernel oversees these modules while maintaining overall system control.
+1. **Directory Tree Structure**:
+    - The cache **SHOULD BE** a directory tree rather than an in-memory map. This approach ensures persistent storage and efficient management of large datasets.
+    - Cache keys **MUST** use filesystem separators (`/`) between each key component, and arguments **MUST** be URL-encoded when building the cache key to handle special characters safely.
 
-## Glossary of Terms and Concepts
+2. **Multiple Caches**:
+    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+    - The kernel **SHOULD** load the built-in cache from embedded resources using Go's `embed` feature.
+    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
 
-- **Decentralized Architecture**: A system design that distributes control among various actors, rather than centralizing it in a single authority.
-- **Capability-as-Promise Model**: A model where capabilities denote promises that can be either fulfilled or revoked.
-- **Content-Addressable Code**: A storage methodology where code and data are indexed and accessed based on their content.
-- **Promises All the Way Down**: A paradigm where every interaction and response within the system is treated as a promise.
-- **Non-Sandboxed Modules**: Modules granted more access and responsibility to manage specific operations, analogous to device drivers, in a controlled manner.
+### Treating Modules as Caches
 
-## Flexible Design for Module Registration
+1. **Role of Modules**:
+    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
+    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
 
-### Overview
+2. **Unified Interface**:
+    - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as hashed function calls. The caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
 
-Modules in PromiseGrid interface with the kernel via explicit registration or through hash-based routing mechanisms. These two primary methods offer distinct advantages and challenges:
+### Acceptance and Promises
 
-### Explicit Module Registration
+1. **Acceptance Criteria**:
+    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
+    - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
 
-#### Pros
-1. **Clarity and Explicitness**: Modules report their capabilities, simplifying system understanding and management.
-2. **Fine-Grained Control**: The kernel can enforce rules and constraints based on module capabilities.
-3. **Dynamic Adaptation**: Modules can update their capabilities dynamically, supporting on-the-fly changes.
+2. **Promises as Acceptance**:
+    - The `Accept` function returns a promise message that includes whether the module accepts the request and any relevant metadata. If `HandleMessage` fails, it is considered a broken promise.
 
-#### Cons
-1. **Complexity**: Adds complexity to module initialization and management.
-2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
-3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
+3. **Ant Routing Mechanism**:
+    - The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing. In the future, similar calls follow the same path to the same module.
+    - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
 
-### Hash-Based Module Routing
+### Integration with Church, Turing, and Chomsky's Concept of "Accept"
 
-#### Pros
-1. **Simplicity**: Cryptographic hashes guide message routing, eliminating explicit registration.
-2. **Efficiency**: Highly efficient due to unique and consistent addressing.
-3. **Decentralized Management**: Modules are self-contained, facilitating independent management.
+1. **Computational Theory**:
+    - The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory and languages, where an automaton or machine accepts an input if it reaches an accepting state.
+    - In PromiseGrid, modules act as recognizers for specific tasks, based on the promise hash, module hash, and arguments.
 
-#### Cons
-1. **Opaque Mapping**: Harder to identify which module handles a message without clear declarations.
-2. **Limited Flexibility**: Dynamic updates require hash changes, reducing adaptability.
-3. **Security Risks**: Must mitigate risks like hash collisions and attacks.
+2. **Promises All the Way Down**:
+    - The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
+    - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
 
-### Combining Both Approaches
+### Kernel's Dynamic Syscall Tree
 
-A hybrid approach leverages the strengths of both explicit registration and hash-based routing:
+1. **Syscall Table and Acceptance History**:
+    - The kernel **SHOULD** use a dynamic syscall table to store positive and negative acceptance history for all modules.
+    - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
+    - The kernel **MUST** route messages to the module whose syscall table key matches the most leading parameters components, optimizing routing and reducing redundant checks.
 
-1. **Initialization Phase**: Modules register their capabilities during initialization.
-2. **Hash-Based Execution**: Runtime routing employs cryptographic hashes, consulting the registry as needed.
+### Combining Accept and HandleMessage Functions
 
-### Nested Messages and Kernel Arbitration
+#### Pros and Cons of Separate `Accept()` and `HandleMessage()` Functions versus a Single Function
 
-Modules can unwrap nested messages, allowing dynamic and complex interactions. The kernel's arbitration is not final, supporting a modular design where tasks can be delegated further through nested messaging.
+##### Combined Function:
 
-#### Implications
-1. **Delegated Control**: Enables modular and extensible system design by delegating tasks.
-2. **Dynamic Message Flows**: Supports flexible message handling based on context.
-3. **Complex Dependency Graphs**: Requires careful management to maintain stability.
+1. **Simplicity**: Combines decision-making and handling into a single function.
+2. **Consistency**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency and reducing logic duplication.
+3. **Efficiency**: Eliminates redundant checks by combining acceptance and handling.
+
+##### Separate Functions:
+
+1. **Clarity**: Maintains clear separation between decision-making and handling logic.
+2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
+3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
+
+### Acceptance as Promise
+
+Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
+
+1. **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the message.
+2. **Handling as Promise Fulfillment**: `HandleMessage` attempts to fulfill this promise. If it fails (breaking the promise), it is logged and handled appropriately.
+
+### Proposed Dynamic Syscall Table and Ant Routing
+
+Implementing a dynamic syscall table with ant routing involves:
+
+1. **Hierarchical Syscall Tree**: Each node in the tree can have multiple children representing different components of the parameters (`parms`).
+2. **Caching Successful Paths**: Cache successful paths to optimize future routing based on leading parameter sequences.
+3. **Populating During Operation**: The syscall tree starts empty and is populated during operation as modules accept and handle messages.
+
+### Examples of Unified and Separate Function Approaches
+
+**Combined Function:
+
+```go
+type Module interface {
+    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
+}
+
+type LocalCacheModule struct {
+    cacheDir string
+}
+
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
+}
+
+func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic to process message, which includes accepting and handling
+    // Return a promise message with acceptance and handling results or errors
+}
+```
+
+**Separate Functions:
+
+```go
+type Module interface {
+    Accept(ctx context.Context, parms ...interface{}) (Message, error)
+    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
+}
+
+type LocalCacheModule struct {
+    cacheDir string
+}
+
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
+}
+
+func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic to accept or reject based on parms
+}
+
+func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
+    // Implement logic to handle the message following acceptance
+}
+```
 
 ### Conclusion
 
-Explicit registration and hash-based routing methods impact system design and functionality significantly. Combining both approaches balances their strengths, enhancing modularity, adaptability, and efficiency. This flexibility, including nested messaging, bolsters PromiseGrid's modular architecture.
-
-## Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
-
-The cache, or syscall tree node structure, is vital for PromiseGrid's operation. It acts as a hierarchical routing mechanism, storing successful paths for optimized future lookups.
-
-### Syscall Tree (Ant Routing Mechanism)
-
-1. **Node Structure**:
-    - Nodes have multiple children representing parameter components.
-    - Vertices typically contain hashes for promise hashes, module hashes, and URL-encoded arguments.
-
-2. **Dynamic Population**:
-    - The syscall tree starts empty and populates during operation, consulting built-in and other modules for message handling.
-    - It caches successful paths for optimization.
-
-3. **Acceptance History**:
-    - Stores both positive and negative acceptance history for all modules.
-    - This history is critical for efficient message handling, skipping previously rejecting modules and focusing on accepting ones.
-
-4. **Routing Messages**:
-    - Kernel looks up the syscall tree to find the longest matching parameter sequence, dynamically optimizing future routing.
-
-### Messages and Promises
-
-1. **Unified Message Structure**:
-    - `Message` structure includes promise as the first element in `Parms`, routing or discarding based on the leading promise.
-
-### Multihash, Multibase, and Multicodec
-
-PromiseGrid leverages multihash and multibase to autodetect hash formats, enhancing compatibility and extensibility across various data formats.
-
-### Conclusion
-
-Implementing a hierarchical syscall tree and unified message structure simplifies routing, acceptance, and handling of messages. Embedding acceptance history and known message paths within kernel enhances recognition and validation, ensuring optimal routing within a decentralized governance framework.
+By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
 
 ### Open Questions
 
-- How to dynamically adjust acceptance criteria to adapt to changing workloads?
-- Mechanisms to handle broken promises effectively?
-- Design implications of separate `Accept()` and `HandleMessage()` methods vis-a-vis promise theory?
-- Determining the best route with multiple handling promises?
-- Managing latency in decentralized, distributed nodes?
+- How can we best handle broken promises effectively?
+- What are the most efficient methods to determine the best route when multiple handlers are available?
+- How should we reconcile byte sequence completion with explicit registration and hash-based routing?
 
-## Suggestions for Improving this Document
-
-- Develop comprehensive error handling and logging for broken promises.
-- Add more examples and case studies.
-- Expand on hierarchical syscall tree descriptions.
-- Update sections with new questions arising during implementation.
-- Refine glossary with specialized terms and concepts.
-- Incorporate visual aids to showcase system architecture and data flow.
-
-``` 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/003-design.md
+```

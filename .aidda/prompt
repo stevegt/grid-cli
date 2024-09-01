@@ -7,9 +7,10 @@ In:
 Out:
     v2/doc/320-ipc.md
 
-Replace channels with io.Readers. Discuss non-blocking reads of an
-io.Reader in Go.  Discuss how the kernal is able to balance resources
-used by modules by controlling message routing and io.Reader timeouts.
+imagine answers to these questions:
+- do kernel internal IPC channels carry io.Readers?
+- is the kernel able to balance resources used by modules
+  by controlling message routing and io.Reader timeouts?
 
 .stop
 

@@ -5,7 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/320-ipc.md
+    v2/doc/380-kernel.md
 
 imagine answers to these questions:
 - do kernel internal IPC channels carry io.Readers?

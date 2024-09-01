@@ -1,3 +1,5 @@
+<blank line>
+File: /home/stevegt/lab/grid-cli/v2/doc/320-ipc.md
 ```markdown
 # Inter-Process Communication (IPC) in PromiseGrid
 
@@ -196,6 +198,7 @@ Byte-sequence completion in PromiseGrid’s microkernel services works as follow
 ## Conclusion
 
 The PromiseGrid microkernel leverages common IPC patterns, specifically message passing, to facilitate communication between modules. By incorporating byte-sequence completion and trie structures, the system ensures efficient routing and dynamic message handling. The pros and cons of using a unified message format and a single trie for both intrahost and interhost communications highlight the need for careful design to balance efficiency, scalability, and complexity. Additionally, understanding the trade-offs between in-memory and persistent tries, and recognizing the analogies with Turing machines, provides deeper insights into the robustness and computational completeness of the system. Overall, these design choices underpin a robust, flexible, and decentralized system architecture, enabling efficient completion of byte sequences and seamless intrahost communication.
+
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/320-ipc.md
 ```

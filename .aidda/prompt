@@ -5,12 +5,13 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out:
-    v2/doc/380-kernel.md
+    v2/doc/420-routing.md
 
-imagine answers to these questions:
-- do kernel internal IPC channels carry io.Readers?
-- is the kernel able to balance resources used by modules
-  by controlling message routing and io.Reader timeouts?
+imagine how message routing works, both within and between nodes:
+- routing might use mechanisms borrowed from zkos and antikernel
+- routing could use capability tokens
+- a route might be the hash of the first N bytes of a message
+- suggest other alternatives
 
 .stop
 

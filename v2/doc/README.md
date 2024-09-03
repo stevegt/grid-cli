@@ -54,6 +54,10 @@
 | Genetic Algorithm Process in PromiseGrid's Byte-Sequence Completion Model | [360-genetic-algo](./360-genetic-algo.md) |
 | Module-Based Decentralized System Using WASM | [370-wasm](./370-wasm.md) |
 | PromiseGrid Kernel | [380-kernel](./380-kernel.md) |
+| Analysis and Discussion of the ZKOS Paper | [390-zkos](./390-zkos.md) |
+| Antikernel: A Decentralized Secure Hardware-Software Operating System Architecture | [400-antikernel](./400-antikernel.md) |
+| Zero-Knowledge Proofs Explained Through Alice, Bob, and Carol | [410-zkp](./410-zkp.md) |
+| PromiseGrid Routing | [420-routing](./420-routing.md) |
 | Axioms  | [910-axioms](./910-axioms.md) |
 | Goals  | [940-goals](./940-goals.md) |
 | TODO List for Implementing PromiseGrid Kernel | [999-TODO](./999-TODO.md) |

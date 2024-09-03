@@ -1,13 +1,12 @@
 # PromiseGrid Routing
 
-## Overview 
+## Overview
 
-Routing is the act of forwarding a message to the correct recipient(s)
-or to an intermediary host that can further route the message to its destination.
+Routing is the act of forwarding a message to the correct recipient(s) or to an intermediary host that can further route the message to its destination. 
 
-In PromiseGrid, routing is a critical aspect of the network's operation,
-facilitating the exchange of messages, resources, and services between
-hosts and between the modules (apps) running on those hosts.
+In PromiseGrid, routing is a critical aspect of the network's operation, facilitating the exchange of messages, resources, and services between hosts and between the modules (apps) running on those hosts.
+
+## Exchange Rate-Based Routing
 
 ### 1. Exchange Rate-Based Routing
 - Hosts route based on the exchange rates of personal currencies.
@@ -23,6 +22,17 @@ hosts and between the modules (apps) running on those hosts.
 - Hosts that misbehave receive less network traffic and forwarding services.
 - Poor behavior leads to reduced currency value, decreasing a host's network influence.
 - This self-regulating mechanism ensures network stability and security.
+
+## Concept that "A Physical Host is Sovereign"
+
+### Physical Host Sovereignty Analogy
+- A physical host in PromiseGrid is considered sovereign, analogous to a geographical nation-state.
+- This sovereignty implies that a host has ultimate control over its resources, policies, and interactions within its domain.
+
+### Use of Force and Sovereignty
+- Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
+- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good)
+- We can do this be incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
 
 ## How Personal Currencies Work: "Everyone is Their Own Central Bank"
 
@@ -66,55 +76,54 @@ hosts and between the modules (apps) running on those hosts.
   - **Bond-Based Routing**: Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
 - While these approaches introduced interesting economic incentives, they were ultimately considered **too complex** for practical implementation. The need to manage immediate and deferred payments added layers of complexity that could complicate routing efficiency and network stability.
 
-#### 1. Derived from ZKOS and Antikernel
+### Derived from ZKOS and Antikernel
 
 PromiseGrid adopts and adapts mechanisms from renowned decentralized systems such as ZKOS and Antikernel. These systems emphasize privacy, security, and modularity through decentralized control.
 
-##### ZKOS:
+#### ZKOS:
 - **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
 - **Decentralized Control**: hosts operate independently, ensuring security and resilience.
 
-##### Antikernel:
+#### Antikernel:
 - **Modularity**: OS functionalities are divided into independent modules.
 - **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
 
-#### 2. Capability Tokens
+### Capability Tokens
 
 Routing decisions incorporate the use of capability tokens, which represent permissions or promises related to specific functions:
 
 - **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
 - **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
 
-#### 3. Hash-Based Routing
+### Hash-Based Routing
 
 PromiseGrid employs hash functions to facilitate efficient and deterministic message routing:
 
-- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message.  This can work because the grid's function is byte sequence completion.
+- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message. This can work because the grid's function is byte sequence completion.
 - **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
 
-
-### 1. Byte Sequence Completion
+### Byte Sequence Completion
 
 Routing can be based on the completion of byte sequences, leveraging pattern matching techniques:
 
 - **Trie Structure**: Uses a trie to manage and match byte sequences efficiently.
 - **Dynamic Path Selection**: Adapts routing paths dynamically based on sequence completions and historical success rates.
 
-### 2. Genetic Algorithms
+### Genetic Algorithms
 
 Explores the use of genetic algorithms to optimize routing decisions over time:
 
 - **Evolutionary Optimization**: Routes evolve through selection, crossover, and mutation, adapting to changing network conditions.
 - **Fitness Function**: Evaluates routes based on performance metrics such as latency, throughput, and reliability.
 
-### 3. Machine Learning
+### Machine Learning
 
 Machine learning models can predict optimal routing paths based on historical data:
 
 - **Predictive Analytics**: Models analyze past routing decisions to forecast the best paths for new messages.
 - **Reinforcement Learning**: The system learns optimal routes through reinforcement learning, continuously improving based on feedback.
 
-### Shift to Exchange Rate Routing
+## Shift to Exchange Rate Routing
 - The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
 - In this model, hosts prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
 - This approach naturally encourages hosts to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
@@ -127,10 +136,10 @@ Machine learning models can predict optimal routing paths based on historical da
 
 ## Open Questions
 
-1. **Complexity of Implementation**
+### 1. Complexity of Implementation
    - What are the challenges in implementing these routing strategies?
    - Are there simpler alternatives that align with PromiseGrid’s goals?
 
-2. **Potential Pitfalls**
+### 2. Potential Pitfalls
    - What unforeseen issues might arise from using personal currencies in routing?
    - How do we handle situations where hosts frequently change their routing behavior?

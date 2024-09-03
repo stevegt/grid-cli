@@ -1,7 +1,3 @@
-Here is the document with the requested changes made:
-
-File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
-```markdown
 # Message Routing in PromiseGrid
 
 ## Introduction
@@ -27,21 +23,15 @@ PromiseGrid adopts and adapts mechanisms from renowned decentralized systems suc
 Routing decisions incorporate the use of capability tokens, which represent permissions or promises related to specific functions:
 
 - **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
-- **Decentralized Capabilities**: Each node can issue and manage its capability tokens, promoting autonomy and security.
+- **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
 
 ### 3. Hash-Based Routing
 
 PromiseGrid employs hash functions to facilitate efficient and deterministic message routing:
 
-- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message.
+- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message.  This can work because the grid's function is byte sequence completion.
 - **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
 
-### 4. Ant Routing Mechanism
-
-The system utilizes an ant routing mechanism, inspired by the behavior of ant colonies:
-
-- **Success Path Caching**: Successful call paths are cached, guiding future similar calls along the same paths.
-- **Hierarchical Keys**: Routes are determined using hierarchical keys, promoting efficient filtering and matching.
 
 ## Alternative Routing Strategies
 
@@ -69,5 +59,3 @@ Machine learning models can predict optimal routing paths based on historical da
 ## Conclusion
 
 PromiseGrid's routing mechanisms are designed to ensure efficient, secure, and reliable message forwarding within a decentralized architecture. By integrating advanced techniques from ZKOS, Antikernel, and other innovative approaches, the system balances modularity, performance, and resilience. As the system evolves, exploring alternative routing strategies like genetic algorithms and machine learning will further enhance its capabilities, ensuring robust and adaptive message routing in diverse and dynamic network environments.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md

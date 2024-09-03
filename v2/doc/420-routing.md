@@ -147,3 +147,18 @@ hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://
 ### 2. Potential Pitfalls
    - What unforeseen issues might arise from using personal currencies in routing?
    - How do we handle situations where hosts frequently change their routing behavior?
+
+### 3. Identity evasion
+
+One potential pitfall in using personal currencies and reputation-based routing is the possibility that a participant can evade their past record of bad behavior by creating a new identity. Solutions to this issue are likely related to robust onboarding processes, which may include measures such as:
+
+1. **Identity Verification**: Implementing strong identity verification steps could help ensure that new identities are tied to real-world anchors, making it harder to create disposable identities.
+  
+2. **Reputation Migration**: Allowing participants to carry some of their reputation (positive or negative) when creating a new identity can help mitigate the effects of identity hopping.
+
+3. **Initial Restrictions**: Imposing temporary restrictions or limitations on new identities until they have built up a certain level of trust within the network.
+
+4. **Behavioral Analysis**: Using automated systems to analyze behavior patterns that suggest identity evasion, thereby identifying and mitigating malicious actors faster.
+
+5. **Exchange rates and Sovereignty**: Ultimately, the value of a host's currency is determined by the network's collective perception of its reliability and trustworthiness. Hosts that consistently fulfill promises and maintain good behavior will naturally experience higher currency values as reflected in the exchange rates quoted by their peers, increasing their currency value and influence within the network.
+

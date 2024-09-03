@@ -66,26 +66,36 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
 
 ### Use of Force and Sovereignty
 - Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
-- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good)
+- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good).
 - We can do this by incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
 
 ## Evolution of Routing Strategies: From Concept to Current Model
 
 ### Early Considerations and Alternatives
-- Initially, we explored several routing strategies, including:
-  - **Pay-for-Flow**: hosts paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
-  - **Bond-Based Routing**: Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
-- While these approaches introduced interesting economic incentives, they were ultimately considered **too complex** for practical implementation. The need to manage immediate and deferred payments added layers of complexity that could complicate routing efficiency and network stability.
 
-### Derived from ZKOS and Antikernel
+We explored several other routing strategies, including:
 
-We also considered routing strategies based on other concepts:
+#### Pay-for-Flow 
 
-#### ZKOS:
+Hosts paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
+
+#### Bond-Based Routing
+
+Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
+
+Essentially this is still pay-for-flow, with deferred payment.
+
+#### ZKOS 
+
+Derived from Zero-Kernel Operating Systems, ZKOS routing used zero-knowledge proofs for privacy-preserving validation.  [https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf](https://github.com/stevegt/grid-cli/blob/main/v2/doc/420-routing.md)
+
 - **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
 - **Decentralized Control**: hosts operate independently, ensuring security and resilience.
 
-#### Antikernel:
+#### Antikernel
+
+[https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://www.iacr.org/archive/ches2016/98130227/98130227.pdf)
+
 - **Modularity**: OS functionalities are divided into independent modules.
 - **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
 

@@ -1,4 +1,5 @@
-<blank line>
+After making the requested changes, here are the updated contents of the file:
+
 File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
 ```
 # PromiseGrid Routing
@@ -6,67 +7,67 @@ File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
 ## Overview 
 
 Routing is the act of forwarding a message to the correct recipient(s)
-or to an intermediary node that can further route the message to its destination.
+or to an intermediary host that can further route the message to its destination.
 
 In PromiseGrid, routing is a critical aspect of the network's operation,
 facilitating the exchange of messages, resources, and services between
-nodes and between the modules (apps) running on those nodes.
+hosts and between the modules (apps) running on those hosts.
 
 ### 1. Exchange Rate-Based Routing
 - Nodes route based on the exchange rates of personal currencies.
-- Prefer routing to nodes with higher-valued currencies to ensure stability and reliability.
-- Encourages nodes to maintain strong reputations and economic value.
+- Prefer routing to hosts with higher-valued currencies to ensure stability and reliability.
+- Encourages hosts to maintain strong reputations and economic value.
 
 ### 2. Reputation and Currency Mechanisms
 - Reputation points function as a currency, influencing routing decisions.
 - Nodes decide to route based on the perceived value and reliability of other nodes.
 - Market dynamics dictate routing paths, promoting decentralized control.
 
-### 3. Handling Misbehaving Nodes
-- Nodes that misbehave receive less network traffic and forwarding services.
-- Poor behavior leads to reduced currency value, decreasing a node's network influence.
+### 3. Handling Misbehaving Hosts
+- Hosts that misbehave receive less network traffic and forwarding services.
+- Poor behavior leads to reduced currency value, decreasing a host's network influence.
 - This self-regulating mechanism ensures network stability and security.
 
 ## How Personal Currencies Work: "Everyone is Their Own Central Bank"
 
 ### Concept of Personal Currencies
-- In PromiseGrid, **every node acts as its own central bank**, issuing its own currency in the form of reputation points.
-- These currencies represent the node's trustworthiness and reliability, similar to how fiat currencies reflect the stability of a government.
+- In PromiseGrid, **every host acts as its own central bank**, issuing its own currency in the form of reputation points.
+- These currencies represent the host's trustworthiness and reliability, similar to how fiat currencies reflect the stability of a government.
 
 ### Incentives and Disincentives for Maintaining Currency Value
-- Nodes are incentivized to maintain the value of their currency (reputation points) by keeping promises and behaving reliably.
-- A **high currency value** means other nodes are more likely to route traffic through or trade with that node, increasing its influence and participation in the network.
-- Conversely, **bad behavior** (breaking promises, excessive querying, etc.) leads to a **devaluation** of the currency, reducing a node’s ability to transact and interact with others effectively.
+- Hosts are incentivized to maintain the value of their currency (reputation points) by keeping promises and behaving reliably.
+- A **high currency value** means other nodes are more likely to route traffic through or trade with that host, increasing its influence and participation in the network.
+- Conversely, **bad behavior** (breaking promises, excessive querying, etc.) leads to a **devaluation** of the currency, reducing a host’s ability to transact and interact with others effectively.
 
 ### Tools for Market Participants to Maintain Value
-- **Reputation Management**: Nodes can actively manage their reputation by fulfilling promises and avoiding behaviors that could devalue their currency.
-- **Dynamic Exchange Rates**: By adjusting their exchange rates with other nodes based on behavior and market conditions, nodes can strategically protect their currency's value.
-- **Selective Interactions**: Nodes may choose to interact only with other nodes that maintain a stable or high-value currency, reinforcing trust and reliability in the network.
+- **Reputation Management**: Hosts can actively manage their reputation by fulfilling promises and avoiding behaviors that could devalue their currency.
+- **Dynamic Exchange Rates**: By adjusting their exchange rates with other nodes based on behavior and market conditions, hosts can strategically protect their currency's value.
+- **Selective Interactions**: Hosts may choose to interact only with other hosts that maintain a stable or high-value currency, reinforcing trust and reliability in the network.
 
 ## Import and Export of Resources in PromiseGrid
 
 ### Understanding Import and Export
-- In PromiseGrid, **importing resources** means paying another node for storage space or computational power. This could involve storing data on another node’s hardware or outsourcing computation tasks.
-- **Exporting resources** refers to being paid by other nodes to provide storage space or computational power. Nodes that export resources effectively "sell" their excess capacity to others on the network.
+- In PromiseGrid, **importing resources** means paying another host for storage space or computational power. This could involve storing data on another host’s hardware or outsourcing computation tasks.
+- **Exporting resources** refers to being paid by other hosts to provide storage space or computational power. Hosts that export resources effectively "sell" their excess capacity to others on the network.
 
 ### Analogies to International Trade
 - The concepts of importing and exporting in PromiseGrid are similar to international trade in the global economy:
-  - **Importing resources** (buying storage or computation) can be likened to a country purchasing goods or services from abroad. Nodes spend their currency to acquire necessary resources they cannot efficiently produce themselves.
-  - **Exporting resources** (selling storage or computation) is akin to a country selling its goods or services to other nations. Nodes receive payments in other currencies, which strengthens their economic standing and increases their influence within the network.
-- Just as countries aim to maintain a favorable balance of trade to enhance their currency’s value, nodes in PromiseGrid seek to optimize their import and export balance to maintain or increase their reputation and currency value.
+  - **Importing resources** (buying storage or computation) can be likened to a country purchasing goods or services from abroad. Hosts spend their currency to acquire necessary resources they cannot efficiently produce themselves.
+  - **Exporting resources** (selling storage or computation) is akin to a country selling its goods or services to other nations. Hosts receive payments in other currencies, which strengthens their economic standing and increases their influence within the network.
+- Just as countries aim to maintain a favorable balance of trade to enhance their currency’s value, hosts in PromiseGrid seek to optimize their import and export balance to maintain or increase their reputation and currency value.
 
 ### Governance and Geopolitical Factors Influencing Currency Values
 - In the real world, geopolitical factors, governance, and economic policies heavily influence currency values. Similarly, in PromiseGrid:
-  - **Governance Decisions**: Nodes might make decisions that affect their ability to import or export resources. For example, a node that reliably exports high-quality computational resources might see its currency increase in value, akin to how a country with a robust export economy strengthens its currency.
-  - **Network Effects**: The behavior of a node's peers and its relationships within the network influence its currency's value. If a node is part of a trusted coalition or "alliance" of nodes that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
-  - **Economic Policies**: Nodes might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
+  - **Governance Decisions**: Hosts might make decisions that affect their ability to import or export resources. For example, a host that reliably exports high-quality computational resources might see its currency increase in value, akin to how a country with a robust export economy strengthens its currency.
+  - **Network Effects**: The behavior of a host's peers and its relationships within the network influence its currency's value. If a host is part of a trusted coalition or "alliance" of hosts that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
+  - **Economic Policies**: Hosts might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
 
 ## Evolution of Routing Strategies: From Concept to Current Model
 
 ### Early Considerations and Alternatives
 - Initially, we explored several routing strategies, including:
   - **Pay-for-Flow**: Nodes paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
-  - **Bond-Based Routing**: Treating routing decisions as financial investments, where sending a message through a node could be seen as buying a bond in that node's currency.
+  - **Bond-Based Routing**: Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
 - While these approaches introduced interesting economic incentives, they were ultimately considered **too complex** for practical implementation. The need to manage immediate and deferred payments added layers of complexity that could complicate routing efficiency and network stability.
 
 #### 1. Derived from ZKOS and Antikernel
@@ -119,13 +120,13 @@ Machine learning models can predict optimal routing paths based on historical da
 
 ### Shift to Exchange Rate Routing
 - The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
-- In this model, nodes prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
-- This approach naturally encourages nodes to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
+- In this model, hosts prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
+- This approach naturally encourages hosts to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
 
 ### Considerations for the Current Model
 - While the exchange rate-based routing simplifies decision-making, it introduces new considerations:
   - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
-  - **Equity and Access**: Ensuring that less established nodes can still participate meaningfully in the network without being overshadowed by nodes with established high-value currencies.
+  - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.
 - These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
 
 ## Open Questions
@@ -139,3 +140,4 @@ Machine learning models can predict optimal routing paths based on historical da
    - How do we handle situations where nodes frequently change their routing behavior?
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md
+

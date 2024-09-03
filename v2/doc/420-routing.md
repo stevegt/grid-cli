@@ -24,17 +24,6 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
 - Poor behavior leads to reduced currency value, decreasing a host's network influence.
 - This self-regulating mechanism ensures network stability and security.
 
-## Concept that "A Physical Host is Sovereign"
-
-### Physical Host Sovereignty Analogy
-- A physical host in PromiseGrid is considered sovereign, analogous to a geographical nation-state.
-- This sovereignty implies that a host has ultimate control over its resources, policies, and interactions within its domain.
-
-### Use of Force and Sovereignty
-- Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
-- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good)
-- We can do this be incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
-
 ## How Personal Currencies Work: "Everyone is Their Own Central Bank"
 
 ### Concept of Personal Currencies
@@ -69,6 +58,17 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
   - **Network Effects**: The behavior of a host's peers and its relationships within the network influence its currency's value. If a host is part of a trusted coalition or "alliance" of hosts that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
   - **Economic Policies**: Hosts might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
 
+## Concept that "A Physical Host is Sovereign"
+
+### Physical Host Sovereignty Analogy
+- A physical host in PromiseGrid is considered sovereign, analogous to a geographical nation-state.
+- This sovereignty implies that a host has ultimate control over its resources, policies, and interactions within its domain.
+
+### Use of Force and Sovereignty
+- Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
+- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good)
+- We can do this by incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
+
 ## Evolution of Routing Strategies: From Concept to Current Model
 
 ### Early Considerations and Alternatives
@@ -79,7 +79,7 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
 
 ### Derived from ZKOS and Antikernel
 
-PromiseGrid adopts and adapts mechanisms from renowned decentralized systems such as ZKOS and Antikernel. These systems emphasize privacy, security, and modularity through decentralized control.
+We also considered routing strategies based on other concepts:
 
 #### ZKOS:
 - **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
@@ -89,47 +89,39 @@ PromiseGrid adopts and adapts mechanisms from renowned decentralized systems suc
 - **Modularity**: OS functionalities are divided into independent modules.
 - **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
 
-### Capability Tokens
-
-Routing decisions incorporate the use of capability tokens, which represent permissions or promises related to specific functions:
+#### Capability Tokens
 
 - **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
 - **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
 
-### Hash-Based Routing
-
-PromiseGrid employs hash functions to facilitate efficient and deterministic message routing:
+#### Hash-Based Routing
 
 - **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message. This can work because the grid's function is byte sequence completion.
 - **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
 
-### Byte Sequence Completion
-
-Routing can be based on the completion of byte sequences, leveraging pattern matching techniques:
+#### Byte Sequence Completion
 
 - **Trie Structure**: Uses a trie to manage and match byte sequences efficiently.
 - **Dynamic Path Selection**: Adapts routing paths dynamically based on sequence completions and historical success rates.
 
-### Genetic Algorithms
-
-Explores the use of genetic algorithms to optimize routing decisions over time:
+#### Genetic Algorithms
 
 - **Evolutionary Optimization**: Routes evolve through selection, crossover, and mutation, adapting to changing network conditions.
 - **Fitness Function**: Evaluates routes based on performance metrics such as latency, throughput, and reliability.
 
 ### Machine Learning
 
-Machine learning models can predict optimal routing paths based on historical data:
-
 - **Predictive Analytics**: Models analyze past routing decisions to forecast the best paths for new messages.
 - **Reinforcement Learning**: The system learns optimal routes through reinforcement learning, continuously improving based on feedback.
 
 ## Shift to Exchange Rate Routing
+
 - The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
 - In this model, hosts prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
 - This approach naturally encourages hosts to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
 
 ### Considerations for the Current Model
+
 - While the exchange rate-based routing simplifies decision-making, it introduces new considerations:
   - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
   - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.

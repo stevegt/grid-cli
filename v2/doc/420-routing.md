@@ -94,7 +94,8 @@ Derived from Zero-Kernel Operating Systems, ZKOS routing used zero-knowledge pro
 
 #### Antikernel
 
-[https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://www.iacr.org/archive/ches2016/98130227/98130227.pdf)
+Paper by Andrew Zonenberg on the concept of moving much of the intra-kernel routing into
+hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://www.iacr.org/archive/ches2016/98130227/98130227.pdf)
 
 - **Modularity**: OS functionalities are divided into independent modules.
 - **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.

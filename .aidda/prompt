@@ -7,9 +7,9 @@ In:
 Out:
     v2/doc/420-routing.md
 
-- add text discussing the concept that "a physical host is sovereign", drawing
-  analogies to a geographical nation-state and why this is true in
-  terms of use of force etc.
+- add an open question or pitfall addressing the possibility that a
+  participant can evade their past record of bad behavior by creating
+  a new identity; likely solutions are related to onboarding processes
 
 .stop
 

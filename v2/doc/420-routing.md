@@ -9,7 +9,8 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
 ## Exchange Rate-Based Routing
 
 ### 1. Exchange Rate-Based Routing
-- Hosts route based on the exchange rates of personal currencies.
+- Hosts route based on the exchange rates of "personal currencies" --
+  see below for more on personal currencies.
 - Prefer routing to hosts with higher-valued currencies to ensure stability and reliability.
 - Encourages hosts to maintain strong reputations and economic value.
 

@@ -7,7 +7,7 @@ In:
 Out:
     v2/doc/420-routing.md
 
-integrate this text into 420-routing.md:
+integrate these points into 420-routing.md:
 
 ```markdown
 # PromiseGrid Routing 

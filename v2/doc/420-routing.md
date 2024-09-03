@@ -1,39 +1,97 @@
-# Message Routing in PromiseGrid
+# PromiseGrid Routing
 
-## Introduction
+## Overview 
 
-Routing is a fundamental aspect of distributed systems, determining how messages are forwarded both within and between nodes. PromiseGrid leverages advanced mechanisms to achieve efficient and reliable message routing.
+Routing is the act of forwarding a message to the correct recipient(s)
+or to an intermediary node that can further route the message to its destination.
 
-## Core Routing Mechanisms
+In PromiseGrid, routing is a critical aspect of the network's operation,
+facilitating the exchange of messages, resources, and services between
+nodes and between the modules (apps) running on those nodes.
 
-### 1. Derived from ZKOS and Antikernel
+### 1. Exchange Rate-Based Routing
+- Nodes route based on the exchange rates of personal currencies.
+- Prefer routing to nodes with higher-valued currencies to ensure stability and reliability.
+- Encourages nodes to maintain strong reputations and economic value.
+
+### 2. Reputation and Currency Mechanisms
+- Reputation points function as a currency, influencing routing decisions.
+- Nodes decide to route based on the perceived value and reliability of other nodes.
+- Market dynamics dictate routing paths, promoting decentralized control.
+
+### 3. Handling Misbehaving Nodes
+- Nodes that misbehave receive less network traffic and forwarding services.
+- Poor behavior leads to reduced currency value, decreasing a node's network influence.
+- This self-regulating mechanism ensures network stability and security.
+
+## How Personal Currencies Work: "Everyone is Their Own Central Bank"
+
+### Concept of Personal Currencies
+- In PromiseGrid, **every node acts as its own central bank**, issuing its own currency in the form of reputation points.
+- These currencies represent the node's trustworthiness and reliability, similar to how fiat currencies reflect the stability of a government.
+
+### Incentives and Disincentives for Maintaining Currency Value
+- Nodes are incentivized to maintain the value of their currency (reputation points) by keeping promises and behaving reliably.
+- A **high currency value** means other nodes are more likely to route traffic through or trade with that node, increasing its influence and participation in the network.
+- Conversely, **bad behavior** (breaking promises, excessive querying, etc.) leads to a **devaluation** of the currency, reducing a node’s ability to transact and interact with others effectively.
+
+### Tools for Market Participants to Maintain Value
+- **Reputation Management**: Nodes can actively manage their reputation by fulfilling promises and avoiding behaviors that could devalue their currency.
+- **Dynamic Exchange Rates**: By adjusting their exchange rates with other nodes based on behavior and market conditions, nodes can strategically protect their currency's value.
+- **Selective Interactions**: Nodes may choose to interact only with other nodes that maintain a stable or high-value currency, reinforcing trust and reliability in the network.
+
+## Import and Export of Resources in PromiseGrid
+
+### Understanding Import and Export
+- In PromiseGrid, **importing resources** means paying another node for storage space or computational power. This could involve storing data on another node’s hardware or outsourcing computation tasks.
+- **Exporting resources** refers to being paid by other nodes to provide storage space or computational power. Nodes that export resources effectively "sell" their excess capacity to others on the network.
+
+### Analogies to International Trade
+- The concepts of importing and exporting in PromiseGrid are similar to international trade in the global economy:
+  - **Importing resources** (buying storage or computation) can be likened to a country purchasing goods or services from abroad. Nodes spend their currency to acquire necessary resources they cannot efficiently produce themselves.
+  - **Exporting resources** (selling storage or computation) is akin to a country selling its goods or services to other nations. Nodes receive payments in other currencies, which strengthens their economic standing and increases their influence within the network.
+- Just as countries aim to maintain a favorable balance of trade to enhance their currency’s value, nodes in PromiseGrid seek to optimize their import and export balance to maintain or increase their reputation and currency value.
+
+### Governance and Geopolitical Factors Influencing Currency Values
+- In the real world, geopolitical factors, governance, and economic policies heavily influence currency values. Similarly, in PromiseGrid:
+  - **Governance Decisions**: Nodes might make decisions that affect their ability to import or export resources. For example, a node that reliably exports high-quality computational resources might see its currency increase in value, akin to how a country with a robust export economy strengthens its currency.
+  - **Network Effects**: The behavior of a node's peers and its relationships within the network influence its currency's value. If a node is part of a trusted coalition or "alliance" of nodes that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
+  - **Economic Policies**: Nodes might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
+
+## Evolution of Routing Strategies: From Concept to Current Model
+
+### Early Considerations and Alternatives
+- Initially, we explored several routing strategies, including:
+  - **Pay-for-Flow**: Nodes paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
+  - **Bond-Based Routing**: Treating routing decisions as financial investments, where sending a message through a node could be seen as buying a bond in that node's currency.
+- While these approaches introduced interesting economic incentives, they were ultimately considered **too complex** for practical implementation. The need to manage immediate and deferred payments added layers of complexity that could complicate routing efficiency and network stability.
+
+#### 1. Derived from ZKOS and Antikernel
 
 PromiseGrid adopts and adapts mechanisms from renowned decentralized systems such as ZKOS and Antikernel. These systems emphasize privacy, security, and modularity through decentralized control.
 
-#### ZKOS:
+##### ZKOS:
 - **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
 - **Decentralized Control**: Nodes operate independently, ensuring security and resilience.
 
-#### Antikernel:
+##### Antikernel:
 - **Modularity**: OS functionalities are divided into independent modules.
 - **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
 
-### 2. Capability Tokens
+#### 2. Capability Tokens
 
 Routing decisions incorporate the use of capability tokens, which represent permissions or promises related to specific functions:
 
 - **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
 - **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
 
-### 3. Hash-Based Routing
+#### 3. Hash-Based Routing
 
 PromiseGrid employs hash functions to facilitate efficient and deterministic message routing:
 
 - **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message.  This can work because the grid's function is byte sequence completion.
 - **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
 
-
-## Alternative Routing Strategies
 
 ### 1. Byte Sequence Completion
 
@@ -56,6 +114,23 @@ Machine learning models can predict optimal routing paths based on historical da
 - **Predictive Analytics**: Models analyze past routing decisions to forecast the best paths for new messages.
 - **Reinforcement Learning**: The system learns optimal routes through reinforcement learning, continuously improving based on feedback.
 
-## Conclusion
+### Shift to Exchange Rate Routing
+- The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
+- In this model, nodes prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
+- This approach naturally encourages nodes to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
 
-PromiseGrid's routing mechanisms are designed to ensure efficient, secure, and reliable message forwarding within a decentralized architecture. By integrating advanced techniques from ZKOS, Antikernel, and other innovative approaches, the system balances modularity, performance, and resilience. As the system evolves, exploring alternative routing strategies like genetic algorithms and machine learning will further enhance its capabilities, ensuring robust and adaptive message routing in diverse and dynamic network environments.
+### Considerations for the Current Model
+- While the exchange rate-based routing simplifies decision-making, it introduces new considerations:
+  - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
+  - **Equity and Access**: Ensuring that less established nodes can still participate meaningfully in the network without being overshadowed by nodes with established high-value currencies.
+- These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
+
+## Open Questions
+
+1. **Complexity of Implementation**
+   - What are the challenges in implementing these routing strategies?
+   - Are there simpler alternatives that align with PromiseGrid’s goals?
+
+2. **Potential Pitfalls**
+   - What unforeseen issues might arise from using personal currencies in routing?
+   - How do we handle situations where nodes frequently change their routing behavior?

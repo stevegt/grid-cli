@@ -4,8 +4,10 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+Out: 
+    v2/doc/001-design.md
 
-which documents are most in disagrement or conflict with each other?
+- update 001-design.md, reconciling with the concepts in other docs
 
 .stop
 

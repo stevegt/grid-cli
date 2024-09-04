@@ -5,7 +5,6 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 .revise v2/doc/000-TODO.md
-
 - list all documents that discuss routing
 
 .stop

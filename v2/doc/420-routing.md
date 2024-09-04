@@ -162,3 +162,7 @@ One potential pitfall in using personal currencies and reputation-based routing 
 
 5. **Exchange rates and Sovereignty**: Ultimately, the value of a host's currency is determined by the network's collective perception of its reliability and trustworthiness. Hosts that consistently fulfill promises and maintain good behavior will naturally experience higher currency values as reflected in the exchange rates quoted by their peers, increasing their currency value and influence within the network.
 
+### 4. How can we prevent good histories from enabling later bad behavior?
+
+A consideration as we implement these routing strategies is the potential for hosts with good historical reputations to engage in bad behavior at a later stage. A host that has built up a strong reputation over time might exploit its high standing to suddenly behave maliciously, knowing that the economic impact might not be immediate. Hosts should develop mechanisms to mitigate such risks, perhaps incorporating moving averages, recent behavior weighting, or anomaly detection algorithms into exchange rate calculations.
+

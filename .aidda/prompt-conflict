@@ -1,0 +1,13 @@
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Sysmsg: You are an expert technical writer and software architect. 
+In: 
+    v2/doc/
+Out: 
+    /tmp/conflict.txt
+
+In conflict.txt, name the file which is most in comflict with all
+other files.  Your answer must be in this format:
+
+v2/doc/{filename.md}
+

@@ -1,76 +1,303 @@
-<blank line>
-File: /home/stevegt/lab/grid-cli/v2/doc/370-wasm.md
+Here are the requested changes to the documentation, along with the complete files for your review:
+
+File: /home/stevegt/lab/grid-cli/v2/doc/346-persist.md
 ```markdown
-# Module-Based Decentralized System Using WASM
+# Persisting the Trie to Disk
 
 ## Introduction
 
-WebAssembly (WASM) is a powerful choice for implementing module-based decentralized systems that incorporate both browser-based and standalone nodes. WASM provides a common runtime that can execute code consistently across different environments, ensuring security, speed, and flexibility. This document discusses the advantages of using WASM in such a system and explores plugin architectures, especially in the Go programming language.
+This document describes various options for persisting the trie data structure to disk within the PromiseGrid system. The design aims to function in both native and WebAssembly (WASM) runtimes. Several strategies are discussed, including the use of the Origin Private File System (OPFS) and the `afero` library.
 
-## Advantages of Using WASM
+## Design Considerations for Persistence
 
-### 1. Platform Independence
+The chosen persistence strategy must meet the following requirements:
+1. **Compatibility**: Works seamlessly in both native and WASM environments.
+2. **Reliability**: Ensures data integrity and durability.
+3. **Performance**: Provides efficient read and write operations.
+4. **Flexibility**: Supports dynamic updates and retrievals.
 
-WASM is designed to be a low-level assembly-like language that can run on any platform with a WASM runtime. This characteristic makes it ideal for a decentralized system where modules may run in various environments, including browsers, servers, and standalone applications.
+## Potential Persistence Strategies
 
-### 2. Security
+### 1. Origin Private File System (OPFS)
 
-WASM runs in a sandboxed environment, which ensures that the execution of code is isolated from the host system. This isolation is crucial for decentralized systems where untrusted code from different nodes may need to be executed safely.
+**Description**: OPFS is a file system designed for use in web environments, providing secure, performant, and private storage.
 
-### 3. Performance
+**Advantages**:
+- **Security**: Provides a secure sandboxed environment.
+- **Performance**: Optimized for web performance.
+- **Compatibility**: Works well with WASM.
 
-WASM provides near-native performance because it is designed to be executed by a stack-based virtual machine. This performance boost is essential for decentralized systems that require efficient execution of code across multiple nodes.
+**Implementation**:
+- **WASM**: Utilize OPFS directly via JavaScript to interact with the file system.
+- **Native**: Implement a thin abstraction layer to handle file I/O using standard file system calls.
 
-### 4. Interoperability
+### 2. `afero` Library
 
-WASM can interoperate with other languages and technologies, enabling developers to write modules in their preferred programming languages and compile them to WASM. This flexibility is valuable in a decentralized environment with diverse development requirements.
+**Description**: `afero` is a filesystem abstraction library for Go, providing a common interface for various file system operations.
 
-## Plugin Architectures in Go
+**Advantages**:
+- **Abstraction**: Abstracts filesystem operations, making the code agnostic to the underlying storage backend.
+- **Flexibility**: Supports multiple backends like OS file systems, in-memory systems, and more.
+- **Compatibility**: Can be used in native environments; minimal work is needed to extend it to WASM.
 
-Go is a popular language for building backend services due to its concurrency model and performance. However, Go's native plugin architecture is somewhat less flexible compared to WASM. Let’s explore the plugin architectures in Go and highlight how WASM provides a broader and more adaptive solution.
+**Implementation**:
+- **WASM**: Create a custom backend for `afero` that communicates with the browser's file API (OPFS).
+- **Native**: Use the default OS filesystem backend or other suitable backends provided by `afero`.
 
-### Go's Native Plugin Architecture
+## Example Implementations
 
-1. **Platform-Specific**:
-   - Go plugins are highly platform-dependent. Plugins compiled on one operating system may not work on another without recompilation, limiting cross-platform functionality.
+### OPFS in WASM
 
-2. **Incompatibility Across Versions**:
-   - Plugins are often tied to specific versions of Go. Changes in the Go runtime can lead to incompatibilities, requiring plugins to be recompiled for different versions of Go.
+Here’s an example of interacting with OPFS in a WASM environment:
 
-3. **Complexity**:
-   - Managing dependencies and ensuring compatibility across different environments can be complex and error-prone.
+```javascript
+// JavaScript code to interact with OPFS in a WASM environment
 
-### WASM's Flexibility
+async function writeFile(filename, content) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename, { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+}
 
-WASM addresses these limitations by providing a uniform runtime that works consistently across different platforms. This flexibility allows for seamless module integration and dynamic loading in decentralized environments.
-
-### Dynamic Module Loading with WASM
-
-Using WASM, developers can create modules that can be dynamically loaded and executed by a host system. This capability allows for the creation of modular systems where new functionalities can be added or updated without restarting the entire system.
-
-### Scenario: Decentralized Application
-
-Consider a decentralized application where different nodes perform various tasks. Each task can be implemented as a WASM module, ensuring platform-independent execution. These modules can be dynamically loaded by the Go-based core system, allowing for scalable and maintainable development.
-
-1. **Module Development**:
-   - Develop modules in a high-level language (e.g., Rust, AssemblyScript).
-   - Compile modules to WASM.
-
-**Example Workflow:**
-
-```plaintext
-Node A         Node B         Node C
-   |              |              |
-+-------+      +-------+      +-------+
-| WASM  |      | WASM  |      | WASM  |
-| Module|      | Module|      | Module|
-+-------+      +-------+      +-------+
-   |              |              |
-   +-------Go-based Core System------> Manage and Execute Modules
+async function readFile(filename) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename);
+  const file = await fileHandle.getFile();
+  return await file.text();
+}
 ```
 
-## Conclusion
+### `afero` in Native
 
-WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, performance, and interoperability. Unlike Go's native plugin architecture, which faces limitations related to platform dependency and version compatibility, WASM offers a more flexible and resilient solution for dynamic module integration and execution.
+Here’s an example using `afero` in a native Go application:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/spf13/afero"
+	"os"
+)
+
+func main() {
+	fs := afero.NewOsFs()
+
+	// Writing to the file
+	filePath := "example.txt"
+	err := afero.WriteFile(fs, filePath, []byte("Hello, Afero!"), 0644)
+	if err != nil {
+		fmt.Println("Error writing file:", err)
+		return
+	}
+
+	// Reading from the file
+	content, err := afero.ReadFile(fs, filePath)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+
+	fmt.Println("File content:", string(content))
+}
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/370-wasm.md
+
+## Persisting the Trie to Disk in Go
+
+### Lazy-Loading Node Files
+
+In this approach, trie nodes are lazily loaded from the disk as needed. This method ensures that the entire trie is never fully loaded into memory, and only the relevant children nodes are accessed, thereby optimizing memory usage.
+
+Below is a Go code example that demonstrates how to lazily load each trie node from its own file using the `afero` library:
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"github.com/spf13/afero"
+	"io"
+	"path"
+)
+
+type TrieNode struct {
+	Children map[byte]*TrieNode
+	Handlers []Handler
+	Path     string
+	Fs       afero.Fs
+}
+
+type Trie struct {
+	Root    *TrieNode
+	Fs      afero.Fs
+	BaseDir string
+}
+
+type Handler func()
+
+func NewTrie(fs afero.Fs, baseDir string) *Trie {
+	return &Trie{
+		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
+		Fs: fs,
+		BaseDir: baseDir,
+	}
+}
+
+func (t *Trie) Insert(r io.Reader, handler Handler) error {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		if n > 0 {
+			b := buf[0]
+			if _, ok := node.Children[b]; !ok {
+				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
+			}
+			node = node.Children[b]
+		}
+	}
+	node.Handlers = append(node.Handlers, handler)
+	return nil
+}
+
+func (t *Trie) Search(r io.Reader) ([]Handler, error) {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		if n > 0 {
+			b := buf[0]
+			if child, ok := node.Children[b]; ok {
+				if child == nil {
+					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
+					if err != nil {
+						return nil, err
+					}
+					node.Children[b] = loadedNode
+				}
+				node = node.Children[b]
+				if len(node.Handlers) > 0 {
+					return node.Handlers, nil
+				}
+			} else {
+				break
+			}
+		}
+	}
+	return nil, nil
+}
+
+func (t *Trie) SaveNode(node *TrieNode) error {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	if err := enc.Encode(node); err != nil {
+		return err
+	}
+	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
+}
+
+func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
+	if err := t.SaveNode(node); err != nil {
+		return err
+	}
+	for childKey, childNode := range node.Children {
+		if childNode != nil {
+			if err := t.SaveNodesRecursively(childNode); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (t *Trie) Save() error {
+	return t.SaveNodesRecursively(t.Root)
+}
+
+func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
+	data, err := afero.ReadFile(t.Fs, nodePath)
+	if err != nil {
+		return nil, err
+	}
+	buf := bytes.NewBuffer(data)
+	node := &TrieNode{}
+	dec := gob.NewDecoder(buf)
+	if err := dec.Decode(node); err != nil {
+		return nil, err
+	}
+	node.Path = nodePath
+	node.Fs = t.Fs
+	for childKey := range node.Children {
+		node.Children[childKey] = nil // Mark child as needing lazy load
+	}
+	return node, nil
+}
+
+func (t *Trie) Load() error {
+	rootNode, err := t.LoadNode(t.BaseDir)
+	if err != nil {
+		return err
+	}
+	t.Root = rootNode
+	return nil
+}
+
+func main() {
+	fs := afero.NewOsFs()
+	trie := NewTrie(fs, "trie_data")
+
+	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
+	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
+
+	// Save trie to disk
+	if err := trie.Save(); err != nil {
+		fmt.Println("Error saving trie:", err)
+		return
+	}
+
+	// Load trie from disk
+	newTrie := NewTrie(fs, "trie_data")
+	if err := newTrie.Load(); err != nil {
+		fmt.Println("Error loading trie:", err)
+		return
+	}
+
+	// Search in the loaded trie
+	message := bytes.NewReader([]byte{0x01, 0x02})
+	handlers, err := newTrie.Search(message)
+	if err != nil {
+		fmt.Println("Search error:", err)
+		return
+	}
+	if handlers != nil {
+		for _, handler := range handlers {
+			handler()
+		}
+	} else {
+		fmt.Println("No handler found")
+	}
+}
+```
+
+### Conclusion
+
+By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where trie nodes are lazily loaded from disk ensures optimal memory usage and efficient retrieval of parts of the trie.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/346-persist.md
+```

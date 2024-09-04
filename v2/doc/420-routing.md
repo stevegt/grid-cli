@@ -150,8 +150,9 @@ hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://
 To illustrate these concepts, let’s consider a concrete example involving Alice, Bob, and Robin.
 
 1. **Accepting 'ABC' Prefix**: Both Alice and Bob tell Robin that they will accept byte sequence prefix 'ABC'.
-2. **Message Reception**: Robin receives a message starting with 'ABC' and needs to decide whether to forward it to Alice or Bob.
-3. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, so she forwards the message to Alice.
+2. **Storing Advertisements**: Robin stores Alice's and Bob's advertisements indicating their acceptance of 'ABC' prefix in her routing table.
+3. **Message Reception**: Robin receives a message starting with 'ABC' and needs to decide whether to forward it to Alice or Bob.
+4. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, so she forwards the message to Alice.
 
 ### This Example in Code
 
@@ -168,17 +169,30 @@ var exchangeRates = map[string]float64{
     "Bob":   1.2, // Bob's currency value
 }
 
+// routing table to store prefix acceptance information
+var routes = map[string]string{
+    "ABC": "Alice,Bob", // Both Alice and Bob accept 'ABC' prefix
+}
+
 // Function to decide which host to forward to based on exchange rates
 func routeMessage(messagePrefix string) {
-    if len(messagePrefix) >= 3 && messagePrefix[:3] == "ABC" {
+    if hosts, found := routes[messagePrefix]; found {
+        hostList := splitHosts(hosts)
         var preferredHost string
-        if exchangeRates["Alice"] > exchangeRates["Bob"] {
-            preferredHost = "Alice"
-        } else {
-            preferredHost = "Bob"
+        maxRate := 0.0
+        for _, host := range hostList {
+            if rate, ok := exchangeRates[host]; ok && rate > maxRate {
+                preferredHost = host
+                maxRate = rate
+            }
         }
         forwardMessageTo(preferredHost)
     }
+}
+
+// Function to split host list from the advertisement table
+func splitHosts(hosts string) []string {
+    return strings.Split(hosts, ",")
 }
 
 // Stubs for the message forwarding function
@@ -189,11 +203,11 @@ func forwardMessageTo(host string) {
 // Example usage
 func main() {
     message := "ABC123"
-    routeMessage(message)
+    routeMessage(message[:3])
 }
 ```
 
-This simple example utilizes the exchange rate table to make routing decisions, demonstrating how PromiseGrid can dynamically adapt based on the value of hosts' personal currencies.
+This simple example utilizes both the exchange rate table and routes table to make routing decisions, demonstrating how PromiseGrid can dynamically adapt based on the value of hosts' personal currencies and advertised services.
 
 ## Open Questions
 

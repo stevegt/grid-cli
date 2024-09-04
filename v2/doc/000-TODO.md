@@ -116,3 +116,20 @@ To reduce redundancy and potential conflicts, consider merging the following doc
 3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
 4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
 
+## List of Documents Discussing Hash-Based Routing
+
+1. **Design Principles and Core Concepts in PromiseGrid (001-design.md)**
+   - Discusses the core design principles, including the functionality and interaction between non-sandboxed modules, explicit module registration, and hash-based routing.
+
+2. **PromiseGrid Design Overview (002-design.md)**
+   - Emphasizes broad design aspects including the preference for hash-based routing mechanisms without delving into intricate details.
+
+3. **Cache and Module Handling Guidelines (003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, 014-cache.md)**
+   - Various documents exploring different methods of cache management, including hash-based routing approaches.
+
+4. **Theoretical Aspects of PromiseGrid (190-side-effects.md, 201-computable.md)**
+   - Delving into the theoretical frameworks, including discussion on how hash-based routing integrates with side effects and computability concepts.
+
+5. **Hosting Conventional Systems (207-vn-guest.md, 202-von-neumann.md)**
+   - Different perspectives on integrating conventional systems into PromiseGrid, with methods contemplating hash-based routing as a solution.
+

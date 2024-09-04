@@ -6,7 +6,9 @@ In:
     v2/doc/420-routing.md
 .revise v2/doc/420-routing.md
 
-- translate example code to Go
+- in the example code, use a second table, for storing the
+  ABC advertizements from Alice and Bob, and consult that table
+  instead of using 'ABC' hardcoded in an if statement
 
 .stop
 

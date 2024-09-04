@@ -155,28 +155,42 @@ To illustrate these concepts, let’s consider a concrete example involving Alic
 
 ### This Example in Code
 
-Here is a simple pseudocode example to demonstrate how Robin might handle this routing decision:
+Here is a simple Go example to demonstrate how Robin might handle this routing decision:
 
-```python
-# Exchange rate table (simplified dictionary representation)
-exchange_rates = {
-    "Alice": 1.5,  # Alice's currency value
-    "Bob": 1.2     # Bob's currency value
+```go
+package main
+
+import "fmt"
+
+// Exchange rate table (simplified map representation)
+var exchangeRates = map[string]float64{
+    "Alice": 1.5, // Alice's currency value
+    "Bob":   1.2, // Bob's currency value
 }
 
-# Function to decide which host to forward to based on exchange rates
-def route_message(message_prefix):
-    if message_prefix.startswith("ABC"):
-        preferred_host = "Alice" if exchange_rates["Alice"] > exchange_rates["Bob"] else "Bob"
-        forward_message_to(preferred_host)
+// Function to decide which host to forward to based on exchange rates
+func routeMessage(messagePrefix string) {
+    if len(messagePrefix) >= 3 && messagePrefix[:3] == "ABC" {
+        var preferredHost string
+        if exchangeRates["Alice"] > exchangeRates["Bob"] {
+            preferredHost = "Alice"
+        } else {
+            preferredHost = "Bob"
+        }
+        forwardMessageTo(preferredHost)
+    }
+}
 
-# Stubs for the message forwarding function
-def forward_message_to(host):
-    print(f"Forwarding message to {host}")
+// Stubs for the message forwarding function
+func forwardMessageTo(host string) {
+    fmt.Printf("Forwarding message to %s\n", host)
+}
 
-# Example usage
-message = "ABC123"
-route_message(message)
+// Example usage
+func main() {
+    message := "ABC123"
+    routeMessage(message)
+}
 ```
 
 This simple example utilizes the exchange rate table to make routing decisions, demonstrating how PromiseGrid can dynamically adapt based on the value of hosts' personal currencies.

@@ -1,6 +1,3 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
-```
 # TODO List for Implementing PromiseGrid Kernel
 
 ## General Improvements
@@ -108,7 +105,5 @@ To reduce redundancy and potential conflicts, consider merging the following doc
 3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
 4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/999-TODO.md

@@ -5,9 +5,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/999-TODO.md
+    v2/doc/000-TODO.md
 
-list the conflicts between 001-design.md and 002-design.md
+Revise 000-TODO.md
+- list the conflicts between 001-design.md and 002-design.md
 
 .stop
 

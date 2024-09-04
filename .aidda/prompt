@@ -5,11 +5,20 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/329-issues.md
+    v2/doc/999-TODO.md
 
-append the changes that need to be made in order to reconcile the
-concepts in the document with similar concepts from all other
-documents.
+Reorganize 999-TODO.md so that it is in this format:
+
+v2/doc/{filename1.md}
+- description of change needed in filename1.md
+- another description of change needed in filename1.md
+
+v2/doc/{filename2.md}
+- description of change needed in filename2.md
+- another description of change needed in filename2.md
+
+...
+
 
 .stop
 

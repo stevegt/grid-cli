@@ -4,17 +4,9 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/420-routing.md
-.revise v2/doc/420-routing.md
-
-- in the example code, use a second table, for storing the
-  ABC advertizements from Alice and Bob, and consult that table
-  instead of using 'ABC' hardcoded in an if statement
-
-.stop
-
 .revise v2/doc/001-design.md
 
-- replace hash-based routing with exchange rate routing
+- imagine how exchange rate routing would work
 
 .stop
 

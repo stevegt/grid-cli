@@ -5,9 +5,9 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/001-design.md
+    v2/doc/370-wasm.md
 
-- update 001-design.md, integrating concepts from other docs
+- update the output file, integrating concepts from other files
 
 .stop
 

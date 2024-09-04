@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The PromiseGrid Kernel is designed with a focus on decentralized governance, modularity, and promise-based interactions. This document consolidates design and discussion notes from various files involved in the development process.
+The PromiseGrid Kernel is designed with a focus on decentralized governance, modularity, and promise-based interactions. This document consolidates design and discussion notes from various files involved in the development process, integrating core concepts, sequence matching, and routing mechanisms derived from comprehensive discussions.
 
 ## Core Concepts
 
@@ -16,7 +16,7 @@ The PromiseGrid Kernel is designed with a focus on decentralized governance, mod
 
 ### Cache Structures
 
-2. **Multiple Caches**:
+1. **Multiple Caches**:
     - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
     - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
     - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.

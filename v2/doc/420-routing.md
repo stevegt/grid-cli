@@ -2,7 +2,7 @@
 
 ## Overview
 
-Routing is the act of forwarding a message to the correct recipient(s) or to an intermediary host that can further route the message to its destination. 
+Routing is the act of forwarding a message to the correct recipient(s) or to an intermediary host that can further route the message to its destination.
 
 In PromiseGrid, routing is a critical aspect of the network's operation, facilitating the exchange of messages, resources, and services between hosts and between the modules (apps) running on those hosts.
 
@@ -23,6 +23,13 @@ In PromiseGrid, routing is a critical aspect of the network's operation, facilit
 - Hosts that misbehave receive less network traffic and forwarding services.
 - Poor behavior leads to reduced currency value, decreasing a host's network influence.
 - This self-regulating mechanism ensures network stability and security.
+
+### Alternative Names for Exchange Rate-Based Routing
+- Reputation-Based Routing
+- Value-Driven Routing
+- Economically Incentivized Routing
+- Market-Based Routing
+- Integrity-Based Routing
 
 ## How Personal Currencies Work: "Everyone is Their Own Central Bank"
 

@@ -1,144 +1,180 @@
+File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
+```markdown
+# PromiseGrid Routing
 
-File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
+## Overview
+
+Routing is the act of forwarding a message to the correct recipient(s) or to an intermediary host that can further route the message to its destination.
+
+In PromiseGrid, routing is a critical aspect of the network's operation, facilitating the exchange of messages, resources, and services between hosts and between the modules (apps) running on those hosts.
+
+## Exchange Rate-Based Routing
+
+### 1. Exchange Rate-Based Routing
+- Hosts route based on the exchange rates of "personal currencies" --
+  see below for more on personal currencies.
+- Prefer routing to hosts with higher-valued currencies to ensure stability and reliability.
+- Encourages hosts to maintain strong reputations and economic value.
+
+### 2. Reputation and Currency Mechanisms
+- Reputation points function as a currency, influencing routing decisions.
+- Hosts decide to route based on the perceived value and reliability of other hosts.
+- Market dynamics dictate routing paths, promoting decentralized control.
+
+### 3. Handling Misbehaving Hosts
+- Hosts that misbehave receive less network traffic and forwarding services.
+- Poor behavior leads to reduced currency value, decreasing a host's network influence.
+- This self-regulating mechanism ensures network stability and security.
+
+### Alternative Names for Exchange Rate-Based Routing
+- Reputation-Based Routing
+- Value-Driven Routing
+- Economically Incentivized Routing
+- Market-Based Routing
+
+## How Personal Currencies Work: "Everyone is Their Own Central Bank"
+
+### Concept of Personal Currencies
+- In PromiseGrid, **every host acts as its own central bank**, issuing its own currency in the form of reputation points.
+- These currencies represent the host's trustworthiness and reliability, similar to how fiat currencies reflect the stability of a government.
+
+### Incentives and Disincentives for Maintaining Currency Value
+- Hosts are incentivized to maintain the value of their currency (reputation points) by keeping promises and behaving reliably.
+- A **high currency value** means other hosts are more likely to route traffic through or trade with that host, increasing its influence and participation in the network.
+- Conversely, **bad behavior** (breaking promises, excessive querying, etc.) leads to a **devaluation** of the currency, reducing a host’s ability to transact and interact with others effectively.
+
+### Tools for Market Participants to Maintain Value
+- **Reputation Management**: Hosts can actively manage their reputation by fulfilling promises and avoiding behaviors that could devalue their currency.
+- **Dynamic Exchange Rates**: By adjusting their exchange rates with other hosts based on behavior and market conditions, hosts can strategically protect their currency's value.
+- **Selective Interactions**: Hosts may choose to interact only with other hosts that maintain a stable or high-value currency, reinforcing trust and reliability in the network.
+
+## Import and Export of Resources in PromiseGrid
+
+### Understanding Import and Export
+- In PromiseGrid, **importing resources** means paying another host for storage space or computational power. This could involve storing data on another host’s hardware or outsourcing computation tasks.
+- **Exporting resources** refers to being paid by other hosts to provide storage space or computational power. Hosts that export resources effectively "sell" their excess capacity to others on the network.
+
+### Analogies to International Trade
+- The concepts of importing and exporting in PromiseGrid are similar to international trade in the global economy:
+  - **Importing resources** (buying storage or computation) can be likened to a country purchasing goods or services from abroad. Hosts spend their currency to acquire necessary resources they cannot efficiently produce themselves.
+  - **Exporting resources** (selling storage or computation) is akin to a country selling its goods or services to other nations. Hosts receive payments in other currencies, which strengthens their economic standing and increases their influence within the network.
+- Just as countries aim to maintain a favorable balance of trade to enhance their currency’s value, hosts in PromiseGrid seek to optimize their import and export balance to maintain or increase their reputation and currency value.
+
+### Governance and Geopolitical Factors Influencing Currency Values
+- In the real world, geopolitical factors, governance, and economic policies heavily influence currency values. Similarly, in PromiseGrid:
+  - **Governance Decisions**: Hosts might make decisions that affect their ability to import or export resources. For example, a host that reliably exports high-quality computational resources might see its currency increase in value, akin to how a country with a robust export economy strengthens its currency.
+  - **Network Effects**: The behavior of a host's peers and its relationships within the network influence its currency's value. If a host is part of a trusted coalition or "alliance" of hosts that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
+  - **Economic Policies**: Hosts might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
+
+## Concept that "A Physical Host is Sovereign"
+
+### Physical Host Sovereignty Analogy
+- A physical host in PromiseGrid is considered sovereign, analogous to a geographical nation-state.
+- This sovereignty implies that a host has ultimate control over its resources, policies, and interactions within its domain.
+
+### Use of Force and Sovereignty
+- Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
+- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good).
+- We can do this by incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
+
+## Evolution of Routing Strategies: From Concept to Current Model
+
+### Early Considerations and Alternatives
+
+We explored several other routing strategies, including:
+
+#### Pay-for-Flow 
+
+Hosts paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
+
+#### Bond-Based Routing
+
+Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
+
+Essentially this is still pay-for-flow, with deferred payment.
+
+#### ZKOS 
+
+Derived from Zero-Kernel Operating Systems, ZKOS routing used zero-knowledge proofs for privacy-preserving validation.  [https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf](https://github.com/stevegt/grid-cli/blob/main/v2/doc/420-routing.md)
+
+- **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
+- **Decentralized Control**: hosts operate independently, ensuring security and resilience.
+
+#### Antikernel
+
+Paper by Andrew Zonenberg on the concept of moving much of the intra-kernel routing into
+hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://www.iacr.org/archive/ches2016/98130227/98130227.pdf)
+
+- **Modularity**: OS functionalities are divided into independent modules.
+- **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
+
+#### Capability Tokens
+
+- **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
+- **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
+
+#### Hash-Based Routing
+
+- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message. This can work because the grid's function is byte sequence completion.
+- **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
+
+#### Byte Sequence Completion
+
+- **Trie Structure**: Uses a trie to manage and match byte sequences efficiently.
+- **Dynamic Path Selection**: Adapts routing paths dynamically based on sequence completions and historical success rates.
+
+#### Genetic Algorithms
+
+- **Evolutionary Optimization**: Routes evolve through selection, crossover, and mutation, adapting to changing network conditions.
+- **Fitness Function**: Evaluates routes based on performance metrics such as latency, throughput, and reliability.
+
+### Machine Learning
+
+- **Predictive Analytics**: Models analyze past routing decisions to forecast the best paths for new messages.
+- **Reinforcement Learning**: The system learns optimal routes through reinforcement learning, continuously improving based on feedback.
+
+## Shift to Exchange Rate Routing
+
+- The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
+- In this model, hosts prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
+- This approach naturally encourages hosts to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
+
+### Considerations for the Current Model
+
+- While the exchange rate-based routing simplifies decision-making, it introduces new considerations:
+  - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
+  - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.
+- These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
+
+## Open Questions
+
+### 1. Complexity of Implementation
+   - What are the challenges in implementing these routing strategies?
+   - Are there simpler alternatives that align with PromiseGrid’s goals?
+
+### 2. Potential Pitfalls
+   - What unforeseen issues might arise from using personal currencies in routing?
+   - How do we handle situations where hosts frequently change their routing behavior?
+
+### 3. Identity evasion
+
+One potential pitfall in using personal currencies and reputation-based routing is the possibility that a participant can evade their past record of bad behavior by creating a new identity. Solutions to this issue are likely related to robust onboarding processes, which may include measures such as:
+
+1. **Identity Verification**: Implementing strong identity verification steps could help ensure that new identities are tied to real-world anchors, making it harder to create disposable identities.
+  
+2. **Reputation Migration**: Allowing participants to carry some of their reputation (positive or negative) when creating a new identity can help mitigate the effects of identity hopping.
+
+3. **Initial Restrictions**: Imposing temporary restrictions or limitations on new identities until they have built up a certain level of trust within the network.
+
+4. **Behavioral Analysis**: Using automated systems to analyze behavior patterns that suggest identity evasion, thereby identifying and mitigating malicious actors faster.
+
+5. **Exchange rates and Sovereignty**: Ultimately, the value of a host's currency is determined by the network's collective perception of its reliability and trustworthiness. Hosts that consistently fulfill promises and maintain good behavior will naturally experience higher currency values as reflected in the exchange rates quoted by their peers, increasing their currency value and influence within the network.
+
+### 4. How can we prevent good histories from enabling later bad behavior?
+
+A consideration as we implement these routing strategies is the potential for hosts with good historical reputations to engage in bad behavior at a later stage. A host that has built up a strong reputation over time might exploit its high standing to suddenly behave maliciously, knowing that the economic impact might not be immediate. Hosts should develop mechanisms to mitigate such risks, perhaps incorporating moving averages, recent behavior weighting, or anomaly detection algorithms into exchange rate calculations.
+
 ```
-# TODO List for Implementing PromiseGrid Kernel
-
-## General Improvements
-- Improve documentation clarity and consistency.
-- Resolve internal inconsistencies and discuss any remaining conflicts.
-- Add logical statements and recommendations in technical sections.
-- Include open-ended questions to provoke further discussion and exploration.
-
-## Documentation Refinements
-- Identify and resolve any conflicting information within the documentation.
-- Ensure all statements are logical and support the overall system architecture.
-- Add recommendations and best practices based on the current design.
-- List documents that are most similar and could be merged.
-- List all documents that discuss hash-based routing.
-
-## Detailed Task List
-- Review the documentation for:
-  - Logical flow and coherence.
-  - Consistency in terminology usage.
-- Resolve any discrepancies or conflicting ideas.
-- Detailed descriptions for some of the strategies and methods mentioned:
-  - Implement example-based explanations wherever possible.
-  - Provide case studies and visual aids to enhance understanding.
-
-## Cache Design and Lookup
-- Refactor the cache design to use byte sequence completion for key management.
-  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
-  - Document the byte sequence management strategy.
-- Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
-
-## Dynamic Acceptance History and Syscall Table
-- Revamp the acceptance history mechanism to track byte sequence completions.
-  - Store positive and negative sequence completions effectively.
-  - Populate acceptance and rejection history dynamically during kernel operations.
-  - Implement efficient lookup facilities to match message sequences with handlers based on historical completion success rates.
-
-## Implement Ant Routing Mechanism
-- Integrate byte sequence completion with the ant routing mechanism.
-  - Adapt the ant routing algorithm to cache successful byte sequence paths.
-  - Develop a strategy to dynamically adjust routing based on promise fulfillment statistics.
-
-## Promise-Based Design
-- Augment cache and syscall tree design to fully integrate with byte sequence completion as a core mechanism:
-  - Rework promise handling to support dynamic sequence completion.
-  - Investigate and implement strategies for embedding promise validation within byte sequence matching.
-
-## Polymorphic Handling and Error Detection
-- Develop error handling routines specific to byte sequence completion:
-  - Enhance the dispatching mechanism to manage failures in byte sequence processing gracefully.
-  - Implement retries and alternative handler routing based on sequence fulfillment failures.
-
-## File Storage and Byte Sequences
-- Migrate storage mechanisms to manage byte sequences efficiently:
-  - Replace traditional file key management with content-addressable byte sequences.
-  - Ensure compatibility with Origin Private File System (OPFS) and abstract filesystem integration via libraries like `afero`.
-
-## Usability and Documentation
-- Improve the documentation on managing and converting sequences:
-  - Create clear usage examples and guidelines for byte sequence management.
-  - Provide concise guides for converting from legacy filesystem-based cache management to byte sequence completion.
-
-## Review and Refactor
-- Conduct a comprehensive review to identify legacy points where `/`-separated cache key handling still exists:
-  - Complete refactoring of these sections to support byte sequence completion.
-  - Validate the correctness and performance of new implementations in various scenarios.
-
-## Security and Verification
-- Assess security implications of new byte sequence completion strategies:
-  - Ensure that new designs for caching and syscall mechanisms do not introduce vulnerabilities.
-  - Enhance the validation and verification processes to assert the integrity of sequence handling mechanisms.
-
-## The documents most in disagreement or conflict with each other appear to be:
-
-1. **001-design.md vs. 002-design.md**
-   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches:
-     - **001-design.md** emphasizes a more detailed and structured approach to the core concepts, including the functionality of non-sandboxed modules, capability-as-promise model, and acceptance history.
-     - **002-design.md** provides a broader overview of the same concepts with a slightly different emphasis on explicit module registration and hash-based routing without as much detail on the execution of these concepts.
-     - **Potential Conflicts**:
-       - **Module Registration**: Differences in the preference for explicit module registration (001-design.md) vs. hash-based routing (002-design.md).
-       - **Cache and Promise Handling**: Specific implementation details on how caches handle promises and dynamic adaptation may differ between the documents.
-       - **Role of Non-Sandboxed Modules**: 001-design.md provides more specific analogies compared to 002-design.md's generalized approach.
-
-2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
-   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling:
-     - **Cache Indexing**: Different approaches to indexing and managing the cache.
-     - **Byte Sequence Management**: Handling byte sequences in cache operations may be inconsistently addressed.
-
-3. **190-side-effects.md vs. 201-computable.md**
-   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied:
-     - **Theoretical Discussions**: Possible divergence in how side effects are integrated with the overall model and the applicability of computability concepts to byte sequence completion.
-
-4. **207-vn-guest.md vs. 202-von-neumann.md**
-   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies:
-     - **Integration Methods**: Potentially different approaches for integrating traditional systems into PromiseGrid.
-     - **Compatibility Issues**: Differing views on handling compatibility and adapting conventional systems to PromiseGrid’s architecture.
-
-### Steps for Resolving Conflicts
-
-1. **Harmonize Design Principles**:
-   - Review and align the overarching design principles across 001-design.md and 002-design.md to ensure a cohesive vision.
-
-2. **Consolidate Cache Management Methods**:
-   - Merge the cache management strategies from 003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md into a unified guide. Address any conflicting methods and settle on a standardized approach.
-
-3. **Align Theoretical Concepts**:
-   - Reconcile the theoretical discussions in 190-side-effects.md and 201-computable.md to ensure a consistent interpretation of side effects and computability within the PromiseGrid framework.
-
-4. **Unified Approach for Hosting Systems**:
-   - Combine insights from 207-vn-guest.md and 202-von-neumann.md to provide a clear, consistent methodology for hosting conventional systems on PromiseGrid.
-
-### Merging Similar Documents
-
-To reduce redundancy and potential conflicts, consider merging the following documents:
-
-1. **001-design.md and 002-design.md** into a single comprehensive design guide.
-2. **003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md** into a unified cache and module handling guide.
-3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
-4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
-
-## List of Documents Discussing Hash-Based Routing
-
-1. **Design Principles and Core Concepts in PromiseGrid (001-design.md)**
-   - Discusses the core design principles, including the functionality and interaction between non-sandboxed modules, explicit module registration, and hash-based routing.
-
-2. **PromiseGrid Design Overview (002-design.md)**
-   - Emphasizes broad design aspects including the preference for hash-based routing mechanisms without delving into intricate details.
-
-3. **Cache and Module Handling Guidelines (003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, 014-cache.md)**
-   - Various documents exploring different methods of cache management, including hash-based routing approaches.
-
-4. **Theoretical Aspects of PromiseGrid (190-side-effects.md, 201-computable.md)**
-   - Delving into the theoretical frameworks, including discussion on how hash-based routing integrates with side effects and computability concepts.
-
-5. **Hosting Conventional Systems (207-vn-guest.md, 202-von-neumann.md)**
-   - Different perspectives on integrating conventional systems into PromiseGrid, with methods contemplating hash-based routing as a solution.
-
-
+EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
+EOF__/home/stevegt/lab/grid-cli/v2/doc/420-routing.md

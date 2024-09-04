@@ -145,6 +145,42 @@ hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://
   - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.
 - These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
 
+## Alice, Bob, and Robin: A Routing Example
+
+To illustrate these concepts, let’s consider a concrete example involving Alice, Bob, and Robin.
+
+1. **Accepting 'ABC' Prefix**: Both Alice and Bob tell Robin that they will accept byte sequence prefix 'ABC'.
+2. **Message Reception**: Robin receives a message starting with 'ABC' and needs to decide whether to forward it to Alice or Bob.
+3. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, so she forwards the message to Alice.
+
+### This Example in Code
+
+Here is a simple pseudocode example to demonstrate how Robin might handle this routing decision:
+
+```python
+# Exchange rate table (simplified dictionary representation)
+exchange_rates = {
+    "Alice": 1.5,  # Alice's currency value
+    "Bob": 1.2     # Bob's currency value
+}
+
+# Function to decide which host to forward to based on exchange rates
+def route_message(message_prefix):
+    if message_prefix.startswith("ABC"):
+        preferred_host = "Alice" if exchange_rates["Alice"] > exchange_rates["Bob"] else "Bob"
+        forward_message_to(preferred_host)
+
+# Stubs for the message forwarding function
+def forward_message_to(host):
+    print(f"Forwarding message to {host}")
+
+# Example usage
+message = "ABC123"
+route_message(message)
+```
+
+This simple example utilizes the exchange rate table to make routing decisions, demonstrating how PromiseGrid can dynamically adapt based on the value of hosts' personal currencies.
+
 ## Open Questions
 
 ### 1. Complexity of Implementation

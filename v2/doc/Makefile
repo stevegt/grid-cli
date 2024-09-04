@@ -1,4 +1,9 @@
-all: README.md
+all: ship
+
+ship: README.md
+	git add -i
+	grok commit | git commit -F -
+	git push
 
 .PHONY: README.md
 

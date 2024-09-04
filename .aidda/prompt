@@ -5,9 +5,9 @@ Sysmsg: You are an expert technical writer and software architect.
 In: 
     v2/doc/
 Out: 
-    v2/doc/370-wasm.md
+    v2/doc/346-persist.md
 
-- update the output file, integrating concepts from other files
+- update the output file, reconciling and removing conflicts with other files
 
 .stop
 

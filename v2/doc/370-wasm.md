@@ -24,9 +24,9 @@ WASM can interoperate with other languages and technologies, enabling developers
 
 ## Plugin Architectures in Go
 
-Go is a popular language for building backend services due to its concurrency model and performance. However, Go's native plugin architecture is somewhat less flexible compared to WASM, and let's explore how WASM provides a broader and more adaptive solution.
+Go is a popular language for building backend services due to its concurrency model and performance. However, Go's native plugin architecture is somewhat less flexible compared to WASM. Let’s explore the plugin architectures in Go and highlight how WASM provides a broader and more adaptive solution.
 
-### Limitations of Go's Native Plugin Architecture
+### Go's Native Plugin Architecture
 
 1. **Platform-Specific**:
    - Go plugins are highly platform-dependent. Plugins compiled on one operating system may not work on another without recompilation, limiting cross-platform functionality.
@@ -69,4 +69,3 @@ Node A         Node B         Node C
 ## Conclusion
 
 WASM provides a robust framework for implementing module-based decentralized systems, offering advantages in platform independence, security, performance, and interoperability. Unlike Go's native plugin architecture, which faces limitations related to platform dependency and version compatibility, WASM offers a more flexible and resilient solution for dynamic module integration and execution.
-

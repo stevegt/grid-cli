@@ -114,7 +114,7 @@ func (t *Trie) Insert(sequence []byte, handler Handler) {
     node := t.root
     for _, b := range sequence {
         if _, ok := node.children[b]; !ok {
-            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}}
+            node.children[b] = &TrieNode{children: make(map[byte]*TrieNode), handlers: []Handler{}}
         }
         node = node.children[b]
     }
@@ -124,8 +124,8 @@ func (t *Trie) Insert(sequence []byte, handler Handler) {
 func (t *Trie) Search(message []byte) []Handler {
     node := t.root
     for _, b := range message {
-        if _, ok := node.children[b]; ok {
-            node = node.children[b]
+        if child, ok := node.children[b]; ok {
+            node = child
             if len(node.handlers) > 0 {
                 return node.handlers
             }
@@ -175,11 +175,11 @@ Secure the sequence matching logic against potential tampering:
 
 Though sequence matching simplifies the initial routing, incorporate thorough validation steps within handlers to prevent processing malformed or malicious messages.
 
-## Decentralized Trie Cache
+### Decentralized Trie Cache
 
 The cache stores a copy of the returned bytes in the Trie, making them available for later lookups. The returned bytes include a signature from the handler certifying (promising) the accuracy of the completion.
 
-### Cache as a Decentralized Trie
+#### Cache as a Decentralized Trie
 
 The cache is a decentralized Trie that allows for efficient storage and retrieval of byte sequences. Different nodes can store and replicate portions of the Trie structure to maintain decentralized resilience and availability.
 

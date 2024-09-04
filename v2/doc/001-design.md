@@ -44,17 +44,23 @@ The PromiseGrid Kernel is designed with a focus on decentralized governance, mod
 2. **Performance Overhead**: The kernel must maintain and query a registry of module capabilities, which can introduce performance overhead.
 3. **Dependency Management**: Changes in module capabilities may require updates to the kernel or other modules, increasing the risk of dependencies and compatibility issues.
 
-### Hash-Based Module Routing
+## Exchange Rate Routing
 
-**Pros**
-1. **Simplicity**: The kernel routes messages based on cryptographic hashes, reducing the need for an explicit registration step.
-2. **Efficiency**: Hash-based routing can be highly efficient, leveraging cryptographic properties to ensure unique and consistent module addressing.
-3. **Decentralized Management**: Modules are self-contained and can be managed independently without requiring kernel updates or reconfiguration.
+### Concept
 
-**Cons**
-1. **Opaque Mapping**: It may be less clear which module handles a specific message, as the mapping relies on hashes rather than explicit declarations.
-2. **Limited Flexibility**: Modules cannot dynamically update their capabilities without changing their hash, reducing adaptability.
-3. **Security Risks**: The kernel must ensure that the hash-based routing mechanism is secure against hash collisions and attacks.
+Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence the routing decisions, promoting reliable behavior and network stability.
+
+### How It Works
+
+1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
+2. **Routing Decisions**: Hosts prefer routes through other hosts with higher-valued currencies to ensure stability and reliability.
+3. **Dynamic Adjustments**: Exchange rates are dynamic and adjust based on host behavior and market conditions.
+
+### Advantages
+
+- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
+- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
+- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
 
 ## Acceptance and Promises
 

@@ -4,6 +4,18 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+.revise v2/doc/420-routing.md
+
+- Alice and Bob both tell Robin that they will accept byte sequence
+  prefix 'ABC'
+- Robin receives a message starting with ABC and needs to decide whether
+  to forward it to Alice or Bob
+- Robin consults the exchange rate table she maintains, sees that
+  Alice's currency is more valuable than Bob's, so forwards the
+  message to Alice
+
+.stop
+
 .revise v2/doc/001-design.md
 
 - replace hash-based routing with exchange rate routing

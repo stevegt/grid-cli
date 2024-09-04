@@ -4,6 +4,16 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
+#define OUT v2/doc/000-TODO.md
+Out:
+    OUT
+
+Revise OUT
+
+- append a list of all documents that discuss hash-based routing
+
+.stop
+
 .revise v2/doc/000-TODO.md
 
 - list all documents that discuss routing

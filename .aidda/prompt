@@ -4,11 +4,18 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
-Out: 
+Out:
     v2/doc/000-TODO.md
 
-Revise 000-TODO.md
-- list the conflicts between 001-design.md and 002-design.md
+Revise v2/doc/000-TODO.md
+
+- list all documents that discuss routing
+
+.stop
+
+.revise v2/doc/000-TODO.md
+
+- list all documents that discuss routing
 
 .stop
 

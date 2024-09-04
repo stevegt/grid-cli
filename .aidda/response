@@ -1,5 +1,6 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
+Here is the revised document listing the conflicts between `001-design.md` and `002-design.md`.
+
+File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
 ```
 # TODO List for Implementing PromiseGrid Kernel
 
@@ -74,16 +75,27 @@ File: /home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
 ## The documents most in disagreement or conflict with each other appear to be:
 
 1. **001-design.md vs. 002-design.md**
-   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches.
+   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches:
+     - **001-design.md** emphasizes a more detailed and structured approach to the core concepts, including the functionality of non-sandboxed modules, capability-as-promise model, and acceptance history.
+     - **002-design.md** provides a broader overview of the same concepts with a slightly different emphasis on explicit module registration and hash-based routing without as much detail on the execution of these concepts.
+     - **Potential Conflicts**:
+       - **Module Registration**: Differences in the preference for explicit module registration (001-design.md) vs. hash-based routing (002-design.md).
+       - **Cache and Promise Handling**: Specific implementation details on how caches handle promises and dynamic adaptation may differ between the documents.
+       - **Role of Non-Sandboxed Modules**: 001-design.md provides more specific analogies compared to 002-design.md's generalized approach.
 
 2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
-   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling.
+   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling:
+     - **Cache Indexing**: Different approaches to indexing and managing the cache.
+     - **Byte Sequence Management**: Handling byte sequences in cache operations may be inconsistently addressed.
 
 3. **190-side-effects.md vs. 201-computable.md**
-   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied.
+   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied:
+     - **Theoretical Discussions**: Possible divergence in how side effects are integrated with the overall model and the applicability of computability concepts to byte sequence completion.
 
 4. **207-vn-guest.md vs. 202-von-neumann.md**
-   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies.
+   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies:
+     - **Integration Methods**: Potentially different approaches for integrating traditional systems into PromiseGrid.
+     - **Compatibility Issues**: Differing views on handling compatibility and adapting conventional systems to PromiseGrid’s architecture.
 
 ### Steps for Resolving Conflicts
 
@@ -109,6 +121,5 @@ To reduce redundancy and potential conflicts, consider merging the following doc
 4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/999-TODO.md

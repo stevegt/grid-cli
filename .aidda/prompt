@@ -6,7 +6,7 @@ In:
     v2/doc/
 .revise v2/doc/002-design.md
 
-- imagine how exchange rate routing would work
+- describe how exchange rate routing would work instead of hash-based
 
 .stop
 

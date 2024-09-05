@@ -42,24 +42,23 @@ Modules in PromiseGrid interface with the kernel via explicit registration or th
 2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
 3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
 
-### Hash-Based Module Routing
+### Exchange Rate Routing
 
-#### Pros
-1. **Simplicity**: Cryptographic hashes guide message routing, eliminating explicit registration.
-2. **Efficiency**: Highly efficient due to unique and consistent addressing.
-3. **Decentralized Management**: Modules are self-contained, facilitating independent management.
+### Concept
 
-#### Cons
-1. **Opaque Mapping**: Harder to identify which module handles a message without clear declarations.
-2. **Limited Flexibility**: Dynamic updates require hash changes, reducing adaptability.
-3. **Security Risks**: Must mitigate risks like hash collisions and attacks.
+Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence the routing decisions, promoting reliable behavior and network stability.
 
-### Combining Both Approaches
+### How It Works
 
-A hybrid approach leverages the strengths of both explicit registration and hash-based routing:
+1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
+2. **Routing Decisions**: Hosts prefer routes through other hosts with higher-valued currencies to ensure stability and reliability.
+3. **Dynamic Adjustments**: Exchange rates are dynamic and adjust based on host behavior and market conditions.
 
-1. **Initialization Phase**: Modules register their capabilities during initialization.
-2. **Hash-Based Execution**: Runtime routing employs cryptographic hashes, consulting the registry as needed.
+### Advantages
+
+- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
+- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
+- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
 
 ### Nested Messages and Kernel Arbitration
 
@@ -72,9 +71,6 @@ Modules can unwrap nested messages, allowing dynamic and complex interactions. T
 
 - XXX third alternative -- byte sequence completion 
 
-### Conclusion
-
-Explicit registration and hash-based routing methods impact system design and functionality significantly. Combining both approaches balances their strengths, enhancing modularity, adaptability, and efficiency. This flexibility, including nested messaging, bolsters PromiseGrid's modular architecture.
 
 ## Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
 

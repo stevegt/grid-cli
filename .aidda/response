@@ -1,6 +1,6 @@
-<blank line>
+
 File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
-```markdown
+```
 # PromiseGrid Routing
 
 ## Overview
@@ -164,49 +164,52 @@ Here is a simple Go example to demonstrate how Robin might handle this routing d
 ```go
 package main
 
-import "fmt"
+import (
+  "fmt"
+  "strings"
+)
 
 // Exchange rate table (simplified map representation)
 var exchangeRates = map[string]float64{
-    "Alice": 1.5, // Alice's currency value
-    "Bob":   1.2, // Bob's currency value
+  "Alice": 1.5, // Alice's currency value
+  "Bob":   1.2, // Bob's currency value
 }
 
-// routing table to store prefix acceptance information
+// Routing table to store prefix acceptance information
 var routes = map[string]string{
-    "ABC": "Alice,Bob", // Both Alice and Bob accept 'ABC' prefix
+  "ABC": "Alice,Bob", // Both Alice and Bob accept 'ABC' prefix
 }
 
 // Function to decide which host to forward to based on exchange rates
 func routeMessage(messagePrefix string) {
-    if hosts, found := routes[messagePrefix]; found {
-        hostList := splitHosts(hosts)
-        var preferredHost string
-        maxRate := 0.0
-        for _, host := range hostList {
-            if rate, ok := exchangeRates[host]; ok && rate > maxRate {
-                preferredHost = host
-                maxRate = rate
-            }
-        }
-        forwardMessageTo(preferredHost)
+  if hosts, found := routes[messagePrefix]; found {
+    hostList := splitHosts(hosts)
+    var preferredHost string
+    maxRate := 0.0
+    for _, host := range hostList {
+      if rate, ok := exchangeRates[host]; ok && rate > maxRate {
+        preferredHost = host
+        maxRate = rate
+      }
     }
+    forwardMessageTo(preferredHost)
+  }
 }
 
 // Function to split host list from the advertisement table
 func splitHosts(hosts string) []string {
-    return strings.Split(hosts, ",")
+  return strings.Split(hosts, ",")
 }
 
 // Stubs for the message forwarding function
 func forwardMessageTo(host string) {
-    fmt.Printf("Forwarding message to %s\n", host)
+  fmt.Printf("Forwarding message to %s\n", host)
 }
 
 // Example usage
 func main() {
-    message := "ABC123"
-    routeMessage(message[:3])
+  message := "ABC123"
+  routeMessage(message[:3])
 }
 ```
 
@@ -242,3 +245,4 @@ A consideration as we implement these routing strategies is the potential for ho
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md
+```

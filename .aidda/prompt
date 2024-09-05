@@ -6,7 +6,7 @@ In:
     v2/doc/420-routing.md
 .revise v2/doc/420-routing.md
 
-revise the routing algorithm as follows:
+improve the routing algorithm as follows:
 - Robin receives a message and searches the byte sequence prefix trie
   for handlers
 - Robin finds two handlers (Alice and Bob) that both match the message prefix; she

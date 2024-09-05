@@ -1,133 +1,244 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/002-design.md
-```
-# PromiseGrid Design
+<blank line>
+File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
+```markdown
+# PromiseGrid Routing
 
 ## Overview
 
-PromiseGrid is designed as a decentralized computing, communications, and governance framework, leveraging promise-based interactions and content-addressable storage to create a robust and modular system.
+Routing is the act of forwarding a message to the correct recipient(s) or to an intermediary host that can further route the message to its destination.
 
-## Core Concepts
+In PromiseGrid, routing is a critical aspect of the network's operation, facilitating the exchange of messages, resources, and services between hosts and between the modules (apps) running on those hosts.
 
-1. **Decentralized Architecture**: PromiseGrid operates as a decentralized computing, communications, and governance system. It is designed to be owned and operated by its users rather than any single entity.
+## Exchange Rate-Based Routing
 
-2. **Capability-as-Promise Model**: Capabilities are treated as promises, similar to the concepts from Promise Theory. A capability token represents a promise that can either be fulfilled or revoked.
+### 1. Exchange Rate-Based Routing
+- Hosts route based on the exchange rates of "personal currencies" --
+  see below for more on personal currencies.
+- Prefer routing to hosts with higher-valued currencies to ensure stability and reliability.
+- Encourages hosts to maintain strong reputations and economic value.
 
-3. **Content-addressable Code**: Both code and data are addressed by their content, not by location or name. This allows the grid to store and execute code and access data from any node in the network.
+### 2. Reputation and Currency Mechanisms
+- Reputation points function as a currency, influencing routing decisions.
+- Hosts decide to route based on the perceived value and reliability of other hosts.
+- Market dynamics dictate routing paths, promoting decentralized control.
 
-4. **Promises All the Way Down**: Every interaction in the system is based on promises. A response to a promise is another promise.
+### 3. Handling Misbehaving Hosts
+- Hosts that misbehave receive less network traffic and forwarding services.
+- Poor behavior leads to reduced currency value, decreasing a host's network influence.
+- This self-regulating mechanism ensures network stability and security.
 
-5. **Non-Sandboxed Modules**: Non-sandboxed modules in PromiseGrid are analogous to device drivers in a microkernel OS. Just as device drivers handle specific hardware functionality in a microkernel, non-sandboxed modules handle specific external operations in the grid (e.g., network communications, file access). The kernel delegates these operations to non-sandboxed modules while maintaining control over the overall execution.
+### Alternative Names for Exchange Rate-Based Routing
+- Reputation-Based Routing
+- Value-Driven Routing
+- Economically Incentivized Routing
+- Market-Based Routing
+- Integrity-Based Routing
 
-## Glossary of Terms and Concepts
+## How Personal Currencies Work: "Everyone is Their Own Central Bank"
 
-- **Decentralized Architecture**: A system design where control is distributed among various actors or nodes, rather than centralized in a single entity.
-- **Capability-as-Promise Model**: A model where capabilities represent promises that can either be fulfilled or revoked.
-- **Content-addressable Code**: Code and data addressed based on their content, allowing decentralized storage and execution.
-- **Promises All the Way Down**: A paradigm where every interaction in the system results in a promise, with responses being new promises.
-- **Non-Sandboxed Modules**: Modules granted more access and responsibility, analogous to device drivers, for handling specific external operations.
+### Concept of Personal Currencies
+- In PromiseGrid, **every host acts as its own central bank**, issuing its own currency in the form of reputation points.
+- These currencies represent the host's trustworthiness and reliability, similar to how fiat currencies reflect the stability of a government.
 
-## Flexible Design for Module Registration
+### Incentives and Disincentives for Maintaining Currency Value
+- Hosts are incentivized to maintain the value of their currency (reputation points) by keeping promises and behaving reliably.
+- A **high currency value** means other hosts are more likely to route traffic through or trade with that host, increasing its influence and participation in the network.
+- Conversely, **bad behavior** (breaking promises, excessive querying, etc.) leads to a **devaluation** of the currency, reducing a host’s ability to transact and interact with others effectively.
 
-### Overview
+### Tools for Market Participants to Maintain Value
+- **Reputation Management**: Hosts can actively manage their reputation by fulfilling promises and avoiding behaviors that could devalue their currency.
+- **Dynamic Exchange Rates**: By adjusting their exchange rates with other hosts based on behavior and market conditions, hosts can strategically protect their currency's value.
+- **Selective Interactions**: Hosts may choose to interact only with other hosts that maintain a stable or high-value currency, reinforcing trust and reliability in the network.
 
-Modules in PromiseGrid interface with the kernel via explicit registration or through hash-based routing mechanisms. These two primary methods offer distinct advantages and challenges:
+## Import and Export of Resources in PromiseGrid
 
-### Explicit Module Registration
+### Understanding Import and Export
+- In PromiseGrid, **importing resources** means paying another host for storage space or computational power. This could involve storing data on another host’s hardware or outsourcing computation tasks.
+- **Exporting resources** refers to being paid by other hosts to provide storage space or computational power. Hosts that export resources effectively "sell" their excess capacity to others on the network.
 
-#### Pros
-1. **Clarity and Explicitness**: Modules report their capabilities, simplifying system understanding and management.
-2. **Fine-Grained Control**: The kernel can enforce rules and constraints based on module capabilities.
-3. **Dynamic Adaptation**: Modules can update their capabilities dynamically, supporting on-the-fly changes.
+### Analogies to International Trade
+- The concepts of importing and exporting in PromiseGrid are similar to international trade in the global economy:
+  - **Importing resources** (buying storage or computation) can be likened to a country purchasing goods or services from abroad. Hosts spend their currency to acquire necessary resources they cannot efficiently produce themselves.
+  - **Exporting resources** (selling storage or computation) is akin to a country selling its goods or services to other nations. Hosts receive payments in other currencies, which strengthens their economic standing and increases their influence within the network.
+- Just as countries aim to maintain a favorable balance of trade to enhance their currency’s value, hosts in PromiseGrid seek to optimize their import and export balance to maintain or increase their reputation and currency value.
 
-#### Cons
-1. **Complexity**: Adds complexity to module initialization and management.
-2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
-3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
+### Governance and Geopolitical Factors Influencing Currency Values
+- In the real world, geopolitical factors, governance, and economic policies heavily influence currency values. Similarly, in PromiseGrid:
+  - **Governance Decisions**: Hosts might make decisions that affect their ability to import or export resources. For example, a host that reliably exports high-quality computational resources might see its currency increase in value, akin to how a country with a robust export economy strengthens its currency.
+  - **Network Effects**: The behavior of a host's peers and its relationships within the network influence its currency's value. If a host is part of a trusted coalition or "alliance" of hosts that consistently fulfill promises, this could positively impact its currency, similar to how international alliances and trade agreements can stabilize or increase a nation’s currency value.
+  - **Economic Policies**: Hosts might implement policies regarding how much they are willing to export or import based on current network conditions. This is analogous to a country setting tariffs or trade restrictions to protect its economy or encourage domestic production.
 
-### Exchange Rate Routing
+## Concept that "A Physical Host is Sovereign"
 
-### Concept
+### Physical Host Sovereignty Analogy
+- A physical host in PromiseGrid is considered sovereign, analogous to a geographical nation-state.
+- This sovereignty implies that a host has ultimate control over its resources, policies, and interactions within its domain.
 
-Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence the routing decisions, promoting reliable behavior and network stability.
+### Use of Force and Sovereignty
+- Just as a nation-state can enforce its laws and defend its territory, a physical host can enforce its own rules and policies to maintain control -- ultimately, the host's system administrator can simply pull the plug.
+- It's important to ensure the the host's owner/administrator is incentivized to play well with others (ensure the common good).
+- We can do this by incentivizing the owner/administrator to maintain the host's reputation as expressed in its currency value.
 
-### How It Works
+## Evolution of Routing Strategies: From Concept to Current Model
 
-1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
-2. **Routing Decisions**: Hosts prefer routes through other hosts with higher-valued currencies to ensure stability and reliability.
-3. **Dynamic Adjustments**: Exchange rates are dynamic and adjust based on host behavior and market conditions.
+### Early Considerations and Alternatives
 
-### Advantages
+We explored several other routing strategies, including:
 
-- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
-- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
-- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
+#### Pay-for-Flow 
 
-### Hash-Based Module Routing
+Hosts paying others in their currency to receive packets, effectively incentivizing traffic flow to specific routes.
 
-#### Pros
-1. **Simplicity**: Cryptographic hashes guide message routing, eliminating explicit registration.
-2. **Efficiency**: Highly efficient due to unique and consistent addressing.
-3. **Decentralized Management**: Modules are self-contained, facilitating independent management.
+#### Bond-Based Routing
 
-#### Cons
-1. **Opaque Mapping**: Harder to identify which module handles a message without clear declarations.
-2. **Limited Flexibility**: Dynamic updates require hash changes, reducing adaptability.
-3. **Security Risks**: Must mitigate risks like hash collisions and attacks.
+Treating routing decisions as financial investments, where sending a message through a host could be seen as buying a bond in that host's currency.
 
-### Combining Both Approaches
+Essentially this is still pay-for-flow, with deferred payment.
 
-A hybrid approach leverages the strengths of both explicit registration and hash-based routing:
+#### ZKOS 
 
-1. **Initialization Phase**: Modules register their capabilities during initialization.
-2. **Hash-Based Execution**: Runtime routing employs cryptographic hashes, consulting the registry as needed.
+Derived from Zero-Kernel Operating Systems, ZKOS routing used zero-knowledge proofs for privacy-preserving validation.  [https://web.mit.edu/ha22286/www/papers/MEng20_4.pdf](https://github.com/stevegt/grid-cli/blob/main/v2/doc/420-routing.md)
 
-### Nested Messages and Kernel Arbitration
+- **Zero-Knowledge Proofs (ZKPs)**: Used for privacy-preserving validation.
+- **Decentralized Control**: hosts operate independently, ensuring security and resilience.
 
-Modules can unwrap nested messages, allowing dynamic and complex interactions. The kernel's arbitration is not final, supporting a modular design where tasks can be delegated further through nested messaging.
+#### Antikernel
 
-#### Implications
-1. **Delegated Control**: Enables modular and extensible system design by delegating tasks.
-2. **Dynamic Message Flows**: Supports flexible message handling based on context.
-3. **Complex Dependency Graphs**: Requires careful management to maintain stability.
+Paper by Andrew Zonenberg on the concept of moving much of the intra-kernel routing into
+hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://www.iacr.org/archive/ches2016/98130227/98130227.pdf)
 
-- XXX third alternative -- byte sequence completion 
+- **Modularity**: OS functionalities are divided into independent modules.
+- **Hardware State Machines**: Utilizes hardware-based state machines for enhanced security and performance.
 
-### Conclusion
+#### Capability Tokens
 
-Explicit registration and hash-based routing methods impact system design and functionality significantly. Combining both approaches balances their strengths, enhancing modularity, adaptability, and efficiency. This flexibility, including nested messaging, bolsters PromiseGrid's modular architecture.
+- **Token-Based Access Control**: Ensures that only authorized modules can handle specific messages.
+- **Decentralized Capabilities**: Each module can issue and manage its capability tokens, promoting autonomy and security.
 
-## Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
+#### Hash-Based Routing
 
-XXX describe  trie-based routing
+- **Hash-Based Addresses**: Each route is determined by hashing the first N bytes of the message. This can work because the grid's function is byte sequence completion.
+- **Consistency and Collision Avoidance**: Uses cryptographic hashes to ensure unique and collision-resistant addresses.
 
-### Messages and Promises
+#### Byte Sequence Completion
 
-1. **Message Structure**:
+- **Trie Structure**: Uses a trie to manage and match byte sequences efficiently.
+- **Dynamic Path Selection**: Adapts routing paths dynamically based on sequence completions and historical success rates.
 
-XXX messages are byte sequences that have no meaning to the kernel,
-only modules
+#### Genetic Algorithms
 
+- **Evolutionary Optimization**: Routes evolve through selection, crossover, and mutation, adapting to changing network conditions.
+- **Fitness Function**: Evaluates routes based on performance metrics such as latency, throughput, and reliability.
 
-### Multihash, Multibase, and Multicodec
+### Machine Learning
 
-PromiseGrid leverages multihash and multibase to autodetect hash formats, enhancing compatibility and extensibility across various data formats.
+- **Predictive Analytics**: Models analyze past routing decisions to forecast the best paths for new messages.
+- **Reinforcement Learning**: The system learns optimal routes through reinforcement learning, continuously improving based on feedback.
 
-### Conclusion
+## Shift to Exchange Rate Routing
 
+- The concept of **exchange rate-based routing** emerged as a more straightforward alternative, leveraging existing market dynamics without requiring complex transaction management.
+- In this model, hosts prefer routes that align with the highest-valued currencies, ensuring they interact with the most reliable and stable participants.
+- This approach naturally encourages hosts to maintain a strong currency, as higher value directly translates to better routing opportunities and network influence.
 
-### Open Questions
+### Considerations for the Current Model
 
-- XXX reconcile byte sequence completion with explicit registration and hash-based routing
+- While the exchange rate-based routing simplifies decision-making, it introduces new considerations:
+  - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
+  - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.
+- These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
 
-- Mechanisms to handle broken promises effectively?
-- Determining the best route with multiple handlers?
+## Alice, Bob, and Robin: A Routing Example
 
-## Suggestions for Improving this Document
+To illustrate these concepts, let’s consider a concrete example involving Alice, Bob, and Robin.
 
-- Add more examples and case studies.
-- Expand on hierarchical syscall tree descriptions.
-- Update sections with new questions arising during implementation.
-- Refine glossary with specialized terms and concepts.
-- Incorporate visual aids to showcase system architecture and data flow.
+1. **Accepting 'ABC' Prefix**: Both Alice and Bob tell Robin that they will accept byte sequence prefix 'ABC'.
+2. **Storing Advertisements**: Robin stores Alice's and Bob's advertisements indicating their acceptance of 'ABC' prefix in her routing table.
+3. **Message Reception**: Robin receives a message starting with 'ABC' and needs to decide whether to forward it to Alice or Bob.
+4. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, so she forwards the message to Alice.
+
+### This Example in Code
+
+Here is a simple Go example to demonstrate how Robin might handle this routing decision:
+
+```go
+package main
+
+import "fmt"
+
+// Exchange rate table (simplified map representation)
+var exchangeRates = map[string]float64{
+    "Alice": 1.5, // Alice's currency value
+    "Bob":   1.2, // Bob's currency value
+}
+
+// routing table to store prefix acceptance information
+var routes = map[string]string{
+    "ABC": "Alice,Bob", // Both Alice and Bob accept 'ABC' prefix
+}
+
+// Function to decide which host to forward to based on exchange rates
+func routeMessage(messagePrefix string) {
+    if hosts, found := routes[messagePrefix]; found {
+        hostList := splitHosts(hosts)
+        var preferredHost string
+        maxRate := 0.0
+        for _, host := range hostList {
+            if rate, ok := exchangeRates[host]; ok && rate > maxRate {
+                preferredHost = host
+                maxRate = rate
+            }
+        }
+        forwardMessageTo(preferredHost)
+    }
+}
+
+// Function to split host list from the advertisement table
+func splitHosts(hosts string) []string {
+    return strings.Split(hosts, ",")
+}
+
+// Stubs for the message forwarding function
+func forwardMessageTo(host string) {
+    fmt.Printf("Forwarding message to %s\n", host)
+}
+
+// Example usage
+func main() {
+    message := "ABC123"
+    routeMessage(message[:3])
+}
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md
+
+This simple example utilizes both the exchange rate table and routes table to make routing decisions, demonstrating how PromiseGrid can dynamically adapt based on the value of hosts' personal currencies and advertised services.
+
+## Open Questions
+
+### 1. Complexity of Implementation
+   - What are the challenges in implementing these routing strategies?
+   - Are there simpler alternatives that align with PromiseGrid’s goals?
+
+### 2. Potential Pitfalls
+   - What unforeseen issues might arise from using personal currencies in routing?
+   - How do we handle situations where hosts frequently change their routing behavior?
+
+### 3. Identity evasion
+
+One potential pitfall in using personal currencies and reputation-based routing is the possibility that a participant can evade their past record of bad behavior by creating a new identity. Solutions to this issue are likely related to robust onboarding processes, which may include measures such as:
+
+1. **Identity Verification**: Implementing strong identity verification steps could help ensure that new identities are tied to real-world anchors, making it harder to create disposable identities.
+  
+2. **Reputation Migration**: Allowing participants to carry some of their reputation (positive or negative) when creating a new identity can help mitigate the effects of identity hopping.
+
+3. **Initial Restrictions**: Imposing temporary restrictions or limitations on new identities until they have built up a certain level of trust within the network.
+
+4. **Behavioral Analysis**: Using automated systems to analyze behavior patterns that suggest identity evasion, thereby identifying and mitigating malicious actors faster.
+
+5. **Exchange rates and Sovereignty**: Ultimately, the value of a host's currency is determined by the network's collective perception of its reliability and trustworthiness. Hosts that consistently fulfill promises and maintain good behavior will naturally experience higher currency values as reflected in the exchange rates quoted by their peers, increasing their currency value and influence within the network.
+
+### 4. How can we prevent good histories from enabling later bad behavior?
+
+A consideration as we implement these routing strategies is the potential for hosts with good historical reputations to engage in bad behavior at a later stage. A host that has built up a strong reputation over time might exploit its high standing to suddenly behave maliciously, knowing that the economic impact might not be immediate. Hosts should develop mechanisms to mitigate such risks, perhaps incorporating moving averages, recent behavior weighting, or anomaly detection algorithms into exchange rate calculations.
+
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md

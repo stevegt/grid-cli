@@ -3,7 +3,7 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/
+    v2/doc/420-routing.md
 .revise v2/doc/420-routing.md
 
 revise the routing algorithm as follows:

@@ -2,8 +2,10 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Merge the input documents into the output document.
-In: v2/doc/003-design.md
-Out: v2/doc/345-dtrie.md
+In: 
+    v2/doc/343-dht.md
+    v2/doc/003-design.md
+Out: v2/doc/003-design.md
 
-Merge 003-design.md into 345-dtrie.md.
+Merge 343-dht.md into 003-design.md.
 

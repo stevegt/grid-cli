@@ -1,140 +1,183 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
+File: /home/stevegt/lab/grid-cli/v2/doc/207-vn-guest.md
 ```markdown
-# TODO List for Implementing PromiseGrid Kernel
+# Hosting Conventional Operating Systems or Applications as Guests on PromiseGrid
 
-## General Improvements
-- Improve documentation clarity and consistency.
-- Resolve internal inconsistencies and discuss any remaining conflicts.
-- Add logical statements and recommendations in technical sections.
-- Include open-ended questions to provoke further discussion and exploration.
+## Introduction
 
-## Documentation Refinements
-- Identify and resolve any conflicting information within the documentation.
-- Ensure all statements are logical and support the overall system architecture.
-- Add recommendations and best practices based on the current design.
-- List documents that are most similar and could be merged.
+PromiseGrid (PG) is a decentralized computation platform that diverges from traditional Von Neumann architecture by utilizing byte sequence completion for memory management and execution. This document explores how conventional operating systems or applications, designed for Von Neumann architecture, can be hosted as guests on PromiseGrid.
 
-## Detailed Task List
-- Review the documentation for:
-  - Logical flow and coherence.
-  - Consistency in terminology usage.
-- Resolve any discrepancies or conflicting ideas.
-- Detailed descriptions for some of the strategies and methods mentioned:
-  - Implement example-based explanations wherever possible.
-  - Provide case studies and visual aids to enhance understanding.
+## Conventional Von Neumann Architecture
 
-## Cache Design and Lookup
-- Refactor the cache design to use byte sequence completion for key management.
-  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
-  - Document the byte sequence management strategy.
-- Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
+### Core Components
 
-## Dynamic Acceptance History and Syscall Table
-- Revamp the acceptance history mechanism to track byte sequence completions.
-  - Store positive and negative sequence completions effectively.
-  - Populate acceptance and rejection history dynamically during kernel operations.
-  - Implement efficient lookup facilities to match message sequences with handlers based on historical completion success rates.
+1. **Memory**: Unified storage for both code and data.
+2. **Central Processing Unit (CPU)**: Executes instructions and processes data.
+3. **Input/Output (I/O) Devices**: Facilitate external communication and data exchange.
+4. **Sequential Execution**: Follows a linear process of fetching, decoding, and executing instructions from memory.
 
-## Implement Ant Routing Mechanism
-- Integrate byte sequence completion with the ant routing mechanism.
-  - Adapt the ant routing algorithm to cache successful byte sequence paths.
-  - Develop a strategy to dynamically adjust routing based on promise fulfillment statistics.
+## PromiseGrid Architecture
 
-## Promise-Based Design
-- Augment cache and syscall tree design to fully integrate with byte sequence completion as a core mechanism:
-  - Rework promise handling to support dynamic sequence completion.
-  - Investigate and implement strategies for embedding promise validation within byte sequence matching.
+### Byte Sequence Completion
 
-## Polymorphic Handling and Error Detection
-- Develop error handling routines specific to byte sequence completion:
-  - Enhance the dispatching mechanism to manage failures in byte sequence processing gracefully.
-  - Implement retries and alternative handler routing based on sequence fulfillment failures.
+- **Memory Management**: Based on completing byte sequences rather than linear addressing.
+- **Trie Data Structure**: Utilized for efficient storage and retrieval of byte sequences.
+- **Decentralized Storage**: Data is distributed across multiple nodes, enhancing fault tolerance and scalability.
 
-## File Storage and Byte Sequences
-- Migrate storage mechanisms to manage byte sequences efficiently:
-  - Replace traditional file key management with content-addressable byte sequences.
-  - Ensure compatibility with Origin Private File System (OPFS) and abstract filesystem integration via libraries like `afero`.
+## Mapping Von Neumann Programs to PromiseGrid
 
-## Usability and Documentation
-- Improve the documentation on managing and converting sequences:
-  - Create clear usage examples and guidelines for byte sequence management.
-  - Provide concise guides for converting from legacy filesystem-based cache management to byte sequence completion.
+### Executing Instructions
 
-## Review and Refactor
-- Conduct a comprehensive review to identify legacy points where `/`-separated cache key handling still exists:
-  - Complete refactoring of these sections to support byte sequence completion.
-  - Validate the correctness and performance of new implementations in various scenarios.
+1. **Instruction Fetch**:
+    - In a Von Neumann machine, the CPU fetches instructions from memory.
+    - In PromiseGrid, byte sequences representing instructions are fetched from a distributed trie structure.
 
-## Security and Verification
-- Assess security implications of new byte sequence completion strategies:
-  - Ensure that new designs for caching and syscall mechanisms do not introduce vulnerabilities.
-  - Enhance the validation and verification processes to assert the integrity of sequence handling mechanisms.
+2. **Instruction Decode**:
+    - The CPU decodes instructions to determine the operation.
+    - PromiseGrid decodes byte sequences to identify the required completion or action.
 
-## The documents most in disagreement or conflict with each other appear to be:
+3. **Instruction Execution**:
+    - The CPU executes the decoded instruction.
+    - PromiseGrid completes the byte sequence, performing the associated action, such as data retrieval, computation, or message passing.
 
-1. **001-design.md vs. 002-design.md**
-   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches:
-     - **001-design.md** emphasizes a more detailed and structured approach to the core concepts, including the functionality of non-sandboxed modules, capability-as-promise model, and acceptance history.
-     - **002-design.md** provides a broader overview of the same concepts with a slightly different emphasis on explicit module registration and hash-based routing without as much detail on the execution of these concepts.
-     - **Potential Conflicts**:
-       - **Module Registration**: Differences in the preference for explicit module registration (001-design.md) vs. hash-based routing (002-design.md).
-       - **Cache and Promise Handling**: Specific implementation details on how caches handle promises and dynamic adaptation may differ between the documents.
-       - **Role of Non-Sandboxed Modules**: 001-design.md provides more specific analogies compared to 002-design.md's generalized approach.
+4. **Result Storage**:
+    - Von Neumann architecture stores results back in memory.
+    - PromiseGrid stores results in the decentralized trie structure.
 
-2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
-   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling:
-     - **Cache Indexing**: Different approaches to indexing and managing the cache.
-     - **Byte Sequence Management**: Handling byte sequences in cache operations may be inconsistently addressed.
+### Memory Management
 
-3. **190-side-effects.md vs. 201-computable.md**
-   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied:
-     - **Theoretical Discussions**: Possible divergence in how side effects are integrated with the overall model and the applicability of computability concepts to byte sequence completion.
+#### Von Neumann Memory
 
-4. **207-vn-guest.md vs. 202-von-neumann.md**
-   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies:
-     - **Integration Methods**: Potentially different approaches for integrating traditional systems into PromiseGrid.
-     - **Compatibility Issues**: Differing views on handling compatibility and adapting conventional systems to PromiseGrid’s architecture.
+- **Unified Storage**: Code and data share the same memory space.
+- **Linear Addressing**: Memory is addressed sequentially using numeric addresses.
+- **Finite Capacity**: Limited by physical storage.
 
-### Steps for Resolving Conflicts
+#### PromiseGrid Memory
 
-1. **Harmonize Design Principles**:
-   - Review and align the overarching design principles across 001-design.md and 002-design.md to ensure a cohesive vision.
+- **Content-Addressable Storage**: Data and code are accessed based on their content hashes, rather than numeric addresses.
+- **Trie-Based Structure**: Represents memory using a trie, allowing flexible and dynamic data access.
+- **Decentralized Storage**: Memory is distributed across the network, ensuring scalability and fault tolerance.
 
-2. **Consolidate Cache Management Methods**:
-   - Merge the cache management strategies from 003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md into a unified guide. Address any conflicting methods and settle on a standardized approach.
+### Addressing and Data Retrieval
 
-3. **Align Theoretical Concepts**:
-   - Reconcile the theoretical discussions in 190-side-effects.md and 201-computable.md to ensure a consistent interpretation of side effects and computability within the PromiseGrid framework.
+1. **Addresses as Content Hashes**:
+    - Unlike the linear addressing of Von Neumann architecture, PromiseGrid uses content hashes derived from data or code as addresses.
+    - Hashing ensures unique and collision-resistant references to data.
 
-4. **Unified Approach for Hosting Systems**:
-   - Combine insights from 207-vn-guest.md and 202-von-neumann.md to provide a clear, consistent methodology for hosting conventional systems on PromiseGrid.
+2. **Trie Traversal**:
+    - Memory and data retrieval in PromiseGrid involve traversing a trie to locate nodes representing specific byte sequences.
+    - This dynamic and decentralized approach supports efficient and scalable data access.
 
-### Merging Similar Documents
+### Execution Layer Adaptation
 
-To reduce redundancy and potential conflicts, consider merging the following documents:
+1. **Virtualization**:
+    - The PromiseGrid runtime leverages virtual memory management when hosted on a Von Neumann machine.
+    - Byte sequences and trie nodes are stored within the host machine's memory and disk.
 
-1. **001-design.md and 002-design.md** into a single comprehensive design guide.
-2. **003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md** into a unified cache and module handling guide.
-3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
-4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
+2. **Disk Storage**:
+    - Persistent storage is managed using the Origin Private File System (OPFS) or similar mechanisms.
+    - Trie nodes and content-addressable data are persisted as files, ensuring durability.
 
-## List of Documents Discussing Hash-Based Routing
+3. **Instruction Emulation**:
+    - The Von Neumann CPU emulates byte sequence completion by interpreting byte sequences as instructions.
+    - This involves memory and I/O operations executed natively on the host machine.
 
-1. **Design Principles and Core Concepts in PromiseGrid (001-design.md)**
-   - Discusses the core design principles, including the functionality and interaction between non-sandboxed modules, explicit module registration, and hash-based routing.
+### Harmonizing Paradigms
 
-2. **PromiseGrid Design Overview (002-design.md)**
-   - Emphasizes broad design aspects including the preference for hash-based routing mechanisms without delving into intricate details.
+1. **Instruction Set**:
+    - Von Neumann architecture relies on fixed instruction sets, whereas PromiseGrid introduces flexible and dynamically defined operations.
+    - The runtime adapts instruction handling to various computational tasks seamlessly.
 
-3. **Cache and Module Handling Guidelines (003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, 014-cache.md)**
-   - Various documents exploring different methods of cache management, including hash-based routing approaches.
+2. **Data Integrity**:
+    - PromiseGrid ensures data integrity through content hashes, even when distributed across the host machine's memory and disk.
+    - Combining deterministic access of Von Neumann memory with the consistency of content-addressable storage.
 
-4. **Theoretical Aspects of PromiseGrid (190-side-effects.md, 201-computable.md)**
-   - Delving into the theoretical frameworks, including discussion on how hash-based routing integrates with side effects and computability concepts.
+## Container Management on PromiseGrid
 
-5. **Hosting Conventional Systems (207-vn-guest.md, 202-von-neumann.md)**
-   - Different perspectives on integrating conventional systems into PromiseGrid, with methods contemplating hash-based routing as a solution.
+PromiseGrid (PG) is a platform inspired by decentralized computation principles. This document explores how a container might be hosted as a guest on PromiseGrid. Specifically, we will investigate how container image layers could be stored and loaded as byte sequences, and how the container runtime could update the writable layer to provide persistent storage and container mobility across PromiseGrid nodes.
 
+## Container Image Storage and Loading
+
+### Image Layers as Byte Sequences
+
+Containers are composed of layers, each layer representing a set of filesystem changes. In PromiseGrid, these layers can be stored and managed as byte sequences. Here's how it might work:
+
+1. **Layer Storage**:
+    - Each layer is stored as a unique byte sequence. Layers are referenced using content hashes, ensuring data integrity and easy retrieval.
+    - Layers are stored in a decentralized manner, distributed across multiple nodes to enhance fault tolerance and scalability.
+
+2. **Layer Loading**:
+    - When a container is instantiated, its image layers are fetched from the network using their content hashes.
+    - The layers are assembled into a complete filesystem on the local node, preparing the container for execution.
+
+3. **Efficient Data Retrieval**:
+    - Content-addressable storage ensures efficient retrieval of layers. Layers previously downloaded and stored locally can be reused, reducing network overhead.
+
+### Example
+
+Let's consider a container with three layers:
+- Base Layer: Contains the OS.
+- Layer 1: Contains application dependencies.
+- Layer 2: Contains the application itself.
+
+In PromiseGrid, these layers would be stored and retrieved as follows:
+
+1. **Storage**:
+    - Each layer is converted to a byte sequence.
+    - Byte sequences are stored distributedly across different nodes using content hashes.
+
+2. **Retrieval**:
+    - When the container is needed, its layers are retrieved using their content hashes.
+    - The byte sequences are reassembled to form the container's filesystem.
+
+## Writable Layer Management
+
+### Log-Structured Filesystem for Writable Layer
+
+To provide a writable layer for containers that enables persistent storage and mobility, a log-structured filesystem approach is a viable option. Here's how it can be implemented in PromiseGrid.
+
+1. **Log-structured Filesystem (LFS)**:
+    - Changes to the filesystem (writes) are appended to a log rather than modifying files in place. This approach is efficient for capturing deltas and supports quick snapshots.
+    - Logs can be segmented and stored as byte sequences, allowing distributed nodes to manage parts of the writable layer.
+    - there is a superlog that lists the hashes of the logs in order;
+      this allows for space reclamation and log compaction.
+
+2. **Persistence**:
+    - When a container writes data, the changes are captured in the log. This log is periodically committed and distributed to other nodes.
+    - This mechanism ensures that the writable layer persists even if the container is moved or the node fails.
+
+3. **Mobility**:
+    - Containers can be moved across different nodes. Since the writable layer is managed via logs, the logs can be transferred to the new node, reassembling the filesystem state.
+    - Log entries are content-addressed, allowing efficient transfer and reassembly.
+
+4. **Handling File Deletions**:
+    - When a large file is deleted, the associated space within the log is not immediately reclaimed.
+    - Periodic log compaction or vacuuming processes identify and remove stale log entries, creating new log segments.
+    - These new log segments are found by updating the sequence of log hashes, ensuring the integrity and continuity of the container's writable layer.
+
+### Example Implementation
+
+Imagine a container running a database with a writable layer storing its current state:
+
+1. **Initial Write**:
+    - A write operation modifies the database.
+    - The change is captured and appended to the log as a byte sequence.
+
+2. **Log Commit**:
+    - Periodically, the log is committed and its entries are distributed to other nodes for redundancy.
+    - Each log entry is content-addressed, ensuring integrity.
+
+3. **Container Migration**:
+    - The container needs to be moved to another node.
+    - The log entries are transferred to the target node.
+    - At the target node, the log is replayed to reassemble the writable layer, maintaining the state of the database.
+
+4. **File Deletion and Space Reclamation**:
+    - When a large file is deleted, the event is noted in the log.
+    - During scheduled compaction, the log identifies and removes the references to the deleted file.
+    - A new log segment is created, and the sequence of log hashes is updated, enabling the recovery of the underlying disk space.
+
+## Conclusion
+
+Hosting conventional operating systems or applications as guests on PromiseGrid involves efficient handling of container image layers and managing a writable layer. By storing image layers as byte sequences and using a log-structured filesystem for the writable layer, PromiseGrid can ensure persistent storage, efficient data retrieval, and container mobility. This decentralized approach leverages the strengths of PromiseGrid to provide robust and scalable container management.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/207-vn-guest.md

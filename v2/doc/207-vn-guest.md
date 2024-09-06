@@ -135,7 +135,7 @@ To provide a writable layer for containers that enables persistent storage and m
 
 1. **Log-structured Filesystem (LFS)**:
     - Changes to the filesystem (writes) are appended to a log rather than modifying files in place. This approach is efficient for capturing deltas and supports quick snapshots.
-    - Logs can be segmented and stored as byte sequences, allowing distributed nodes to manage parts of the writable layer. 
+    - Logs can be segmented and stored as byte sequences, allowing distributed nodes to manage parts of the writable layer.
     - there is a superlog that lists the hashes of the logs in order;
       this allows for space reclamation and log compaction.
 
@@ -177,4 +177,3 @@ Imagine a container running a database with a writable layer storing its current
 ## Conclusion
 
 Hosting conventional operating systems or applications as guests on PromiseGrid involves efficient handling of container image layers and managing a writable layer. By storing image layers as byte sequences and using a log-structured filesystem for the writable layer, PromiseGrid can ensure persistent storage, efficient data retrieval, and container mobility. This decentralized approach leverages the strengths of PromiseGrid to provide robust and scalable container management.
-

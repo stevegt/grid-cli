@@ -4,9 +4,9 @@ Sysmsg: You are an expert technical writer and software architect.
     Merge the input documents into the output document.  Maintain the
     focus of the output document.  
 In: 
-    v2/doc/203-prior.md
-    v2/doc/207-vn-guest.md
-Out: v2/doc/207-vn-guest.md
+    v2/doc/README.md
+    v2/doc/190-side-effects.md
+Out: v2/doc/190-side-effects.md
 
-Merge 203-prior.md into 207-vn-guest.md without changing the focus of 207-vn-guest.md.
+Merge README.md into 190-side-effects.md without changing the focus of 190-side-effects.md.
 

@@ -3,10 +3,10 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/
+    v2/doc/002-design.md
 .revise v2/doc/001-design.md
 
-- reconcile the doc with all others
+- reconcile the docs
 - fix inconsistencies and discrepancies
 - remove or correct conflicting information
 

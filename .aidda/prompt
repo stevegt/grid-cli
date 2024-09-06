@@ -3,9 +3,9 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Merge the input documents into the output document.
 In: 
-    v2/doc/003-design.md
-    v2/doc/013-cache.md
-Out: v2/doc/013-cache.md
+    v2/doc/323-syscalls.md
+    v2/doc/341-magic.md
+Out: v2/doc/341-magic.md
 
-Merge 003-design.md into 013-cache.md.
+Merge 323-syscalls.md into 341-magic.md.
 

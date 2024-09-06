@@ -3,15 +3,12 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Please make the requested changes to the documentation.
 In: 
-    v2/doc/420-routing.md
-.revise v2/doc/420-routing.md
+    v2/doc/
+.revise v2/doc/001-design.md
 
-- "there can be only one":  any given byte sequence can only have one handler
-- similar to ethereum, the kernel charges handlers "gas" for message bytes
-  forwarded, CPU time, storage, RAM, etc. including the time is takes
-  to recurse through the trie to match a message
-- the charges are in the kernel's own currency, creating a demand for
-  that currency
+- reconcile the doc with all others
+- fix inconsistencies and discrepancies
+- remove or correct conflicting information
 
 .stop
 

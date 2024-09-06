@@ -6,11 +6,16 @@ Routing is the act of forwarding a message to the correct recipient(s) or to an 
 
 In PromiseGrid, routing is a critical aspect of the network's operation, facilitating the exchange of messages, resources, and services between hosts and between the modules (apps) running on those hosts.
 
+## Uniqueness of Handlers
+
+*There can be only one.*
+
+- Within a given kernel, any given byte sequence can only have one handler, though this handler can itself choose to forward the message to one or more other handlers.
+
 ## Exchange Rate-Based Routing
 
 ### 1. Exchange Rate-Based Routing
-- Hosts route based on the exchange rates of "personal currencies" --
-  see below for more on personal currencies.
+- Hosts route based on the exchange rates of "personal currencies" -- see below for more on personal currencies.
 - Prefer routing to hosts with higher-valued currencies to ensure stability and reliability.
 - Encourages hosts to maintain strong reputations and economic value.
 
@@ -144,6 +149,11 @@ hardware: [https://www.iacr.org/archive/ches2016/98130227/98130227.pdf](https://
   - **Market Volatility**: Exchange rates can fluctuate, potentially leading to instability in routing decisions if not managed carefully.
   - **Equity and Access**: Ensuring that less established hosts can still participate meaningfully in the network without being overshadowed by hosts with established high-value currencies.
 - These challenges are part of the ongoing discussion to refine and finalize routing strategies that align with PromiseGrid's decentralized ethos.
+
+## Gas Charges for Handlers
+
+- Similar to Ethereum, the kernel charges handlers "gas" for message bytes forwarded, CPU time, storage, RAM, etc., including the time it takes to recurse through the trie to match a message.
+- These charges are in the kernel's own currency, creating a demand for that currency.
 
 ## Alice, Bob, and Robin: A Routing Example
 

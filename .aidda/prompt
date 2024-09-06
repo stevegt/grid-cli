@@ -4,9 +4,9 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
-.revise v2/doc/001-design.md
+.revise v2/doc/342-prior.md
 
-Summarize all other files
+Incorporate ideas from other files.
 
 .stop
 

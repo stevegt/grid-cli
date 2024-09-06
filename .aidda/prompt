@@ -6,10 +6,17 @@ Sysmsg: You are an expert technical writer and software architect.
     document should be a coherent whole.  Do not change the central
     focus of the output document.
 In: 
-    v2/doc/330-messages.md
-    v2/doc/321-mach.md
-Out: v2/doc/321-mach.md
+    v2/doc/940-goals.md
+    v2/doc/348-trienode.md
+Out: v2/doc/348-trienode.md
 
-Reconcile 321-mach.md with 330-messages.md.  Do not change the focus of 321-mach.md.
-Reconcile or remove any information in 321-mach.md that conflicts with 330-messages.md.
+Reconcile 348-trienode.md with 940-goals.md.  Do not change the focus of 348-trienode.md.
+Reconcile or remove any information in 348-trienode.md that conflicts with 940-goals.md.
 The output document should be a coherent whole.
+
+If the input or output documents contain any open questions, answer
+them in the output document.  
+
+Add new open questions to the output document if they are not already
+present.
+

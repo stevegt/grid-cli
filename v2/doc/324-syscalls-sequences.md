@@ -2,21 +2,23 @@
 
 ## Overview
 
-In the PromiseGrid framework, syscalls (system calls) can be imagined as sequences of bytes that represent specific operations or requests. These sequences are handled by the kernel, which processes them using a trie-based structure to optimize and manage their execution. This document explores the concept of treating syscalls as sequence completions, the use of a trie to hardcode these sequences, the implications of including timestamps for sequences with side effects, and the way stdout can be used for syscall communication.
+In the PromiseGrid framework, syscalls (system calls) are represented as sequences of bytes that denote specific operations or requests. The kernel processes these sequences using a trie-based structure to optimize and manage their execution. This document explores the concept of treating syscalls as sequence completions, the use of a trie to hardcode these sequences, the implications of including timestamps for sequences with side effects, and employing stdout for syscall communication.
 
 ## Syscalls as Byte Sequences
 
 ### Conceptual Model
 
-Each syscall can be represented as a unique sequence of bytes. These sequences act like signatures, allowing the kernel to recognize and process them correspondingly. For example:
+Each syscall is represented as a unique sequence of bytes. These sequences act like signatures, allowing the kernel to recognize and process them accordingly. For example:
 - `file_read` could be encoded as a specific byte sequence that initiates a file read operation.
-- `file_write` might include additional bytes representing the data to be written, including a timestamp to handle versioning and synchronization.
+- `file_write` includes additional bytes representing the data to be written, with a timestamp for versioning and synchronization.
 
 ### Hardcoding in a Trie
 
-The kernel can hardcode these byte sequences in an embedded trie. This trie acts as the root structure where all known syscall sequences are stored, allowing efficient lookup and matching of incoming syscall requests.
+The kernel hardcodes these byte sequences in an embedded trie, which acts as the root structure where all known syscall sequences are stored. This enables efficient lookup and matching of incoming syscall requests.
 
-- **Trie Structure**: Each node in the trie represents a byte or a sequence of bytes, creating a path from the root to the leaf nodes which correspond to complete syscalls.
+The kernel might handle these hardcoded byte sequences itself, or it might delegate the handling to non-sandboxed modules.
+
+- **Trie Structure**: Each node in the trie represents a byte or a sequence of bytes, creating a path from the root to the leaf nodes, which correspond to complete syscalls.
 
 ```
 Trie example:
@@ -29,21 +31,17 @@ Trie example:
     data...
 ```
 
-## Sequences with Side Effects
-
-Syscalls that have side effects, such as `file_write`, require special handling to ensure consistency and reliability.
-
 ### Including Timestamps
 
-Including timestamps in the request message sequence allows the kernel to handle synchronization and versioning effectively. For example:
+Incorporating timestamps in the request message sequence allows the kernel to handle synchronization and versioning effectively. For example:
 - `file_write` request: `[timestamp][byte sequence for write][data]`
-- By incorporating the timestamp, the kernel can ensure that writes are applied in the correct order, preventing race conditions and conflicts.
+- By including a timestamp, the kernel ensures that writes are applied in the correct order, preventing race conditions and conflicts.
 
 ## Using stdout for Syscall Communication
 
 ### Mechanism
 
-In PromiseGrid, modules can send syscall requests via stdout, similar to the message-passing mechanism in Mach. Each sent message includes:
+In PromiseGrid, modules send syscall requests via stdout, similar to the message-passing mechanism in Mach. Each message includes:
 - **Byte Sequence**: Represents the syscall.
 - **Port**: Indicates where the module expects to receive the response.
 
@@ -65,7 +63,7 @@ The embedded trie can be the root structure where all other tries are mounted, c
 
 ### Treating stdout Messages as Tries
 
-Stdout messages can be treated as rooted in the syscall trie, enabling the kernel to efficiently match and route messages based on their byte sequences.
+Stdout messages can be treated as part of the syscall trie, enabling the kernel to efficiently match and route messages based on their byte sequences.
 
 1. **Incoming Message**:
    - The kernel receives a message on stdout.
@@ -77,7 +75,7 @@ Stdout messages can be treated as rooted in the syscall trie, enabling the kerne
 
 ### Handling Multiple Tries
 
-The kernel can manage multiple tries, recursively traversing them until a match is found. Each trie can correspond to different contexts or modules, ensuring scalability and modularity.
+The kernel can manage multiple tries, recursively traversing them until a match is found. Each trie corresponds to different contexts or modules, ensuring scalability and modularity.
 
 ## Examples
 
@@ -116,7 +114,12 @@ Trie:
 
 ## Conclusion
 
-By treating syscalls as sequences of bytes and utilizing a trie-based structure for efficient lookup, the PromiseGrid framework can handle syscalls dynamically and effectively. Including timestamps for operations with side effects ensures consistency, while using stdout for communication allows for a streamlined message-passing mechanism. This approach enhances modularity, scalability, and reliability in syscall processing within PromiseGrid.
+In PromiseGrid, treating syscalls as byte sequences and utilizing a trie-based structure for efficient lookup provides a dynamic and effective way to handle syscalls. Including timestamps for operations with side effects ensures consistency, while using stdout for communication enables a streamlined message-passing mechanism. This approach enhances modularity, scalability, and reliability in syscall processing within the PromiseGrid framework.
 
+### Open Questions
+
+1. **How can we further optimize trie traversal for high-throughput environments?**
+2. **What additional security measures can be introduced to protect against tampering or replay attacks in syscall sequences?**
+3. **How can we ensure compatibility between different versions of modules that may define syscalls differently?**
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/324-syscalls-sequences.md

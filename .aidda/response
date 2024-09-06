@@ -1,95 +1,231 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/003-design.md
+Here are the merged files:
+
+File: /home/stevegt/lab/grid-cli/v2/doc/221-graph.md
 ```
-## Cache and Module Handling in the PromiseGrid Kernel
+# Sequence Matching Graph for PromiseGrid
 
-### Introduction
+## Overview
 
-In the PromiseGrid Kernel, caching and module handling are central to optimizing and managing the execution and storage of data. This document discusses the strategies and implementation details of these mechanisms, highlighting their alignment with decentralized governance and microkernel architecture principles.
+The sequence-matching graph in PromiseGrid is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching and completion.
 
-### Cache Structures
+## Node Composition
 
-1. **Directory Tree Structure**:
-    - The cache **SHOULD BE** a directory tree rather than an in-memory map. This approach ensures persistent storage and efficient management of large datasets.
-    - Cache keys **MUST** use filesystem separators (`/`) between each key component, and arguments **MUST** be URL-encoded when building the cache key to handle special characters safely.
+Each node in the sequence-matching graph contains the following components:
 
-2. **Multiple Caches**:
-    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-    - The kernel **SHOULD** load the built-in cache from embedded resources using Go's `embed` feature.
-    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
+1. **Label**:
+    - A string representing the segment of the sequence at this node.
+2. **Occurrences**:
+    - A list of positions in the reference sequences where this segment occurs.
+3. **Children**:
+    - A map from sequence characters to child nodes, representing the continuation of the sequence.
 
-### Treating Modules as Caches
+```go
+type Node struct {
+    Label      string
+    Occurrences []int
+    Children   map[rune]*Node
+}
+```
 
-1. **Role of Modules**:
-    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
+## Edge Composition
 
-2. **Unified Interface**:
-    - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as hashed function calls. The caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
+Each edge in the sequence-matching graph connects to a child node and represents the next segment in the sequence.
 
-### Acceptance and Promises
+1. **Character**:
+    - The character from the parent node's label to this edge.
+2. **ChildNode**:
+    - Reference to the child node.
 
-1. **Acceptance Criteria**:
-    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments into a single function, `Accept()`.
-    - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
+```go
+type Edge struct {
+    Character  rune
+    ChildNode *Node
+}
+```
 
-2. **Promises as Acceptance**:
-    - The `Accept` function returns a promise message that includes whether the module accepts the request and any relevant metadata. If `HandleMessage` fails, it is considered a broken promise.
+## Example Structure
 
-3. **Ant Routing Mechanism**:
-    - The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing. In the future, similar calls follow the same path to the same module.
-    - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
+Consider a simplified example with "ACGT" and "AGT" sequences:
 
-### Integration with Church, Turing, and Chomsky's Concept of "Accept"
+```plaintext
+       (root)
+       /   \
+      A     A
+     /       \
+    C         G
+     \         \
+      G         T
+       \
+        T
+```
 
-1. **Computational Theory**:
-    - The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory and languages, where an automaton or machine accepts an input if it reaches an accepting state.
-    - In PromiseGrid, modules act as recognizers for specific tasks, based on the promise hash, module hash, and arguments.
+## Input Sequence Matching
 
-2. **Promises All the Way Down**:
-    - The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
-    - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
+To match an input sequence to stored sequences in a sequence-matching graph, follow these steps:
 
-### Kernel's Dynamic Syscall Tree
+1. **Traversal**: Starting from the root, traverse through the graph using the characters of the input sequence.
+2. **Edge Matching**: At each node, follow the edge that matches the next character of the input sequence.
+3. **Match Determination**: If a suitable edge or child node cannot be found at any point, the matching process terminates without a match.
 
-1. **Syscall Table and Acceptance History**:
-    - The kernel **SHOULD** use a dynamic syscall table to store positive and negative acceptance history for all modules.
-    - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
-    - The kernel **MUST** route messages to the module whose syscall table key matches the most leading parameters components, optimizing routing and reducing redundant checks.
+## Graph Traversal Mechanism
 
-### Combining Accept and HandleMessage Functions
+Graph traversal utilizes either a recursive or an iterative technique to explore nodes and edges.
 
-#### Pros and Cons of Separate `Accept()` and `HandleMessage()` Functions versus a Single Function
+### Recursive Method
 
-##### Combined Function:
+```go
+func MatchSequence(node *Node, sequence string, index int) bool {
+    if index == len(sequence) {
+        return true
+    }
+    char := rune(sequence[index])
+    if child, ok := node.Children[char]; ok {
+        return MatchSequence(child, sequence, index+1)
+    }
+    return false
+}
+```
 
-1. **Simplicity**: Combines decision-making and handling into a single function.
-2. **Consistency**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency and reducing logic duplication.
-3. **Efficiency**: Eliminates redundant checks by combining acceptance and handling.
+### Iterative Method
 
-##### Separate Functions:
+```go
+func MatchSequenceIterative(root *Node, sequence string) bool {
+    currentNode := root
+    for _, char := range sequence {
+        if child, ok := currentNode.Children[char]; ok {
+            currentNode = child
+        } else {
+            return false
+        }
+    }
+    return true
+}
+```
 
-1. **Clarity**: Maintains clear separation between decision-making and handling logic.
-2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
-3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
+## Examples of Matching
 
-### Acceptance as Promise
+1. **Example 1: Matching "ACGT"**
+    - Starting from the root, traverse edges labeled 'A', 'C', 'G', and 'T'.
+    - Successful match if all edges are followed correctly.
 
-Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
+2. **Example 2: Matching "AGT"**
+    - Starting from the root, traverse edges labeled 'A', 'G', and 'T'.
+    - Successful match if all edges are followed correctly.
 
-1. **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the message.
-2. **Handling as Promise Fulfillment**: `HandleMessage` attempts to fulfill this promise. If it fails (breaking the promise), it is logged and handled appropriately.
+## Advanced Questions Answered
 
-### Proposed Dynamic Syscall Table and Ant Routing
+### Sequence-Matching Graph and 'Children' Field
 
-Implementing a dynamic syscall table with ant routing involves:
+In a sequence-matching graph, does the 'Children' field of a node contain the next node in the sequence? Or does it contain both previous and next nodes?
 
-1. **Hierarchical Syscall Tree**: Each node in the tree can have multiple children representing different components of the parameters (`parms`).
-2. **Caching Successful Paths**: Cache successful paths to optimize future routing based on leading parameter sequences.
-3. **Populating During Operation**: The syscall tree starts empty and is populated during operation as modules accept and handle messages.
+- The 'Children' field of a node contains only the next node(s) in the sequence. It maps sequence characters to their corresponding child nodes, representing the continuation of the sequence.
 
-### Examples of Unified and Separate Function Approaches
+### Genome Storage in Graph
 
-**Combined Function:
+Are entire genomes stored in the graph? Or are only the sequences of interest stored? If the latter, how are the sequences of interest identified? Are they identified by their position in the genome? Or are they identified by some other means?
+
+- Only the sequences of interest are stored in the graph. These sequences are identified based on specific criteria such as the presence of particular motifs or functional relevance. The identification can be based on their positions in the genome or other biological markers.
+
+### Adding a New Sequence
+
+Show an example of how a new sequence is added to the graph.
+
+```go
+func AddSequence(root *Node, sequence string) {
+    currentNode := root
+    for _, char := range sequence {
+        if _, ok := currentNode.Children[char]; !ok {
+            newNode := &Node{
+                Label:      string(char),
+                Occurrences: []int{},
+                Children:   make(map[rune]*Node),
+            }
+            currentNode.Children[char] = newNode
+        }
+        currentNode = currentNode.Children[char]
+    }
+    // Optionally add occurrence position if needed
+    // currentNode.Occurrences = append(currentNode.Occurrences, position)
+}
+
+// Example usage:
+root := &Node{Children: make(map[rune]*Node)}
+AddSequence(root, "AGC")
+```
+
+### Conclusion
+
+The sequence-matching graph structure, with detailed node and edge compositions, a traversal mechanism, and illustrative examples, forms the core of efficient sequence matching. This approach supports both recursive and iterative traversal techniques, ensuring flexibility and clarity in matching input sequences to stored reference sequences. This documentation integrates theoretical foundations with practical implementation methods to provide a cohesive understanding of sequence-matching graphs in the PromiseGrid system.
+
+## Optimizations and Further Research
+
+### Sequence Matching with Unknown Leading Characters
+
+To match a sequence fragment with unknown leading characters, the system can:
+1. **Segment the Fragment**: Divide the input sequence fragment into smaller overlapping segments.
+2. **Search for Segments**: Locate nodes corresponding to the segments within the graph.
+3. **Extend Matches**: Extend partial matches by traversing adjacent nodes in the graph till a complete match is found.
+
+### Practical Example with Unknown Leading Characters
+
+Consider an input fragment "CGTA":
+1. **Segment**: Break down "CGTA" into "CGT", "GTA".
+2. **Search**: Find nodes corresponding to "CGT" and "GTA" in the graph.
+3. **Extend**: Extend matches by exploring neighboring nodes to form the complete sequence.
+
+In this way, PromiseGrid effectively handles sequence fragments with unknown leading characters, ensuring robust sequence matching capabilities.
+
+## Capability Tokens and Prior Art
+
+### Self-Contained Capability Tokens
+
+A capability token can be crafted to be self-contained and self-describing by including both the permissions granted and the identity of the party to whom the permission is granted. This design ensures that the token itself carries all the information needed to understand the scope and target of the permissions without needing to reference external data.
+
+### How It Works
+
+1. **Structure**: The structure of such a self-contained capability token typically includes fields for:
+   - **Identity of the Holder**: Information about the entity that holds the token.
+   - **Permissions**: Details about what actions the holder is permitted to perform.
+   - **Issuer’s Identity**: Information about the entity that issued the token.
+   - **Signature**: Cryptographic signature from the issuer to ensure integrity and authenticity.
+
+2. **Encoding**: The token can be encoded in a standardized format such as JSON Web Tokens (JWT) which supports custom claims to include the necessary fields.
+
+3. **Verification**: When the token is presented, the system:
+   - Verifies the cryptographic signature to ensure the token was indeed issued by the trusted party.
+   - Checks the permissions described within the token.
+   - Confirms the identity of the holder matches the intended recipient.
+
+Several systems and frameworks implement self-contained capability tokens:
+
+1. **Macaroons**: These are flexible authorization credentials that support delegation and attenuation. A macaroon is a bearer token that can encapsulate permissions and is augmented with caveats, which are conditions that must be satisfied for the macaroon to be considered valid.
+2. **JSON Web Tokens (JWT)**: JWTs are widely used in web applications to assert claims between parties. They can include custom claims to specify permissions and the intended audience. A JWT can be signed to ensure authenticity and integrity.
+3. **Caveats in Capability-Based Systems**: Traditional capability-based security systems sometimes support a form of caveats or restrictions within the tokens themselves to specify the scope of permissions and the authorized user.
+
+### Recommendations
+
+1. **Design Tokens Carefully**: Ensure that the structure of the tokens balances comprehensiveness with simplicity. Include necessary fields for permissions, identity, and signatures.
+   
+2. **Use Standard Formats**: Leverage existing standards like JWTs for encoding tokens to benefit from existing libraries and tools for creation, parsing, and verification.
+
+3. **Cryptographic Security**: Ensure that tokens are signed using robust cryptographic methods to prevent forgery and tampering.
+
+4. **Revocation**: Implement mechanisms to handle token revocation in case permissions need to be rescinded before the token naturally expires.
+
+### Discussion on the Leading Hash in Messages
+
+In the PromiseGrid Kernel, messages MAY start with a promise hash followed by a module hash, and then additional arguments. This structure allows receivers to filter messages based on promises they are willing to accept and route the message to the appropriate module. Here are the pros and cons of the promise hash coming first:
+
+**Pros:**
+- **Enhanced Filtering**: Placing the promise hash first allows modules and nodes to quickly filter messages based on the promises they accept.
+- **Trust and Governance**: This aligns with decentralized governance. Nodes can establish trust relationships by agreeing on specific promises they will accept.
+- **Modular Routing**: Early identification of the promise allows the kernel to route messages to the appropriate module, ensuring efficient distributed handling.
+
+### Kernel's Dynamic Handling of Accept and HandleMessage
+
+Implementing an advanced interaction model involves considering different versions of function handling of messages. There are two possible structures: combined functions or separate functions.
+
+### Combined Function:
 
 ```go
 type Module interface {
@@ -110,7 +246,7 @@ func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interfac
 }
 ```
 
-**Separate Functions:
+### Separate Functions:
 
 ```go
 type Module interface {
@@ -127,11 +263,11 @@ func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
 }
 
 func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to accept or reject based on parms
+   // Implement logic for accepting or rejecting based on parameters
 }
 
 func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic to handle the message following acceptance
+    // Implement logic for handling the message after acceptance
 }
 ```
 
@@ -139,145 +275,77 @@ func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface
 
 By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
 
-Here **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+### Importance of Including Module Hash in Messages for Deterministic Execution and Demand-Driven Deployment of New Code
 
-2. **Integration with Modules**:
-   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-   - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completions.
+Including the hash of the module to be executed in the message is crucial for achieving deterministic execution and facilitating demand-driven deployment of new code in decentralized systems. Here are key reasons why this practice is recommended:
 
-### Network Communications
+1. **Deterministic Execution**:
+   Including the module hash in the message ensures that the same piece of code is executed consistently across different nodes. This deterministic behavior is essential for maintaining consistency and correctness in distributed systems. By specifying the exact module to be run, all nodes can reliably and repeatably execute the same logic, avoiding differences in behavior due to variations in module versions or implementations.
 
-**Are network communications always done through modules, or can the kernel do some of that itself?**
+2. **Content-Addressable Code**:
+   The module hash serves as a unique identifier for the specific version of the code to be executed. This content-addressable storage mechanism ensures that the precise code is located and executed, eliminating ambiguity. Nodes can fetch the exact module specified by the hash, even if new versions or updates are available, ensuring backward compatibility and preventing unexpected changes in system behavior.
 
-Network communications in the PromiseGrid Kernel model are primarily intended to be handled by modules rather than the kernel itself. This design aligns with the microkernel architecture principles, where the kernel provides minimal core functionalities and delegates most tasks, such as network communication, to service modules. The kernel’s role includes managing module execution, handling inter-process communication (IPC), and maintaining security and resource control.
+3. **Demand-Driven Deployment**:
+   By including the module hash in the message, new code can be deployed on-demand. Nodes that do not have the required module can fetch it dynamically based on the hash, allowing for seamless updates and scaling. This demand-driven deployment model ensures that nodes always execute the latest or specified version of the module, promoting flexibility and ease of maintenance in decentralized environments.
 
-### Capability Tokens and Encoding
+4. **Security and Trust**:
+   The module hash provides a way to verify the integrity and authenticity of the code being executed. Nodes can validate the fetched module against the specified hash, ensuring that the code has not been tampered with. This practice builds trust among nodes, as they can rely on the exact code promised in the message without the risk of executing malicious or unauthorized code.
 
-Several systems and frameworks implement self-contained capability tokens:
+5. **Enabling Capabilities**:
+   Including module hashes in messages aligns with the capability-based security model. Capabilities can include specific module hashes that nodes are authorized to execute, providing fine-grained access control. This approach ensures that nodes only execute permitted code, enhancing the overall security and governance of the decentralized system.
 
-1. **Macaroons**: These are flexible authorization credentials that support delegation and attenuation. A macaroon is a bearer token that can encapsulate permissions and is augmented with caveats, which are conditions that must be satisfied for the macaroon to be considered valid.
-2. **JSON Web Tokens (JWT)**: JWTs are widely used in web applications to assert claims between parties. They can include custom claims to specify permissions and the intended audience. A JWT can be signed to ensure authenticity and integrity.
-3. **Caveats in Capability-Based Systems**: Traditional capability-based security systems sometimes support a form of caveats or restrictions within the tokens themselves to specify the scope of permissions and the authorized user.
+In summary, including the module hash in messages is essential for achieving deterministic execution, enabling content-addressable storage, facilitating demand-driven deployment of new code, ensuring security, and supporting capability-based access control. This practice aligns with the principles of decentralized systems, promoting consistency, flexibility, and trust among participating nodes.
+
+### JSON Web Tokens (JWT) 
+
+JWTs are typically encoded using Base64url, which is a URL-safe variant of Base64 encoding.
+
+#### Why Base64url?
+
+1. **URL-safe**: Base64url encoding replaces characters that are not URL-safe (such as `+`, `/`, and `=`) with URL-safe alternatives (`-`, `_`, and no padding). This ensures that the token can be safely included in a URL without requiring additional encoding.
+2. **Human-readable**: While not as compact as some other encodings (like base58), Base64url maintains a balance between human readability and URL safety.
+3. **Standardized**: The use of Base64url for JWTs is specified in the JSON Web Token (JWT) specification (RFC 7519). This standardization means that the approach is widely supported and understood, making it interoperable across different systems and libraries.
+
+#### Encoding Steps
+
+1. **Header and Payload**: The JWT consists of three parts: the header, the payload, and the signature. Each part is encoded separately using Base64url.
+2. **Concatenation**: The three parts are concatenated together with periods (`.`) as separators. This forms the final JWT string that can be included in a URL.
+
+#### Example
+
+Suppose you have the following JWT:
+```json
+{
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "1234567890",
+    "name": "John Doe",
+    "iat": 1516239022
+  },
+  "signature": "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
+The encoded JWT would look something like this:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+This encoded JWT can be safely used as a URL parameter without further encoding.
+
+Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
 
 ### Open Questions
 
-- How can we best handle broken promises effectively?
-- What are the most efficient methods to determine the best route when multiple handlers are available?
-- How should we reconcile byte sequence completion with explicit registration and hash-based routing?
+1. **Handling Broken Promises**: What strategies can we implement to handle broken promises effectively? How can we ensure that nodes that consistently break promises have their reputation impacted in a measurable way?
+2. **Determining Best Route**: When multiple handlers are available, how can we determine the most efficient or reliable route for handling a message? Should we prioritize handlers based on historical performance, reputation, or other factors?
+3. **Integration with Other Systems**: How can we better integrate JSON Web Tokens (JWT) and similar systems with PromiseGrid’s architecture? What role should JWT play in managing capabilities within the grid?
+4. **Security Measures**: Given the reliance on module hashes for deterministic execution, what additional security measures can enhance the integrity and trustworthiness of the system? How can we mitigate potential risks associated with hash collisions and tampering? 
 
-## Hybrid DHT and Open Market Design
-
-### Introduction
-
-This document outlines a design concept that combines aspects of a Distributed Hash Table (DHT) with an open market system. This hybrid design aims to leverage the decentralized storage and lookup efficiency of DHTs while incorporating the dynamic and competitive aspects of an open market. The goal is to create a more versatile and resilient data storage and retrieval system.
-
-### Core Components
-
-1. **DHT Backbone**
-   - Distributed Hash Table (DHT) forms the primary underlying structure for decentralized storage and data retrieval.
-   - Each node in the DHT is responsible for a portion of the key space.
-   - Nodes store key-value pairs and use consistent hashing to manage the distribution of data.
-
-2. **Open Market Layer**
-   - An open market layer functions atop the DHT, allowing nodes to trade storage and retrieval services.
-   - Nodes can offer their storage capacity and bandwidth in exchange for compensation.
-   - Market dynamics, such as supply, demand, pricing, and competition, determine the cost and allocation of resources.
-
-### Design Overview
-
-#### DHT Backbone
-
-##### Structure
-
-- **Nodes and Keys:** Every node in the system holds a unique identifier. Keys are distributed across the network based on consistent hashing.
-- **Routing:** Nodes maintain routing tables with information about a subset of other nodes, allowing efficient key lookups with a logarithmic number of hops.
-- **Replication:** Data is replicated across multiple nodes to ensure availability and fault tolerance. Replication factors can be influenced by market supply and demand dynamics; a node can decide on its own to keep and offer a copy if it sees a price increase.
-
-#### Pros and Cons of Including the DHT Layer
-
-**Pros:**
-- **Decentralization:** The DHT layer ensures that data storage and retrieval are distributed, reducing the reliance on central servers.
-- **Scalability:** Due to its logarithmic complexity in lookups, the DHT structure can scale well with the increase in the number of nodes.
-- **Fault Tolerance:** Replication across multiple nodes increases data availability and resilience against node failures.
-
-**Cons:**
-- **Complexity:** Implementing a hybrid model that combines DHT and open market dynamics can be complex and might require sophisticated mechanisms for balancing the two.
-- **Resource Intensity:** Maintaining a DHT involves overhead in terms of maintaining routing tables and managing data replication, which can be resource-intensive.
-- **Security Risks:** While decentralized, a DHT can still be vulnerable to certain types of attacks like sybil attacks and requires robust security mechanisms.
-
-#### Open Market Layer
-
-##### Market Mechanics
-
-- **Storage Offers:** Nodes can advertise their available storage capacity. Each offer includes terms such as price, duration, and conditions.
-- **Bidding:** Nodes in need of storage can place bids, proposing terms for storing their data. The market matches offers and bids based on compatibility and preferences.
-- **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.
-
-##### Transactions
-
-- **Promises and Capabilities:** Burgess-style promises and security-token-style capabilities replace traditional contracts, rewards, and penalties.
-- **Broken Promise Accounting:** Enforcement mechanisms are replaced with broken promise accounting, which impacts a node's reputation within the system.
-
-### Data Storage and Retrieval
-
-#### Storage Process
-
-1. **Identification:** The data to be stored is assigned a unique key using a cryptographic hash function.
-2. **Market Interaction:** The node seeking storage interacts with the market layer, finding a suitable storage offer.
-3. **Promise Formation:** A promise is formed and agreed upon by both parties, detailing the storage terms.
-4. **Data Chunking:** The data is divided into chunks using Rabin polynomials (if necessary) and distributed to the selected storage nodes according to the promise.
-5. **Replication:** The data is replicated across multiple nodes to ensure reliability as per the agreed replication factor.
-
-#### Retrieval Process
-
-1. **Identification:** The key associated with the data is used to locate the data across the DHT.
-2. **Market Interaction:** The node seeking to retrieve the data interacts with the market to find retrieval offers.
-3. **Promise Formation:** A retrieval promise is established, detailing the retrieval terms.
-4. **Data Transfer:** The data is retrieved from the storage nodes and transferred to the requesting node according to the promise conditions.
-
-#### Node Advertising for Blob Storage
-
-Even though the DHT handles primary routing and replication, a node that chooses to store a blob copy despite DHT routing can advertise this copy through the open market layer. The steps to do this include:
-
-1. **Voluntary Storage:** The node voluntarily stores a blob copy even when not selected by the DHT's usual replication mechanism, typically motivated by a price hike or anticipated demand.
-2. **Market Advertisement:** The node advertises its storage offer on the open market, specifying the terms, including the price and retrieval conditions.
-3. **Availability Announcement:** The node updates its routing information and market listings to announce the availability of the stored blob, ensuring that other nodes in the network can discover and bid for retrieval services if needed.
-
-### Market Dynamics
-
-#### Incentive Structures
-
-- **Quality of Service (QoS):** Nodes are incentivized to provide high-quality storage and retrieval services, which are reflected in their reputation. Higher reliability and faster access times may attract higher prices.
-- **Reputation Impact:** Nodes failing to meet their promises face a degradation in their reputation, which discourages poor performance and broken promises.
-
-#### Competitive Environment
-
-- **Differentiation:** Nodes can differentiate themselves based on their QoS offerings, such as uptime, speed, and reliability.
-- **Reputation Systems:** A robust reputation system tracks the performance and reliability of nodes, influencing their attractiveness and opportunities in the market.
-
-### Security Considerations
-
-#### Data Integrity and Privacy
-
-- **Cryptographic Hashing:** Each data chunk is signed with a cryptographic hash to ensure integrity and detect tampering.
-- **Encryption:** Data can be encrypted before storage to maintain privacy, with only authorized nodes having access to decryption keys.
-
-#### Trust and Verification
-
-- **Decentralized Trust:** The hybrid system minimizes the reliance on central authorities, relying instead on cryptographic promises and reputation systems to foster trust.
-- **Auditability:** All transactions, promises, and broken promises are logged and auditable to ensure transparency and accountability.
-
-### Transaction Logs
-
-#### Storage of Transaction Logs
-
-- **Hashed Blobs:** Transaction logs are themselves stored in the system as hashed blobs, just like any other data. This ensures their integrity, verifiability, and availability throughout the network.
-
-### Conclusion
-
-The hybrid DHT and open market design combines the decentralized robustness of DHT structures with the dynamic and competitive elements of an open market. By integrating these two paradigms, the system aims to enhance flexibility, scalability, and resilience in data storage and retrieval.
-
-Future work will focus on refining the economic models, improving security mechanisms, and optimizing the performance of both the DHT backbone and the open market layer.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/003-design.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/221-graph.md
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/221-graph.md

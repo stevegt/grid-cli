@@ -4,8 +4,8 @@ Sysmsg: You are an expert technical writer and software architect.
     Merge the input documents into the output document.
 In: 
     v2/doc/150-capability-tokens.md
-    v2/doc/221-graph.md
-Out: v2/doc/221-graph.md
+    v2/doc/README.md
+Out: v2/doc/README.md
 
-Merge 150-capability-tokens.md into 221-graph.md.
+Merge 150-capability-tokens.md into README.md.
 

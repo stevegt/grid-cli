@@ -1,4 +1,3 @@
-
 File: /home/stevegt/lab/grid-cli/v2/doc/420-routing.md
 ```
 # PromiseGrid Routing
@@ -154,8 +153,10 @@ To illustrate these concepts, let’s consider a concrete example involving Alic
 
 1. **Accepting 'ABC' Prefix**: Both Alice and Bob tell Robin that they will accept byte sequence prefix 'ABC'.
 2. **Storing Advertisements**: Robin stores Alice's and Bob's advertisements indicating their acceptance of 'ABC' prefix in her routing table.
-3. **Message Reception**: Robin receives a message starting with 'ABC' and needs to decide whether to forward it to Alice or Bob.
-4. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, so she forwards the message to Alice.
+3. **Message Reception**: Robin receives a message starting with 'ABC' and searches the byte sequence prefix trie for handlers.
+4. **Multiple Handlers Found**: Robin finds two handlers (Alice and Bob) that both match the message prefix.
+5. **Consulting Exchange Rates**: Robin consults the exchange rate table she maintains and sees that Alice's currency is more valuable than Bob's, using her own currency as the common denominator.
+6. **Routing the Message**: Robin forwards the message to Alice.
 
 ### This Example in Code
 
@@ -245,4 +246,3 @@ A consideration as we implement these routing strategies is the potential for ho
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/420-routing.md
-```

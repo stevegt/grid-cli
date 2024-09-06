@@ -6,15 +6,12 @@ In:
     v2/doc/420-routing.md
 .revise v2/doc/420-routing.md
 
-improve the routing algorithm as follows:
-- Robin receives a message and searches the byte sequence prefix trie
-  for handlers
-- Robin finds two handlers (Alice and Bob) that both match the message prefix; she
-  needs to decide which of the two to forward the message to
-- Robin compares the exchange rate of her own currency against that of
-  Alice and Bob, sees that Alice's is higher-valued than Bob's (using
-  Robin's currency as the common denominator)
-- Robin routes the message to Alice
+- "there can be only one":  any given byte sequence can only have one handler
+- similar to ethereum, the kernel charges handlers "gas" for message bytes
+  forwarded, CPU time, storage, RAM, etc. including the time is takes
+  to recurse through the trie to match a message
+- the charges are in the kernel's own currency, creating a demand for
+  that currency
 
 .stop
 

@@ -1,5 +1,5 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
-```
+```markdown
 # TODO List for Implementing PromiseGrid Kernel
 
 ## General Improvements
@@ -137,5 +137,4 @@ To reduce redundancy and potential conflicts, consider merging the following doc
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
+

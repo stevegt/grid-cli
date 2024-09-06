@@ -4,7 +4,11 @@ Sysmsg: You are an expert technical writer and software architect.
     Please make the requested changes to the documentation.
 In: 
     v2/doc/
-.revise v2/doc/000-TODO.md
+.revise v2/doc/001-design.md
+
+Summarize all other files
+
+.stop
 
 - find the two files which most disagree with each other 
 - recommend changes that will remove the disagreement

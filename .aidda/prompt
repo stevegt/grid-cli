@@ -6,16 +6,10 @@ Sysmsg: You are an expert technical writer and software architect.
     input documents, removing or correcting any conflicts.  The output
     document should be a coherent whole.  Do not change the central
     focus of the output document.
-In: v2/doc/
-Out: v2/doc/README.md
+In: 
+    v2/doc/000-TODO.md
+    v2/doc/999-TODO.md
+Out:
+    v2/doc/000-TODO.md
 
-Revise README.md; you must make changes.  Do not change the focus of
-README.md.  Reconcile or remove any information in README.md that
-conflicts with the input documents.  The output document should be a
-coherent whole.
-
-If the input or output documents contain any open questions, answer
-them in the output document.  
-
-Add new open questions to the output document.
-
+Merge v2/doc/999-TODO.md into v2/doc/000-TODO.md.

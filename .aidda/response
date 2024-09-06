@@ -1,6 +1,6 @@
-<blank line>
+```
 File: /home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
-```markdown
+```
 # PromiseGrid Trie Node Structure
 
 ## Introduction
@@ -42,6 +42,7 @@ type TrieNode struct {
 4. **MultipleHandlers**:
     - Stores a list of handler functions if the node is associated with multiple handlers.
     - Enables the node to invoke various handlers based on specific conditions or contexts.
+    - Issue Addressed: This approach must ensure security and data integrity using robust cryptographic methods, consistent with the goals.
 
 5. **RawValue**:
     - Stores the value directly within the node if it is not a handler.
@@ -54,8 +55,9 @@ type TrieNode struct {
 
 7. **Reputation**:
     - Stores reputation statistics for each handler in the case of multiple handlers.
-    - Keeps track of promises filled and broken, as well as the value of each promise (which might be denominated in a personal currency or points issued by the requestor).
+    - Keeps track of promises filled and broken and the value of each promise (which might be denominated in a personal currency or points issued by the requestor).
     - Used for making decisions about which handler(s) to route a message to or which handler's results to use.
+    - Issue Addressed: Reputation can enhance transparency and auditability while ensuring resilience and fault tolerance by selecting reliable handlers.
 
 ### Reputation Structure
 
@@ -158,3 +160,4 @@ fmt.Println(result)  // Output: Dynamic config for /config/somepath
 The PromiseGrid Trie Node structure is designed to efficiently handle both static and dynamic values within a decentralized system. By incorporating flags and handler functions, including support for multiple handlers, the trie nodes offer a flexible and powerful mechanism for promise management, ensuring quick lookups, efficient storage, and dynamic value generation. Understanding the pros and cons of multiple handlers per node, along with the importance of reputation accounting, can help in designing a robust and adaptable system.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
+```

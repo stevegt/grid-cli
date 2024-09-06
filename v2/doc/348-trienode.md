@@ -51,7 +51,7 @@ type TrieNode struct {
 
 7. **Reputation**:
     - Stores reputation statistics for each handler in the case of multiple handlers.
-    - Keeps track of promises filled and broken, as well as the value of each promise (which might be denominated in a personal currency or points issued by the requestor).
+    - Keeps track of promises filled and broken and the value of each promise (which might be denominated in a personal currency or points issued by the requestor).
     - Used for making decisions about which handler(s) to route a message to or which handler's results to use.
 
 ### Reputation Structure

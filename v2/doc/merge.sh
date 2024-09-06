@@ -28,8 +28,6 @@ Add new open questions to the output document if they are not already
 present.
 " > ../../.aidda/prompt
 
-I
-
 grok aidda commit prompt
 
 padsp signalgen -t 100m sin 500

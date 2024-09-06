@@ -1,396 +1,140 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/013-cache.md
+
+File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
 ```markdown
-# Advanced Discussions on Caching, Promises, and Governance in PromiseGrid
+# TODO List for Implementing PromiseGrid Kernel
+
+## General Improvements
+- Improve documentation clarity and consistency.
+- Resolve internal inconsistencies and discuss any remaining conflicts.
+- Add logical statements and recommendations in technical sections.
+- Include open-ended questions to provoke further discussion and exploration.
+
+## Documentation Refinements
+- Identify and resolve any conflicting information within the documentation.
+- Ensure all statements are logical and support the overall system architecture.
+- Add recommendations and best practices based on the current design.
+- List documents that are most similar and could be merged.
+
+## Detailed Task List
+- Review the documentation for:
+  - Logical flow and coherence.
+  - Consistency in terminology usage.
+- Resolve any discrepancies or conflicting ideas.
+- Detailed descriptions for some of the strategies and methods mentioned:
+  - Implement example-based explanations wherever possible.
+  - Provide case studies and visual aids to enhance understanding.
+
+## Cache Design and Lookup
+- Refactor the cache design to use byte sequence completion for key management.
+  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
+  - Document the byte sequence management strategy.
+- Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
+
+## Dynamic Acceptance History and Syscall Table
+- Revamp the acceptance history mechanism to track byte sequence completions.
+  - Store positive and negative sequence completions effectively.
+  - Populate acceptance and rejection history dynamically during kernel operations.
+  - Implement efficient lookup facilities to match message sequences with handlers based on historical completion success rates.
+
+## Implement Ant Routing Mechanism
+- Integrate byte sequence completion with the ant routing mechanism.
+  - Adapt the ant routing algorithm to cache successful byte sequence paths.
+  - Develop a strategy to dynamically adjust routing based on promise fulfillment statistics.
+
+## Promise-Based Design
+- Augment cache and syscall tree design to fully integrate with byte sequence completion as a core mechanism:
+  - Rework promise handling to support dynamic sequence completion.
+  - Investigate and implement strategies for embedding promise validation within byte sequence matching.
+
+## Polymorphic Handling and Error Detection
+- Develop error handling routines specific to byte sequence completion:
+  - Enhance the dispatching mechanism to manage failures in byte sequence processing gracefully.
+  - Implement retries and alternative handler routing based on sequence fulfillment failures.
+
+## File Storage and Byte Sequences
+- Migrate storage mechanisms to manage byte sequences efficiently:
+  - Replace traditional file key management with content-addressable byte sequences.
+  - Ensure compatibility with Origin Private File System (OPFS) and abstract filesystem integration via libraries like `afero`.
+
+## Usability and Documentation
+- Improve the documentation on managing and converting sequences:
+  - Create clear usage examples and guidelines for byte sequence management.
+  - Provide concise guides for converting from legacy filesystem-based cache management to byte sequence completion.
+
+## Review and Refactor
+- Conduct a comprehensive review to identify legacy points where `/`-separated cache key handling still exists:
+  - Complete refactoring of these sections to support byte sequence completion.
+  - Validate the correctness and performance of new implementations in various scenarios.
+
+## Security and Verification
+- Assess security implications of new byte sequence completion strategies:
+  - Ensure that new designs for caching and syscall mechanisms do not introduce vulnerabilities.
+  - Enhance the validation and verification processes to assert the integrity of sequence handling mechanisms.
+
+## The documents most in disagreement or conflict with each other appear to be:
+
+1. **001-design.md vs. 002-design.md**
+   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches:
+     - **001-design.md** emphasizes a more detailed and structured approach to the core concepts, including the functionality of non-sandboxed modules, capability-as-promise model, and acceptance history.
+     - **002-design.md** provides a broader overview of the same concepts with a slightly different emphasis on explicit module registration and hash-based routing without as much detail on the execution of these concepts.
+     - **Potential Conflicts**:
+       - **Module Registration**: Differences in the preference for explicit module registration (001-design.md) vs. hash-based routing (002-design.md).
+       - **Cache and Promise Handling**: Specific implementation details on how caches handle promises and dynamic adaptation may differ between the documents.
+       - **Role of Non-Sandboxed Modules**: 001-design.md provides more specific analogies compared to 002-design.md's generalized approach.
+
+2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
+   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling:
+     - **Cache Indexing**: Different approaches to indexing and managing the cache.
+     - **Byte Sequence Management**: Handling byte sequences in cache operations may be inconsistently addressed.
+
+3. **190-side-effects.md vs. 201-computable.md**
+   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied:
+     - **Theoretical Discussions**: Possible divergence in how side effects are integrated with the overall model and the applicability of computability concepts to byte sequence completion.
+
+4. **207-vn-guest.md vs. 202-von-neumann.md**
+   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies:
+     - **Integration Methods**: Potentially different approaches for integrating traditional systems into PromiseGrid.
+     - **Compatibility Issues**: Differing views on handling compatibility and adapting conventional systems to PromiseGrid’s architecture.
+
+### Steps for Resolving Conflicts
+
+1. **Harmonize Design Principles**:
+   - Review and align the overarching design principles across 001-design.md and 002-design.md to ensure a cohesive vision.
+
+2. **Consolidate Cache Management Methods**:
+   - Merge the cache management strategies from 003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md into a unified guide. Address any conflicting methods and settle on a standardized approach.
 
-## Caching Strategy in PromiseGrid Kernel
+3. **Align Theoretical Concepts**:
+   - Reconcile the theoretical discussions in 190-side-effects.md and 201-computable.md to ensure a consistent interpretation of side effects and computability within the PromiseGrid framework.
 
-### Key Points from ADVICE.md
+4. **Unified Approach for Hosting Systems**:
+   - Combine insights from 207-vn-guest.md and 202-von-neumann.md to provide a clear, consistent methodology for hosting conventional systems on PromiseGrid.
 
-   * There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+### Merging Similar Documents
 
-### Integration with Modules:
+To reduce redundancy and potential conflicts, consider merging the following documents:
 
-   * The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   * The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-   * The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the afero library to abstract filesystem interactions.
+1. **001-design.md and 002-design.md** into a single comprehensive design guide.
+2. **003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md** into a unified cache and module handling guide.
+3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
+4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
 
-### Cache Structures
+## List of Documents Discussing Hash-Based Routing
 
-#### Multiple Caches:
+1. **Design Principles and Core Concepts in PromiseGrid (001-design.md)**
+   - Discusses the core design principles, including the functionality and interaction between non-sandboxed modules, explicit module registration, and hash-based routing.
 
+2. **PromiseGrid Design Overview (002-design.md)**
+   - Emphasizes broad design aspects including the preference for hash-based routing mechanisms without delving into intricate details.
 
-- There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-- The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
+3. **Cache and Module Handling Guidelines (003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, 014-cache.md)**
+   - Various documents exploring different methods of cache management, including hash-based routing approaches.
 
-### Unified Interface:
+4. **Theoretical Aspects of PromiseGrid (190-side-effects.md, 201-computable.md)**
+   - Delving into the theoretical frameworks, including discussion on how hash-based routing integrates with side effects and computability concepts.
 
-- From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completion operations.  The caller sends a message consisting of a byte sequence, and receives a response message containing the remainder of the sequence.
-
-### Cache and Modules
-
-The kernel MUST treat modules as caches. In the event of a cache miss, the kernel MUST consult one or more modules to retrieve the requested value.
-
-1. **Cache Keys**:
-    - cache keys are byte sequences. the cache is a trie.
-
-2. **Consulting Modules as Caches**:
-    - Modules act as part of the cache mechanism. On a cache miss, the kernel consults one or more modules to retrieve the requested value.
-    - The cache lookup function takes multiple arguments: `promiseHash`, `moduleHash`, and zero or more arguments from the caller’s message.
-    - If a value isn't in the cache, it's retrieved from the module(s), added to the cache, and returned.
-
-## Sequence Matching
-
-### Example Implementations
-
-Combining decision-making and handling into a single function:
-
-
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic for processing message, including acceptance and handling
-    // Return a promise message with acceptance and handling results or errors
-}
-```
-
-Using distinct functions for acceptance and handling:
-
-
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic for accepting or rejecting based on parameters
-}
-
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic for handling the message after acceptance
-}
-```
-
-### Conclusion
-
-By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
-
-
-   * The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   * The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-   * From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completions.
-
-### Network Communications:
-
-Network communications in the PromiseGrid Kernel model are primarily intended to be handled by modules rather than the kernel itself. This design aligns with the microkernel architecture principles, where the kernel provides minimal core functionalities and delegates most tasks, such as network communication, to service modules. The kernel’s role includes managing module execution, handling inter-process communication (IPC), and maintaining security and resource control.
-
-## Cache and Module Handling in the PromiseGrid Kernel
-
-### Cache Structures
-
-In the context of the PromiseGrid Kernel, the cache plays a critical role in optimizing and managing the execution and storage of data. Here's a summary of the key points regarding the caching strategy:
-
-1. **Cache Structures**:
-   - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-
-2. **Integration with Modules**:
-   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-
-
-# Advanced Discussions on Caching, Promises, and Governance in PromiseGrid
-
-## Cache as Byte Sequence Completion 
-
-### Caching Strategy
-
-1. **Robust Caching**:
-   - Utilize content-addressable storage for caching to ensure unique and immutable references. Each cache key is derived from a cryptographic hash of the content.
-2. **In-Memory and Disk Caches**:
-   - Implement both in-memory and disk-based caches.
-   - Use a hierarchical approach where in-memory caches provide fast lookups and disk-based caches offer persistence.
-
-### Modules as Extensions of Cache
-
-1. **Module Interaction**:
-   - Treat modules as integral parts of the caching mechanism. In the event of a cache miss, the kernel queries appropriate modules to retrieve the required data dynamically.
-2. **Dynamic Data Handling**:
-   - Modules dynamically contribute to the cache, enabling the system to scale and manage data efficiently.
-
-### Treating Sequence Matching as Caching
-
-1. **Idea**:
-   - Sequence matching can be integrated with the caching strategy, enhancing performance and scalability.
-2. **Synchronization**:
-   - Ensure cache synchronization based on sequence matches to improve consistency and reliability.
-
-### Implementation Plan
-
-1. Develop caching mechanisms leveraging PromiseGrid’s byte sequence completion.
-2. Treat modules as part of the caching strategy to dynamically handle data.
-3. Integrate sequence matching into the cache for optimized performance.
-
-### Conclusion
-
-By integrating caching with sequence matching and leveraging modules as extensions of the cache, PromiseGrid enhances its performance, scalability, and reliability. This approach ensures that data is managed dynamically and efficiently, improving the overall system functionality.
-
-## Cache as a Sequence Matcher
-
-### Cache Structures
-
-In the context of the PromiseGrid Kernel, the cache plays a critical role in optimizing and managing the execution and storage of data. Here's a summary of the key points regarding the caching strategy:
-
-1. **Cache Structures**:
-   - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-
-2. **Integration with Modules**:
-   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-
-## Sequence Matcher Implementation Example
-
-### Implementing Caching
-
-Develop caching mechanisms leveraging PromiseGrid’s byte sequence completion. Example:
-
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic for processing message, including acceptance and handling
-    // Return a promise message with acceptance and handling results or errors
-}
-```
-
-## Treating Cache Handling as Sequence Matching
-
-By integrating a hierarchical structure in the caching strategy utilizing sequence matching, PromiseGrid can improve performance and scalability. Here’s an example to illustrate the cache integration with sequence matching:
-
-### Sequence Matcher
-
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic for accepting or rejecting based on parameters
-}
-
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic for handling the message after acceptance
-}
-```
-
-## Kernel and Caching Perspectives
-
-### Pros and Cons of Unified Message Structure for Network and IPC
-
-**Pros**:
-- **Consistency**: Simplifies message translation and handling across communication channels.
-- **Interoperability**: Facilitates seamless module interaction for both interhost and intrahost communications.
-- **Efficiency**: Reduces redundancy and parsing logic, enhancing overall efficiency.
-
-**Cons**:
-- **Complexity**: Difficult to ensure a unified format is optimal for both network and IPC.
-- **Overhead**: Network-specific metadata in IPC messages (or vice versa) might introduce unnecessary overhead.
-
-## Importance of Including Module Hash in Messages for Deterministic Execution and Demand-Driven Deployment of New Code
-
-### Deterministic Execution
-
-Including the module hash in each message ensures the same piece of code executes consistently across nodes. This determinism is critical for maintaining consistency and correctness in distributed systems.
-
-### Content-Addressable Code
-
-Module hashes serve as unique identifiers, enabling the precise location and execution of specific code versions. Even amidst updates, nodes can fetch and use the exact module version specified, fostering backward compatibility and stability.
-
-### Dynamic, Demand-Driven Deployment
-
-By embedding module hashes in messages, the system supports on-demand code deployment. Nodes lacking the required module can dynamically retrieve it, promoting adaptability and seamless updates.
-
----
-
-# Network Communications and Unified Message Structures 
-
-### Network Communications
-
-Network communications in PromiseGrid are mainly managed by modules, aligning with microkernel principles. The kernel’s minimal core functionalities focus on inter-process communication and resource management, while delegating most tasks, such as network communication, to service modules.
-
-### Justifying Unified Message Structure 
-
-**Unified Message Structure for Inter-Host and Intra-Host Communications**:
-1. **Pros**:
-   - **Consistency**: Simplifies the handling of messages across different communication contexts.
-   - **Efficiency**: Reduces the need for multiple parsing logics, improving development and operational efficiency.
-   - **Interoperability**: Enables seamless transition of communication modes, improving overall system agility.
-
-2. **Cons**:
-   - **Complexity**: Aligning a unified structure to suit both network and IPC demands can introduce complexity.
-   - **Performance Overhead**: Embedding network-specific metadata in IPC messages (and vice versa) might inflate message sizes with redundant data.
-
-### Example Use Cases 
-
-**Cache Miss Handling**:
-1. **Inter-Host**: When a cache miss occurs locally, the module issues a message over the network to retrieve the required data from another node’s cache.
-2. **Intra-Host**: For the same miss, the module may query another in-host module through IPC mechanisms, leveraging the unified message structure for ease of communication.
-
-**Module Initialization**:
-1. **Inter-Host**: Nodes can broadcast initialization messages with required module hashes to synchronize employed module versions.
-2. **Intra-Host**: Modules use the same structure to register capabilities and interact with the kernel dynamically, fostering modular growth with minimal structural change.
-
-### Design Conclusion
-
-Implementing a unified message handling structure for network and IPC communications bolsters system consistency, development simplicity, and dynamic adaptability. By evaluating the trade-offs, PromiseGrid ensures optimized performance while maintaining structural integrity and scalability.
-
-### Dynamic Syscall Table with Ant Routing
-
-#### Kernel’s Dynamic Syscall Tree
-
-1. **Syscall Table and Acceptance History**:
-    - The kernel **SHOULD** use a dynamic syscall table to store positive and negative acceptance history for all modules.
-    - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
-    - The kernel **MUST** route messages to the module whose syscall table key matches the most leading parameters components, optimizing routing and reducing redundant checks.
-
-2. **Dynamic and Optimized Message Routing**:
-
-Imagining a syscall table with ant routing involves:
-
-1. **Hierarchical Syscall Tree**:
-   - Hierarchical keys with multiple children nodes representing parameter components.
-   - Filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
-
-Optimization:
-
-- **Dynamic Adaptation**:
-   - Cache successful paths and optimize routing based on historical data.
-   - Dynamic updates to capabilities and keys for effective syscall routing.
-
----
-
-# Module Interaction and Delegation
-
-### Cache and Modules
-
-In PromiseGrid, seamless interaction and delegation:
-
-1. **Role of Modules**:
-    - Cache as part of modular design.
-    - Delegation with specialized modules ensuring modularity.
-
-2. **Unified Interface**:
-    - Cache lookups and function calls as unified byte sequence completion. 
-
-### Acceptance and Promises
-
-#### Pros and Cons of Combined and Separate Functions
-
-**Combined `Accept()` and `HandleMessage()` Functions**:
-
-**Pros**:
-- **Simplicity and Consistency**: Combined functions eliminate redundancy.
-- **Efficiency**: Reduced checks by merging acceptance and handling.
-
-**Cons**:
-- **Complexity**: Combined logic for diverse tasks might introduce complexity.
-- **Flexibility**: Separate functions allow for specialized logic.
-
-**Example**:
-
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Combined evaluation and handling
-    return // Result or error
-}
-```
-
-**Separate `Accept()` and `HandleMessage()` Functions**:
-
-**Pros**:
-- **Modularity**: Separate logic enhances flexibility.
-- **Efficiency**: Early rejection streamlined without handling.
-
-**Example**:
-
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
-
-type LocalCacheModule {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Acceptance logic
-    return // Accepted promise
-}
-
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Handling logic
-    return // Result or error
-}
-```
-
-### Conclusion
-
-PromiseGrid emphasizes modular and flexible cache handling through integration with byte sequence completion, dynamic delegation, and optimized routing. The combined and separate function approaches address varied operational needs, ensuring robust, consistent, and efficient message processing. Ultimately, by balancing modular interaction with scalable delegation, putting emphasis on promises and trust, PromiseGrid achieves a robust, scalable, and decentralized system.
+5. **Hosting Conventional Systems (207-vn-guest.md, 202-von-neumann.md)**
+   - Different perspectives on integrating conventional systems into PromiseGrid, with methods contemplating hash-based routing as a solution.
 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/013-cache.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md

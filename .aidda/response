@@ -1,336 +1,173 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/203-markov.md
+File: /home/stevegt/lab/grid-cli/v2/doc/150-capability-tokens.md
 ```markdown
-# Markov Decision Process Using PromiseGrid's Byte Sequence Completion Model
+## Capability Tokens and Prior Art
 
-## Overview
+### Self-Contained Capability Tokens
 
-Imagine how a Markov Decision Process (MDP) would function using PromiseGrid's byte sequence completion model. In this context, MDPs can be implemented by leveraging the decentralized and modular framework provided by PromiseGrid to make decisions and optimize actions based on state transitions represented by byte sequences.
+A capability token can be crafted to be self-contained and self-describing by including both the permissions granted and the identity of the party to whom the permission is granted. This design ensures that the token itself carries all the information needed to understand the scope and target of the permissions without needing to reference external data.
 
-## Markov Decision Process (MDP) Basics
+### How It Works
 
-An MDP is a mathematical framework for modeling decision-making situations where outcomes are partly random and partly under the control of a decision-maker. It consists of:
+1. **Structure**: The structure of such a self-contained capability token typically includes fields for:
+   - **Identity of the Holder**: Information about the entity that holds the token.
+   - **Permissions**: Details about what actions the holder is permitted to perform.
+   - **Issuer’s Identity**: Information about the entity that issued the token.
+   - **Signature**: Cryptographic signature from the issuer to ensure integrity and authenticity.
 
-1. **States (S)**: Distinct configurations or situations in which the decision-maker finds itself.
-2. **Actions (A)**: Possible moves or decisions the agent can make from each state.
-3. **Transition Function (T)**: The probability of reaching a new state given the current state and an action.
-4. **Rewards (R)**: Immediate returns received after transitioning from one state to another due to an action.
-5. **Policy (π)**: A strategy that defines the action to take in each state.
+2. **Encoding**: The token can be encoded in a standardized format such as JSON Web Tokens (JWT), which supports custom claims to include the necessary fields.
 
-## Implementing MDP with PromiseGrid's Byte Sequence Completion
+3. **Verification**: When the token is presented, the system:
+   - Verifies the cryptographic signature to ensure the token was indeed issued by the trusted party.
+   - Checks the permissions described within the token.
+   - Confirms the identity of the holder matches the intended recipient.
 
-### State Representation and Transition
+Several systems and frameworks implement self-contained capability tokens:
 
-A sequence of states in an MDP can be represented as a sequence of bytes. The bytes in the sequence can represent the transition functions and parameters that are used to reach each successive state. Alternatively, a sequence of transitions can also be summarized (checkpointed) by a byte sequence that represents the ending state, or a hash of a larger blob that represents the ending state; the hash itself can be stored in the trie as a byte sequence, e.g., encoded using multibase and multihash.
+1. **Macaroons**: These are flexible authorization credentials that support delegation and attenuation. A macaroon is a bearer token that can encapsulate permissions and is augmented with caveats, which are conditions that must be satisfied for the macaroon to be considered valid.
+2. **JSON Web Tokens (JWT)**: JWTs are widely used in web applications to assert claims between parties. They can include custom claims to specify permissions and the intended audience. A JWT can be signed to ensure authenticity and integrity.
+3. **Caveats in Capability-Based Systems**: Traditional capability-based security systems sometimes support a form of caveats or restrictions within the tokens themselves to specify the scope of permissions and the authorized user.
 
-### Sequence Completion for Actions
+### Recommendations
 
-In PromiseGrid, actions in the MDP context correspond to completing byte sequences. The system dynamically matches and completes sequences representing state transitions.
+1. **Design Tokens Carefully**: Ensure that the structure of the tokens balances comprehensiveness with simplicity. Include necessary fields for permissions, identity, and signatures.
+   
+2. **Use Standard Formats**: Leverage existing standards like JWTs for encoding tokens to benefit from existing libraries and tools for creation, parsing, and verification.
 
-### Process Outline
+3. **Cryptographic Security**: Ensure that tokens are signed using robust cryptographic methods to prevent forgery and tampering.
 
-1. **State Initialization**:
-    - Initialize the MDP by defining the starting state as a unique byte sequence.
-    - Design or assign modules or handlers that will process state transitions.
+4. **Revocation**: Implement mechanisms to handle token revocation in case permissions need to be rescinded before the token naturally expires.
 
-2. **Action Execution**:
-    - Encode actions as the starting byte sequence, extended by the transition function and parameters.
-    - Use the sequence completion mechanism to apply actions and determine new states.
-    - Alternatively, the transition function might come first in the byte sequence, and the previous state is a parameter to the transition function.
+### JSON Web Tokens (JWT)
 
-3. **Transition and Reward**:
-    - Define a transition function that maps current state-action pairs to new states using byte sequence completion.
-    - Implement handlers that calculate the transition probabilities and rewards associated with each state-action pair.
+JWTs are typically encoded using Base64url, which is a URL-safe variant of Base64 encoding.
 
-4. **Policy Definition**:
-    - Develop a policy using reinforcement learning algorithms to optimize the decision-making process.
-    - Policy modules will dynamically adjust the actions to maximize cumulative rewards based on the observed transitions and rewards.
+#### Why Base64url?
 
-### Persisting the Trie to Disk
+1. **URL-safe**: Base64url encoding replaces characters that are not URL-safe (such as `+`, `/`, and `=`) with URL-safe alternatives (`-`, `_`, and no padding). This ensures that the token can be safely included in a URL without requiring additional encoding.
+2. **Human-readable**: While not as compact as some other encodings (like base58), Base64url maintains a balance between human readability and URL safety.
+3. **Standardized**: The use of Base64url for JWTs is specified in the JSON Web Token (JWT) specification (RFC 7519). This standardization means that the approach is widely supported and understood, making it interoperable across different systems and libraries.
 
-### Introduction
+#### Encoding Steps
 
-To fully utilize the power of MDPs within PromiseGrid, it is critical to persist the trie data structure to disk, ensuring that state information is not lost between sessions. Several strategies can be applied, considering compatibility, reliability, performance, and flexibility.
+1. **Header and Payload**: The JWT consists of three parts: the header, the payload, and the signature. Each part is encoded separately using Base64url.
+2. **Concatenation**: The three parts are concatenated together with periods (`.`) as separators. This forms the final JWT string that can be included in a URL.
 
-### Potential Persistence Strategies
+#### Example
 
-#### 1. Origin Private File System (OPFS)
-
-**Description**: OPFS is designed for web environments, providing secure, performant, and private storage.
-
-**Advantages**:
-- **Security**: Secure storage.
-- **Performance**: Web-optimized.
-- **Compatibility**: Suits WASM environments.
-
-**Implementation**:
-- **WASM**: Direct interaction with OPFS via JavaScript.
-- **Native**: Abstraction layer to handle file I/O using standard calls.
-
-Example in WASM:
-```javascript
-async function writeFile(filename, content) {
-  const handle = await navigator.storage.getDirectory();
-  const fileHandle = await handle.getFileHandle(filename, { create: true });
-  const writable = await fileHandle.createWritable();
-  await writable.write(content);
-  await writable.close();
-}
-
-async function readFile(filename) {
-  const handle = await navigator.storage.getDirectory();
-  const fileHandle = await handle.getFileHandle(filename);
-  const file = await fileHandle.getFile();
-  return await file.text();
+Suppose you have the following JWT:
+```json
+{
+  "header": {
+    "alg": "HS256",
+    "typ": "JWT"
+  },
+  "payload": {
+    "sub": "1234567890",
+    "name": "John Doe",
+    "iat": 1516239022
+  },
+  "signature": "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 ```
 
-#### 2. `afero` Library
+The encoded JWT would look something like this:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
 
-**Description**: `afero` abstracts filesystem operations, supporting multiple backends.
+This encoded JWT can be safely used as a URL parameter without further encoding.
 
-**Advantages**:
-- **Abstraction**: Common interface for various file systems.
-- **Flexibility**: Supports OS file systems, in-memory systems, and more.
-- **Compatibility**: Works in native environments; extensible to WASM.
+Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
 
-**Implementation**:
-- **WASM**: Custom backend for `afero` communicating with the browser's file API.
-- **Native**: Use default OS filesystem backend.
+### Discussion on the Leading Hash in Messages
 
-Example in Go:
+In the PromiseGrid Kernel, messages MAY start with a promise hash followed by a module hash and then additional arguments. This structure allows receivers to filter messages based on promises they are willing to accept and route the message to the appropriate module. Here are the pros and cons of the promise hash coming first:
+
+**Pros:**
+- **Enhanced Filtering**: Placing the promise hash first allows modules and nodes to quickly filter messages based on the promises they accept.
+- **Trust and Governance**: This aligns with decentralized governance. Nodes can establish trust relationships by agreeing on specific promises they will accept.
+- **Modular Routing**: Early identification of the promise allows the kernel to route messages to the appropriate module, ensuring efficient distributed handling.
+
+### Importance of Including Module Hash in Messages for Deterministic Execution and Demand-Driven Deployment of New Code
+
+Including the hash of the module to be executed in the message is crucial for achieving deterministic execution and facilitating demand-driven deployment of new code in decentralized systems. Here are key reasons why this practice is recommended:
+
+1. **Deterministic Execution**:
+   Including the module hash in the message ensures that the same piece of code is executed consistently across different nodes. This deterministic behavior is essential for maintaining consistency and correctness in distributed systems. By specifying the exact module to be run, all nodes can reliably and repeatably execute the same logic, avoiding differences in behavior due to variations in module versions or implementations.
+
+2. **Content-Addressable Code**:
+   The module hash serves as a unique identifier for the specific version of the code to be executed. This content-addressable storage mechanism ensures that the precise code is located and executed, eliminating ambiguity. Nodes can fetch the exact module specified by the hash, even if new versions or updates are available, ensuring backward compatibility and preventing unexpected changes in system behavior.
+
+3. **Demand-Driven Deployment**:
+   By including the module hash in the message, new code can be deployed on-demand. Nodes that do not have the required module can fetch it dynamically based on the hash, allowing for seamless updates and scaling. This demand-driven deployment model ensures that nodes always execute the latest or specified version of the module, promoting flexibility and ease of maintenance in decentralized environments.
+
+4. **Security and Trust**:
+   The module hash provides a way to verify the integrity and authenticity of the code being executed. Nodes can validate the fetched module against the specified hash, ensuring that the code has not been tampered with. This practice builds trust among nodes, as they can rely on the exact code promised in the message without the risk of executing malicious or unauthorized code.
+
+5. **Enabling Capabilities**:
+   Including module hashes in messages aligns with the capability-based security model. Capabilities can include specific module hashes that nodes are authorized to execute, providing fine-grained access control. This approach ensures that nodes only execute permitted code, enhancing the overall security and governance of the decentralized system.
+
+In summary, including the module hash in messages is essential for achieving deterministic execution, enabling content-addressable storage, facilitating demand-driven deployment of new code, ensuring security, and supporting capability-based access control. This practice aligns with the principles of decentralized systems, promoting consistency, flexibility, and trust among participating nodes.
+
+### Kernel's Dynamic Handling of Accept and HandleMessage
+
+Implementing an advanced interaction model involves considering different versions of function handling of messages. There are two possible structures: combined functions or separate functions.
+
+### Combined Function:
+
 ```go
-package main
+type Module interface {
+    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
+}
 
-import (
-	"fmt"
-	"github.com/spf13/afero"
-)
+type LocalCacheModule struct {
+    cacheDir string
+}
 
-func main() {
-	fs := afero.NewOsFs()
-	// Writing to the file
-	err := afero.WriteFile(fs, "example.txt", []byte("Hello, Afero!"), 0644)
-	if err != nil {
-		fmt.Println("Error writing file:", err)
-		return
-	}
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
+}
 
-	// Reading from the file
-	content, err := afero.ReadFile(fs, "example.txt")
-	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return
-	}
-
-	fmt.Println("File content:", string(content))
+func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
+    // Implement logic to process message, which includes accepting and handling
+    // Return a promise message with acceptance and handling results or errors
 }
 ```
 
-### Lazy-Loading Node Files
+### Separate Functions:
 
-Trie nodes can be lazily loaded from the disk as needed, ensuring optimal memory usage.
-
-Example in Go:
 ```go
-package main
-
-import (
-	"bytes"
-	"encoding/gob"
-	"fmt"
-	"github.com/spf13/afero"
-	"io"
-	"path"
-)
-
-type TrieNode struct {
-	Children map[byte]*TrieNode
-	Handlers []Handler
-	Path     string
-	Fs       afero.Fs
+type Module interface {
+    Accept(ctx context.Context, parms ...interface{}) (Message, error)
+    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
 }
 
-type Trie struct {
-	Root    *TrieNode
-	Fs      afero.Fs
-	BaseDir string
+type LocalCacheModule struct {
+    cacheDir string
 }
 
-type Handler func()
-
-func NewTrie(fs afero.Fs, baseDir string) *Trie {
-	return &Trie{
-		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
-		Fs: fs,
-		BaseDir: baseDir,
-	}
+func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
+    return &LocalCacheModule{cacheDir: cacheDir}
 }
 
-func (t *Trie) Insert(r io.Reader, handler Handler) error {
-	node := t.Root
-	buf := make([]byte, 1)
-	for {
-		n, err := r.Read(buf)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-		if n > 0 {
-			b := buf[0]
-			if _, ok := node.Children[b]; !ok {
-				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
-			}
-			node = node.Children[b]
-		}
-	}
-	node.Handlers = append(node.Handlers, handler)
-	return nil
+func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
+   // Implement logic for accepting or rejecting based on parameters
 }
 
-func (t *Trie) Search(r io.Reader) ([]Handler, error) {
-	node := t.Root
-	buf := make([]byte, 1)
-	for {
-		n, err := r.Read(buf)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-		if n > 0 {
-			b := buf[0]
-			if child, ok := node.Children[b]; ok {
-				if child == nil {
-					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
-					if err != nil {
-						return nil, err
-					}
-					node.Children[b] = loadedNode
-				}
-				node = node.Children[b]
-				if len(node.Handlers) > 0 {
-					return node.Handlers, nil
-				}
-			} else {
-				break
-			}
-		}
-	}
-	return nil, nil
-}
-
-func (t *Trie) SaveNode(node *TrieNode) error {
-	var buf bytes.Buffer
-	enc := gob.NewEncoder(&buf)
-	if err := enc.Encode(node); err != nil {
-		return err
-	}
-	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
-}
-
-func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
-	if err := t.SaveNode(node); err != nil {
-		return err
-	}
-	for childKey, childNode := range node.Children {
-		if childNode != nil {
-			if err := t.SaveNodesRecursively(childNode); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func (t *Trie) Save() error {
-	return t.SaveNodesRecursively(t.Root)
-}
-
-func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
-	data, err := afero.ReadFile(t.Fs, nodePath)
-	if err != nil {
-		return nil, err
-	}
-	buf := bytes.NewBuffer(data)
-	node := &TrieNode{}
-	dec := gob.NewDecoder(buf)
-	if err := dec.Decode(node); err != nil {
-		return nil, err
-	}
-	node.Path = nodePath
-	node.Fs = t.Fs
-	for childKey := range node.Children {
-		node.Children[childKey] = nil // Mark child as needing lazy load
-	}
-	return node, nil
-}
-
-func (t *Trie) Load() error {
-	rootNode, err := t.LoadNode(t.BaseDir)
-	if err != nil {
-		return err
-	}
-	t.Root = rootNode
-	return nil
-}
-
-func main() {
-	fs := afero.NewOsFs()
-	trie := NewTrie(fs, "trie_data")
-
-	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
-	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
-
-	// Save trie to disk
-	if err := trie.Save(); err != nil {
-		fmt.Println("Error saving trie:", err)
-		return
-	}
-
-	// Load trie from disk
-	newTrie := NewTrie(fs, "trie_data")
-	if err := newTrie.Load(); err != nil {
-		fmt.Println("Error loading trie:", err)
-		return
-	}
-
-	// Search in the loaded trie
-	message := bytes.NewReader([]byte{0x01, 0x02})
-	handlers, err := newTrie.Search(message)
-	if err != nil {
-		fmt.Println("Search error:", err)
-		return
-	}
-	if handlers != nil {
-		for _, handler := range handlers {
-			handler()
-		}
-	} else {
-		fmt.Println("No handler found")
-	}
+func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
+    // Implement logic for handling the message after acceptance
 }
 ```
 
-### Advantages of Using PromiseGrid for MDP
+### Conclusion
 
-1. **Scalability**:
-    - PromiseGrid’s decentralized nature allows for scalable MDP implementations, handling large numbers of states and transitions efficiently.
+By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
 
-2. **Modularity**:
-    - The modular approach supports dynamic and distributed decision-making processes, with each state-action pair potentially handled by separate modules.
+### Open Questions
 
-3. **Flexibility**:
-    - PromiseGrid’s byte sequence completion model provides flexibility in representing complex state transitions and actions.
-
-4. **Enhanced Governance**:
-    - By leveraging the decentralized governance model, decision-making processes in MDPs can be distributed, promoting robust and adaptable policy generation.
-
-## Conclusion
-
-The Markov Decision Process implementation using PromiseGrid’s byte sequence completion model leverages the system’s decentralized, modular, and scalable framework to optimize decision-making. By representing states, actions, transitions, and rewards as byte sequences and utilizing dynamic sequence completion, PromiseGrid enables efficient and effective MDP solutions adaptable to various applications.
+1. **Handling Broken Promises**: What strategies can we implement to handle broken promises effectively? How can we ensure that nodes that consistently break promises have their reputation impacted in a measurable way?
+2. **Determining Best Route**: When multiple handlers are available, how can we determine the most efficient or reliable route for handling a message? Should we prioritize handlers based on historical performance, reputation, or other factors?
+3. **Integration with Other Systems**: How can we better integrate JSON Web Tokens (JWT) and similar systems with PromiseGrid’s architecture? What role should JWT play in managing capabilities within the grid?
+4. **Security Measures**: Given the reliance on module hashes for deterministic execution, what additional security measures can enhance the integrity and trustworthiness of the system? How can we mitigate potential risks associated with hash collisions and tampering? 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/203-markov.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/150-capability-tokens.md

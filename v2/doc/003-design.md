@@ -140,13 +140,14 @@ By integrating promises at every level and implementing a hierarchical syscall t
    * There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
 
 2. **Integration with Modules**:
-   * The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   * The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
-   * From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completions.
+   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
+   - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s embed feature.
+   - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completions.
 
 ### Network Communications
 
 **Are network communications always done through modules, or can the kernel do some of that itself?**
+
 Network communications in the PromiseGrid Kernel model are primarily intended to be handled by modules rather than the kernel itself. This design aligns with the microkernel architecture principles, where the kernel provides minimal core functionalities and delegates most tasks, such as network communication, to service modules. The kernel’s role includes managing module execution, handling inter-process communication (IPC), and maintaining security and resource control.
 
 ### Capability Tokens and Encoding
@@ -162,4 +163,78 @@ Several systems and frameworks implement self-contained capability tokens:
 - How can we best handle broken promises effectively?
 - What are the most efficient methods to determine the best route when multiple handlers are available?
 - How should we reconcile byte sequence completion with explicit registration and hash-based routing?
+
+## Open Market Design
+
+### Introduction
+
+### Core Components
+
+2. **Open Market Layer**
+   - Nodes can offer their storage capacity and bandwidth in exchange for compensation.
+   - Market dynamics, such as supply, demand, pricing, and competition, determine the cost and allocation of resources.
+
+### Design Overview
+
+##### Market Mechanics
+
+- **Storage Offers:** Nodes can advertise their available storage capacity. Each offer includes terms such as price, duration, and conditions.
+- **Bidding:** Nodes in need of storage can place bids, proposing terms for storing their data. The market matches offers and bids based on compatibility and preferences.
+- **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.
+
+##### Transactions
+
+- **Promises and Capabilities:** Burgess-style promises and security-token-style capabilities replace traditional contracts, rewards, and penalties.
+- **Broken Promise Accounting:** Enforcement mechanisms are replaced with broken promise accounting, which impacts a node's reputation within the system.
+
+### Data Storage and Retrieval
+
+#### Storage Process
+
+1. **Identification:** The data to be stored is assigned a unique key using a cryptographic hash function.
+2. **Market Interaction:** The node seeking storage interacts with the market layer, finding a suitable storage offer.
+3. **Promise Formation:** A promise is formed and agreed upon by both parties, detailing the storage terms.
+4. **Data Chunking:** The data is divided into chunks using Rabin polynomials (if necessary) and distributed to the selected storage nodes according to the promise.
+5. **Replication:** The data is replicated across multiple nodes to ensure reliability as per the agreed replication factor.
+
+#### Retrieval Process
+
+2. **Market Interaction:** The node seeking to retrieve the data interacts with the market to find retrieval offers.
+3. **Promise Formation:** A retrieval promise is established, detailing the retrieval terms.
+4. **Data Transfer:** The data is retrieved from the storage nodes and transferred to the requesting node according to the promise conditions.
+
+#### Node Advertising for Blob Storage
+
+2. **Market Advertisement:** The node advertises its storage offer on the open market, specifying the terms, including the price and retrieval conditions.
+3. **Availability Announcement:** The node updates its routing information and market listings to announce the availability of the stored blob, ensuring that other nodes in the network can discover and bid for retrieval services if needed.
+
+### Market Dynamics
+
+#### Incentive Structures
+
+- **Quality of Service (QoS):** Nodes are incentivized to provide high-quality storage and retrieval services, which are reflected in their reputation. Higher reliability and faster access times may attract higher prices.
+- **Reputation Impact:** Nodes failing to meet their promises face a degradation in their reputation, which discourages poor performance and broken promises.
+
+#### Competitive Environment
+
+- **Differentiation:** Nodes can differentiate themselves based on their QoS offerings, such as uptime, speed, and reliability.
+- **Reputation Systems:** A robust reputation system tracks the performance and reliability of nodes, influencing their attractiveness and opportunities in the market.
+
+### Security Considerations
+
+#### Data Integrity and Privacy
+
+- **Cryptographic Hashing:** Each data chunk is signed with a cryptographic hash to ensure integrity and detect tampering.
+- **Encryption:** Data can be encrypted before storage to maintain privacy, with only authorized nodes having access to decryption keys.
+
+#### Trust and Verification
+
+- **Decentralized Trust:** The hybrid system minimizes the reliance on central authorities, relying instead on cryptographic promises and reputation systems to foster trust.
+- **Auditability:** All transactions, promises, and broken promises are logged and auditable to ensure transparency and accountability.
+
+### Transaction Logs
+
+#### Storage of Transaction Logs
+
+- **Hashed Blobs:** Transaction logs are themselves stored in the system as hashed blobs, just like any other data. This ensures their integrity, verifiability, and availability throughout the network.
 

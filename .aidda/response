@@ -1,111 +1,107 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
+File: /home/stevegt/lab/grid-cli/v2/doc/329-issues.md
 ```markdown
-# TODO List for Implementing PromiseGrid Kernel
+# Issues, Problems, and Open Questions
 
-## General Improvements
-- Improve documentation clarity and consistency.
-- Resolve internal inconsistencies and discuss any remaining conflicts.
-- Add logical statements and recommendations in technical sections.
-- Include open-ended questions to provoke further discussion and exploration.
+## Review Summary
 
-## Documentation Refinements
-- Identify and resolve any conflicting information within the documentation.
-- Ensure all statements are logical and support the overall system architecture.
-- Add recommendations and best practices based on the current design.
-- List documents that are most similar and could be merged.
+The following document reviews the current state of the PromiseGrid documentation, highlighting issues, problems, and open questions that need addressing to improve clarity, comprehensiveness, and technical accuracy.
 
-## Detailed Task List
-- Review the documentation for:
-  - Logical flow and coherence.
-  - Consistency in terminology usage.
-- Resolve any discrepancies or conflicting ideas.
-- Detailed descriptions for some of the strategies and methods mentioned:
-  - Implement example-based explanations wherever possible.
-  - Provide case studies and visual aids to enhance understanding.
+## General Issues
 
-## Cache Design and Lookup
-- Refactor the cache design to use byte sequence completion for key management.
-  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
-  - Document the byte sequence management strategy.
-- Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
+### 1. Consistency in Terminology
+- **Problem**: Inconsistent use of terminology across documents, such as "message ports" and "IPC mechanisms".
+- **Solution**: Establish a glossary of terms and ensure consistent usage throughout the documentation.
 
-## Dynamic Acceptance History and Syscall Table
-- Revamp the acceptance history mechanism to track byte sequence completions.
-  - Store positive and negative sequence completions effectively.
-  - Populate acceptance and rejection history dynamically during kernel operations.
-  - Implement efficient lookup facilities to match message sequences with handlers based on historical completion success rates.
+### 2. Cross-Referencing Sections
+- **Problem**: Lack of cross-references between related sections, making it harder to navigate and understand the comprehensive system.
+- **Solution**: Add hyperlinks and references between sections discussing related concepts (e.g., refer from IPC mechanisms to specific examples in PromiseGrid).
 
-## Implement Ant Routing Mechanism
-- Integrate byte sequence completion with the ant routing mechanism.
-  - Adapt the ant routing algorithm to cache successful byte sequence paths.
-  - Develop a strategy to dynamically adjust routing based on promise fulfillment statistics.
+## Specific Document Issues
 
-## Promise-Based Design
-- Augment cache and syscall tree design to fully integrate with byte sequence completion as a core mechanism:
-  - Rework promise handling to support dynamic sequence completion.
-  - Investigate and implement strategies for embedding promise validation within byte sequence matching.
+### 320-ipc.md
 
-## Polymorphic Handling and Error Detection
-- Develop error handling routines specific to byte sequence completion:
-  - Enhance the dispatching mechanism to manage failures in byte sequence processing gracefully.
-  - Implement retries and alternative handler routing based on sequence fulfillment failures.
+#### 1. Lack of Examples for Concepts
+- **Problem**: The document lacks practical examples and real-world applications of IPC patterns.
+- **Solution**: Include more concrete examples and scenarios demonstrating how IPC mechanisms are implemented in PromiseGrid.
 
-## File Storage and Byte Sequences
-- Migrate storage mechanisms to manage byte sequences efficiently:
-  - Replace traditional file key management with content-addressable byte sequences.
-  - Ensure compatibility with Origin Private File System (OPFS) and abstract filesystem integration via libraries like `afero`.
+#### 2. Byte-Sequence Completion and Trie Explanation
+- **Problem**: The explanation of byte-sequence completion and trie structures can be abstract and hard to grasp.
+- **Solution**: Enhance explanations with diagrams and step-by-step descriptions to clarify these concepts.
 
-## Usability and Documentation
-- Improve the documentation on managing and converting sequences:
-  - Create clear usage examples and guidelines for byte sequence management.
-  - Provide concise guides for converting from legacy filesystem-based cache management to byte sequence completion.
+### 321-mach.md
 
-## Review and Refactor
-- Conduct a comprehensive review to identify legacy points where `/`-separated cache key handling still exists:
-  - Complete refactoring of these sections to support byte sequence completion.
-  - Validate the correctness and performance of new implementations in various scenarios.
+#### 1. Incomplete Message Format Details
+- **Problem**: Not all fields in the message structure are explained (e.g., `msgh_bits`, `trailer_type`).
+- **Solution**: Provide detailed descriptions of all fields in the Mach message structure to ensure completeness.
 
-## Security and Verification
-- Assess security implications of new byte sequence completion strategies:
-  - Ensure that new designs for caching and syscall mechanisms do not introduce vulnerabilities.
-  - Enhance the validation and verification processes to assert the integrity of sequence handling mechanisms.
+#### 2. Practical Usage Scenarios
+- **Problem**: Lack of practical usage scenarios for Mach ports and messages.
+- **Solution**: Include examples and case studies demonstrating Mach IPC in real-world applications.
 
-## The documents most in disagreement or conflict with each other appear to be:
+### 322-ports.md
 
-1. **001-design.md vs. 002-design.md**
-   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches.
+#### 1. Code Example Clarity
+- **Problem**: Code examples for creating and using message ports could be expanded and clarified.
+- **Solution**: Provide more comprehensive code snippets and explanations for better understanding.
 
-2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
-   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling.
+#### 2. Detailed Security Considerations
+- **Problem**: The document doesn't discuss in detail the security aspects of message ports.
+- **Solution**: Add a section specifically addressing security measures and best practices for using message ports in PromiseGrid.
 
-3. **190-side-effects.md vs. 201-computable.md**
-   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied.
+### 323-syscalls.md
 
-4. **207-vn-guest.md vs. 202-von-neumann.md**
-   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies.
+#### 1. Dynamic Port Allocation Explanation
+- **Problem**: Insufficient details on dynamic port allocation and management.
+- **Solution**: Expand the section on dynamic allocation with more examples and technical details.
 
-### Steps for Resolving Conflicts
+#### 2. Error Handling Mechanism
+- **Problem**: Error handling in syscall mechanisms is not thoroughly explained.
+- **Solution**: Include a dedicated section on how errors are managed and propagated in syscall communications.
 
-1. **Harmonize Design Principles**:
-   - Review and align the overarching design principles across 001-design.md and 002-design.md to ensure a cohesive vision.
+### 324-syscalls-sequences.md
 
-2. **Consolidate Cache Management Methods**:
-   - Merge the cache management strategies from 003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md into a unified guide. Address any conflicting methods and settle on a standardized approach.
+#### 1. Trie Data Structures Visualization
+- **Problem**: The document lacks visual diagrams to illustrate trie structures.
+- **Solution**: Incorporate visual aids to help readers better understand the trie data structures and their traversal.
 
-3. **Align Theoretical Concepts**:
-   - Reconcile the theoretical discussions in 190-side-effects.md and 201-computable.md to ensure a consistent interpretation of side effects and computability within the PromiseGrid framework.
+#### 2. Timestamp Handling in Detail
+- **Problem**: Timestamp inclusion for side-effect sequences is not deeply explored.
+- **Solution**: Provide a more detailed explanation of how timestamps are utilized and managed within the sequence completions.
 
-4. **Unified Approach for Hosting Systems**:
-   - Combine insights from 207-vn-guest.md and 202-von-neumann.md to provide a clear, consistent methodology for hosting conventional systems on PromiseGrid.
+### 325-mount.md
 
-### Merging Similar Documents
+#### 1. Mount Handler Implementation Examples
+- **Problem**: The document needs more concrete examples of mount handler implementations.
+- **Solution**: Add detailed implementation examples and scenarios to demonstrate the usage of mount handlers.
 
-To reduce redundancy and potential conflicts, consider merging the following documents:
+#### 2. Comparison with Traditional Mount Tables
+- **Problem**: More comparative analysis with traditional UNIX-like global mount tables is needed.
+- **Solution**: Expand the explanation on the pros and cons of PromiseGrid's approach versus traditional mount tables.
 
-1. **001-design.md and 002-design.md** into a single comprehensive design guide.
-2. **003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md** into a unified cache and module handling guide.
-3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
-4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
+### 326-prior.md
 
+#### 1. Peer-to-Peer Protocol Details
+- **Problem**: Insufficient details on the peer-to-peer protocol used in systems like Corda.
+- **Solution**: Provide a deeper dive into the peer-to-peer communication protocols and their role in decentralized trie management.
+
+#### 2. Real-World Case Studies
+- **Problem**: Lack of in-depth case studies on the application of decentralized tries.
+- **Solution**: Include detailed case studies showcasing how decentralized trie structures are utilized in various systems.
+
+## Open Questions
+
+### 1. Trie Performance Optimization
+- How can we further optimize trie performance for high-throughput environments?
+
+### 2. Security of Trie Transitions
+- What additional security measures can be implemented to protect against attacks during trie transitions?
+
+### 3. Dynamic Capability Management
+- How can we enhance the dynamic allocation and management of capabilities in a decentralized system?
+
+### 4. Advanced Routing Algorithms
+- What advanced routing algorithms can be integrated into PromiseGrid to further improve message delivery efficiency?
+
+By addressing these issues, problems, and open questions, the PromiseGrid documentation will be more robust, user-friendly, and technically accurate, aiding developers in effectively utilizing the system.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/999-TODO.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/329-issues.md

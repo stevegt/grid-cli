@@ -11,23 +11,15 @@ fi
 echo "Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-    You must make changes to the output document.  Do not leave the
-    output document unchanged.  Reconcile the output document with all
-    input documents, removing or correcting any conflicts.  The output
-    document should be a coherent whole.  Do not change the central
-    focus of the output document.
+    You are writing a book about PromiseGrid.  Each of the input files
+    is a chapter in the book.
 In: v2/doc/
 Out: v2/doc/$output
 
-Revise $output; you must make changes.  Do not change the focus of
-$output.  Reconcile or remove any information in $output that
-conflicts with the input documents.  The output document should be a
-coherent whole.
-
-If the input or output documents contain any open questions, answer
-them in the output document.  
-
-Add new open questions to the output document.
+Examine the chapters.  Look for conflicts, redundancies, and
+inconsistencies compared to $output.  Fix $output.
+You must make changes to $output.  Do not change the focus of
+$output.  The resulting document should be a coherent whole.
 " > ../../.aidda/prompt
 
 grok aidda commit prompt

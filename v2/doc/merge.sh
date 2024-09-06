@@ -1,9 +1,18 @@
 #!/bin/bash
 
-padsp signalgen -t 100m sin 444
+# padsp signalgen -t 100m sin 444
 
-input=$(ls *.md | randline)
-output=$(ls *.md | randline)
+input=$1
+shift
+output=$1
+shift
+
+if [ -z "$input" ]; then
+    input=$(ls *.md | randline)
+fi
+if [ -z "$output" ]; then
+    output=$(ls *.md | randline)
+fi
 
 echo "Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -30,4 +39,4 @@ present.
 
 grok aidda commit prompt
 
-padsp signalgen -t 100m sin 500
+# padsp signalgen -t 100m sin 500

@@ -1,173 +1,107 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/150-capability-tokens.md
-```markdown
-## Capability Tokens and Prior Art
-
-### Self-Contained Capability Tokens
-
-A capability token can be crafted to be self-contained and self-describing by including both the permissions granted and the identity of the party to whom the permission is granted. This design ensures that the token itself carries all the information needed to understand the scope and target of the permissions without needing to reference external data.
-
-### How It Works
-
-1. **Structure**: The structure of such a self-contained capability token typically includes fields for:
-   - **Identity of the Holder**: Information about the entity that holds the token.
-   - **Permissions**: Details about what actions the holder is permitted to perform.
-   - **Issuer’s Identity**: Information about the entity that issued the token.
-   - **Signature**: Cryptographic signature from the issuer to ensure integrity and authenticity.
-
-2. **Encoding**: The token can be encoded in a standardized format such as JSON Web Tokens (JWT), which supports custom claims to include the necessary fields.
-
-3. **Verification**: When the token is presented, the system:
-   - Verifies the cryptographic signature to ensure the token was indeed issued by the trusted party.
-   - Checks the permissions described within the token.
-   - Confirms the identity of the holder matches the intended recipient.
-
-Several systems and frameworks implement self-contained capability tokens:
-
-1. **Macaroons**: These are flexible authorization credentials that support delegation and attenuation. A macaroon is a bearer token that can encapsulate permissions and is augmented with caveats, which are conditions that must be satisfied for the macaroon to be considered valid.
-2. **JSON Web Tokens (JWT)**: JWTs are widely used in web applications to assert claims between parties. They can include custom claims to specify permissions and the intended audience. A JWT can be signed to ensure authenticity and integrity.
-3. **Caveats in Capability-Based Systems**: Traditional capability-based security systems sometimes support a form of caveats or restrictions within the tokens themselves to specify the scope of permissions and the authorized user.
-
-### Recommendations
-
-1. **Design Tokens Carefully**: Ensure that the structure of the tokens balances comprehensiveness with simplicity. Include necessary fields for permissions, identity, and signatures.
-   
-2. **Use Standard Formats**: Leverage existing standards like JWTs for encoding tokens to benefit from existing libraries and tools for creation, parsing, and verification.
-
-3. **Cryptographic Security**: Ensure that tokens are signed using robust cryptographic methods to prevent forgery and tampering.
-
-4. **Revocation**: Implement mechanisms to handle token revocation in case permissions need to be rescinded before the token naturally expires.
-
-### JSON Web Tokens (JWT)
-
-JWTs are typically encoded using Base64url, which is a URL-safe variant of Base64 encoding.
-
-#### Why Base64url?
-
-1. **URL-safe**: Base64url encoding replaces characters that are not URL-safe (such as `+`, `/`, and `=`) with URL-safe alternatives (`-`, `_`, and no padding). This ensures that the token can be safely included in a URL without requiring additional encoding.
-2. **Human-readable**: While not as compact as some other encodings (like base58), Base64url maintains a balance between human readability and URL safety.
-3. **Standardized**: The use of Base64url for JWTs is specified in the JSON Web Token (JWT) specification (RFC 7519). This standardization means that the approach is widely supported and understood, making it interoperable across different systems and libraries.
-
-#### Encoding Steps
-
-1. **Header and Payload**: The JWT consists of three parts: the header, the payload, and the signature. Each part is encoded separately using Base64url.
-2. **Concatenation**: The three parts are concatenated together with periods (`.`) as separators. This forms the final JWT string that can be included in a URL.
-
-#### Example
-
-Suppose you have the following JWT:
-```json
-{
-  "header": {
-    "alg": "HS256",
-    "typ": "JWT"
-  },
-  "payload": {
-    "sub": "1234567890",
-    "name": "John Doe",
-    "iat": 1516239022
-  },
-  "signature": "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-}
+File: /home/stevegt/lab/grid-cli/v2/doc/343-dht.md
 ```
+# Hybrid DHT and Open Market Design
 
-The encoded JWT would look something like this:
-```
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-```
+## Introduction
 
-This encoded JWT can be safely used as a URL parameter without further encoding.
+This document outlines a design concept that combines aspects of a Distributed Hash Table (DHT) with an open market system. This hybrid design aims to leverage the decentralized storage and lookup efficiency of DHTs while incorporating the dynamic and competitive aspects of an open market. The goal is to create a more versatile and resilient data storage and retrieval system.
 
-Using the standard Base64url encoding for JWTs in URLs ensures compatibility with existing libraries and tools, making it a reliable choice for encoding JWT tokens for use in web applications.
+## Core Components
 
-### Discussion on the Leading Hash in Messages
+1. **DHT Backbone**
+   - Distributed Hash Table (DHT) forms the primary underlying structure for decentralized storage and data retrieval.
+   - Each node in the DHT is responsible for a portion of the key space.
+   - Nodes store key-value pairs and use consistent hashing to manage the distribution of data.
 
-In the PromiseGrid Kernel, messages MAY start with a promise hash followed by a module hash and then additional arguments. This structure allows receivers to filter messages based on promises they are willing to accept and route the message to the appropriate module. Here are the pros and cons of the promise hash coming first:
+2. **Open Market Layer**
+   - An open market layer functions atop the DHT, allowing nodes to trade storage and retrieval services.
+   - Nodes can offer their storage capacity and bandwidth in exchange for compensation.
+   - Market dynamics, such as supply, demand, pricing, and competition, determine the cost and allocation of resources.
+
+## Design Overview
+
+### DHT Backbone
+
+#### Structure
+- **Nodes and Keys:** Every node in the system holds a unique identifier. Keys are distributed across the network based on consistent hashing.
+- **Routing:** Nodes maintain routing tables with information about a subset of other nodes, allowing efficient key lookups with a logarithmic number of hops.
+- **Replication:** Data is replicated across multiple nodes to ensure availability and fault tolerance. Replication factors can be influenced by market supply and demand dynamics; a node can decide on its own to keep and offer a copy if it sees a price increase.
+
+#### Pros and Cons of Including the DHT Layer
 
 **Pros:**
-- **Enhanced Filtering**: Placing the promise hash first allows modules and nodes to quickly filter messages based on the promises they accept.
-- **Trust and Governance**: This aligns with decentralized governance. Nodes can establish trust relationships by agreeing on specific promises they will accept.
-- **Modular Routing**: Early identification of the promise allows the kernel to route messages to the appropriate module, ensuring efficient distributed handling.
+- **Decentralization:** The DHT layer ensures that data storage and retrieval are distributed, reducing the reliance on central servers.
+- **Scalability:** Due to its logarithmic complexity in lookups, the DHT structure can scale well with the increase in the number of nodes.
+- **Fault Tolerance:** Replication across multiple nodes increases data availability and resilience against node failures.
 
-### Importance of Including Module Hash in Messages for Deterministic Execution and Demand-Driven Deployment of New Code
+**Cons:**
+- **Complexity:** Implementing a hybrid model that combines DHT and open market dynamics can be complex and might require sophisticated mechanisms for balancing the two.
+- **Resource Intensity:** Maintaining a DHT involves overhead in terms of maintaining routing tables and managing data replication, which can be resource-intensive.
+- **Security Risks:** While decentralized, a DHT can still be vulnerable to certain types of attacks like Sybil attacks and requires robust security mechanisms.
 
-Including the hash of the module to be executed in the message is crucial for achieving deterministic execution and facilitating demand-driven deployment of new code in decentralized systems. Here are key reasons why this practice is recommended:
+### Open Market Layer
 
-1. **Deterministic Execution**:
-   Including the module hash in the message ensures that the same piece of code is executed consistently across different nodes. This deterministic behavior is essential for maintaining consistency and correctness in distributed systems. By specifying the exact module to be run, all nodes can reliably and repeatably execute the same logic, avoiding differences in behavior due to variations in module versions or implementations.
+#### Market Mechanics
+- **Storage Offers:** Nodes can advertise their available storage capacity. Each offer includes terms such as price, duration, and conditions.
+- **Bidding:** Nodes in need of storage can place bids, proposing terms for storing their data. The market matches offers and bids based on compatibility and preferences.
+- **Dynamic Pricing:** Prices for storage and retrieval services are dynamic, influenced by demand, supply, and competition among nodes.
 
-2. **Content-Addressable Code**:
-   The module hash serves as a unique identifier for the specific version of the code to be executed. This content-addressable storage mechanism ensures that the precise code is located and executed, eliminating ambiguity. Nodes can fetch the exact module specified by the hash, even if new versions or updates are available, ensuring backward compatibility and preventing unexpected changes in system behavior.
+#### Transactions
+- **Promises and Capabilities:** Burgess-style promises and security-token-style capabilities replace traditional contracts, rewards, and penalties.
+- **Broken Promise Accounting:** Enforcement mechanisms are replaced with broken promise accounting, which impacts a node's reputation within the system.
 
-3. **Demand-Driven Deployment**:
-   By including the module hash in the message, new code can be deployed on-demand. Nodes that do not have the required module can fetch it dynamically based on the hash, allowing for seamless updates and scaling. This demand-driven deployment model ensures that nodes always execute the latest or specified version of the module, promoting flexibility and ease of maintenance in decentralized environments.
+## Data Storage and Retrieval
 
-4. **Security and Trust**:
-   The module hash provides a way to verify the integrity and authenticity of the code being executed. Nodes can validate the fetched module against the specified hash, ensuring that the code has not been tampered with. This practice builds trust among nodes, as they can rely on the exact code promised in the message without the risk of executing malicious or unauthorized code.
+### Storage Process
+1. **Identification:** The data to be stored is assigned a unique key using a cryptographic hash function.
+2. **Market Interaction:** The node seeking storage interacts with the market layer, finding a suitable storage offer.
+3. **Promise Formation:** A promise is formed and agreed upon by both parties, detailing the storage terms.
+4. **Data Chunking:** The data is divided into chunks using Rabin polynomials (if necessary) and distributed to the selected storage nodes according to the promise.
+5. **Replication:** The data is replicated across multiple nodes to ensure reliability as per the agreed replication factor.
 
-5. **Enabling Capabilities**:
-   Including module hashes in messages aligns with the capability-based security model. Capabilities can include specific module hashes that nodes are authorized to execute, providing fine-grained access control. This approach ensures that nodes only execute permitted code, enhancing the overall security and governance of the decentralized system.
+### Retrieval Process
+1. **Identification:** The key associated with the data is used to locate the data across the DHT.
+2. **Market Interaction:** The node seeking to retrieve the data interacts with the market to find retrieval offers.
+3. **Promise Formation:** A retrieval promise is established, detailing the retrieval terms.
+4. **Data Transfer:** The data is retrieved from the storage nodes and transferred to the requesting node according to the promise conditions.
 
-In summary, including the module hash in messages is essential for achieving deterministic execution, enabling content-addressable storage, facilitating demand-driven deployment of new code, ensuring security, and supporting capability-based access control. This practice aligns with the principles of decentralized systems, promoting consistency, flexibility, and trust among participating nodes.
+### Node Advertising for Blob Storage
 
-### Kernel's Dynamic Handling of Accept and HandleMessage
+Even though the DHT handles primary routing and replication, a node that chooses to store a blob copy despite DHT routing can advertise this copy through the open market layer. The steps to do this include:
 
-Implementing an advanced interaction model involves considering different versions of function handling of messages. There are two possible structures: combined functions or separate functions.
+1. **Voluntary Storage:** The node voluntarily stores a blob copy even when not selected by the DHT's usual replication mechanism, typically motivated by a price hike or anticipated demand.
+2. **Market Advertisement:** The node advertises its storage offer on the open market, specifying the terms, including the price and retrieval conditions.
+3. **Availability Announcement:** The node updates its routing information and market listings to announce the availability of the stored blob, ensuring that other nodes in the network can discover and bid for retrieval services if needed.
 
-### Combined Function:
+## Market Dynamics
 
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
+### Incentive Structures
+- **Quality of Service (QoS):** Nodes are incentivized to provide high-quality storage and retrieval services, which are reflected in their reputation. Higher reliability and faster access times may attract higher prices.
+- **Reputation Impact:** Nodes failing to meet their promises face a degradation in their reputation, which discourages poor performance and broken promises.
 
-type LocalCacheModule struct {
-    cacheDir string
-}
+### Competitive Environment
+- **Differentiation:** Nodes can differentiate themselves based on their QoS offerings, such as uptime, speed, and reliability.
+- **Reputation Systems:** A robust reputation system tracks the performance and reliability of nodes, influencing their attractiveness and opportunities in the market.
 
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
+## Security Considerations
 
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to process message, which includes accepting and handling
-    // Return a promise message with acceptance and handling results or errors
-}
+### Data Integrity and Privacy
+- **Cryptographic Hashing:** Each data chunk is signed with a cryptographic hash to ensure integrity and detect tampering.
+- **Encryption:** Data can be encrypted before storage to maintain privacy, with only authorized nodes having access to decryption keys.
+
+### Trust and Verification
+- **Decentralized Trust:** The hybrid system minimizes the reliance on central authorities, relying instead on cryptographic promises and reputation systems to foster trust.
+- **Auditability:** All transactions, promises, and broken promises are logged and auditable to ensure transparency and accountability.
+
+## Transaction Logs
+
+### Storage of Transaction Logs
+- **Hashed Blobs:** Transaction logs are themselves stored in the system as hashed blobs, just like any other data. This ensures their integrity, verifiability, and availability throughout the network.
+
+## Conclusion
+
+The hybrid DHT and open market design combines the decentralized robustness of DHT structures with the dynamic and competitive elements of an open market. By integrating these two paradigms, the system aims to enhance flexibility, scalability, and resilience in data storage and retrieval.
+
+Future work will focus on refining the economic models, improving security mechanisms, and optimizing the performance of both the DHT backbone and the open market layer.
 ```
-
-### Separate Functions:
-
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-   // Implement logic for accepting or rejecting based on parameters
-}
-
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic for handling the message after acceptance
-}
-```
-
-### Conclusion
-
-By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
-
-### Open Questions
-
-1. **Handling Broken Promises**: What strategies can we implement to handle broken promises effectively? How can we ensure that nodes that consistently break promises have their reputation impacted in a measurable way?
-2. **Determining Best Route**: When multiple handlers are available, how can we determine the most efficient or reliable route for handling a message? Should we prioritize handlers based on historical performance, reputation, or other factors?
-3. **Integration with Other Systems**: How can we better integrate JSON Web Tokens (JWT) and similar systems with PromiseGrid’s architecture? What role should JWT play in managing capabilities within the grid?
-4. **Security Measures**: Given the reliance on module hashes for deterministic execution, what additional security measures can enhance the integrity and trustworthiness of the system? How can we mitigate potential risks associated with hash collisions and tampering? 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/150-capability-tokens.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/343-dht.md

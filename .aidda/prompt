@@ -6,10 +6,10 @@ Sysmsg: You are an expert technical writer and software architect.
     document should be a coherent whole.  Do not change the central
     focus of the output document.
 In: 
-    v2/doc/390-zkos.md
-    v2/doc/343-dht.md
-Out: v2/doc/343-dht.md
+    v2/doc/330-messages.md
+    v2/doc/321-mach.md
+Out: v2/doc/321-mach.md
 
-Reconcile 343-dht.md with 390-zkos.md.  Do not change the focus of 343-dht.md.
-Reconcile or remove any information in 343-dht.md that conflicts with 390-zkos.md.
+Reconcile 321-mach.md with 330-messages.md.  Do not change the focus of 321-mach.md.
+Reconcile or remove any information in 321-mach.md that conflicts with 330-messages.md.
 The output document should be a coherent whole.

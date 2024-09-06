@@ -12,12 +12,12 @@ The PromiseGrid Kernel is designed with a focus on decentralized governance, mod
 4. **Promises All the Way Down**: Every interaction in the system is based on promises. A response to a promise is another promise.
 5. **Non-Sandboxed Modules**: Non-sandboxed modules in PromiseGrid are analogous to device drivers in a microkernel OS. Just as device drivers handle specific hardware functionality in a microkernel, non-sandboxed modules handle specific external operations in the grid (e.g., network communications, file access). The kernel delegates these operations to non-sandboxed modules while maintaining control over the overall execution.
 
-## Cache and Promise Handling in the PromiseGrid Kernel
+## Cache Handling in the PromiseGrid Kernel
 
 ### Cache Structures
 
 1. **Multiple Caches**:
-    - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
+    - There **MAY BE** multiple caches, including a built-in cache in the kernel and caches provided by various modules.
     - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
     - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
 

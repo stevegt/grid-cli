@@ -2,11 +2,13 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
     Merge the input documents into the output document.  Maintain the
-    focus of the output document.  
+    focus of the output document.  Reconcile any conflicts between the
+    input documents.  The output document should be a coherent whole.
 In: 
-    v2/doc/README.md
-    v2/doc/190-side-effects.md
-Out: v2/doc/190-side-effects.md
+    v2/doc/346-persist.md
+    v2/doc/203-markov.md
+Out: v2/doc/203-markov.md
 
-Merge README.md into 190-side-effects.md without changing the focus of 190-side-effects.md.
-
+Merge 346-persist.md into 203-markov.md without changing the focus of 203-markov.md.
+Reconcile any conflicts between the two documents.  The output document
+should be a coherent whole.

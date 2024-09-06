@@ -164,6 +164,5 @@ By integrating promises at every level and implementing a hierarchical syscall t
 ### Open Questions
 
 1. **Handling Broken Promises**: What strategies can we implement to handle broken promises effectively? How can we ensure that nodes that consistently break promises have their reputation impacted in a measurable way?
-2. **Determining Best Route**: When multiple handlers are available, how can we determine the most efficient or reliable route for handling a message? Should we prioritize handlers based on historical performance, reputation, or other factors?
 3. **Integration with Other Systems**: How can we better integrate JSON Web Tokens (JWT) and similar systems with PromiseGrid’s architecture? What role should JWT play in managing capabilities within the grid?
 4. **Security Measures**: Given the reliance on module hashes for deterministic execution, what additional security measures can enhance the integrity and trustworthiness of the system? How can we mitigate potential risks associated with hash collisions and tampering? 

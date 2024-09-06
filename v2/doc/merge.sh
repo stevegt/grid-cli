@@ -19,7 +19,16 @@ Out: v2/doc/$output
 
 Reconcile $output with $input.  Do not change the focus of $output.
 Reconcile or remove any information in $output that conflicts with $input.
-The output document should be a coherent whole." > ../../.aidda/prompt
+The output document should be a coherent whole.
+
+If the input or output documents contain any open questions, answer
+them in the output document.  
+
+Add new open questions to the output document if they are not already
+present.
+" > ../../.aidda/prompt
+
+I
 
 grok aidda commit prompt
 

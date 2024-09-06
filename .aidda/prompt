@@ -1,11 +1,12 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-    Merge the input documents into the output document.
+    Merge the input documents into the output document.  Maintain the
+    focus of the output document.  
 In: 
-    v2/doc/323-syscalls.md
-    v2/doc/341-magic.md
-Out: v2/doc/341-magic.md
+    v2/doc/410-zkp.md
+    v2/doc/000-TODO.md
+Out: v2/doc/000-TODO.md
 
-Merge 323-syscalls.md into 341-magic.md.
+Merge 410-zkp.md into 000-TODO.md without changing the focus of 000-TODO.md.
 

@@ -2,7 +2,11 @@
 
 # padsp signalgen -t 100m sin 444
 
-output=$(ls *.md | randline)
+output=$1
+
+if [ -z "$output" ]; then
+    output=$(ls *.md | randline)
+fi
 
 echo "Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable

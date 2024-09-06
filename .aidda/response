@@ -1,186 +1,141 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/001-design.md
-```markdown
-# Design and Discussion Notes
-
-## Introduction
-
-The PromiseGrid Kernel is designed with a focus on decentralized governance, modularity, and promise-based interactions. This document consolidates design and discussion notes from various files involved in the development process, integrating core concepts, sequence matching, and routing mechanisms derived from comprehensive discussions.
-
-## Core Concepts
-
-1. **Decentralized Architecture**: PromiseGrid operates as a decentralized computing, communications, and governance system. It is designed to be owned and operated by its users rather than any single entity.
-2. **Capability-as-Promise Model**: Capabilities are treated as promises, similar to concepts from Promise Theory. A capability token represents a promise that can either be fulfilled or revoked.
-3. **Content-Addressable Code**: Both code and data are addressed by their content, not by location or name. This allows the grid to store and execute code and access data from any node in the network.
-4. **Promises All the Way Down**: Every interaction in the system is based on promises. A response to a promise is another promise.
-5. **Non-Sandboxed Modules**: Non-sandboxed modules in PromiseGrid are analogous to device drivers in a microkernel OS. Just as device drivers handle specific hardware functionality in a microkernel, non-sandboxed modules handle specific external operations in the grid (e.g., network communications, file access). The kernel delegates these operations to non-sandboxed modules while maintaining control over the overall execution.
-
-## Cache Handling in the PromiseGrid Kernel
-
-### Cache Structures
-
-1. **Multiple Caches**:
-    - There **MAY BE** multiple caches, including a built-in cache in the kernel and caches provided by various modules.
-    - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
-    - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
-
-### Treating Modules as Caches
-
-1. **Role of Modules**:
-    - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-    - Modules **MAY** contribute to the cache or provide the requested data dynamically.
-
-2. **Unified Interface**:
-    - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as hashed function calls. The caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
-
-## Flexible Design for Module Registration
-
-### Explicit Module Registration
-
-**Pros**
-1. **Clarity and Explicitness**: Modules explicitly report their capabilities, making it easier to understand the system's configuration and functionality.
-2. **Fine-Grained Control**: The kernel can enforce specific rules and constraints on modules based on their declared capabilities.
-3. **Dynamic Adaptation**: Modules can dynamically update their capabilities, allowing for on-the-fly changes and adaptation.
-
-**Cons**
-1. **Complexity**: The registration process adds complexity to the module initialization and management process.
-2. **Performance Overhead**: The kernel must maintain and query a registry of module capabilities, which can introduce performance overhead.
-3. **Dependency Management**: Changes in module capabilities may require updates to the kernel or other modules, increasing the risk of dependencies and compatibility issues.
-
-## Exchange Rate Routing
-
-### Concept
-
-Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence the routing decisions, promoting reliable behavior and network stability.
-
-### How It Works
-
-1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
-2. **Routing Decisions**: Hosts prefer routes through other hosts with higher-valued currencies to ensure stability and reliability.
-3. **Dynamic Adjustments**: Exchange rates are dynamic and adjust based on host behavior and market conditions.
-
-### Advantages
-
-- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
-- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
-- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
-
-## Acceptance and Promises
-
-### Acceptance Criteria
-
-1. **Acceptance Criteria**:
-    - Modules **MUST** define acceptance criteria for promises, module hashes, and arguments. This can be implemented as an interface for modules, simplifying the acceptance to a single `Accept()` function.
-
-2. **Promises as Acceptance**:
-    - By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
-    - The acceptance is treated as a commitment to handle the message correctly. If `HandleMessage` fails, it's a broken promise.
-
-3. **Ant Routing Mechanism**:
-    - The syscall tree acts as an "ant routing" mechanism. In it, we cache the fact that a previous call worked, so in the future, we follow the same path to the same module for similar calls.
-    - The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
-
-### Integration with Church, Turing, and Chomsky's Concept of "Accept"
-
-1. **Computational Theory**:
-    - The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory and languages, where an automaton or machine accepts an input if it reaches an accepting state.
-    - In PromiseGrid, modules act as recognizers for specific tasks, based on the promise hash, module hash, and arguments.
-
-2. **Promises All the Way Down**:
-    - The concept of "promises all the way down" integrates acceptance as a promise message, enhancing the robustness and trustworthiness of the system.
-    - Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
-
-## Kernel's Dynamic Syscall Tree
-
-### Syscall Table and Acceptance History
-
-- The acceptanceHist and syscallTable **SHOULD BE** the same. This dynamic syscall tree **SHOULD** store acceptance history for all modules.
-- The kernel **SHOULD** store positive and negative acceptance history for all modules such that when it receives a message, it can look up which modules accept the leading parms, skip the modules that reject the leading parms, and call accepting modules, providing the full set of parms.
-- This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
-- The kernel **MUST** route messages to the module whose syscall tree key matches the most leading parameter components, optimizing routing and reducing redundant checks.
-
-## Combining Accept and HandleMessage Functions
-
-### Pros and Cons of Separate `Accept()` and `HandleMessage()` Functions versus a Single Function 
-
-#### Combined Function
-
-**Pros**:
-1. **Simplicity**: Combines decision-making and handling into a single function.
-2. **Consistency**: Ensures the decision to handle and the actual handling are tightly coupled, increasing consistency and reducing logic duplication.
-3. **Efficiency**: Eliminates redundant checks by combining acceptance and handling.
-
-#### Separate Functions
-
-**Pros**:
-1. **Clarity**: Maintains clear separation between decision-making and handling logic.
-2. **Early Rejection**: Allows for quick rejection of messages based on promise, module hash, or arguments without performing any handling.
-3. **Modular Logic**: Facilitates modular and specialized acceptance and handling logic.
-
-### Acceptance as Promise
-
-Combining the `Accept` and `HandleMessage` functions would imply that the acceptance itself is a promise, aligning with the concept that "it's promises all the way down." This structure implies that:
-
-1. **Acceptance as a Promise**: The first element in `Parms` indicates whether the module promises to handle the message.
-2. **Handling as Promise Fulfillment**: `HandleMessage` attempts to fulfill this promise. If it fails (breaking the promise), it is logged and handled appropriately.
-
-## Proposed Dynamic Syscall Table and Ant Routing
-
-Implementing a dynamic syscall table with ant routing involves:
-
-1. **Hierarchical Syscall Tree**: Each node in the tree can have multiple children representing different components of the parameters (`parms`).
-2. **Caching Successful Paths**: Cache successful paths to optimize future routing based on leading parameter sequences.
-3. **Populating During Operation**: The syscall tree starts empty and is populated during operation as modules accept and handle messages.
-
-### Examples of Unified and Separate Function Approaches
-
-#### Combined Function:
-
-```go
-type Module interface {
-    ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error)
-}
-
-type LocalCacheModule struct {
-    cacheDir string
-}
-
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
-
-func (m *LocalCacheModule) ProcessMessage(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to process message, which includes accepting and handling
-    // Return a promise message with acceptance and handling results or errors
-}
+File: /home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
 ```
+# TODO List for Implementing PromiseGrid Kernel
 
-#### Separate Functions:
+## General Improvements
+- Improve documentation clarity and consistency.
+- Resolve internal inconsistencies and discuss any remaining conflicts.
+- Add logical statements and recommendations in technical sections.
+- Include open-ended questions to provoke further discussion and exploration.
 
-```go
-type Module interface {
-    Accept(ctx context.Context, parms ...interface{}) (Message, error)
-    HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error)
-}
+## Documentation Refinements
+- Identify and resolve any conflicting information within the documentation.
+- Ensure all statements are logical and support the overall system architecture.
+- Add recommendations and best practices based on the current design.
+- List documents that are most similar and could be merged.
 
-type LocalCacheModule struct {
-    cacheDir string
-}
+## Detailed Task List
+- Review the documentation for:
+  - Logical flow and coherence.
+  - Consistency in terminology usage.
+- Resolve any discrepancies or conflicting ideas.
+- Detailed descriptions for some of the strategies and methods mentioned:
+  - Implement example-based explanations wherever possible.
+  - Provide case studies and visual aids to enhance understanding.
 
-func NewLocalCacheModule(cacheDir string) *LocalCacheModule {
-    return &LocalCacheModule{cacheDir: cacheDir}
-}
+## Cache Design and Lookup
+- Refactor the cache design to use byte sequence completion for key management.
+  - Remove references to `/`-separated cache keys and transition to byte sequence completion.
+  - Document the byte sequence management strategy.
+- Reimplement the cache index to handle byte sequences, removing dependencies on filesystem operations for key management.
 
-func (m *LocalCacheModule) Accept(ctx context.Context, parms ...interface{}) (Message, error) {
-    // Implement logic to accept or reject based on parms
-}
+## Dynamic Acceptance History and Syscall Table
+- Revamp the acceptance history mechanism to track byte sequence completions.
+  - Store positive and negative sequence completions effectively.
+  - Populate acceptance and rejection history dynamically during kernel operations.
+  - Implement efficient lookup facilities to match message sequences with handlers based on historical completion success rates.
 
-func (m *LocalCacheModule) HandleMessage(ctx context.Context, parms ...interface{}) ([]byte, error) {
-    // Implement logic to handle the message following acceptance
-}
+## Implement Ant Routing Mechanism
+- Integrate byte sequence completion with the ant routing mechanism.
+  - Adapt the ant routing algorithm to cache successful byte sequence paths.
+  - Develop a strategy to dynamically adjust routing based on promise fulfillment statistics.
+
+## Promise-Based Design
+- Augment cache and syscall tree design to fully integrate with byte sequence completion as a core mechanism:
+  - Rework promise handling to support dynamic sequence completion.
+  - Investigate and implement strategies for embedding promise validation within byte sequence matching.
+
+## Polymorphic Handling and Error Detection
+- Develop error handling routines specific to byte sequence completion:
+  - Enhance the dispatching mechanism to manage failures in byte sequence processing gracefully.
+  - Implement retries and alternative handler routing based on sequence fulfillment failures.
+
+## File Storage and Byte Sequences
+- Migrate storage mechanisms to manage byte sequences efficiently:
+  - Replace traditional file key management with content-addressable byte sequences.
+  - Ensure compatibility with Origin Private File System (OPFS) and abstract filesystem integration via libraries like `afero`.
+
+## Usability and Documentation
+- Improve the documentation on managing and converting sequences:
+  - Create clear usage examples and guidelines for byte sequence management.
+  - Provide concise guides for converting from legacy filesystem-based cache management to byte sequence completion.
+
+## Review and Refactor
+- Conduct a comprehensive review to identify legacy points where `/`-separated cache key handling still exists:
+  - Complete refactoring of these sections to support byte sequence completion.
+  - Validate the correctness and performance of new implementations in various scenarios.
+
+## Security and Verification
+- Assess security implications of new byte sequence completion strategies:
+  - Ensure that new designs for caching and syscall mechanisms do not introduce vulnerabilities.
+  - Enhance the validation and verification processes to assert the integrity of sequence handling mechanisms.
+
+## The documents most in disagreement or conflict with each other appear to be:
+
+1. **001-design.md vs. 002-design.md**
+   - Both documents outline the design principles and core concepts of PromiseGrid but may contain conflicting details or approaches:
+     - **001-design.md** emphasizes a more detailed and structured approach to the core concepts, including the functionality of non-sandboxed modules, capability-as-promise model, and acceptance history.
+     - **002-design.md** provides a broader overview of the same concepts with a slightly different emphasis on explicit module registration and hash-based routing without as much detail on the execution of these concepts.
+     - **Potential Conflicts**:
+       - **Module Registration**: Differences in the preference for explicit module registration (001-design.md) vs. hash-based routing (002-design.md).
+       - **Cache and Promise Handling**: Specific implementation details on how caches handle promises and dynamic adaptation may differ between the documents.
+       - **Role of Non-Sandboxed Modules**: 001-design.md provides more specific analogies compared to 002-design.md's generalized approach.
+
+2. **003-design.md vs. 010-cache.md vs. 011-cache.md vs. 013-cache.md vs. 014-cache.md**
+   - These documents discuss cache and module handling in the PromiseGrid Kernel. They may have overlapping content and possibly conflicting methods or guidelines on cache management and promise handling:
+     - **Cache Indexing**: Different approaches to indexing and managing the cache.
+     - **Byte Sequence Management**: Handling byte sequences in cache operations may be inconsistently addressed.
+
+3. **190-side-effects.md vs. 201-computable.md**
+   - These documents explore theoretical aspects of PromiseGrid’s model, focusing on side effects and computability, potentially leading to differing views on how these principles are applied:
+     - **Theoretical Discussions**: Possible divergence in how side effects are integrated with the overall model and the applicability of computability concepts to byte sequence completion.
+
+4. **207-vn-guest.md vs. 202-von-neumann.md**
+   - Both discuss hosting conventional systems on PromiseGrid but from different perspectives, which might result in conflicting recommendations or methodologies:
+     - **Integration Methods**: Potentially different approaches for integrating traditional systems into PromiseGrid.
+     - **Compatibility Issues**: Differing views on handling compatibility and adapting conventional systems to PromiseGrid’s architecture.
+
+### Steps for Resolving Conflicts
+
+1. **Harmonize Design Principles**:
+   - Review and align the overarching design principles across 001-design.md and 002-design.md to ensure a cohesive vision.
+
+2. **Consolidate Cache Management Methods**:
+   - Merge the cache management strategies from 003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md into a unified guide. Address any conflicting methods and settle on a standardized approach.
+
+3. **Align Theoretical Concepts**:
+   - Reconcile the theoretical discussions in 190-side-effects.md and 201-computable.md to ensure a consistent interpretation of side effects and computability within the PromiseGrid framework.
+
+4. **Unified Approach for Hosting Systems**:
+   - Combine insights from 207-vn-guest.md and 202-von-neumann.md to provide a clear, consistent methodology for hosting conventional systems on PromiseGrid.
+
+### Merging Similar Documents
+
+To reduce redundancy and potential conflicts, consider merging the following documents:
+
+1. **001-design.md and 002-design.md** into a single comprehensive design guide.
+2. **003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, and 014-cache.md** into a unified cache and module handling guide.
+3. **190-side-effects.md and 201-computable.md** into a cohesive theoretical framework document.
+4. **207-vn-guest.md and 202-von-neumann.md** into a comprehensive guide for hosting conventional systems on PromiseGrid.
+
+## List of Documents Discussing Hash-Based Routing
+
+1. **Design Principles and Core Concepts in PromiseGrid (001-design.md)**
+   - Discusses the core design principles, including the functionality and interaction between non-sandboxed modules, explicit module registration, and hash-based routing.
+
+2. **PromiseGrid Design Overview (002-design.md)**
+   - Emphasizes broad design aspects including the preference for hash-based routing mechanisms without delving into intricate details.
+
+3. **Cache and Module Handling Guidelines (003-design.md, 010-cache.md, 011-cache.md, 013-cache.md, 014-cache.md)**
+   - Various documents exploring different methods of cache management, including hash-based routing approaches.
+
+4. **Theoretical Aspects of PromiseGrid (190-side-effects.md, 201-computable.md)**
+   - Delving into the theoretical frameworks, including discussion on how hash-based routing integrates with side effects and computability concepts.
+
+5. **Hosting Conventional Systems (207-vn-guest.md, 202-von-neumann.md)**
+   - Different perspectives on integrating conventional systems into PromiseGrid, with methods contemplating hash-based routing as a solution.
+
 ```
-
-## Conclusion
-
-By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The simplified message structure and consistent handling of cache and modules contribute to a robust and flexible system.
+EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/001-design.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/000-TODO.md

@@ -6,7 +6,8 @@ In:
     v2/doc/
 .revise v2/doc/000-TODO.md
 
-- which two docs are most in conflict?
+- find the two files which most disagree with each other 
+- recommend changes that will remove the disagreement
 
 .stop
 

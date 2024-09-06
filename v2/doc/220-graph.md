@@ -1,4 +1,3 @@
-
 ### Sequence Matching Graph Documentation
 
 #### 1. Overview
@@ -12,7 +11,7 @@ Each node in the sequence-matching graph contains the following components:
 2. **Occurrences**:
     - A list of positions in the reference sequences where this segment occurs.
 3. **Children**:
-    - A map from sequence characters to child nodes, which represent the continuation of the sequence.
+    - A map from sequence characters to child nodes, representing the continuation of the sequence.
         
     ```go
     type Node struct {

@@ -7,10 +7,10 @@ Sysmsg: You are an expert technical writer and software architect.
     document should be a coherent whole.  Do not change the central
     focus of the output document.
 In: v2/doc/
-Out: v2/doc/220-graph.md
+Out: v2/doc/README.md
 
-Revise 220-graph.md; you must make changes.  Do not change the focus of
-220-graph.md.  Reconcile or remove any information in 220-graph.md that
+Revise README.md; you must make changes.  Do not change the focus of
+README.md.  Reconcile or remove any information in README.md that
 conflicts with the input documents.  The output document should be a
 coherent whole.
 

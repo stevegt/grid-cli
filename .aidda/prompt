@@ -1,14 +1,15 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-    Merge the input documents into the output document.  Maintain the
-    focus of the output document.  Reconcile any conflicts between the
-    input documents.  The output document should be a coherent whole.
+    Reconcile the output document with the input document, removing or
+    correcting any conflicts between the two documents.  The output
+    document should be a coherent whole.  Do not change the central
+    focus of the output document.
 In: 
-    v2/doc/346-persist.md
-    v2/doc/203-markov.md
-Out: v2/doc/203-markov.md
+    v2/doc/370-wasm.md
+    v2/doc/150-capability-tokens.md
+Out: v2/doc/150-capability-tokens.md
 
-Merge 346-persist.md into 203-markov.md without changing the focus of 203-markov.md.
-Reconcile any conflicts between the two documents.  The output document
-should be a coherent whole.
+Reconcile 150-capability-tokens.md with 370-wasm.md.  Do not change the focus of 150-capability-tokens.md.
+Reconcile or remove any information in 150-capability-tokens.md that conflicts with 370-wasm.md.
+The output document should be a coherent whole.

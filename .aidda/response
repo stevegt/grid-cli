@@ -1,49 +1,336 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md
+
+File: /home/stevegt/lab/grid-cli/v2/doc/203-markov.md
+```markdown
+# Markov Decision Process Using PromiseGrid's Byte Sequence Completion Model
+
+## Overview
+
+Imagine how a Markov Decision Process (MDP) would function using PromiseGrid's byte sequence completion model. In this context, MDPs can be implemented by leveraging the decentralized and modular framework provided by PromiseGrid to make decisions and optimize actions based on state transitions represented by byte sequences.
+
+## Markov Decision Process (MDP) Basics
+
+An MDP is a mathematical framework for modeling decision-making situations where outcomes are partly random and partly under the control of a decision-maker. It consists of:
+
+1. **States (S)**: Distinct configurations or situations in which the decision-maker finds itself.
+2. **Actions (A)**: Possible moves or decisions the agent can make from each state.
+3. **Transition Function (T)**: The probability of reaching a new state given the current state and an action.
+4. **Rewards (R)**: Immediate returns received after transitioning from one state to another due to an action.
+5. **Policy (π)**: A strategy that defines the action to take in each state.
+
+## Implementing MDP with PromiseGrid's Byte Sequence Completion
+
+### State Representation and Transition
+
+A sequence of states in an MDP can be represented as a sequence of bytes. The bytes in the sequence can represent the transition functions and parameters that are used to reach each successive state. Alternatively, a sequence of transitions can also be summarized (checkpointed) by a byte sequence that represents the ending state, or a hash of a larger blob that represents the ending state; the hash itself can be stored in the trie as a byte sequence, e.g., encoded using multibase and multihash.
+
+### Sequence Completion for Actions
+
+In PromiseGrid, actions in the MDP context correspond to completing byte sequences. The system dynamically matches and completes sequences representing state transitions.
+
+### Process Outline
+
+1. **State Initialization**:
+    - Initialize the MDP by defining the starting state as a unique byte sequence.
+    - Design or assign modules or handlers that will process state transitions.
+
+2. **Action Execution**:
+    - Encode actions as the starting byte sequence, extended by the transition function and parameters.
+    - Use the sequence completion mechanism to apply actions and determine new states.
+    - Alternatively, the transition function might come first in the byte sequence, and the previous state is a parameter to the transition function.
+
+3. **Transition and Reward**:
+    - Define a transition function that maps current state-action pairs to new states using byte sequence completion.
+    - Implement handlers that calculate the transition probabilities and rewards associated with each state-action pair.
+
+4. **Policy Definition**:
+    - Develop a policy using reinforcement learning algorithms to optimize the decision-making process.
+    - Policy modules will dynamically adjust the actions to maximize cumulative rewards based on the observed transitions and rewards.
+
+### Persisting the Trie to Disk
+
+### Introduction
+
+To fully utilize the power of MDPs within PromiseGrid, it is critical to persist the trie data structure to disk, ensuring that state information is not lost between sessions. Several strategies can be applied, considering compatibility, reliability, performance, and flexibility.
+
+### Potential Persistence Strategies
+
+#### 1. Origin Private File System (OPFS)
+
+**Description**: OPFS is designed for web environments, providing secure, performant, and private storage.
+
+**Advantages**:
+- **Security**: Secure storage.
+- **Performance**: Web-optimized.
+- **Compatibility**: Suits WASM environments.
+
+**Implementation**:
+- **WASM**: Direct interaction with OPFS via JavaScript.
+- **Native**: Abstraction layer to handle file I/O using standard calls.
+
+Example in WASM:
+```javascript
+async function writeFile(filename, content) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename, { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+}
+
+async function readFile(filename) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename);
+  const file = await fileHandle.getFile();
+  return await file.text();
+}
 ```
-# Side Effects in PromiseGrid
 
-## Assumption of Side Effects
+#### 2. `afero` Library
 
-In PromiseGrid, it is essential to assume that every call has a side effect, meaning it changes the state of the universe. This assumption is foundational because if a call had no side effect, there would be no reason to make it. Side effects are central to the functionality of PromiseGrid, as they represent the changes and actions that occur within the system through promise fulfillment.
+**Description**: `afero` abstracts filesystem operations, supporting multiple backends.
 
-### Significance of Side Effects
+**Advantages**:
+- **Abstraction**: Common interface for various file systems.
+- **Flexibility**: Supports OS file systems, in-memory systems, and more.
+- **Compatibility**: Works in native environments; extensible to WASM.
 
-Making promises and fulfilling them inherently implies state changes. When a promise is made, it sets the expectation that something will happen or some state will change once the promise is fulfilled. This change could be anything from updating a data record, sending a message, or modifying configuration settings. By design, these side effects are what drive the system forward and enable it to perform meaningful tasks.
+**Implementation**:
+- **WASM**: Custom backend for `afero` communicating with the browser's file API.
+- **Native**: Use default OS filesystem backend.
 
-### Managing Side Effects
+Example in Go:
+```go
+package main
 
-Axiom: Every call has a side effect.
-Axiom: Side effects are never fully known, because they can change state outside the system.
+import (
+	"fmt"
+	"github.com/spf13/afero"
+)
 
-## Relationships Between Promises, Reputation, and Side Effects
+func main() {
+	fs := afero.NewOsFs()
+	// Writing to the file
+	err := afero.WriteFile(fs, "example.txt", []byte("Hello, Afero!"), 0644)
+	if err != nil {
+		fmt.Println("Error writing file:", err)
+		return
+	}
 
-In PromiseGrid, the interplay between promises, reputation, and side effects is critical. Each aspect influences and supports the others, creating a robust and self-regulating system.
+	// Reading from the file
+	content, err := afero.ReadFile(fs, "example.txt")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
 
-### Promise and Side Effect Guarantees
+	fmt.Println("File content:", string(content))
+}
+```
 
-When a module makes a promise, it implicitly guarantees that a particular side effect will occur upon fulfillment. This guarantee forms the basis for trust within the system. Users and other modules rely on these promises to function correctly, knowing that the promised side effects should be realized.  XXX
+### Lazy-Loading Node Files
 
-### Reputation as a Measure of Reliability
+Trie nodes can be lazily loaded from the disk as needed, ensuring optimal memory usage.
 
-Reputation in PromiseGrid acts as a measure of how reliably a module or node fulfills its promises and manages side effects. A high reputation indicates a history of successfully fulfilling promises and causing the expected side effects. Conversely, a low reputation signals frequent breakages of promises or inconsistent side effects, making the entity less trustworthy.
+Example in Go:
+```go
+package main
 
-#### How Reputation Affects Promises and Side Effects
+import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"github.com/spf13/afero"
+	"io"
+	"path"
+)
 
-1. **Decision Making**: Reputation impacts decision-making within the system. Nodes or modules with higher reputations are more likely to be chosen for critical tasks, as their side effects are deemed more reliable.
-2. **Priority Handling**: Promises from high-reputation entities can be prioritized, ensuring that their side effects are applied swiftly to maintain system efficiency.
-3. **Accountability**: Breakages in promises (i.e., unfulfilled side effects) negatively impact reputation, providing a self-regulating mechanism that discourages unreliable behavior.
+type TrieNode struct {
+	Children map[byte]*TrieNode
+	Handlers []Handler
+	Path     string
+	Fs       afero.Fs
+}
 
-### Promise and Side Effect Documentation
+type Trie struct {
+	Root    *TrieNode
+	Fs      afero.Fs
+	BaseDir string
+}
 
-For each promise, the associated side effects should be well-documented. This documentation includes a description of the expected state changes and any potential impact on other parts of the system. By clearly defining the side effects, the system ensures transparency and predictability, making it easier to trust and verify the promises made.
+type Handler func()
 
-### Example of Interplay:
+func NewTrie(fs afero.Fs, baseDir string) *Trie {
+	return &Trie{
+		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
+		Fs: fs,
+		BaseDir: baseDir,
+	}
+}
 
-Consider a scenario where a node promises to update a database record. The side effect of this promise would be the actual updating of the record. If the node consistently fulfills such promises, its reputation would improve, leading to more trust and potential prioritization in future tasks. Conversely, failing to update the record or causing inconsistencies would harm its reputation, making it less likely to be trusted with similar tasks.
+func (t *Trie) Insert(r io.Reader, handler Handler) error {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		if n > 0 {
+			b := buf[0]
+			if _, ok := node.Children[b]; !ok {
+				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
+			}
+			node = node.Children[b]
+		}
+	}
+	node.Handlers = append(node.Handlers, handler)
+	return nil
+}
+
+func (t *Trie) Search(r io.Reader) ([]Handler, error) {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		if n > 0 {
+			b := buf[0]
+			if child, ok := node.Children[b]; ok {
+				if child == nil {
+					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
+					if err != nil {
+						return nil, err
+					}
+					node.Children[b] = loadedNode
+				}
+				node = node.Children[b]
+				if len(node.Handlers) > 0 {
+					return node.Handlers, nil
+				}
+			} else {
+				break
+			}
+		}
+	}
+	return nil, nil
+}
+
+func (t *Trie) SaveNode(node *TrieNode) error {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	if err := enc.Encode(node); err != nil {
+		return err
+	}
+	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
+}
+
+func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
+	if err := t.SaveNode(node); err != nil {
+		return err
+	}
+	for childKey, childNode := range node.Children {
+		if childNode != nil {
+			if err := t.SaveNodesRecursively(childNode); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (t *Trie) Save() error {
+	return t.SaveNodesRecursively(t.Root)
+}
+
+func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
+	data, err := afero.ReadFile(t.Fs, nodePath)
+	if err != nil {
+		return nil, err
+	}
+	buf := bytes.NewBuffer(data)
+	node := &TrieNode{}
+	dec := gob.NewDecoder(buf)
+	if err := dec.Decode(node); err != nil {
+		return nil, err
+	}
+	node.Path = nodePath
+	node.Fs = t.Fs
+	for childKey := range node.Children {
+		node.Children[childKey] = nil // Mark child as needing lazy load
+	}
+	return node, nil
+}
+
+func (t *Trie) Load() error {
+	rootNode, err := t.LoadNode(t.BaseDir)
+	if err != nil {
+		return err
+	}
+	t.Root = rootNode
+	return nil
+}
+
+func main() {
+	fs := afero.NewOsFs()
+	trie := NewTrie(fs, "trie_data")
+
+	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
+	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
+
+	// Save trie to disk
+	if err := trie.Save(); err != nil {
+		fmt.Println("Error saving trie:", err)
+		return
+	}
+
+	// Load trie from disk
+	newTrie := NewTrie(fs, "trie_data")
+	if err := newTrie.Load(); err != nil {
+		fmt.Println("Error loading trie:", err)
+		return
+	}
+
+	// Search in the loaded trie
+	message := bytes.NewReader([]byte{0x01, 0x02})
+	handlers, err := newTrie.Search(message)
+	if err != nil {
+		fmt.Println("Search error:", err)
+		return
+	}
+	if handlers != nil {
+		for _, handler := range handlers {
+			handler()
+		}
+	} else {
+		fmt.Println("No handler found")
+	}
+}
+```
+
+### Advantages of Using PromiseGrid for MDP
+
+1. **Scalability**:
+    - PromiseGrid’s decentralized nature allows for scalable MDP implementations, handling large numbers of states and transitions efficiently.
+
+2. **Modularity**:
+    - The modular approach supports dynamic and distributed decision-making processes, with each state-action pair potentially handled by separate modules.
+
+3. **Flexibility**:
+    - PromiseGrid’s byte sequence completion model provides flexibility in representing complex state transitions and actions.
+
+4. **Enhanced Governance**:
+    - By leveraging the decentralized governance model, decision-making processes in MDPs can be distributed, promoting robust and adaptable policy generation.
 
 ## Conclusion
 
-Assuming side effects are an inherent part of every call in PromiseGrid underscores the importance of promises and their fulfillment. The relationship between promises, reputation, and side effects creates a system where trust, reliability, and accountability are paramount. By ensuring side effects are managed and documented correctly, PromiseGrid maintains a robust and efficient framework for decentralized operations. 
+The Markov Decision Process implementation using PromiseGrid’s byte sequence completion model leverages the system’s decentralized, modular, and scalable framework to optimize decision-making. By representing states, actions, transitions, and rewards as byte sequences and utilizing dynamic sequence completion, PromiseGrid enables efficient and effective MDP solutions adaptable to various applications.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/190-side-effects.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/203-markov.md

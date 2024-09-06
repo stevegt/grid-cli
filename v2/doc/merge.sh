@@ -8,17 +8,18 @@ output=$(ls *.md | randline)
 echo "Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-    Merge the input documents into the output document.  Maintain the
-    focus of the output document.  Reconcile any conflicts between the
-    input documents.  The output document should be a coherent whole.
+    Reconcile the output document with the input document, removing or
+    correcting any conflicts between the two documents.  The output
+    document should be a coherent whole.  Do not change the central
+    focus of the output document.
 In: 
     v2/doc/$input
     v2/doc/$output
 Out: v2/doc/$output
 
-Merge $input into $output without changing the focus of $output.
-Reconcile any conflicts between the two documents.  The output document
-should be a coherent whole." > ../../.aidda/prompt
+Reconcile $output with $input.  Do not change the focus of $output.
+Reconcile or remove any information in $output that conflicts with $input.
+The output document should be a coherent whole." > ../../.aidda/prompt
 
 grok aidda commit prompt
 

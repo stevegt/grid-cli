@@ -4,10 +4,10 @@ Sysmsg: You are an expert technical writer and software architect.
     You are writing a book about PromiseGrid.  Each of the input files
     is a chapter in the book.
 In: v2/doc/
-Out: v2/doc/329-issues.md
+Out: v2/doc/002-design.md
 
 Examine the chapters.  Look for conflicts, redundancies, and
-inconsistencies compared to 329-issues.md.  Fix 329-issues.md.
-You must make changes to 329-issues.md.  Do not change the focus of
-329-issues.md.  The resulting document should be a coherent whole.
+inconsistencies compared to 002-design.md.  Fix 002-design.md.
+You must make changes to 002-design.md.  Do not change the focus of
+002-design.md.  The resulting document should be a coherent whole.
 

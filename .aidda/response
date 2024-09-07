@@ -1,107 +1,106 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/329-issues.md
+File: /home/stevegt/lab/grid-cli/v2/doc/002-design.md
 ```
-# Issues, Problems, and Open Questions
+# PromiseGrid Design
 
-## Review Summary
+## Overview
 
-The following document reviews the current state of the PromiseGrid documentation, highlighting issues, problems, and open questions that need addressing to improve clarity, comprehensiveness, and technical accuracy.
+PromiseGrid is designed as a decentralized computing, communications, and governance framework, leveraging promise-based interactions and content-addressable storage to create a robust and modular system.
 
-## General Issues
+## Core Concepts
 
-### 1. Consistency in Terminology
-- **Problem**: Inconsistent use of terminology across documents, such as "message ports" and "IPC mechanisms".
-- **Solution**: Establish a glossary of terms and ensure consistent usage throughout the documentation.
+1. **Decentralized Architecture**: PromiseGrid operates as a decentralized computing, communications, and governance system. It is designed to be owned and operated by its users rather than any single entity.
 
-### 2. Cross-Referencing Sections
-- **Problem**: Lack of cross-references between related sections, making it harder to navigate and understand the comprehensive system.
-- **Solution**: Add hyperlinks and references between sections discussing related concepts (e.g., refer from IPC mechanisms to specific examples in PromiseGrid).
+2. **Capability-as-Promise Model**: Capabilities are treated as promises, similar to the concepts from Promise Theory. A capability token represents a promise that can either be fulfilled or revoked.
 
-## Specific Document Issues
+3. **Content-addressable Code**: Both code and data are addressed by their content, not by location or name. This allows the grid to store and execute code and access data from any node in the network.
 
-### 320-ipc.md
+4. **Promises All the Way Down**: Every interaction in the system is based on promises. A response to a promise is another promise.
 
-#### 1. Lack of Examples for Concepts
-- **Problem**: The document lacks practical examples and real-world applications of IPC patterns.
-- **Solution**: Include more concrete examples and scenarios demonstrating how IPC mechanisms are implemented in PromiseGrid.
+5. **Non-Sandboxed Modules**: Non-sandboxed modules in PromiseGrid are analogous to device drivers in a microkernel OS. Just as device drivers handle specific hardware functionality in a microkernel, non-sandboxed modules handle specific external operations in the grid (e.g., network communications, file access). The kernel delegates these operations to non-sandboxed modules while maintaining control over the overall execution.
 
-#### 2. Byte-Sequence Completion and Trie Explanation
-- **Problem**: The explanation of byte-sequence completion and trie structures can be abstract and hard to grasp.
-- **Solution**: Enhance explanations with diagrams and step-by-step descriptions to clarify these concepts.
+## System Architecture
 
-### 321-mach.md
+### Flexible Design for Module Registration
 
-#### 1. Incomplete Message Format Details
-- **Problem**: Not all fields in the message structure are explained (e.g., `msgh_bits`, `trailer_type`).
-- **Solution**: Provide detailed descriptions of all fields in the Mach message structure to ensure completeness.
+Modules in PromiseGrid interface with the kernel via either explicit registration or through hash-based routing mechanisms. These two primary methods offer distinct advantages and challenges:
 
-#### 2. Practical Usage Scenarios
-- **Problem**: Lack of practical usage scenarios for Mach ports and messages.
-- **Solution**: Include examples and case studies demonstrating Mach IPC in real-world applications.
+#### Explicit Module Registration
 
-### 322-ports.md
+**Pros**:
+1. **Clarity and Explicitness**: Modules report their capabilities, simplifying system understanding and management.
+2. **Fine-Grained Control**: The kernel can enforce rules and constraints based on module capabilities.
+3. **Dynamic Adaptation**: Modules can update their capabilities dynamically, supporting on-the-fly changes.
 
-#### 1. Code Example Clarity
-- **Problem**: Code examples for creating and using message ports could be expanded and clarified.
-- **Solution**: Provide more comprehensive code snippets and explanations for better understanding.
+**Cons**:
+1. **Complexity**: Adds complexity to module initialization and management.
+2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
+3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
 
-#### 2. Detailed Security Considerations
-- **Problem**: The document doesn't discuss in detail the security aspects of message ports.
-- **Solution**: Add a section specifically addressing security measures and best practices for using message ports in PromiseGrid.
+#### Hash-Based Routing
 
-### 323-syscalls.md
+**Pros**:
+1. **Simplicity**: The kernel routes messages based on cryptographic hashes, reducing the need for an explicit registration step.
+2. **Efficiency**: Hash-based routing can be highly efficient, leveraging cryptographic properties to ensure unique and consistent module addressing.
+3. **Decentralized Management**: Modules are self-contained and can be managed independently without requiring kernel updates or reconfiguration.
 
-#### 1. Dynamic Port Allocation Explanation
-- **Problem**: Insufficient details on dynamic port allocation and management.
-- **Solution**: Expand the section on dynamic allocation with more examples and technical details.
+**Cons**:
+1. **Opaque Mapping**: It may be less clear which module handles a specific message, as the mapping relies on hashes rather than explicit declarations.
+2. **Limited Flexibility**: Modules cannot dynamically update their capabilities without changing their hash, reducing adaptability.
+3. **Security Risks**: The kernel must ensure that the hash-based routing mechanism is secure against hash collisions and attacks.
 
-#### 2. Error Handling Mechanism
-- **Problem**: Error handling in syscall mechanisms is not thoroughly explained.
-- **Solution**: Include a dedicated section on how errors are managed and propagated in syscall communications.
+### Exchange Rate Routing
 
-### 324-syscalls-sequences.md
+Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence the routing decisions, promoting reliable behavior and network stability.
 
-#### 1. Trie Data Structures Visualization
-- **Problem**: The document lacks visual diagrams to illustrate trie structures.
-- **Solution**: Incorporate visual aids to help readers better understand the trie data structures and their traversal.
+#### How It Works
 
-#### 2. Timestamp Handling in Detail
-- **Problem**: Timestamp inclusion for side-effect sequences is not deeply explored.
-- **Solution**: Provide a more detailed explanation of how timestamps are utilized and managed within the sequence completions.
+1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
+2. **Routing Decisions**: Hosts prefer routes through other hosts with higher-valued currencies to ensure stability and reliability.
+3. **Dynamic Adjustments**: Exchange rates are dynamic and adjust based on host behavior and market conditions.
 
-### 325-mount.md
+#### Advantages
 
-#### 1. Mount Handler Implementation Examples
-- **Problem**: The document needs more concrete examples of mount handler implementations.
-- **Solution**: Add detailed implementation examples and scenarios to demonstrate the usage of mount handlers.
+- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
+- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
+- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
 
-#### 2. Comparison with Traditional Mount Tables
-- **Problem**: More comparative analysis with traditional UNIX-like global mount tables is needed.
-- **Solution**: Expand the explanation on the pros and cons of PromiseGrid's approach versus traditional mount tables.
+### Nested Messages and Kernel Arbitration
 
-### 326-prior.md
+Modules can unwrap nested messages, allowing dynamic and complex interactions. The kernel's arbitration is not final, supporting a modular design where tasks can be delegated further through nested messaging.
 
-#### 1. Peer-to-Peer Protocol Details
-- **Problem**: Insufficient details on the peer-to-peer protocol used in systems like Corda.
-- **Solution**: Provide a deeper dive into the peer-to-peer communication protocols and their role in decentralized trie management.
+#### Implications
+1. **Delegated Control**: Enables modular and extensible system design by delegating tasks.
+2. **Dynamic Message Flows**: Supports flexible message handling based on context.
+3. **Complex Dependency Graphs**: Requires careful management to maintain stability.
 
-#### 2. Real-World Case Studies
-- **Problem**: Lack of in-depth case studies on the application of decentralized tries.
-- **Solution**: Include detailed case studies showcasing how decentralized trie structures are utilized in various systems.
+### Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism
 
-## Open Questions
+The syscall tree acts as an "ant routing" mechanism, where successful paths from previous calls are cached, optimizing future routing. The syscall tree utilizes hierarchical keys, filtering based on module acceptance of leading parameters and arguments. 
 
-### 1. Trie Performance Optimization
-- How can we further optimize trie performance for high-throughput environments?
+### Messages and Promises
 
-### 2. Security of Trie Transitions
-- What additional security measures can be implemented to protect against attacks during trie transitions?
+1. **Message Structure**: 
+    - Messages are treated as byte sequences, which have no inherent meaning to the kernel and are interpreted by the appropriate modules.
 
-### 3. Dynamic Capability Management
-- How can we enhance the dynamic allocation and management of capabilities in a decentralized system?
+2. **Multihash, Multibase, and Multicodec**: 
+    - PromiseGrid leverages these standards to autodetect formats, enhancing compatibility and extensibility across various data formats.
 
-### 4. Advanced Routing Algorithms
-- What advanced routing algorithms can be integrated into PromiseGrid to further improve message delivery efficiency?
+### Conclusion
 
-By addressing these issues, problems, and open questions, the PromiseGrid documentation will be more robust, user-friendly, and technically accurate, aiding developers in effectively utilizing the system.
+PromiseGrid leverages decentralized architecture, promise-based interactions, and flexible module registration to create a resilient, scalable, and modular system. By integrating these elements, PromiseGrid ensures efficient message handling, dynamic adaptation, and robust promise fulfillment across the network.
+
+### Open Questions
+
+- How can byte sequence completion be reconciled with explicit registration and hash-based routing?
+- What mechanisms can be developed to handle broken promises effectively?
+- How can the determinant factors of routing efficiency be further optimized with multiple handlers?
+
+### Suggestions for Document Improvement
+
+- Include more examples and case studies.
+- Expand on the hierarchical syscall tree descriptions.
+- Update sections with new questions arising during implementation.
+- Refine the glossary with specialized terms and concepts.
+- Incorporate visual aids to showcase system architecture and data flow.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/329-issues.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/002-design.md

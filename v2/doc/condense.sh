@@ -5,7 +5,7 @@ set -x
 # padsp signalgen -t 100m sin 444
 
 qfile=/tmp/qfile.txt
-pfile=/tmp/$$.prompt
+pfile=/tmp/prompt.txt
 
 while true
 do
@@ -24,11 +24,12 @@ do
 
     prompt="Examine the chapters.  Which two chapters are most
     identical and could be merged into one?  The first line of your
-    answer should be the heading 'File1:' followed by the filename of
-    the first chapter to be merged.  The second line of your answer
-    should be the heading 'File2:' followed by the filename of the
-    second chapter to be merged. The rest of the answer should be a
-    description of changes to make to File2 to make it identical to
+    answer should be the heading 'File1:' followed only by the
+    filename of the first chapter to be merged; include only the
+    filename, do not add punctuation.  The second line of your answer
+    should be the heading 'File2:' followed only by the filename of
+    the second chapter to be merged. The rest of the answer should be
+    a description of changes to make to File2 to make it identical to
     File1."
 
     echo $prompt | grok chat $chatfile -s "$sysmsg" -i $inputs > $qfile
@@ -59,8 +60,15 @@ do
     tail -n +3 $qfile >> $pfile
 
     grok chat $chatfile -s "$sysmsg" -i $fn1,$fn2 -o $fn2 < $pfile
+    if [ $? -ne 0 ]; then
+        echo "Error in grok chat"
+        padsp signalgen -t 100m sin 300
+        continue
+    fi
+
+    echo "Waiting $fn2 save..."
     padsp signalgen -t 100m sin 500
-    inotifywait -e modify $fn
+    inotifywait -e modify $fn2
 done
 
 

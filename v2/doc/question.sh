@@ -44,6 +44,7 @@ do
 
     grok chat $chatfile -s "$sysmsg" -i $fn -o $fn < $pfile
     padsp signalgen -t 100m sin 500
+    inotifywait -e modify $fn
 done
 
 

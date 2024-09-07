@@ -12,6 +12,7 @@ touch $qfile
 while true
 do
     grok aidda commit 
+    padsp signalgen -t 100m sin 600
 
     inputs=$(ls -t *.md | tail -10)
     inputs=$(echo $inputs | sed 's/ /,/g')
@@ -26,12 +27,15 @@ do
     echo $prompt | grok chat $chatfile -s "$sysmsg" -i $inputs > $qfile
 
     echo "Waiting for answer from $qfile..."
+    padsp signalgen -t 100m sin 700
     inotifywait -e modify $qfile
+    padsp signalgen -t 100m sin 444
 
     fn=$(head -n 1 $qfile | sed 's/File: //')
     if [ -z "$fn" ]; then
         echo "No filename found."
-        exit 1
+        padsp signalgen -t 100m sin 300
+        continue
     fi
 
     echo "Modify $fn to answer the following question:" > $pfile
@@ -39,6 +43,7 @@ do
     tail -n +1 $qfile >> $pfile
 
     grok chat $chatfile -s "$sysmsg" -i $fn -o $fn < $pfile
+    padsp signalgen -t 100m sin 500
 done
 
 

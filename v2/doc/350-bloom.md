@@ -63,6 +63,19 @@ A Bloom filter is a space-efficient probabilistic data structure designed to tes
     - If the prefix matches, the system evaluates potential continuations like "ABCD", "ABCDE", etc.
     - Each continuation's bit positions are checked, and most probable continuations are selected for further querying or processing.
 
+### Detailed Data Retrieval Process
+
+1. **Bit Position Mapping**:
+    - The bit positions in the Bloom filter correspond to hash values derived from specific parts of a byte sequence.
+    - For instance, if a byte sequence is "ABCD", different hash functions might map the entire sequence and its segments ("A", "AB", "ABC", "ABCD") to distinct bit positions in the filter.
+    - This allows multiple segments of a sequence to be tracked concurrently, leveraging different parts of the sequence for bit setting.
+
+2. **Overlap and Conflict Management**:
+    - Since multiple hash functions are used, it's possible for different sequences or segments to map to the same bit position.
+    - Such overlaps are managed by the probabilistic nature of the Bloom filter, where the emphasis is on minimizing false negatives rather than completely avoiding overlaps.
+    - Careful selection of the size of the bit array and the number of hash functions helps in reducing the probability of such conflicts.
+    - Regular monitoring and rehashing strategies might also be adopted to keep the rate of false positives within acceptable limits.
+
 ## Integration with PromiseGrid
 
 ### Implementation Details

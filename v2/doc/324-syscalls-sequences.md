@@ -37,6 +37,8 @@ Incorporating timestamps in the request message sequence allows the kernel to ha
 - `file_write` request: `0x02[timestamp][filename][data]`
 - By including a timestamp, the kernel ensures that writes are applied in the correct order, preventing race conditions and conflicts.
 
+XXX disk i/o must be handled by non-sandboxed modules.  The kernel is only a message router.
+
 **Timestamp Example**:
 
 Consider two modules attempting to write to the same file concurrently. The timestamp ensures that the writes are applied in the sequence they were issued:

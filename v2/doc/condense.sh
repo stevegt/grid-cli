@@ -23,7 +23,7 @@ do
         is a chapter in the book."
 
     prompt="Examine the chapters.  Which two chapters are most
-    identical and could b merged into one?  The first line of your
+    identical and could be merged into one?  The first line of your
     answer should be the heading 'File1:' followed by the filename of
     the first chapter to be merged.  The second line of your answer
     should be the heading 'File2:' followed by the filename of the

@@ -73,6 +73,7 @@ In the context of the Chomsky hierarchy, byte sequence completion aligns with di
 4. **Recursively Enumerable Languages (Type 0)**:
     - Turing Machines can handle sequences with the most complex and powerful computational rules, capable of expressing any algorithm. Byte sequence completion at this level can recognize and complete sequences with arbitrary computational complexity.
     - **Example**: A Turing Machine can recognize and complete sequences that require algorithmic computation, such as mathematical functions or simulations.
+    - **PromiseGrid Example**: To represent and handle a computation within the Recursively Enumerable category, PromiseGrid could use a framework where a byte sequence acts as a trace log, checkpointing that most recent state of a computation. For instance, suppose we want to compute a mathematical function like the factorial of a number. Each entry appended to the byte sequence would represent a step in the computation, processing and extending the byte sequence (tape) with intermediates until the final output sequence is achieved. In such a decentralized system, nodes can handle parts of the computation sequence, ensuring scalability and distributed processing power.
 
 ### Conclusion
 

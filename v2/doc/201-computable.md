@@ -80,23 +80,33 @@ Consider the task of evaluating a function `f(x)`:
 
 ## Real-World Examples and Case Studies
 
-### Data Processing
+### Operation of PromiseGrid
 
-In data processing applications, byte sequence completion can streamline operations like filtering, transformation, and aggregation.
+To provide a clearer understanding of PromiseGrid's practical applications, we will focus on its operation in routing, currency exchange, and transactions. These examples will illustrate how byte sequence completion facilitates essential tasks within the grid itself.
 
-- **Example**: Consider a dataset with user records. A byte sequence representing a filtering operation (e.g., selecting users above a certain age) would be dynamically matched and completed to produce the filtered dataset. This is analogous to applying a filter function in lambda calculus or executing a series of state transitions in a UTM.
+### Routing
 
-### Artificial Intelligence
+PromiseGrid's decentralized routing leverages byte sequence completion to dynamically determine the best paths for data packets.
 
-In AI applications, byte sequence completion can facilitate tasks such as pattern recognition and decision-making.
+- **Example**: A data packet's byte sequence indicating its source and destination is matched against a distributed routing table. This sequence completion process identifies the optimal route for the packet, ensuring efficient data transmission across the network.
 
-- **Example**: A byte sequence representing an image classification task would be matched against a trained model's pattern recognition module. The sequence completion would trigger the model to classify the image, returning the appropriate label. This mirrors the application of neural network layers as functions or state transitions in classical models.
+#### Step-by-Step Description:
+1. **Initial Sequence**: A data packet carries a sequence indicating its source ("A") and destination ("B").
+2. **Trie Matching**: The sequence "A->B" is matched against entries in the trie structure representing known routes.
+3. **Path Identification**: The trie identifies a stored sequence corresponding to the optimal path from "A" to "B".
+4. **Completion**: The system completes the sequence by appending the actual routing instructions, and the packet follows this path.
 
-### Network Communications
+### Currency Exchange
 
-In network communications, byte sequence completion can optimize routing, data retrieval, and protocol handling.
+Currency exchange operations within PromiseGrid utilize byte sequence completion to match exchange orders with available offers.
 
-- **Example**: A byte sequence representing a routing request would be matched against a distributed routing table. The completion would dynamically determine the best route, analogous to state transitions in a UTM determining the next state based on input symbols.
+- **Example**: A byte sequence representing an order to exchange currency (e.g., USD to EUR) is matched against standing orders in the grid. The sequence completion mechanism identifies matches and fills the orders.
+
+#### Step-by-Step Description:
+1. **Exchange Request**: A user initiates an exchange order with a byte sequence indicating the currencies ("USD->EUR") and the amount.
+2. **Trie Matching**: The order sequence is matched against stored sequences of standing exchange orders.
+3. **Offer Identification**: The trie structure identifies suitable orders matching the requested exchange parameters.
+4. **Completion**: The system completes the sequence by appending details of the matching order, and the transaction is processed.
 
 ## Conclusion
 

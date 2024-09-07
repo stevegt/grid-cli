@@ -14,7 +14,7 @@ do
     grok aidda commit 
     padsp signalgen -t 100m sin 600
 
-    inputs=$(ls -t *.md)
+    inputs=$(ls -rt *.md)
     inputs=$(echo $inputs | sed 's/ /,/g')
 
     sysmsg="You are an expert technical writer and software architect. 

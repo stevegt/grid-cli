@@ -4,13 +4,15 @@ set -x
 
 # padsp signalgen -t 100m sin 444
 
-chatfile=/tmp/$$.chat
 pfile=/tmp/$$.prompt
 qfile=/tmp/qfile.txt
 touch $qfile
 
 while true
 do
+    chatfile=/tmp/$$.chat
+    rm -f $chatfile
+
     grok aidda commit 
     padsp signalgen -t 100m sin 600
 

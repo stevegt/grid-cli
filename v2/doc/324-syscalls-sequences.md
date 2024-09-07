@@ -34,8 +34,43 @@ Trie example:
 ### Including Timestamps
 
 Incorporating timestamps in the request message sequence allows the kernel to handle synchronization and versioning effectively. For example:
-- `file_write` request: `[timestamp][byte sequence for write][data]`
+- `file_write` request: `0x02[timestamp][filename][data]`
 - By including a timestamp, the kernel ensures that writes are applied in the correct order, preventing race conditions and conflicts.
+
+**Timestamp Example**:
+
+Consider two modules attempting to write to the same file concurrently. The timestamp ensures that the writes are applied in the sequence they were issued:
+
+- Module A sends: `0x02[20230401123000][fileA.txt][Hello, world!]`
+- Module B sends: `0x02[20230401123100][fileA.txt][Welcome to PromiseGrid!]`
+
+Here, the kernel ensures that `Module A's` write is processed before `Module B's` write, maintaining the correct sequence based on their timestamps.
+
+### Handling Timestamps in the Trie
+
+When the kernel receives a syscall request with a timestamp, it incorporates the timestamp into the trie traversal and processing:
+
+1. **Reception**:
+   - The kernel receives the byte sequence: `0x02[20230401123000][fileA.txt][Hello, world!]`
+2. **Trie Lookup with Timestamp**:
+   - The kernel locates the `0x02` node (indicating `file_write`).
+   - It further traverses to match the `20230401123000` timestamp node.
+   - Finally, it matches the `fileA.txt` filename and processes the `Hello, world!` data.
+3. **Conflict Resolution**:
+   - If another request with a later timestamp for the same file is received, the kernel ensures it processes this subsequent request accordingly.
+
+```
+Trie:
+(root) - 0x02 (file_write)
+           |
+      20230401123000 (timestamp)
+           |
+        fileA.txt (filename)
+           |
+  Hello, world! (data)
+```
+
+By embedding timestamps within the byte sequences and trie structure, the kernel achieves a robust mechanism for maintaining data integrity and sequencing.
 
 ## Using stdout for Syscall Communication
 
@@ -121,5 +156,3 @@ In PromiseGrid, treating syscalls as byte sequences and utilizing a trie-based s
 1. **How can we further optimize trie traversal for high-throughput environments?**
 2. **What additional security measures can be introduced to protect against tampering or replay attacks in syscall sequences?**
 3. **How can we ensure compatibility between different versions of modules that may define syscalls differently?**
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/324-syscalls-sequences.md

@@ -21,9 +21,11 @@ do
         We are writing a book about PromiseGrid.  Each of the input files
         is a chapter in the book."
     prompt="Examine the chapters.  Ask me one question about one of the
-        chapters.  The first line of your question should be the heading
-        'File:' followed only by the filename of the chapter you are asking
-        about.  The rest of the question should be the question itself."
+        chapters.  Pay particular attention to resolving ambiguities
+        and inconsistencies. The first line of your question should be
+        the heading 'File:' followed only by the filename of the
+        chapter you are asking about.  The rest of the question should
+        be the question itself."
     echo $prompt | grok chat $chatfile -s "$sysmsg" -i $inputs > $qfile
 
     echo "Waiting for answer from $qfile..."

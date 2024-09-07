@@ -54,6 +54,15 @@ In the PromiseGrid Kernel, caching and module handling are central to optimizing
     - This table **SHOULD** start empty and be populated during operation as the kernel consults built-in and other modules to handle received messages.
     - The kernel **MUST** route messages to the module whose syscall table key matches the most leading parameters components, optimizing routing and reducing redundant checks.
 
+### Responsibilities of Non-Sandboxed Modules vs. Core Functions of the Kernel
+
+1. **Kernel Responsibilities**:
+    - The kernel is responsible for **message routing only**. It maintains the syscall table, handles the routing of messages to the appropriate module based on the leading parameters, and performs minimal core functions.
+
+2. **Non-Sandboxed Module Responsibilities**:
+    - **All syscall-like operations** are delegated to non-sandboxed modules. This includes operations such as security handling, file reading and writing, and process launching. 
+    - Non-sandboxed modules implement the logic for these operations while ensuring security, performance, and compliance with overall system policies.
+
 ### Combining Accept and HandleMessage Functions
 
 #### Pros and Cons of Separate `Accept()` and `HandleMessage()` Functions versus a Single Function

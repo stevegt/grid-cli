@@ -1,0 +1,36 @@
+```
+
+File: /home/stevegt/lab/grid-cli/v2/doc/100-layers.dot
+```dot
+digraph G {
+	rankdir=BT;
+
+	subgraph cluster_0 {
+		label="Physical Layer";
+		Host [ label="PromiseGrid Host\n(Physical)" shape=box];
+	}
+
+	subgraph cluster_1 {
+		label="Kernel Layer";
+		Kernel [ label="PromiseGrid Kernel" shape=box];
+	}
+
+	subgraph cluster_2 {
+		label="Module Layer";
+		Modules [ label="Modules\n(User Space)" shape=box];
+	}
+
+	subgraph cluster_3 {
+		label="Service Layer";
+		Services [ label="Services\n(Application Level)" shape=box];
+	}
+
+	Host -> Kernel;
+	Kernel -> Modules;
+	Modules -> Kernel;
+	Kernel -> Services;
+	Services -> Kernel;
+}
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/100-layers.dot
+```

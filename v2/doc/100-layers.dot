@@ -2,26 +2,33 @@ digraph G {
 	rankdir=BT;
 
 	subgraph cluster_0 {
-		label="Physical Layer";
-		Host [ label="PromiseGrid Host\n(Physical)" shape=box];
+		label="Host Layer";
+		Host [ label="PromiseGrid Host\n(Physical or virtual)" shape=box];
 	}
 
-	subgraph cluster_1 {
-		label="Kernel Layer";
-		Kernel [ label="PromiseGrid Kernel" shape=box];
+	subgraph cluster_4 {
+		label="Link Layer";
+		tcp [ label="long-lived TCP\nbetween peers" shape=box];
+		ipc [ label="Mach-style ports\nbetween modules" shape=box];
 	}
+
+	subgraph cluster_5 {
+		label="Network Layer";
+		route [ label="Routing and forwarding\nof messages" shape=box];
+	}
+
+	subgraph cluster_6 {
+		label="Kernel Layer";
+		Kernel [ label="PromiseGrid Kernel\n(Kernel Space)" shape=box];
+	}
+
 
 	subgraph cluster_2 {
 		label="Module Layer";
 		Modules [ label="Modules\n(User Space)" shape=box];
 	}
 
-	subgraph cluster_3 {
-		label="Service Layer";
-		Services [ label="Services\n(Application Level)" shape=box];
-	}
-
 	Host -> Kernel;
 	Kernel -> Modules;
-	Modules -> Services;
+	Modules -> Kernel;
 }

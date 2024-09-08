@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/100-layers.md
-```
 # PromiseGrid Layer Structure in an OSI-like Model
 
 PromiseGrid's architecture can be understood through a layered approach, similar to the OSI Model used in traditional networking. Here, we outline the key layers and their functions within the PromiseGrid system.
@@ -8,11 +6,13 @@ PromiseGrid's architecture can be understood through a layered approach, similar
 
 ### 1. Physical Layer
 
-**Hardware and Host Layer**: This layer includes the physical or virtual hardware running PromiseGrid. It represents the fundamental resources such as servers, containers, or virtual machines upon which all higher-level operations depend.
+**Hardware and Host Layer**: This layer includes the physical or virtual hardware running PromiseGrid. It represents the fundamental resources such as servers, containers, browsers, or virtual machines upon which all higher-level operations depend.
 
 - **Components**:
   - Physical or virtual servers, hardware resources.
   - Containers or virtual machines.
+  - WASM-based browsers or clients.
+  - Command-line or server applications.
 
 ### 2. Data Link Layer
 
@@ -110,5 +110,3 @@ digraph G {
 ## Conclusion
 
 The PromiseGrid architecture, when depicted in an OSI-like layered model, provides a clear structure for understanding the discrete functions and responsibilities at each level. This layering helps ensure modularity, scalability, and efficient management of resources and communication within PromiseGrid.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/100-layers.md

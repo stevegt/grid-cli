@@ -5,4 +5,5 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/
 Out: v2/doc/100-layers.md
 
-- list the promisegrid layers in an OSI-like model
+- in each layer, describe the promisegrid software component responsible for that layer
+- alter the layer names and descriptions as needed to fit the promisegrid software architecture

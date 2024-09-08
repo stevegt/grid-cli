@@ -26,8 +26,7 @@ Every interaction in the system is based on promises. A response to a promise is
 
 Non-sandboxed modules in PromiseGrid are comparable to device drivers in a microkernel OS. These modules handle specific external operations such as network communications and file access. The kernel delegates these operations to non-sandboxed modules while maintaining overall control.
 
-Non-sandboxed modules SHOULD be loaded from the embedded cache to
-improve local security.
+Non-sandboxed modules SHOULD be loaded from the embedded cache to improve local security.
 
 ## Cache and Promise Handling in the PromiseGrid Kernel
 
@@ -46,7 +45,7 @@ improve local security.
 
 #### Unified Interface
 
-- From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completion operations.  The caller sends a message consisting of a byte sequence, and receives a response message containing the remainder of the sequence.
+- From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations **SHALL BE** treated as byte sequence completion operations. The caller sends a message consisting of a byte sequence, and receives a response message containing the remainder of the sequence.
 
 ### Acceptance and Promises
 

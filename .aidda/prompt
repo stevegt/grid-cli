@@ -5,4 +5,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/
 Out: v2/doc/100-layers.dot
 
-Reverse the arrows.
+- remove the application layer.
+- Add a second module.
+- Modify the arrows to show message flow between two modules via the
+  kernel

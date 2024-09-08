@@ -5,6 +5,4 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/
 Out: v2/doc/100-layers.dot
 
-Draw a graphiz diagram of the layers of software that run on a 
-promisegrid host.  The diagram should be somewhat similar to an 
-OSI model diagram, but should be specific to promisegrid.
+Reverse the arrows.

@@ -1,8 +1,5 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/100-layers.dot
-```
 digraph G {
-	rankdir=LR;
+	rankdir=BT;
 
 	subgraph cluster_0 {
 		label="Physical Layer";
@@ -28,7 +25,3 @@ digraph G {
 	Kernel -> Modules;
 	Modules -> Services;
 }
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/100-layers.dot
-
-

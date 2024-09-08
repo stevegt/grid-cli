@@ -58,6 +58,7 @@ do
     echo "Modify $fn2 according to the following instructions:" > $pfile
     echo >> $pfile
     tail -n +3 $qfile >> $pfile
+    cat $pfile
 
     grok chat $chatfile -s "$sysmsg" -i $fn1,$fn2 -o $fn2 < $pfile
     if [ $? -ne 0 ]; then

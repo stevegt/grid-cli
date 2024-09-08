@@ -33,7 +33,6 @@ improve local security.
 
 ### Cache Structures
 
-
 - There **MAY BE** multiple caches, including the built-in cache in the kernel and caches provided by various modules.
 - The kernel **SHOULD** load the built-in cache from embedded resources using Go’s `embed` feature.
 - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.

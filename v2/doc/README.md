@@ -14,6 +14,7 @@
 | Cache and Promise Handling in the PromiseGrid Kernel | [011-cache](./011-cache.md) |
 | Advanced Discussions on Caching, Promises, and Governance in PromiseGrid | [013-cache](./013-cache.md) |
 | Module Integration and Advanced Concepts | [014-cache](./014-cache.md) |
+| PromiseGrid Layer Structure in an OSI-like Model | [100-layers](./100-layers.md) |
 | Module Integration and Advanced Concepts | [140-cache](./140-cache.md) |
 | Capability Tokens and Prior Art | [150-capability-tokens](./150-capability-tokens.md) |
 | Supercomputer and Mainframe Systems with Hot-Swappable Modules | [160-hotswap](./160-hotswap.md) |
@@ -59,7 +60,9 @@
 | Antikernel: A Decentralized Secure Hardware-Software Operating System Architecture | [400-antikernel](./400-antikernel.md) |
 | Zero-Knowledge Proofs Explained Through Alice, Bob, and Carol | [410-zkp](./410-zkp.md) |
 | PromiseGrid Routing | [420-routing](./420-routing.md) |
+| Unit-Specific Ledgers for Digital Currencies | [421-unit-ledgers](./421-unit-ledgers.md) |
+| Routing and Block Mesh | [422-block-mesh](./422-block-mesh.md) |
 | Axioms  | [910-axioms](./910-axioms.md) |
 | Goals  | [940-goals](./940-goals.md) |
-| TODO List for Implementing PromiseGrid Kernel | [999-TODO](./999-TODO.md) |
 | README.md | [README](./README.md) |
+

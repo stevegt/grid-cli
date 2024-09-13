@@ -2,12 +2,12 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
-Out: v2/doc/900-tests.md
+Out: v2/doc/900-tests-technical.md
 
 - write a markdown document describing tests that should be applied to
-  evaluate the promisegrid design documents 
-- test for consistency, accuracy, conciseness, readibility, and any
-  other metrics you can think of
+  evaluate the promisegrid design documents for technical feasibility
+- list design goals
+- for each design goal, test for the ability of the design to meet the goal
 - the documents under test will later be evaluated by GPT, using
   900-tests.md as the test cases, so write the test cases with that
   use in mind

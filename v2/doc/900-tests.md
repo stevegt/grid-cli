@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/900-tests.md
-```markdown
 # Test Cases for Evaluating PromiseGrid Design Documents
 
 This document outlines test cases to evaluate the PromiseGrid design documents for consistency, accuracy, conciseness, readability, and other quality metrics. These tests are intended to guide the assessment and improvement of the documentation.
@@ -167,4 +165,3 @@ For each test case:
 
 ---
 
-EOF_/home/stevegt/lab/grid-cli/v2/doc/900-tests.md

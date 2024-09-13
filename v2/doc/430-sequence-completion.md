@@ -2,16 +2,16 @@
 
 ## Introduction
 
-PromiseGrid is a decentralized computing, communication, and governance framework that utilizes the concept of **byte sequence completion** as its core model of computation. In this model, computational tasks, data retrieval, and inter-agent communications are all represented as sequences of bytes. The process of completing these byte sequences constitutes the execution of computations or the fulfillment of promises within the system.
+PromiseGrid is a decentralized computing, communication, and governance framework that utilizes the concept of **byte sequence completion** as its core model of computation. In this model, computational tasks, data retrieval, and inter-agent communications are all represented as sequences of bytes. Completing these byte sequences constitutes the execution of computations or the fulfillment of promises within the system.
 
 ## Byte Sequence Completion Model of Computation
 
 ### Concept Overview
 
-In the byte sequence completion model, every computational operation is initiated by a sequence of bytes that represents an incomplete task or request. The system processes this sequence to produce a completion, which represents the result of the computation or the response to a request.
+In the byte sequence completion model, agents initiate every computational operation by sending sequences of bytes that represent incomplete tasks or requests. Other agents process these sequences to produce completions, which represent the results of computations or responses to requests.
 
 - **Byte Sequences as Computations**: Byte sequences can encode any computable function or data. Completing a sequence is analogous to executing a function with given inputs.
-- **Referential Transparency**: The model relies on the principle that any computable data can be addressed using a byte sequence that contains or references the algorithm and its input data.  
+- **Referential Transparency**: The model relies on the principle of referential transparency, where any computable data can be addressed using a byte sequence that contains or references the algorithm and its input data. Referential transparency implies that functions are **pure**, meaning they consistently produce the same output for the same input without causing side effects. By representing computations as pure functions through byte sequences, the system ensures predictability and reliability in processing. Side effects, which are changes in state or observable interactions with external systems, are managed explicitly to maintain integrity.
 
 ### Computational Universality
 
@@ -25,33 +25,35 @@ The byte sequence completion model is computationally universal and aligns with 
 
 1. **Initiation**: An agent sends an initial byte sequence representing a computational task or request.
 2. **Matching**: The system matches the sequence against known sequences to determine how to process it.
-3. **Completion**: If a match is found, the corresponding completion (result) is retrieved or computed.
-4. **Handling Unmatched Sequences**: If no match is found, the system may delegate the sequence to agents capable of processing or completing it.
-5. **Response**: The completed byte sequence is sent back as a response, fulfilling the original request.
+3. **Completion**: If the system finds a match, it retrieves or computes the corresponding completion (result).
+4. **Handling Unmatched Sequences**: If the system does not find a match, it may delegate the sequence to agents capable of processing or completing it.
+5. **Response**: The agent sends back the completed byte sequence as a response, fulfilling the original request.
 
 ## Use of Byte Sequence Completion in PromiseGrid
 
 ### Communication and Messaging
 
-- **Referential Transparency**: In PromiseGrid, communication between agents is conducted through byte sequences. Performing a cache lookup or invoking a function are both treated as byte sequence completions, regardless of locality.
-- **Dynamic Routing**: Messages are routed to the appropriate agents based on sequence completion ability.  (At a lower protocol layer, the choice of agent to route to might be determined by promise make/break reputation scores as tracked by agent personal currencies, but this detail is abstracted from the sequence completion layer.)
+- **Referential Transparency**: In PromiseGrid, agents communicate through byte sequences, embodying the principle of referential transparency. Performing a cache lookup or invoking a function are both treated as byte sequence completions, regardless of locality. This approach ensures that operations are predictable and can be managed as pure functions. 
+
+- **Dynamic Routing**: The system routes messages to the appropriate agents based on sequence completion ability. (At a lower protocol layer, the choice of agent to route to might be determined by promise make/break reputation scores as tracked by agent personal currencies, but this detail is abstracted from the sequence completion layer.)
+
 - **Modularity**: Agents can operate independently, processing the byte sequences they recognize and can complete.
 
 ### Content-Addressable Storage and Cache Management
 
-- **Content-Addressable Storage**: Data and code are stored and accessed based on their content (byte sequences) rather than physical locations or names.
-- **Efficient Caching**: Completed sequences and their results can be cached, associating input sequences with their completions for faster future access.
+- **Content-Addressable Storage**: Agents store and access data and code based on their content (byte sequences) rather than physical locations or names.
+- **Efficient Caching**: Agents can cache completed sequences and their results, associating input sequences with their completions for faster future access.
 - **Decentralized Data Management**: This approach supports decentralized storage, as any agent can store and execute code or access data based on the byte sequence representing it.
 
 ### Scalability and Adaptability
 
-- **Dynamic Integration**: New sequences and agents can be introduced seamlessly. As agents are added or updated, the system can adapt to new byte sequences.
-- **Fault Tolerance**: The decentralized nature and content-addressable storage enhance resilience against failures, as data and computations can be replicated and retrieved from multiple agents.
+- **Dynamic Integration**: Agents can seamlessly introduce new sequences. As agents add or update sequences, the system can adapt to new byte sequences.
+- **Fault Tolerance**: The decentralized nature and content-addressable storage enhance resilience against failures, as agents can replicate and retrieve data and computations from multiple agents.
 
 ### Examples of Application
 
-- **Function Execution**: A byte sequence representing a function and its arguments is completed by executing the function, producing the result as the completion.
-- **Data Retrieval**: A sequence corresponding to a data request is matched and completed by retrieving the associated data.
+- **Function Execution**: Agents complete a byte sequence representing a function and its arguments by executing the function, producing the result as the completion.
+- **Data Retrieval**: Agents match and complete a sequence corresponding to a data request by retrieving the associated data.
 - **Inter-Agent Communication**: Agents exchange byte sequences as messages. Completion of these sequences involves processing the message and potentially sending back a response.
 
 ## Advantages of the Byte Sequence Completion Model

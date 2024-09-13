@@ -2,7 +2,13 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
-Out: v2/doc/430-sequence-completion.md
+Out: v2/doc/900-tests.md
 
-- expand referential transparency, mentioning pure functions and side effects
-- replace passive voice with active voice
+- write a markdown document describing tests that should be applied to
+  evaluate the promisegrid design documents 
+- test for consistency, accuracy, conciseness, readibility, and any
+  other metrics you can think of
+- the documents under test will later be evaluated by GPT, using
+  900-tests.md as the test cases, so write the test cases with that
+  use in mind
+

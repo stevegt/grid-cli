@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/900-tests-technical.md
-```markdown
 # Technical Feasibility Tests for PromiseGrid Design Documents
 
 This document outlines test cases to evaluate the PromiseGrid design documents for technical feasibility. Each test focuses on a specific design goal and provides criteria to assess whether the design meets that goal.
@@ -129,6 +127,61 @@ This document outlines test cases to evaluate the PromiseGrid design documents f
 
 - **Graceful Degradation**: Assess how the system maintains operation under degraded conditions and how it prioritizes essential functions.
 
+### 9. Layer design
+
+**Goal**: The system is designed with clear separation of concerns and well-defined layers for different functionalities.
+
+**Tests**:
+
+- **Layer Definitions**: Verify that the design documents clearly define the different layers of the system and their responsibilities.
+
+- **Inter-Layer Communication**: Check that the design specifies how communication occurs between layers and how data is passed between them.
+
+- **Layer Independence**: Ensure that each layer can operate independently of the others and that changes in one layer do not require modifications in other layers.
+
+- **Layer Abstraction**: Assess how the layers abstract underlying complexities and provide clear interfaces for interaction.
+
+### 10. Runtime simplicity
+
+**Goal**: The system runtime is designed to provide a simple, easily understandable environment for user-developed agents.
+
+**Tests**:
+
+- **Simple API**: Verify that the runtime provides a simple and intuitive API for agent development.
+
+- **Documentation Clarity**: Check that the runtime documentation is clear and accessible to users of varying technical backgrounds.
+
+- **Error Handling**: Ensure that error messages and exceptions are informative and help users diagnose and resolve issues.
+
+- **Debugging Tools**: Assess whether the runtime includes tools for debugging and monitoring agent behavior.
+
+### 11. Configuration Management
+
+**Goal**: The system supports the development and execution of congiguration management tools to automate the deployment and management of operating systems, applications, and IoT devices.
+
+**Tests**:
+
+- **Container Support**: Verify that the system supports containerization technologies for running external services and applications.
+
+- **VM Support**: Check that the system can manage virtual machines and interact with VM-based services.
+
+- **Bare-Metal Integration**: Ensure that the system can install, manage, and upgrade operating systems running on physical hardware.
+
+### 12. Orchestration
+
+**Goal**: The system provides orchestration capabilities to automate the deployment, scaling, and management of containerized applications.
+
+**Tests**:
+
+- **Image Management**: Verify that the system can manage container images, including pulling, storing, and distributing images.
+
+- **Resource Allocation**: Check that the system can allocate resources to containers based on defined requirements and constraints.
+
+- **Lifecycle Management**: Ensure that the system can start, stop, and scale containers based on demand and policies.
+
+- **Networking**: Assess how the system handles container networking, including inter-container communication and external connectivity.
+
+
 ## Additional Considerations
 
 - **Open Questions Resolution**: Review the design documents for any open questions or unresolved issues. Propose tests or evaluations to address these areas.
@@ -141,5 +194,3 @@ This document outlines test cases to evaluate the PromiseGrid design documents f
 
 The above test cases are intended to guide a comprehensive evaluation of the PromiseGrid design documents for technical feasibility relative to the system's design goals. Each test should be conducted thoroughly, and findings should be documented to inform further development and refinement of the system.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/900-tests-technical.md

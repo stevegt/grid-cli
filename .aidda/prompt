@@ -4,5 +4,5 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/
 Out: v2/doc/430-sequence-completion.md
 
-- summarize the byte sequence completion model of computation and its
-  use in promisegrid
+- expand referential transparency, mentioning pure functions and side effects
+- replace passive voice with active voice

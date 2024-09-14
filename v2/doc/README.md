@@ -5,15 +5,15 @@
 | Subject | File |
 | ---- | ------- |
 | TODO List for Implementing PromiseGrid Kernel | [000-TODO](./000-TODO.md) |
-| Design and Discussion Notes | [001-design](./001-design.md) |
-| PromiseGrid Design | [002-design](./002-design.md) |
-| Cache and Module Handling in the PromiseGrid Kernel | [003-design](./003-design.md) |
-| Cache and Module Handling in the PromiseGrid Kernel | [004-discuss](./004-discuss.md) |
-| Design and Discussion Notes from All Files | [010-cache](./010-cache.md) |
-| Background and Evolution of the Project | [010-context](./010-context.md) |
-| Cache and Promise Handling in the PromiseGrid Kernel | [011-cache](./011-cache.md) |
-| Advanced Discussions on Caching, Promises, and Governance in PromiseGrid | [013-cache](./013-cache.md) |
-| Module Integration and Advanced Concepts | [014-cache](./014-cache.md) |
+| Design and Discussion Notes | [051-design](./051-design.md) |
+| PromiseGrid Design | [052-design](./052-design.md) |
+| Cache and Module Handling in the PromiseGrid Kernel | [053-design](./053-design.md) |
+| Cache and Module Handling in the PromiseGrid Kernel | [054-discuss](./054-discuss.md) |
+| Design and Discussion Notes from All Files | [060-cache](./060-cache.md) |
+| Background and Evolution of the Project | [060-context](./060-context.md) |
+| Cache and Promise Handling in the PromiseGrid Kernel | [061-cache](./061-cache.md) |
+| Advanced Discussions on Caching, Promises, and Governance in PromiseGrid | [063-cache](./063-cache.md) |
+| Module Integration and Advanced Concepts | [064-cache](./064-cache.md) |
 | PromiseGrid Layer Structure in an OSI-like Model | [100-layers](./100-layers.md) |
 | Module Integration and Advanced Concepts | [140-cache](./140-cache.md) |
 | Capability Tokens and Prior Art | [150-capability-tokens](./150-capability-tokens.md) |
@@ -62,7 +62,11 @@
 | PromiseGrid Routing | [420-routing](./420-routing.md) |
 | Unit-Specific Ledgers for Digital Currencies | [421-unit-ledgers](./421-unit-ledgers.md) |
 | Routing and Block Mesh | [422-block-mesh](./422-block-mesh.md) |
-| Axioms  | [910-axioms](./910-axioms.md) |
-| Goals  | [940-goals](./940-goals.md) |
+| Summary of the Byte Sequence Completion Model in PromiseGrid | [430-sequence-completion](./430-sequence-completion.md) |
+| Axioms  | [510-axioms](./510-axioms.md) |
+| Goals  | [540-goals](./540-goals.md) |
+| Test Cases for Evaluating PromiseGrid Design Documents | [900-tests](./900-tests.md) |
+| Technical Feasibility Tests for PromiseGrid Design Documents | [910-tests-technical](./910-tests-technical.md) |
+| 999-test-results.md | [999-test-results](./999-test-results.md) |
 | README.md | [README](./README.md) |
 

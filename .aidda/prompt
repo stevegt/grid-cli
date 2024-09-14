@@ -2,6 +2,18 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
+
+- I want to delete v2/doc/051-design.md, v2/doc/052-design.md, and
+  v2/doc/053-design.md, but only if v2/doc/050-design.md completely
+  covers the same details
+- list any details in v2/doc/051-design.md, v2/doc/052-design.md, or
+  v2/doc/053-design.md that are not completely and accurately
+  covered in v2/doc/050-design.md
+- list any details in v2/doc/050-design.md that are not found in
+  v2/doc/051-design.md, v2/doc/052-design.md, or v2/doc/053-design.md
+
+.stop
+
 Out: 
     v2/doc/050-design.md
 

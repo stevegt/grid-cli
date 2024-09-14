@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/050-design.md
-```
 # PromiseGrid Design Overview
 
 ## Introduction
@@ -147,5 +145,3 @@ Exchange rate routing is an innovative mechanism where hosts within the grid rou
 
 By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The consistent handling of cache and modules contributes to a robust and flexible system, aligning with computational theory and modular architecture principles.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/050-design.md

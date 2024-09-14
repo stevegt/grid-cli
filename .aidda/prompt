@@ -2,7 +2,12 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
+Out: 
+    v2/doc/000-TODO.md
 
-Test the document set using the test cases in
+- Update 000-TODO.md based on 999-test-results.md
+
+.stop
+
 v2/doc/900-tests-technical.md.  For each test case, respond with the
 test case name and PASS or FAIL.  If FAIL, explain why.

@@ -3,9 +3,10 @@ Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
 Out: 
-    v2/doc/000-TODO.md
+    v2/doc/050-design.md
 
-- Update 000-TODO.md based on 999-test-results.md
+- merge v2/doc/051-design.md, v2/doc/052-design.md, and
+  v2/doc/053-design.md into v2/doc/050-design.md
 
 .stop
 

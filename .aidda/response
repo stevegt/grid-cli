@@ -1,151 +1,108 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/050-design.md
-```
-# PromiseGrid Design Overview
+**Details in `v2/doc/051-design.md`, `v2/doc/052-design.md`, or `v2/doc/053-design.md` that are **not** completely and accurately covered in `v2/doc/050-design.md`:**
 
-## Introduction
+1. **From `v2/doc/051-design.md`:**
 
-The PromiseGrid Kernel is designed as a decentralized computing, communications, and governance framework. It leverages promise-based interactions and content-addressable storage to create a robust, modular, and secure system. The core principles emphasize decentralization, modularity, and the use of promises at every level of the system architecture.
+   - **Exchange Rate Routing:**
+     - Detailed explanation of how hosts route messages based on the exchange rates of personal currencies.
+     - Advantages such as encouraging reliability, economic incentives, and self-regulation.
+     - How it works, including currency evaluation, routing decisions, and dynamic adjustments.
 
-## Core Concepts
+   - **Nested Messages and Kernel Arbitration:**
+     - Discussion on modules unwrapping nested messages.
+     - The kernel's arbitration is not always final, supporting modular design with task delegation through nested messaging.
+     - Implications for delegated control and dynamic message flows.
 
-1. **Decentralized Architecture**: PromiseGrid operates as a decentralized system owned and operated by its users, eliminating reliance on any single entity. This design ensures distributed control and ownership, enhancing resilience and scalability.
+   - **Combining `Accept` and `HandleMessage` Functions:**
+     - Pros and cons of combining versus separating these functions.
+     - Emphasis on acceptance as a promise message.
+     - Examples illustrating both approaches.
 
-2. **Promise-Based Interaction**: The system is founded on the concept of promises, akin to those in Promise Theory. Every interaction is based on making, fulfilling, or managing promises, ensuring accountability and trust in operations.
+   - **Integration with Church, Turing, and Chomsky's Concept of "Accept":**
+     - Deeper exploration of how "accept" aligns with computational theory.
+     - Discussion on promises all the way down and theoretical integration.
 
-3. **Content-Addressable Code and Data**: Both code and data are addressed by their content, not by their location or name. This content-addressable storage allows the grid to store and execute code and access data from any node in the network efficiently.
+2. **From `v2/doc/052-design.md`:**
 
-4. **Promises All the Way Down**: Every response to a promise is another promise, embedding the concept deeply into the system's operations. This approach fosters a network where components are interlinked through a chain of commitments, promoting reliability and traceability.
+   - **Messages and Promises:**
+     - Use of Multihash, Multibase, and Multicodec to autodetect formats.
+     - Emphasis on messages being byte sequences with no inherent meaning to the kernel, interpreted by appropriate modules.
 
-5. **Non-Sandboxed Modules**: Non-sandboxed modules function similarly to device drivers in a microkernel OS. They handle specific external operations such as network communications and file access, with the kernel delegating these operations to maintain control over execution.
+   - **Cache (Syscall Tree) Node Structure - The Ant-Routing Mechanism:**
+     - Explanation of the syscall tree acting as an ant-routing mechanism.
+     - How successful paths from previous calls are cached to optimize future routing.
 
-## System Architecture
+   - **Open Questions and Suggestions for Document Improvement:**
+     - Questions about reconciling byte sequence completion with explicit registration and hash-based routing.
+     - Handling broken promises effectively.
+     - Optimizing routing efficiency with multiple handlers.
+     - Suggestions for including more examples, case studies, and visual aids.
 
-### Cache Handling in the PromiseGrid Kernel
+3. **From `v2/doc/053-design.md`:**
 
-#### Cache Structures
+   - **Responsibilities of Non-Sandboxed Modules vs. Core Functions of the Kernel:**
+     - Detailed delineation of what the kernel handles versus what non-sandboxed modules handle.
+     - Emphasis on the kernel managing message routing only, while non-sandboxed modules handle syscall-like operations.
 
-1. **Multiple Caches**:
-   - There **MAY BE** multiple caches, including a built-in cache within the kernel and caches provided by various modules.
-   - The kernel **SHOULD** load the built-in cache from embedded resources using Go's `embed` feature.
-   - The kernel **MAY** use the Origin Private File System (OPFS) for disk file access and **MAY** utilize the `afero` library to abstract filesystem interactions.
+   - **Combining `Accept` and `HandleMessage` Functions:**
+     - Similar to `v2/doc/051-design.md`, but with additional examples and a focus on promises being all the way down.
+     - Examples illustrating both combined and separate function approaches.
 
-#### Treating Modules as Caches
+   - **Cache and Module Handling Specifics:**
+     - Treatment of modules as caches with more detailed explanations.
+     - Discussion on how the cache design aligns with byte sequence completion.
 
-1. **Role of Modules**:
-   - The kernel **MUST** treat modules as caches. In the event of a cache miss, the kernel **MUST** consult one or more modules to retrieve the requested value.
-   - Modules **MAY** contribute to the cache or provide the requested data dynamically.
+   - **Open Questions:**
+     - Discussion on known microkernel architectures using capability-based security.
+     - How microkernels interact with userland drivers.
+     - Examples of existing microkernels and their handling of permissions and access control.
 
-2. **Unified Interface**:
-   - From the caller's perspective, there **SHALL BE** no difference between a cache lookup and a function call. Both operations are treated as hashed function calls, where the caller sends a message with a leading hash and any arguments and receives a message containing the requested content.
+---
 
-### Acceptance and Promises
+**Details in `v2/doc/050-design.md` that are **not** found in `v2/doc/051-design.md`, `v2/doc/052-design.md`, or `v2/doc/053-design.md`:**
 
-#### Acceptance Criteria
+1. **Introduction with Comprehensive Overview:**
+   - A detailed introduction outlining PromiseGrid's decentralized computing, communications, and governance framework.
+   - Emphasis on the core principles of the system.
 
-- Modules **MUST** define acceptance criteria for promises, module hashes, and arguments, implemented as an `Accept()` function.
-- By returning a promise message from `Accept` instead of a boolean, modules provide additional guarantees and meta-information.
-- The acceptance is treated as a commitment to handle the message correctly. If `HandleMessage` fails, it's considered a broken promise.
+2. **Core Concepts:**
+   - In-depth explanation of:
+     - Decentralized Architecture.
+     - Promise-Based Interaction.
+     - Content-Addressable Code and Data.
+     - Promises All the Way Down.
+     - Non-Sandboxed Modules, comparing them to device drivers in a microkernel OS.
 
-#### Ant Routing Mechanism
+3. **Cache Handling in the PromiseGrid Kernel:**
+   - Detailed explanation of cache structures, including built-in kernel cache and module-provided caches.
+   - Use of Origin Private File System (OPFS) and the `afero` library.
+   - Unified interface treating cache lookups and function calls equivalently.
 
-- The syscall tree acts as an "ant routing" mechanism, caching successful paths to optimize future routing.
-- The syscall tree **MUST** use hierarchical keys and **SHOULD** filter based on whether any module accepts the leading parameters, matches the module hash, and accepts the arguments.
-- The kernel **SHOULD** store positive and negative acceptance history, starting empty and populated during operation.
+4. **Acceptance and Promises:**
+   - Modules defining acceptance criteria through an `Accept()` function.
+   - Acceptance as a promise message, enhancing robustness and trustworthiness.
+   - Integration with computational theory.
 
-### Integration with Computational Theory
+5. **Kernel's Dynamic Syscall Tree:**
+   - Detailed explanation of the syscall table acting as a dynamic syscall tree.
+   - Positive and negative acceptance history storage.
+   - Routing messages based on the most leading parameter components.
 
-#### Aligning with Church, Turing, and Chomsky's "Accept" Concept
+6. **Flexible Design for Module Registration:**
+   - Discussion of explicit module registration and hash-based module routing.
+   - Pros and cons of each approach.
 
-- The term "accept" aligns with computational theory, where an automaton accepts an input if it reaches an accepting state.
-- In PromiseGrid, modules act as recognizers for specific tasks based on the promise hash, module hash, and arguments.
+7. **Conclusion Emphasizing Integration of Concepts:**
+   - Summarizes how integrating promises at every level ensures trust, accountability, and efficient message handling.
+   - Aligns with computational theory and modular architecture principles.
 
-#### Promises All the Way Down
+---
 
-- The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
-- Each layer (modules, syscall tree, kernel) makes and fulfills promises based on the promises made by the layers below it.
+**Conclusion:**
 
-### Flexible Design for Module Registration
+- **`v2/doc/051-design.md`, `v2/doc/052-design.md`, and `v2/doc/053-design.md`** contain additional details and discussions not fully covered in **`v2/doc/050-design.md`**, such as exchange rate routing, nested messages, and specific open questions about microkernels.
 
-#### Explicit Module Registration
+- **`v2/doc/050-design.md`** provides a broader and more comprehensive overview of the PromiseGrid design, covering core concepts and detailed explanations of cache handling, acceptance, and the syscall tree.
 
-**Pros**:
-
-1. **Clarity and Explicitness**: Modules explicitly report their capabilities, simplifying system understanding and management.
-2. **Fine-Grained Control**: The kernel can enforce specific rules and constraints on modules based on their declared capabilities.
-3. **Dynamic Adaptation**: Modules can dynamically update their capabilities, supporting on-the-fly changes.
-
-**Cons**:
-
-1. **Complexity**: Adds complexity to module initialization and management.
-2. **Performance Overhead**: Maintaining and querying a registry introduces overhead.
-3. **Dependency Management**: Changes in capabilities may necessitate updates across the system, increasing dependency risks.
-
-#### Hash-Based Module Routing
-
-**Pros**:
-
-1. **Simplicity**: The kernel routes messages based on cryptographic hashes, reducing the need for explicit registration.
-2. **Efficiency**: Hash-based routing leverages cryptographic properties for unique and consistent module addressing.
-3. **Decentralized Management**: Modules are self-contained and managed independently.
-
-**Cons**:
-
-1. **Opaque Mapping**: Mapping relies on hashes rather than explicit declarations, which may reduce clarity.
-2. **Limited Flexibility**: Modules cannot dynamically update capabilities without changing their hash.
-3. **Security Risks**: Ensuring hash-based routing is secure against collisions and attacks is essential.
-
-### Exchange Rate Routing
-
-#### Concept
-
-Exchange rate routing is an innovative mechanism where hosts within the grid route messages based on the exchange rates of personal currencies. Each host acts like its own "central bank," issuing a form of currency represented by reputation points. These reputation points influence routing decisions, promoting reliable behavior and network stability.
-
-#### How It Works
-
-1. **Currency Evaluation**: Each host evaluates the currency (reputation) of other hosts.
-2. **Routing Decisions**: Hosts prefer routes through hosts with higher-valued currencies to ensure stability and reliability.
-3. **Dynamic Adjustments**: Exchange rates are dynamic, adjusting based on host behavior and market conditions.
-
-#### Advantages
-
-- **Encourages Reliability**: Hosts are incentivized to maintain strong reputations.
-- **Economic Incentives**: The system uses market dynamics, encouraging decentralized control.
-- **Self-Regulating**: Misbehaving hosts receive less traffic, reducing their ability to affect the network adversely.
-
-### Kernel's Dynamic Syscall Tree
-
-#### Syscall Table and Acceptance History
-
-- The kernel uses a dynamic syscall table, storing positive and negative acceptance history for all modules.
-- Messages are routed to the module whose syscall tree key matches the most leading parameter components.
-
-### Combining Accept and HandleMessage Functions
-
-#### Pros and Cons
-
-**Combined Function**:
-
-- **Pros**:
-  - Simplicity: Combines decision-making and handling.
-  - Consistency: Tight coupling increases consistency and reduces logic duplication.
-  - Efficiency: Eliminates redundant checks.
-
-**Separate Functions**:
-
-- **Pros**:
-  - Clarity: Maintains separation between decision-making and handling logic.
-  - Early Rejection: Allows quick rejection without handling.
-  - Modular Logic: Facilitates specialized acceptance and handling logic.
-
-### Proposed Dynamic Syscall Table and Ant Routing
-
-- Implementing a hierarchical syscall tree with caching and acceptance history enhances efficient message handling.
-- The syscall tree starts empty and is populated as modules accept and handle messages.
-- Successful paths are cached, optimizing future routing.
-
-## Conclusion
-
-By integrating promises at every level and implementing a hierarchical syscall tree with caching and acceptance history, PromiseGrid ensures trust, accountability, and efficient message handling in a decentralized governance framework. The consistent handling of cache and modules contributes to a robust and flexible system, aligning with computational theory and modular architecture principles.
-
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/050-design.md
+- **Recommendation:**
+  - If the specific details from the other documents (e.g., exchange rate routing, nested messages, module responsibilities, and open questions) are important, consider integrating those sections into **`v2/doc/050-design.md`** before deletion.
+  - After ensuring all important details are incorporated, it would be appropriate to delete **`v2/doc/051-design.md`**, **`v2/doc/052-design.md`**, and **`v2/doc/053-design.md`** to reduce redundancy.

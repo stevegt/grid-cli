@@ -4,6 +4,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/
 Out: v2/doc/440-thoughts.md
 
+include these items in 440-thoughts.md:
+- a message is a currency trade order and a promise
+- a currency is a bearer capability
+- a capability is a currency
 - sequence completion is similar to "what's next in a VCS branch"
 - agents race to provide complete, verified sequence
 - a query is a promise to verify response as valid
@@ -21,8 +25,6 @@ Out: v2/doc/440-thoughts.md
   maybe a merkle hash
 - is a currency symbol host.agent?  
 - is a currency symbol simply an account?
-
-
 
 .stop
 

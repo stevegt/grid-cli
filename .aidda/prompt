@@ -2,7 +2,32 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: v2/doc/
+Out: v2/doc/440-thoughts.md
+
+- sequence completion is similar to "what's next in a VCS branch"
+- agents race to provide complete, verified sequence
+- a query is a promise to verify response as valid
+- CLI uses agent(s) for parsing os.Args
+- kernel is tiny
+- kernel starts an init agent
+- init agent asks kernel to launch any other agents
+- kernel hands ports to agents at start?
+- kernel delegates syscalls to agent(s)
+- all commerce takes place locally, in kernel?
+- an agent that is communicating with another over the net is
+  point-to-point; are both ends the same agent such that they trust
+  each other?
+- an agent is like a smart contract but is itself a chain of commits,
+  maybe a merkle hash
+- is a currency symbol host.agent?  
+- is a currency symbol simply an account?
+
+
+
+.stop
+
 Out: v2/doc/050-design.md
+
 
 - I want to delete v2/doc/051-design.md, v2/doc/052-design.md, and
   v2/doc/053-design.md, but only if v2/doc/050-design.md completely
@@ -121,6 +146,7 @@ Out: v2/doc/050-design.md
 - **Recommendation:**
   - If the specific details from the other documents (e.g., exchange rate routing, nested messages, module responsibilities, and open questions) are important, consider integrating those sections into **`v2/doc/050-design.md`** before deletion.
   - After ensuring all important details are incorporated, it would be appropriate to delete **`v2/doc/051-design.md`**, **`v2/doc/052-design.md`**, and **`v2/doc/053-design.md`** to reduce redundancy.
+
 .stop
 
 Out: 

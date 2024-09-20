@@ -99,10 +99,32 @@
 
 **Conclusion:**
 
-- **`v2/doc/051-design.md`, `v2/doc/052-design.md`, and `v2/doc/053-design.md`** contain additional details and discussions not fully covered in **`v2/doc/050-design.md`**, such as exchange rate routing, nested messages, and specific open questions about microkernels.
+- **`v2/doc/051-design.md`, `v2/doc/052-design.md`, and `v2/doc/053-design.md`** contain additional details and discussions not fully covered in **`v2/doc/050-design.md`**, such as exchange rate routing, nested messages, module responsibilities, and open questions about microkernels.
 
 - **`v2/doc/050-design.md`** provides a broader and more comprehensive overview of the PromiseGrid design, covering core concepts and detailed explanations of cache handling, acceptance, and the syscall tree.
 
 - **Recommendation:**
   - If the specific details from the other documents (e.g., exchange rate routing, nested messages, module responsibilities, and open questions) are important, consider integrating those sections into **`v2/doc/050-design.md`** before deletion.
   - After ensuring all important details are incorporated, it would be appropriate to delete **`v2/doc/051-design.md`**, **`v2/doc/052-design.md`**, and **`v2/doc/053-design.md`** to reduce redundancy.
+
+---
+
+File: /home/stevegt/lab/grid-cli/v2/doc/050-design.md
+```markdown
+# PromiseGrid Design Overview
+
+## Introduction
+
+The PromiseGrid Kernel is designed as a decentralized computing, communications, and governance framework. It leverages promise-based interactions and content-addressable storage to create a robust, modular, and secure system. The core principles emphasize decentralization, modularity, and the use of promises at every level of the system architecture.
+
+## Core Concepts
+
+1. **Decentralized Architecture**: PromiseGrid operates as a decentralized system owned and operated by its users, eliminating reliance on any single entity. This design ensures distributed control and ownership, enhancing resilience and scalability.
+
+2. **Promise-Based Interaction**: The system is founded on the concept of promises, akin to those in Promise Theory. Every interaction is based on making, fulfilling, or managing promises, ensuring accountability and trust in operations.
+
+3. **Content-Addressable Code and Data**: Both code and data are addressed by their content, not by their location or name. This content-addressable storage allows the grid to store and execute code and access data from any node in the network efficiently.
+
+4. **Promises All the Way Down**: Every response to a promise is another promise, embedding the concept deeply into the system's operations. This approach fosters a network where components are interlinked through a chain of commitments, promoting reliability and traceability.
+
+5. **Non-Sandboxed Modules**: Non-sandboxed modules function similarly to device drivers in a microkernel OS. They handle specific external operations such as network communications and file access, with the kernel delegating these operations to maintain control

@@ -4,7 +4,7 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/440-thoughts.md
 Out: v2/doc/440-thoughts.md
 
-include these items in 440-thoughts.md:
+expand these items in 440-thoughts.md:
 - a message is a currency trade order and a promise
 - a currency is a bearer capability
 - a capability is a currency

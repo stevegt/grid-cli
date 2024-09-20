@@ -67,7 +67,28 @@ As we progress in developing the PromiseGrid kernel and its surrounding ecosyste
 - **Scalability Strategies**: Investigating methods to enhance performance and scalability, including benchmarking and load testing.
 - **Community Engagement**: Encouraging open discussions on open questions and incorporating diverse perspectives will strengthen the project's foundation.
 
+## Addendum: Concepts and Ideas
+
+### Key Concepts and Questions
+
+- A **message** is a currency trade order and a promise.
+- A **currency** is a bearer capability.
+- A **capability** is a currency.
+- **Sequence completion** is similar to "what's next in a VCS branch."
+- Agents race to provide a complete, verified sequence.
+- A **query** is a promise to verify the response as valid.
+- The **CLI** uses agent(s) for parsing `os.Args`.
+- The **kernel** is tiny.
+- The kernel starts an **init agent**.
+- The init agent asks the kernel to launch any other agents.
+- The kernel hands ports to agents at the start.
+- The kernel delegates syscalls to agent(s).
+- All commerce takes place locally, in the kernel.
+- An agent that is communicating with another over the net is point-to-point; are both ends the same agent such that they trust each other?
+- An agent is like a **smart contract** but is itself a chain of commits, maybe a Merkle hash.
+- Is a currency symbol **host.agent**?
+- Is a currency symbol simply an **account**?
+
 ## Conclusion
 
 The development of PromiseGrid presents both exciting opportunities and complex challenges. By synthesizing our current knowledge and actively addressing open questions, we can forge a path toward a robust, decentralized computing platform that embodies the principles of trust, accountability, and efficiency.
-

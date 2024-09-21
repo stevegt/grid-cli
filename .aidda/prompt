@@ -5,13 +5,11 @@ In: v2/doc/440-thoughts.md
 Out: v2/doc/440-thoughts.md
 
 expand these items in 440-thoughts.md:
-- CLI uses agent(s) for parsing os.Args
-    - in other words, os.Args is handled like any other sequence
-      completion
-- all commerce takes place locally; i.e. all commerce is between agents and kernel?
-- an agent is like a smart contract but is itself a chain of commits,
-  maybe a merkle hash
-  - can an agent store things on its tree?  i.e. can an agent evolve?
+- all monetary commerce could takes place locally; i.e. all currency
+  exchange commerce could be between agents and kernel
+  - between kernels (hosts), that leaves barter 
+  - analogy similar to that of currency exchange within a region,
+    barter between regions 
 
 .stop
 

@@ -5,26 +5,13 @@ In: v2/doc/440-thoughts.md
 Out: v2/doc/440-thoughts.md
 
 expand these items in 440-thoughts.md:
-- a message is a currency trade order and a promise
-- a currency is a bearer capability
-- a capability is a currency
-- sequence completion is similar to "what's next in a VCS branch"
-- agents race to provide complete, verified sequence
-- a query is a promise to verify response as valid
 - CLI uses agent(s) for parsing os.Args
-- kernel is tiny
-- kernel starts an init agent
-- init agent asks kernel to launch any other agents
-- kernel hands ports to agents at start?
-- kernel delegates syscalls to agent(s)
-- all commerce takes place locally, in kernel?
-- an agent that is communicating with another over the net is
-  point-to-point; are both ends the same agent such that they trust
-  each other?
+    - in other words, os.Args is handled like any other sequence
+      completion
+- all commerce takes place locally; i.e. all commerce is between agents and kernel?
 - an agent is like a smart contract but is itself a chain of commits,
   maybe a merkle hash
-- is a currency symbol host.agent?  
-- is a currency symbol simply an account?
+  - can an agent store things on its tree?  i.e. can an agent evolve?
 
 .stop
 

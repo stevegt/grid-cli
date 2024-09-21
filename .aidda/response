@@ -1,5 +1,5 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/440-thoughts.md
-```
+```markdown
 # Reflections on PromiseGrid's Development and Future Directions
 
 ## Introduction
@@ -73,23 +73,23 @@ As we progress in developing the PromiseGrid kernel and its surrounding ecosyste
 
 ### Key Concepts and Questions
 
-- A **message** is a currency trade order and a promise.
-- A **currency** is a bearer capability.
-- A **capability** is a currency.
-- **Sequence completion** is similar to "what's next in a VCS branch."
-- Agents race to provide a complete, verified sequence.
-- A **query** is a promise to verify the response as valid.
-- The **CLI** uses agent(s) for parsing `os.Args`.
-- The **kernel** is tiny.
-- The kernel starts an **init agent**.
-- The init agent asks the kernel to launch any other agents.
-- The kernel hands ports to agents at the start.
-- The kernel delegates syscalls to agent(s).
-- All commerce takes place locally, in the kernel.
-- An agent that is communicating with another over the net is point-to-point; are both ends the same agent such that they trust each other?
-- An agent is like a **smart contract** but is itself a chain of commits, maybe a Merkle hash.
-- Is a currency symbol **host.agent**?
-- Is a currency symbol simply an **account**?
+- **A message is a currency trade order and a promise**: In the context of PromiseGrid, a message serves dual functions. It acts as a trade order for currency transactions and embodies a promise, ensuring that the transaction adheres to agreed terms.
+- **A currency is a bearer capability**: Within this system, currency isn't just a medium of exchange but also a capability that grants certain privileges or access. The holder of the currency inherently holds the related capability.
+- **A capability is a currency**: Reflecting the previous point, capabilities within the system function similarly to currencies. They can be exchanged and must be managed with the same considerations of ownership and transfer.
+- **Sequence completion is similar to "what's next in a VCS branch"**: The process of completing byte sequences can be likened to resolving the next set of actions or commits in a version control system (VCS) branch. Both deal with determining the succeeding state in a series of steps.
+- **Agents race to provide a complete, verified sequence**: In our model, multiple agents concurrently work towards completing a byte sequence. The emphasis is on ensuring the sequence is both finished and verified, promoting a competitive but accountable environment.
+- **A query is a promise to verify the response as valid**: When an agent issues a query, it commits to validating the accuracy and legitimacy of the received response. This establishes a chain of trust and accountability.
+- **The CLI uses agent(s) for parsing `os.Args`**: Command-line interface (CLI) operations are managed by agents tasked with parsing and interpreting `os.Args`, the arguments passed to the program. This modular approach aids in maintainability and scalability.
+- **The kernel is tiny**: The core kernel of PromiseGrid is intentionally minimalistic. It provides just the essential functions needed to bootstrap and manage agents while offloading more complex tasks to these agents.
+- **The kernel starts an init agent**: At startup, the kernel launches an initial agent, often referred to as the init agent. This agent takes on the responsibility of initiating further system processes.
+- **The init agent asks the kernel to launch any other agents**: Following its startup, the init agent interacts with the kernel to request the initiation of other necessary agents, orchestrating the bootstrapping process.
+- **The kernel hands ports to agents at the start**: Upon launching, the kernel assigns communication ports to agents. This setup allows agents to interact with each other and the kernel efficiently.
+- **The kernel delegates syscalls to agent(s)**: Instead of handling system calls directly, the kernel delegates these calls to specialized agents. This delegation simplifies the kernel and decentralizes system call management.
+- **All commerce takes place locally, in the kernel**: Within PromiseGrid, all transactional processes (referred to as commerce) occur within the kernel space, ensuring secure and efficient handling of exchanges.
+- **An agent that is communicating with another over the net is point-to-point; are both ends the same agent such that they trust each other?**: Communication between agents over a network is designed to be a point-to-point exchange. To ensure trust, it may be assumed that both ends represent the same agent or share an established trust relationship.
+- **An agent is like a smart contract but is itself a chain of commits, maybe a Merkle hash**: Agents in PromiseGrid can be compared to smart contracts. However, they are implemented as a series of commits organized in a structure akin to a Merkle hash tree, ensuring integrity and repeatability.
+- **Is a currency symbol host.agent?**: This question explores if a currency symbol in PromiseGrid comprises a host and an agent identifier, suggesting a hierarchical or scoped nature to currency definitions.
+- **Is a currency symbol simply an account?**: Alternatively, this inquiry considers if a currency symbol is merely an identifier for an account, simplifying the model but potentially limiting its expressiveness.
 
 ## Conclusion
 

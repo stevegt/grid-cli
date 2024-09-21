@@ -10,7 +10,8 @@ NNN-topic, where NNN is the sequence in the book.
 I'm using a tool (aidda, AI-driven development assistant) that
 reads a prompt file, sends the prompt and all of the markdown files to
 GPT-4 via the openai API, and gets back one file (limited to one file
-due to GPT-4's output token limit).  
+due to GPT-4's output token limit).  Aidda is written in Go -- please
+use Go in any code examples you provide.
 
 I'm trying to figure out how best to either take advantage of this
 existing workflow, or modify this workflow or aidda itself, to
@@ -18,6 +19,7 @@ accomplish these goals:
 
 - turn the files into a readable book
 - merge similar files and remove redundant ones
+    - not lose critical information during the merge or removal
 - detect and resolve conflicting information
 - reorder files for better flow in the resulting book
 

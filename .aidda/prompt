@@ -1,15 +1,32 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-In: v2/doc/440-thoughts.md
-Out: v2/doc/440-thoughts.md
+In: v2/doc/
+Out: v2/doc/001-refactor.md
 
-expand these items in 440-thoughts.md:
-- all monetary commerce could takes place locally; i.e. all currency
-  exchange commerce could be between agents and kernel
-  - between kernels (hosts), that leaves barter 
-  - analogy similar to that of currency exchange within a region,
-    barter between regions 
+I'm writing a technical book -- see attached markdown files.   The
+filenames are in the form NNN-topic, where NNN is the sequence in the
+book.
+
+I'm using a tool (aidda, AI-driven development assistant) that
+reads a prompt file, sends the prompt and all of the markdown files to
+GPT-4 via the openai API, and gets back one file (limited to one file
+due to GPT-4's output token limit).  
+
+I'm trying to figure out how best to either take advantage of this
+existing workflow, or modify this workflow or aidda itself, to
+accomplish these goals:
+
+- turn the files into a readable book
+- merge similar files and remove redundant ones
+- detect and resolve conflicting information
+- reorder files for better flow in the resulting book
+
+Make recommendations for how I can accomplish these goals using the
+current workflow, or how I might modify aidda to improve the workflow.
+Include best-practice examples using state-of-the-art AI tooling, and
+use your imagination to invent new workflow and tooling for this use
+case.
 
 .stop
 

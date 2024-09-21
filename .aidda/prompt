@@ -1,12 +1,10 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-In: v2/doc/
-Out: v2/doc/001-refactor.md
+Out: v2/doc/001-workflow.md
 
-I'm writing a technical book -- see attached markdown files.   The
-filenames are in the form NNN-topic, where NNN is the sequence in the
-book.
+I'm writing a technical book.   The filenames are in the form
+NNN-topic, where NNN is the sequence in the book.
 
 I'm using a tool (aidda, AI-driven development assistant) that
 reads a prompt file, sends the prompt and all of the markdown files to

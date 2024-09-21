@@ -1,3 +1,5 @@
+File: /home/stevegt/lab/grid-cli/v2/doc/001-workflow.md
+```
 Improving your workflow to turn markdown files into a readable, well-structured book while merging similar files, removing redundant ones, detecting and resolving conflicting information, and reordering files for a better flow can be quite a task. Below are some recommendations and workflow enhancements that you might find useful. 
 
 ### Recommendations for Current Workflow
@@ -109,3 +111,5 @@ for i, content in enumerate(merged_files):
    - Allow for user interaction at key points in the process, such as during conflict resolution and significant merges.
 
 With these enhanced workflows and tooling, you should be able to streamline the process of turning markdown files into a cohesive, readable book.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/001-workflow.md

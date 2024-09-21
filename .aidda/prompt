@@ -4,6 +4,10 @@ Sysmsg: You are an expert technical writer and software architect.
 In: v2/doc/001-workflow.md
 Out: v2/doc/001-workflow.md
 
+translate the python code into Go
+
+.stop
+
 improve 001-workflow.md
 
 I'm writing a technical book.   The filenames are in the form

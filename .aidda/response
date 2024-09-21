@@ -1,5 +1,5 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/001-workflow.md
-```
+```markdown
 ## Enhancing Your Workflow for Book Creation Using Aidda
 
 When writing a technical book, transforming markdown files into a readable, well-structured book involves several tasks, including merging similar files, removing redundant ones, detecting and resolving conflicting information, and reordering files for better flow. Here are some recommendations and workflow enhancements to help you achieve these goals:

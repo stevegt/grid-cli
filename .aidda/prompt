@@ -2,14 +2,10 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: 
-    v2/doc/201-computable.md
-    v2/doc/430-sequence-completion.md
-Out: v2/doc/201-computable.md
+    v2/doc/
+Out: v2/doc/201-ism.md
 
-- merge all input files into the output file
-- resolve inconsistencies
-- remove redundant information
-- focus on engineering details
-- remove fluff and marketing 
-- be concise
-
+- describe infinite state machines
+- describe how byte sequence completion can be implemented as assertions of
+  "what's next" in a graph
+- describe how the graph is the execution journal of an ISM 

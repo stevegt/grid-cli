@@ -1,263 +1,104 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/346-persist.md
+
+File: /home/stevegt/lab/grid-cli/v2/doc/200-sequence.md
+```markdown
+# Sequence Matchers and Their Implementations
+
+## Overview
+
+This document details implementations of sequence matchers, focusing on their principles, data structures, and algorithms. It includes examples from genetics to illustrate how matchers work at a data structure level.
+
+## Genetics Sequence Matchers
+
+### How Sequence Matching Works
+
+1. **Matching Given Sequences**:
+   - Matchers scan stored sequences to find regions aligning with a given partial sequence.
+   - Criteria for matches include the number of matches, mismatches, and gaps.
+2. **Decision-Making Process**:
+   - Algorithms and scoring matrices quantify match quality.
+
+### Data Structures
+
+1. **Hash Tables**: 
+   - Used for rapid lookup of sub-sequences (e.g., BLAST).
+2. **Suffix Trees and Arrays**:
+   - Efficient for finding long matches (e.g., suffix trees in large datasets).
+3. **Graphs**:
+   - Node-based representations, where nodes represent sequences and edges represent alignments (e.g., De Bruijn graphs in genome assembly).
+
+### Algorithms
+
+1. **Dynamic Programming**:
+   - Breaks down problems into simpler sub-problems (e.g., Needleman-Wunsch for global alignment).
+2. **Heuristic Algorithms**:
+   - Fast, approximate methods (e.g., BLAST and FASTA).
+3. **Graph-Based Algorithms**:
+   - Traverse graph structures for optimal matches (e.g., De Bruijn graphs).
+
+## Cache as a Sequence Matcher
+
+### Enhancements
+
+- Return complete sequences from partial inputs.
+- Handle complex queries and improve data retrieval efficiency.
+
+### Use of Wildcards
+
+1. **Wildcards in Sequences**:
+   - Allow matching with variations and gaps (e.g., regular expressions `*` and `?`).
+2. **Handling Wildcards**:
+   - Algorithms and data structures can be designed to accommodate wildcards, though complexity increases.
+
+## BLAST Algorithm
+
+### BLAST Process
+
+1. **Hashing Words**:
+   - Breaks sequences into sub-sequences ("words") for hashing.
+2. **Database Organization**:
+   - Stores hashed words from the database for rapid lookups.
+3. **Finding and Extending Matches**:
+   - Initial matches are found using hashes and extended to evaluate longer regions.
+
+### Example
+
+- Query: "ACGTACGT"
+- Words: ["ACG", "CGT", "GTA", "TAC", "ACG", "CGT"]
+- Hashes and lookups allow quick retrieval of potential matches.
+
+### Advantages
+
+- **Speed and Efficiency**: Quickly locates matching regions without scanning entire databases.
+- **Scalability**: Facilitates parallel processing.
+
+## Graph or Node-Based Representation
+
+### How It Works
+
+1. **Nodes as Sequences**: Represent sequences or sub-sequences.
+2. **Edges as Alignments**: Represent relationships between sequences.
+3. **Graph Construction**: Sequences are decomposed into sub-sequences, forming nodes and edges.
+
+### Algorithms and Data Structures
+
+1. **De Bruijn Graphs**: Represent overlaps for genome assembly.
+2. **Suffix Trees and Arrays**: Efficient for pattern matching.
+3. **Hash Tables**: Enable quick lookups.
+
+### Use Cases and Examples
+
+1. **Genomics**: Handle large-scale DNA sequence data.
+2. **Text Mining**: Sequence of words or phrases.
+3. **Network Analysis**: Represent entities and their relationships.
+
+### Advantages
+
+- **Scalability**: Efficiently handle large datasets.
+- **Flexibility**: Accommodate various sequence and alignment types.
+- **Rich Representation**: Capture sequences and their relationships, enhancing analytical tasks.
+
+## Conclusion
+
+Implementing a cache as a sequence matcher involves using advanced data structures and algorithms. Inspirations from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, provide a robust foundation. Hashing, as illustrated by BLAST, enables rapid search and retrieval. Addressing sequence fragments enhances practical applicability in various domains, from genomics to data recovery.
 ```
-# Persisting the Trie to Disk
-
-## Design Considerations
-
-Persistence strategy must address:
-1. **Compatibility**: Across Native and WebAssembly (WASM) environments.
-2. **Reliability**: Ensuring data integrity and durability.
-3. **Performance**: Efficient read/write operations.
-4. **Flexibility**: Support for dynamic updates and retrievals.
-
-## Persistence Strategies
-
-### 1. Origin Private File System (OPFS)
-
-* **Security**: Sandboxed, ensuring data privacy.
-* **Performance**: Optimized for web use.
-* **Compatibility**: WASM-compatible.
-
-**Implementation**:
-```javascript
-async function writeFile(filename, content) {
-  const handle = await navigator.storage.getDirectory();
-  const fileHandle = await handle.getFileHandle(filename, { create: true });
-  const writable = await fileHandle.createWritable();
-  await writable.write(content);
-  await writable.close();
-}
-
-async function readFile(filename) {
-  const handle = await navigator.storage.getDirectory();
-  const fileHandle = await handle.getFileHandle(filename);
-  const file = await fileHandle.getFile();
-  return await file.text();
-}
-```
-
-### 2. `afero` Library
-
-* **Abstraction**: Generic interface for various storage backends.
-* **Flexibility**: Supports multiple backends.
-* **Compatibility**: Native environments with minor adaptations for WASM.
-
-**Implementation**:
-```go
-package main
-
-import (
-	"fmt"
-	"github.com/spf13/afero"
-)
-
-func main() {
-	fs := afero.NewOsFs()
-
-	err := afero.WriteFile(fs, "example.txt", []byte("Hello, Afero!"), 0644)
-	if err != nil {
-		fmt.Println("Error writing file:", err)
-		return
-	}
-
-	content, err := afero.ReadFile(fs, "example.txt")
-	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return
-	}
-
-	fmt.Println("File content:", string(content))
-}
-```
-
-## Persisting Trie to Disk in Go
-
-### Lazy-Loading Nodes
-
-Nodes are loaded from disk as needed to optimize memory usage.
-
-```go
-package main
-
-import (
-	"bytes"
-	"encoding/gob"
-	"fmt"
-	"github.com/spf13/afero"
-	"io"
-	"path"
-)
-
-type TrieNode struct {
-	Children map[byte]*TrieNode
-	Handlers []Handler
-	Path     string
-	Fs       afero.Fs
-}
-
-type Trie struct {
-	Root    *TrieNode
-	Fs      afero.Fs
-	BaseDir string
-}
-
-type Handler func()
-
-func NewTrie(fs afero.Fs, baseDir string) *Trie {
-	return &Trie{
-		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
-		Fs: fs,
-		BaseDir: baseDir,
-	}
-}
-
-func (t *Trie) Insert(r io.Reader, handler Handler) error {
-	node := t.Root
-	buf := make([]byte, 1)
-	for {
-		n, err := r.Read(buf)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-		if n > 0 {
-			b := buf[0]
-			if _, ok := node.Children[b]; !ok {
-				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
-			}
-			node = node.Children[b]
-		}
-	}
-	node.Handlers = append(node.Handlers, handler)
-	return nil
-}
-
-func (t *Trie) Search(r io.Reader) ([]Handler, error) {
-	node := t.Root
-	buf := make([]byte, 1)
-	for {
-		n, err := r.Read(buf)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-		if n > 0 {
-			b := buf[0]
-			if child, ok := node.Children[b]; ok {
-				if child == nil {
-					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
-					if err != nil {
-						return nil, err
-					}
-					node.Children[b] = loadedNode
-				}
-				node = node.Children[b]
-				if len(node.Handlers) > 0 {
-					return node.Handlers, nil
-				}
-			} else {
-				break
-			}
-		}
-	}
-	return nil, nil
-}
-
-func (t *Trie) SaveNode(node *TrieNode) error {
-	var buf bytes.Buffer
-	enc := gob.NewEncoder(&buf)
-	if err := enc.Encode(node); err != nil {
-		return err
-	}
-	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
-}
-
-func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
-	if err := t.SaveNode(node); err != nil {
-		return err
-	}
-	for _, childNode := range node.Children {
-		if childNode != nil {
-			if err := t.SaveNodesRecursively(childNode); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func (t *Trie) Save() error {
-	return t.SaveNodesRecursively(t.Root)
-}
-
-func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
-	data, err := afero.ReadFile(t.Fs, nodePath)
-	if err != nil {
-		return nil, err
-	}
-	buf := bytes.NewBuffer(data)
-	node := &TrieNode{}
-	dec := gob.NewDecoder(buf)
-	if err := dec.Decode(node); err != nil {
-		return nil, err
-	}
-	node.Path = nodePath
-	node.Fs = t.Fs
-	for key := range node.Children {
-		node.Children[key] = nil // Mark for lazy load
-	}
-	return node, nil
-}
-
-func (t *Trie) Load() error {
-	rootNode, err := t.LoadNode(t.BaseDir)
-	if err != nil {
-		return err
-	}
-	t.Root = rootNode
-	return nil
-}
-
-func main() {
-	fs := afero.NewOsFs()
-	trie := NewTrie(fs, "trie_data")
-
-	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
-	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
-
-	if err := trie.Save(); err != nil {
-		fmt.Println("Error saving trie:", err)
-		return
-	}
-
-	newTrie := NewTrie(fs, "trie_data")
-	if err := newTrie.Load(); err != nil {
-		fmt.Println("Error loading trie:", err)
-		return
-	}
-
-	message := bytes.NewReader([]byte{0x01, 0x02})
-	handlers, err := newTrie.Search(message)
-	if err != nil {
-		fmt.Println("Search error:", err)
-		return
-	}
-	if handlers != nil {
-		for _, handler := range handlers {
-			handler()
-		}
-	} else {
-		fmt.Println("No handler found")
-	}
-}
-```
-
-### Summary
-
-Combining OPFS and `afero` provides robust trie persistence across both native and WASM environments. Lazy-loading optimizes memory usage.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/346-persist.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/200-sequence.md

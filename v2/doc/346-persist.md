@@ -1,54 +1,46 @@
 # Persisting the Trie to Disk
 
-## Introduction
-
-This document describes various options for persisting the trie data structure to disk within the PromiseGrid system. The design aims to function in both native and WebAssembly (WASM) runtimes. Several strategies are discussed, including the use of the Origin Private File System (OPFS) and the `afero` library.
-
 ## Design Considerations for Persistence
 
-The chosen persistence strategy must meet the following requirements:
-1. **Compatibility**: Works seamlessly in both native and WASM environments.
-2. **Reliability**: Ensures data integrity and durability.
-3. **Performance**: Provides efficient read and write operations.
-4. **Flexibility**: Supports dynamic updates and retrievals.
+The chosen persistence strategy must address the following:
+1. **Compatibility**: Native and WebAssembly (WASM) environments.
+2. **Reliability**: Data integrity and durability.
+3. **Performance**: Efficient read/write operations.
+4. **Flexibility**: Support for updates and retrievals.
 
 ## Potential Persistence Strategies
 
 ### 1. Origin Private File System (OPFS)
 
-**Description**: OPFS is a file system designed for use in web environments, providing secure, performant, and private storage.
+**Description**: Secure, performant, and private storage for web environments.
 
 **Advantages**:
-- **Security**: Provides a secure sandboxed environment.
-- **Performance**: Optimized for web performance.
-- **Compatibility**: Works well with WASM.
+- **Security**: Sandboxed environment.
+- **Performance**: Optimized for web.
+- **Compatibility**: WASM-compatible.
 
 **Implementation**:
-- **WASM**: Utilize OPFS directly via JavaScript to interact with the file system.
-- **Native**: Implement a thin abstraction layer to handle file I/O using standard file system calls.
+- **WASM**: Interact with OPFS via JavaScript.
+- **Native**: Abstraction for file I/O using standard calls.
 
 ### 2. `afero` Library
 
-**Description**: `afero` is a filesystem abstraction library for Go, providing a common interface for various file system operations.
+**Description**: A filesystem abstraction library for Go.
 
 **Advantages**:
-- **Abstraction**: Abstracts filesystem operations, making the code agnostic to the underlying storage backend.
-- **Flexibility**: Supports multiple backends like OS file systems, in-memory systems, and more.
-- **Compatibility**: Can be used in native environments; minimal work is needed to extend it to WASM.
+- **Abstraction**: Agnostic to storage backend.
+- **Flexibility**: Supports multiple backends.
+- **Compatibility**: Native environments; minor work for WASM.
 
 **Implementation**:
-- **WASM**: Create a custom backend for `afero` that communicates with the browser's file API (OPFS).
-- **Native**: Use the default OS filesystem backend or other suitable backends provided by `afero`.
+- **WASM**: Custom backend to communicate with browser's file API.
+- **Native**: Use OS filesystem backend or others via `afero`.
 
 ## Example Implementations
 
 ### OPFS in WASM
 
-Here’s an example of interacting with OPFS in a WASM environment:
-
 ```javascript
-// JavaScript code to interact with OPFS in a WASM environment
-
 async function writeFile(filename, content) {
   const handle = await navigator.storage.getDirectory();
   const fileHandle = await handle.getFileHandle(filename, { create: true });
@@ -67,30 +59,24 @@ async function readFile(filename) {
 
 ### `afero` in Native
 
-Here’s an example using `afero` in a native Go application:
-
 ```go
 package main
 
 import (
 	"fmt"
 	"github.com/spf13/afero"
-	"os"
 )
 
 func main() {
 	fs := afero.NewOsFs()
 
-	// Writing to the file
-	filePath := "example.txt"
-	err := afero.WriteFile(fs, filePath, []byte("Hello, Afero!"), 0644)
+	err := afero.WriteFile(fs, "example.txt", []byte("Hello, Afero!"), 0644)
 	if err != nil {
 		fmt.Println("Error writing file:", err)
 		return
 	}
 
-	// Reading from the file
-	content, err := afero.ReadFile(fs, filePath)
+	content, err := afero.ReadFile(fs, "example.txt")
 	if err != nil {
 		fmt.Println("Error reading file:", err)
 		return
@@ -104,9 +90,7 @@ func main() {
 
 ### Lazy-Loading Node Files
 
-In this approach, trie nodes are lazily loaded from the disk as needed. This method ensures that the entire trie is never fully loaded into memory, and only the relevant children nodes are accessed, thereby optimizing memory usage.
-
-Below is a Go code example that demonstrates how to lazily load each trie node from its own file using the `afero` library:
+Trie nodes are lazily loaded from the disk as needed, optimizing memory usage.
 
 ```go
 package main
@@ -261,20 +245,17 @@ func main() {
 	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
 	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
 
-	// Save trie to disk
 	if err := trie.Save(); err != nil {
 		fmt.Println("Error saving trie:", err)
 		return
 	}
 
-	// Load trie from disk
 	newTrie := NewTrie(fs, "trie_data")
 	if err := newTrie.Load(); err != nil {
 		fmt.Println("Error loading trie:", err)
 		return
 	}
 
-	// Search in the loaded trie
 	message := bytes.NewReader([]byte{0x01, 0x02})
 	handlers, err := newTrie.Search(message)
 	if err != nil {
@@ -293,4 +274,4 @@ func main() {
 
 ### Conclusion
 
-By leveraging the strengths of OPFS and `afero`, the persistence of the trie data structure can be efficiently managed across both native and WASM environments. OPFS provides a secure and performant option for web environments, while `afero` offers flexibility and abstraction for native applications. Utilizing a strategy where trie nodes are lazily loaded from disk ensures optimal memory usage and efficient retrieval of parts of the trie.
+Combining OPFS and `afero` provides robust trie persistence across native and WASM environments. Lazy-loading nodes optimize memory usage and provide efficient data retrieval.

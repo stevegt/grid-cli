@@ -1,112 +1,281 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/060-cache.md
+File: /home/stevegt/lab/grid-cli/v2/doc/346-persist.md
 ```markdown
-# Cache
+# Persisting the Trie to Disk
 
-## Overview
+## Design Considerations for Persistence
 
-This document consolidates the design and discussion notes from various files to provide a comprehensive view of the architectural principles and strategic considerations for PromiseGrid.
+The chosen persistence strategy must address the following:
+1. **Compatibility**: Native and WebAssembly (WASM) environments.
+2. **Reliability**: Data integrity and durability.
+3. **Performance**: Efficient read/write operations.
+4. **Flexibility**: Support for updates and retrievals.
 
-## Core Concepts
+## Potential Persistence Strategies
 
-### Decentralized Architecture
+### 1. Origin Private File System (OPFS)
 
-PromiseGrid operates as a decentralized computing, communications, and governance system owned and operated by its users, ensuring distributed control.
+**Description**: Secure, performant, and private storage for web environments.
 
-### Capability-as-Promise Model
+**Advantages**:
+- **Security**: Sandboxed environment.
+- **Performance**: Optimized for web.
+- **Compatibility**: WASM-compatible.
 
-Capabilities are treated as promises. A capability token represents a promise that can either be fulfilled or revoked, establishing trust and accountability within the system.
+**Implementation**:
+- **WASM**: Interact with OPFS via JavaScript.
+- **Native**: Abstraction for file I/O using standard calls.
 
-### Content-Addressable Code
+### 2. `afero` Library
 
-Both code and data are addressed by their content. This design enables efficient storage, execution, and data access from any node in the network, leveraging the integrity ensured by content-addressable storage.
+**Description**: A filesystem abstraction library for Go.
 
-### Promises All the Way Down
+**Advantages**:
+- **Abstraction**: Agnostic to storage backend.
+- **Flexibility**: Supports multiple backends.
+- **Compatibility**: Native environments; minor work for WASM.
 
-Every interaction in the system is based on promises. A response to a promise is another promise, creating a network where all entities are interlinked through a chain of commitments, fostering reliability and traceability.
+**Implementation**:
+- **WASM**: Custom backend to communicate with browser's file API.
+- **Native**: Use OS filesystem backend or others via `afero`.
 
-### Non-Sandboxed Modules
+## Example Implementations
 
-Non-sandboxed modules handle specific external operations such as network communications and file access. The kernel delegates these operations to non-sandboxed modules while maintaining overall control.
+### OPFS in WASM
 
-## Cache and Promise Handling in the PromiseGrid Kernel
+```javascript
+async function writeFile(filename, content) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename, { create: true });
+  const writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+}
 
-### Cache Structures
+async function readFile(filename) {
+  const handle = await navigator.storage.getDirectory();
+  const fileHandle = await handle.getFileHandle(filename);
+  const file = await fileHandle.getFile();
+  return await file.text();
+}
+```
 
-- Multiple caches, including the built-in cache in the kernel and caches provided by various modules.
-- The kernel should load the built-in cache from embedded resources using Go’s `embed` feature.
-- The kernel may use the Origin Private File System (OPFS) and the `afero` library for filesystem interactions.
+### `afero` in Native
 
-### Treating Modules as Caches
+```go
+package main
 
-- The kernel must treat modules as caches, consulting them in case of cache misses.
-- Modules may contribute to the cache or provide requested data dynamically.
-- From the caller's perspective, there should be no difference between a cache lookup and a function call: both are byte sequence completion operations.
+import (
+	"fmt"
+	"github.com/spf13/afero"
+)
 
-### Acceptance and Promises
+func main() {
+	fs := afero.NewOsFs()
 
-- Modules must define acceptance criteria for promises, module hashes, and arguments using an `Accept()` function.
-- Returning a promise message from `Accept` provides additional guarantees and meta-information.
-- A syscall tree acts as an "ant routing" mechanism, optimizing routing by caching successful paths. It uses hierarchical keys.
+	err := afero.WriteFile(fs, "example.txt", []byte("Hello, Afero!"), 0644)
+	if err != nil {
+		fmt.Println("Error writing file:", err)
+		return
+	}
 
-## Integration with Church, Turing, and Chomsky's Concept of "Accept"
+	content, err := afero.ReadFile(fs, "example.txt")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
 
-- The term "accept" aligns with Church, Turing, and Chomsky's use in computing theory, where an automaton or machine accepts an input if it reaches an accepting state.
-- The concept of "promises all the way down" integrates acceptance as a promise message, enhancing robustness and trustworthiness.
+	fmt.Println("File content:", string(content))
+}
+```
 
-## Kernel's Dynamic Syscall Tree
+## Persisting the Trie to Disk in Go
 
-- The syscall table should store acceptance history for all modules, including both positive and negative acceptance, to optimize routing.
-- Messages are routed to the module whose syscall tree key matches the most leading parameter components.
+### Lazy-Loading Node Files
 
-## Flexible Design for Module Registration
+Trie nodes are lazily loaded from the disk as needed, optimizing memory usage.
 
-### Explicit Module Registration
+```go
+package main
 
-**Pros:**
-1. Clarity and explicitness.
-2. Fine-grained control
-3. Dynamic adaptation.
+import (
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"github.com/spf13/afero"
+	"io"
+	"path"
+)
 
-**Cons:**
-1. Complexity.
-2. Performance overhead.
-3. Dependency management.
+type TrieNode struct {
+	Children map[byte]*TrieNode
+	Handlers []Handler
+	Path     string
+	Fs       afero.Fs
+}
 
-### Hash-Based Module Routing
+type Trie struct {
+	Root    *TrieNode
+	Fs      afero.Fs
+	BaseDir string
+}
 
-**Pros:**
-1. Simplicity.
-2. Efficiency.
-3. Decentralized management.
+type Handler func()
 
-**Cons:**
-1. Opaque mapping.
-2. Limited flexibility.
-3. Security risks.
+func NewTrie(fs afero.Fs, baseDir string) *Trie {
+	return &Trie{
+		Root: &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: baseDir, Fs: fs},
+		Fs: fs,
+		BaseDir: baseDir,
+	}
+}
 
-## Modular Interaction and Delegation
+func (t *Trie) Insert(r io.Reader, handler Handler) error {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		if n > 0 {
+			b := buf[0]
+			if _, ok := node.Children[b]; !ok {
+				node.Children[b] = &TrieNode{Children: make(map[byte]*TrieNode), Handlers: []Handler{}, Path: path.Join(node.Path, fmt.Sprintf("%d", b)), Fs: t.Fs}
+			}
+			node = node.Children[b]
+		}
+	}
+	node.Handlers = append(node.Handlers, handler)
+	return nil
+}
 
-Modules can unwrap nested messages and forward them to other modules, enabling complex interactions and message flows.
+func (t *Trie) Search(r io.Reader) ([]Handler, error) {
+	node := t.Root
+	buf := make([]byte, 1)
+	for {
+		n, err := r.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		if n > 0 {
+			b := buf[0]
+			if child, ok := node.Children[b]; ok {
+				if child == nil {
+					loadedNode, err := t.LoadNode(path.Join(node.Path, fmt.Sprintf("%d", b)))
+					if err != nil {
+						return nil, err
+					}
+					node.Children[b] = loadedNode
+				}
+				node = node.Children[b]
+				if len(node.Handlers) > 0 {
+					return node.Handlers, nil
+				}
+			} else {
+				break
+			}
+		}
+	}
+	return nil, nil
+}
 
-### Acceptance and Handling Functions
+func (t *Trie) SaveNode(node *TrieNode) error {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	if err := enc.Encode(node); err != nil {
+		return err
+	}
+	return afero.WriteFile(t.Fs, node.Path, buf.Bytes(), 0644)
+}
 
-#### Combined Function Approach
+func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
+	if err := t.SaveNode(node); err != nil {
+		return err
+	}
+	for childKey, childNode := range node.Children {
+		if childNode != nil {
+			if err := t.SaveNodesRecursively(childNode); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
 
-**Pros:**
-1. Simplicity.
-2. Consistency.
-3. Efficiency.
+func (t *Trie) Save() error {
+	return t.SaveNodesRecursively(t.Root)
+}
 
-#### Separate Function Approach
+func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
+	data, err := afero.ReadFile(t.Fs, nodePath)
+	if err != nil {
+		return nil, err
+	}
+	buf := bytes.NewBuffer(data)
+	node := &TrieNode{}
+	dec := gob.NewDecoder(buf)
+	if err := dec.Decode(node); err != nil {
+		return nil, err
+	}
+	node.Path = nodePath
+	node.Fs = t.Fs
+	for childKey := range node.Children {
+		node.Children[childKey] = nil // Mark child as needing lazy load
+	}
+	return node, nil
+}
 
-**Pros:**
-1. Clarity.
-2. Early rejection.
-3. Modular logic.
+func (t *Trie) Load() error {
+	rootNode, err := t.LoadNode(t.BaseDir)
+	if err != nil {
+		return err
+	}
+	t.Root = rootNode
+	return nil
+}
+
+func main() {
+	fs := afero.NewOsFs()
+	trie := NewTrie(fs, "trie_data")
+
+	trie.Insert(bytes.NewReader([]byte{0x01, 0x02}), func() { fmt.Println("Handling Message Type A") })
+	trie.Insert(bytes.NewReader([]byte{0x03, 0x04}), func() { fmt.Println("Handling Message Type B") })
+
+	if err := trie.Save(); err != nil {
+		fmt.Println("Error saving trie:", err)
+		return
+	}
+
+	newTrie := NewTrie(fs, "trie_data")
+	if err := newTrie.Load(); err != nil {
+		fmt.Println("Error loading trie:", err)
+		return
+	}
+
+	message := bytes.NewReader([]byte{0x01, 0x02})
+	handlers, err := newTrie.Search(message)
+	if err != nil {
+		fmt.Println("Search error:", err)
+		return
+	}
+	if handlers != nil {
+		for _, handler := range handlers {
+			handler()
+		}
+	} else {
+		fmt.Println("No handler found")
+	}
+}
+```
 
 ### Conclusion
 
-PromiseGrid combines promises at every level and implements a hierarchical syscall tree with caching and acceptance history to ensure trust, accountability, and efficient message handling within a decentralized governance framework.
-
+Combining OPFS and `afero` provides robust trie persistence across native and WASM environments. Lazy-loading nodes optimize memory usage and provide efficient data retrieval.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/060-cache.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/346-persist.md

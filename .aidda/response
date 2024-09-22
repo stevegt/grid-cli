@@ -1,104 +1,147 @@
-
-File: /home/stevegt/lab/grid-cli/v2/doc/200-sequence.md
+File: /home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md
 ```markdown
 # Sequence Matchers and Their Implementations
 
 ## Overview
 
-This document details implementations of sequence matchers, focusing on their principles, data structures, and algorithms. It includes examples from genetics to illustrate how matchers work at a data structure level.
+This document explores implementations of sequence matchers, focusing on principles, data structures, and algorithms. Examples from genetics illustrate how sequence matchers operate at a data structure level, detailing how given sequences are matched with stored sequences, the decision-making process, and the data structures/algorithms involved.
 
 ## Genetics Sequence Matchers
 
+### Introduction
+
+Sequence matching in genetics identifies regions of similarity in DNA, RNA, or protein sequences, revealing functional, structural, or evolutionary relationships.
+
 ### How Sequence Matching Works
 
-1. **Matching Given Sequences**:
-   - Matchers scan stored sequences to find regions aligning with a given partial sequence.
-   - Criteria for matches include the number of matches, mismatches, and gaps.
+1. **Given Sequence Matching**:
+    - Matchers scan stored sequences to align them with a given partial sequence.
+
 2. **Decision-Making Process**:
-   - Algorithms and scoring matrices quantify match quality.
+    - Criteria for matches include the number of matches, mismatches, and gaps.
+    - Scoring matrices and alignment algorithms quantify match quality.
 
 ### Data Structures
 
-1. **Hash Tables**: 
-   - Used for rapid lookup of sub-sequences (e.g., BLAST).
+1. **Hash Tables**:
+    - Enable rapid lookup of sub-sequences (e.g., BLAST).
+
 2. **Suffix Trees and Arrays**:
-   - Efficient for finding long matches (e.g., suffix trees in large datasets).
+    - Efficient for finding long matches and handling large datasets.
+
 3. **Graphs**:
-   - Node-based representations, where nodes represent sequences and edges represent alignments (e.g., De Bruijn graphs in genome assembly).
+    - Node-based representations where nodes represent sequences or sub-sequences, and edges represent alignments (e.g., De Bruijn graphs).
 
 ### Algorithms
 
 1. **Dynamic Programming**:
-   - Breaks down problems into simpler sub-problems (e.g., Needleman-Wunsch for global alignment).
+    - Used for optimal sequence alignment by breaking problems into simpler sub-problems (e.g., Needleman-Wunsch for global alignment).
+
 2. **Heuristic Algorithms**:
-   - Fast, approximate methods (e.g., BLAST and FASTA).
+    - Fast, approximate methods (e.g., BLAST and FASTA).
+
 3. **Graph-Based Algorithms**:
-   - Traverse graph structures for optimal matches (e.g., De Bruijn graphs).
+    - Traverse graph structures for optimal matches.
 
 ## Cache as a Sequence Matcher
 
-### Enhancements
-
-- Return complete sequences from partial inputs.
-- Handle complex queries and improve data retrieval efficiency.
+Implementing a cache as a sequence matcher can enhance capabilities by returning complete sequences based on partial inputs, handling complex queries, and improving data retrieval efficiency.
 
 ### Use of Wildcards
 
 1. **Wildcards in Sequences**:
-   - Allow matching with variations and gaps (e.g., regular expressions `*` and `?`).
+    - Allow matching with variations and gaps (e.g., `*` and `?` in regular expressions).
+
 2. **Handling Wildcards**:
-   - Algorithms and data structures can be designed to accommodate wildcards, though complexity increases.
+    - Algorithms and data structures can accommodate wildcards, though complexity increases.
 
 ## BLAST Algorithm
+
+### Overview of BLAST
+
+BLAST (Basic Local Alignment Search Tool) compares an input sequence against a database of sequences, retrieving regions corresponding to word hashes and evaluating alignments.
 
 ### BLAST Process
 
 1. **Hashing Words**:
-   - Breaks sequences into sub-sequences ("words") for hashing.
+    - Breaks sequences into sub-sequences ("words") for hashing.
+
 2. **Database Organization**:
-   - Stores hashed words from the database for rapid lookups.
-3. **Finding and Extending Matches**:
-   - Initial matches are found using hashes and extended to evaluate longer regions.
+    - Stores hashed words from the database.
+
+3. **Finding Matches**:
+    - Matches query words against hashed words from the database.
+
+4. **Extending Matches**:
+    - Initial matches are extended to evaluate longer regions of similarity.
 
 ### Example
 
 - Query: "ACGTACGT"
 - Words: ["ACG", "CGT", "GTA", "TAC", "ACG", "CGT"]
-- Hashes and lookups allow quick retrieval of potential matches.
+- Hash table lookups enable quick retrieval of matches.
 
-### Advantages
+### Advantages of Hashing in BLAST
 
-- **Speed and Efficiency**: Quickly locates matching regions without scanning entire databases.
-- **Scalability**: Facilitates parallel processing.
+1. **Speed**:
+    - Quickly locates matching regions without scanning entire databases.
+2. **Efficiency**:
+    - Efficiently handles large datasets.
+3. **Scalability**:
+    - Facilitates parallel processing.
 
 ## Graph or Node-Based Representation
 
-### How It Works
+### Introduction
 
-1. **Nodes as Sequences**: Represent sequences or sub-sequences.
-2. **Edges as Alignments**: Represent relationships between sequences.
-3. **Graph Construction**: Sequences are decomposed into sub-sequences, forming nodes and edges.
+Graph-based representations handle complex relationships and alignments, offering a scalable method to represent sequences and their relationships.
+
+### How Graph-Based Representation Works
+
+1. **Nodes as Sequences**:
+    - Represent sequences or sub-sequences.
+
+2. **Edges as Alignments**:
+    - Represent relationships between sequences.
+
+3. **Graph Construction**:
+    - Sequences are decomposed into sub-sequences, forming nodes and edges.
 
 ### Algorithms and Data Structures
 
-1. **De Bruijn Graphs**: Represent overlaps for genome assembly.
-2. **Suffix Trees and Arrays**: Efficient for pattern matching.
-3. **Hash Tables**: Enable quick lookups.
+1. **De Bruijn Graphs**:
+    - Represent overlaps for genome assembly.
+
+2. **Suffix Trees and Arrays**:
+    - Efficient for pattern matching.
+
+3. **Hash Tables**:
+    - Enable quick lookups.
 
 ### Use Cases and Examples
 
-1. **Genomics**: Handle large-scale DNA sequence data.
-2. **Text Mining**: Sequence of words or phrases.
-3. **Network Analysis**: Represent entities and their relationships.
+1. **Genomics**:
+    - Handle large-scale DNA sequence data.
+
+2. **Text Mining**:
+    - Sequence of words or phrases.
+
+3. **Network Analysis**:
+    - Represent entities and their relationships.
 
 ### Advantages
 
-- **Scalability**: Efficiently handle large datasets.
-- **Flexibility**: Accommodate various sequence and alignment types.
-- **Rich Representation**: Capture sequences and their relationships, enhancing analytical tasks.
+1. **Scalability**:
+    - Efficiently handle large datasets.
+
+2. **Flexibility**:
+    - Accommodate various sequence and alignment types.
+
+3. **Rich Representation**:
+    - Enhance analytical tasks by capturing sequences and their relationships.
 
 ## Conclusion
 
 Implementing a cache as a sequence matcher involves using advanced data structures and algorithms. Inspirations from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, provide a robust foundation. Hashing, as illustrated by BLAST, enables rapid search and retrieval. Addressing sequence fragments enhances practical applicability in various domains, from genomics to data recovery.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/200-sequence.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md

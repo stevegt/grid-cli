@@ -2,10 +2,10 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In:
-    v2/doc/200-sequence.md
-    v2/doc/210-sequence-graph.md
+    v2/doc/327-summary.md
+    v2/doc/430-sequence-completion.md
 Out:
-    v2/doc/210-sequence-graph.md
+    v2/doc/327-summary.md
 
 - merge all input files into the output file
 - resolve inconsistencies

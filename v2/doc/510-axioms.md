@@ -2,15 +2,15 @@
 
 ## Definition of "Axiom"
 
-An axiom is a statement or proposition that is regarded as being established, accepted, or self-evidently true. In the context of PromiseGrid, axioms define the fundamental principles and assumptions upon which the system is built. These foundational truths guide the design, implementation, and operation of the PromiseGrid framework.
+An axiom is a statement or proposition regarded as established, accepted, or self-evidently true. In PromiseGrid, axioms define the fundamental principles guiding the system's design, implementation, and operation.
 
 ### Axioms on which PromiseGrid is based
 
 #### Side effects
 
-- An observer external to any known system will experience an alteration to its own state while observing the results of a function call.
-- Every function call observed externally has a side effect.
-- A system cannot be fully aware of all side effects, because the system cannot know of the existence or behavior of external observers.
+- External observers experience state changes when observing a function call's results.
+- All externally observed function calls have side effects.
+- A system cannot fully know all side effects due to the existence of external observers.
 - Side effects are never fully known.
 
 #### Computability
@@ -23,7 +23,7 @@ An axiom is a statement or proposition that is regarded as being established, ac
 - A system that expects cryptographic hashes to be collision-resistant but imperfect, and that supports replaceable cryptographic hashes, can reasonably be expected to be able to reference any data or computable function, limited by the bit-length of the hashes it supports.
 - A system that supports replaceable cryptographic hashes of 2^270 bits or more can reasonably be expected to be able to reference any atomic-scale data or computable function in the observable universe, now and in the foreseeable future, limited by the halting problem.
 
-#### Byte sequence completion as a universal computation model
+#### Byte Sequence Completion as a Universal Computation Model
 
 - Byte sequences can be used to represent any computable algorithm or data.
 - Completion of a byte sequence is equivalent to executing a function given its input data (referential transparency).
@@ -35,11 +35,13 @@ An axiom is a statement or proposition that is regarded as being established, ac
 
 #### Considerations
 
-The byte-sequence completion model can introduce complexity in implementation, especially on conventional computing hardware. Sequence matching, dynamic routing, and caching mechanisms are resource-intensive. Performance overheads can include latency and scalability issues, particularly with highly variable input data, high throughput requirements, and long sequences. Efficient resource management, algorithm selection, concurrent processing, and caching strategies are crucial for optimizing performance.
+Implementing the byte-sequence completion model, especially on conventional hardware, introduces complexity. Performance overheads, such as latency and scalability issues, arise from sequence matching, dynamic routing, and resource management. Efficient resource management, algorithm selection, concurrency, and caching strategies are crucial for optimization.
 
 #### Open Questions
 
-- How can the PromiseGrid framework be optimized to handle performance overheads introduced by the complexity of the byte-sequence completion model?
-- What are the most effective strategies for managing memory and computational costs in the context of sequence matching and dynamic routing?
-- How can adaptive mechanisms be implemented to adjust sequence matching strategies based on observed data patterns?
-- What concurrency models and caching strategies are best suited to mitigate the latency and scalability issues inherent in the byte-sequence completion model?
+- How can PromiseGrid handle performance overheads from the byte-sequence completion model?
+    - large word size
+- What strategies best manage memory and computational costs in sequence matching and routing?
+    - decentralized computing
+- How can adaptive mechanisms adjust sequence matching strategies based on data patterns?
+    - avoid hardcoded formats, protocols, and algorithms

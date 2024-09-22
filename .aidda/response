@@ -1,44 +1,44 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/209-issues.md
+File: /home/stevegt/lab/grid-cli/v2/doc/510-axioms.md
 ```markdown
-# Issues, Drawbacks, and Problems with the Byte-Sequence Completion Model
+# Axioms 
 
-## Potential Limitations
+## Definition of "Axiom"
 
-The byte-sequence completion model in PromiseGrid, while innovative, has several limitations:
+An axiom is a statement or proposition regarded as established, accepted, or self-evidently true. In PromiseGrid, axioms define the fundamental principles guiding the system's design, implementation, and operation.
 
-1. **Complexity of Implementation**:
-    - **Hardware Constraints**: Implementing the model on standard computing hardware involves complex sequence matching, dynamic routing, and caching mechanisms.
-    - **Resource Intensive**: High resource consumption in terms of memory and computational power due to extensive sequence matching algorithms and dynamic tries.
+### Axioms on which PromiseGrid is based
 
-2. **Performance Overheads**:
-    - **Latency**: Complexity in sequence matching and dynamic evaluations can introduce latency.
+#### Side effects
 
-3. **Non-Effective Computation Scenarios**:
-    - **Highly Variable Input Data**: Unstructured or non-uniform data strains the model's efficiency.
-    - **High Entropy Data**: Less predictable sequences complicate optimization.
-    - **Real-time Processing**: Scalability issues arise in real-time high throughput scenarios.
-    - **Long Sequences**: Computational expenses in handling long sequences can degrade performance.
+- External observers experience state changes when observing a function call's results.
+- All externally observed function calls have side effects.
+- A system cannot fully know all side effects due to the existence of external observers.
+- Side effects are never fully known.
 
-## Implementation Challenges on Conventional Computing Hardware
+#### Computability
 
-1. **Resource Management**:
-    - **Memory Usage**: Efficient memory management is critical with large tries and extensive sequence data.
-    - **Computational Cost**: Optimizing the cost of maintaining and querying data structures like tries is essential.
+- Approximately 2^270 bits are needed to address atomic-scale data in the observable universe.
+- Computable data can be addressed by a byte sequence referencing the algorithm and its input data (referential transparency).
+- Cryptographic hashes can reference algorithms/data and are collision-resistant but replaceable as needed.
+- A system with 2^270-bit cryptographic hashes can reference any atomic-scale data or computable function, limited by the halting problem.
 
-2. **Optimal Algorithms**:
-    - **Selection and Tuning**: Choosing appropriate algorithms for sequence matching is crucial. Heuristic and probabilistic methods may complement deterministic approaches.
-    - **Adaptive Mechanisms**: Implementing adaptive strategies based on data patterns improves performance.
+#### Byte Sequence Completion as a Universal Computation Model
 
-3. **Performance Tuning**:
-    - **Concurrency**: Parallel processing can help alleviate performance issues.
-    - **Caching Strategies**: Effective caching reduces the frequency of costly sequence matching operations.
+- Byte sequences represent any computable algorithm or data.
+- Completing a byte sequence is equivalent to executing a function with its input data.
+- Leading bytes in a sequence can signal computation requirements for completion.
+- Byte sequences can represent promises of future completion if subsystems are unavailable.
+- A system completing byte sequences can represent any computable algorithm or data, limited by the halting problem and available subsystems.
 
-4. **Integration with Existing Systems**:
-    - **Interoperability**: Ensuring seamless integration with existing systems, including reliable interfaces and abstractions.
-    - **Standard Compliance**: Adhering to established standards for data storage, security, and communication.
+#### Considerations
 
-## Conclusion
+Implementing the byte-sequence completion model, especially on conventional hardware, introduces complexity. Performance overheads, such as latency and scalability issues, arise from sequence matching, dynamic routing, and resource management. Efficient resource management, algorithm selection, concurrency, and caching strategies are crucial for optimization.
 
-The byte-sequence completion model in PromiseGrid presents significant implementation challenges, particularly on conventional computing hardware. Addressing issues such as sequence handling, dynamic tries, and maintaining robust performance is essential for practical applications. Optimization and thorough consideration of these challenges are key to leveraging the model's full potential in decentralized systems like PromiseGrid.
+#### Open Questions
+
+- How can PromiseGrid handle performance overheads from the byte-sequence completion model?
+- What strategies best manage memory and computational costs in sequence matching and routing?
+- How can adaptive mechanisms adjust sequence matching strategies based on data patterns?
+- What concurrency models and caching strategies mitigate latency and scalability issues in the byte-sequence completion model?
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/209-issues.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/510-axioms.md

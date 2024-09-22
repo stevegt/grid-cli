@@ -2,12 +2,13 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: 
-    v2/doc/050-design.md
-    v2/doc/051-design.md
-    v2/doc/052-design.md
-    v2/doc/053-design.md
+    v2/doc/060-cache.md
+    v2/doc/061-cache.md
+    v2/doc/063-cache.md
+    v2/doc/064-cache.md
+    v2/doc/140-cache.md
 Out:
-    v2/doc/050-design.md
+    v2/doc/060-cache.md
 
 - merge all input files into the output file
 - at the bottom, list all concepts that appear in the input files that

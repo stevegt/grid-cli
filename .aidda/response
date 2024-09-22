@@ -1,5 +1,6 @@
+
 File: /home/stevegt/lab/grid-cli/v2/doc/050-design.md
-```
+```markdown
 # PromiseGrid Design Overview
 
 ## Introduction
@@ -100,10 +101,10 @@ Hosts route messages based on exchange rates of personal currencies, incentivizi
 
 - Hierarchical syscall tree with caching.
 - Populated during operation to optimize message handling.
-
-## Conclusion
-
-PromiseGrid integrates promises at every level, ensuring trust, accountability, and efficient message handling. The hierarchical syscall tree enhances system robustness, aligning with computational theory and modular architecture principles.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/050-design.md
-```
+
+Concepts not covered in the input files:
+- Open Market Design, including market mechanics, transactions, and data storage/retrieval processes.
+- Detailed explanation of network communication handling.
+- Security considerations involving decentralized trust and verification mechanisms.

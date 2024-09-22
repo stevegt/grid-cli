@@ -2,7 +2,7 @@
 
 ## Overview
 
-A sequence matching graph is a data structure used to match input sequences to stored sequences by traversing nodes and edges. Each node and edge in the sequence-matching graph is composed to facilitate efficient sequence matching.
+A sequence matching graph is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching.
 
 ## Node Composition
 
@@ -152,4 +152,3 @@ For an input fragment "CGTA":
 3. **Extend**: Extend matches by exploring neighboring nodes to form the complete sequence.
 
 In this way, the system effectively handles sequence fragments with unknown leading characters, ensuring robust sequence matching capabilities.
-

@@ -5,7 +5,7 @@ In:
     v2/doc/346-persist.md
     v2/doc/345-dtrie.md
 Out:
-    v2/doc/345-dtrie.md
+    v2/doc/346-persist.md
 
 - merge all input files into the output file
 - resolve inconsistencies

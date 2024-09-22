@@ -29,7 +29,8 @@ PromiseGrid utilizes the concept of **byte sequence completion** as its core com
 ### Communication and Messaging
 
 - **Referential Transparency**: Agents use byte sequences predictably as pure functions.
-- **Dynamic Routing**: The system routes messages to the appropriate agents based on sequence completion ability. (At a lower protocol layer, the choice of agent to route to might be determined by promise make/break reputation scores as tracked by agent personal currencies, but this detail is abstracted from the sequence completion layer.)
+- **Dynamic Routing**: The system routes messages to the appropriate agents based on sequence completion ability.
+- layering: The choice of agent to route to might be determined by promise make/break reputation scores as tracked by agent personal currencies, but this detail is abstracted from the sequence completion layer.
 
 ### Content-Addressable Storage and Cache Management
 

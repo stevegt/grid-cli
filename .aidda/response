@@ -1,53 +1,50 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/430-sequence-completion.md
+ 
+File: /home/stevegt/lab/grid-cli/v2/doc/510-axioms.md
 ```markdown
-# Byte Sequence Completion in PromiseGrid
+# Axioms 
 
-## Overview
+## Definition of "Axiom"
 
-PromiseGrid's core computational model revolves around **byte sequence completion**. Tasks, data retrieval, and inter-agent communications are executed as sequences of bytes.
+An axiom is a statement or proposition regarded as established, accepted, or self-evidently true. In PromiseGrid, axioms define the fundamental principles guiding the system's design, implementation, and operation.
 
-## Byte Sequence Completion Model
+### Axioms on which PromiseGrid is based
 
-### Concept
+#### Side Effects
 
-- **Byte Sequences as Computations**: Encodes any computable function or data.
-- **Referential Transparency**: Functions produce consistent outputs for the same inputs.
+- External observers experience state changes when observing a function call's results.
+- A function call always has side effects from the perspective of external observers.
+- The system cannot fully know all side effects due to the existence of external observers.
 
-### Execution Flow
+#### Computability
 
-1. **Initiation**: An agent sends a byte sequence representing a task.
-2. **Matching**: The system identifies processing methods.
-3. **Completion**: The system computes the result.
-4. **Unmatched Sequences**: Delegated to capable agents.
-5. **Response**: The sequence is completed and returned.
+- The observable universe consists of approximately 10^80 atoms, rounded to about 2^270 bits.
+- Any data stored at an atomic scale can be addressed by a byte sequence of approximately 2^270 bits.
+- Computable data can be addressed using a byte sequence representing the algorithm and its input data (referential transparency).
+- Cryptographic hashes can be used to reference algorithms and their data.
+- Cryptographic hashes should be collision-resistant and able to be replaced by more secure algorithms as needed.
+- Replaceable cryptographic hashes of 2^270 bits or more can reference any atomic-scale data or computable function in the observable universe, constrained by the halting problem.
 
-## Implementation
+#### Byte Sequence Completion as a Universal Computation Model
 
-### Communication and Messaging
+- Byte sequences represent any computable algorithm or data.
+- Completing a byte sequence is equivalent to executing a function with its input data.
+- Bytes can signal the type, protocol, algorithm, machine, or other prerequisites for completing the sequence.
+- Systems interpret leading bytes and route sequences to appropriate subsystems for completion.
+- If no subsystem is available to complete a byte sequence, the sequence itself represents a promise of future completion.
+- Available subsystems fulfilling the promise are limited by the halting problem.
+- Systems completing byte sequences can represent any computable algorithm or data, constrained by the halting problem and available subsystems.
 
-- **Predictable Operations**: Agents use byte sequences as pure functions.
-- **Dynamic Routing**: The system routes messages based on sequence completion ability.
+#### Considerations
 
-### Storage and Cache Management
+- Implementing byte-sequence completion on conventional hardware introduces complexity.
+- Performance overheads can result from sequence matching, dynamic routing, and resource management.
+- Efficient resource management, algorithm selection, concurrency, and caching strategies are essential to optimize performance.
 
-- **Content-Addressable Storage**: Data and code are accessed based on byte sequences.
-- **Caching**: Associations between input sequences and results for faster access.
-- **Distributed Management**: Supports decentralized storage and execution.
+#### Open Questions
 
-### Scalability
-
-- **Dynamic Integration**: Easily introduce new sequences.
-- **Fault Tolerance**: Decentralized nature enhances resilience.
-
-### Application Examples
-
-- **Function Execution**: Completing sequences to execute functions.
-- **Data Retrieval**: Matching sequences to retrieve data.
-- **Inter-Agent Communication**: Exchanging and completing message sequences.
-
-## Conclusion
-
-Byte sequence completion is fundamental to PromiseGrid, enabling a modular, scalable, and universal computational framework that ensures dynamic adaptability and efficient integration.
+- How can PromiseGrid handle performance overheads from the byte-sequence completion model?
+- What strategies manage memory and computational costs in sequence matching and routing effectively?
+- How can adaptive mechanisms adjust sequence matching strategies based on data patterns?
 
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/430-sequence-completion.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/510-axioms.md

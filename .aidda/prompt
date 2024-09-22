@@ -2,9 +2,9 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: 
-    v2/doc/430-sequence-completion.md
-    v2/doc/510-axioms.md
-Out: v2/doc/510-axioms.md
+    v2/doc/348-trienode.md
+    v2/doc/329-issues.md
+Out: v2/doc/348-trienode.md
 
 - merge all input files into the output file
 - resolve inconsistencies

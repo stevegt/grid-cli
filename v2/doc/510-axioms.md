@@ -6,12 +6,11 @@ An axiom is a statement or proposition regarded as established, accepted, or sel
 
 ### Axioms on which PromiseGrid is based
 
-#### Side effects
+#### Side Effects
 
 - External observers experience state changes when observing a function call's results.
-- All externally observed function calls have side effects.
-- A system cannot fully know all side effects due to the existence of external observers.
-- Side effects are never fully known.
+- A function call always has side effects from the perspective of external observers.
+- The system cannot fully know all side effects due to the existence of external observers.
 
 #### Computability
 
@@ -33,15 +32,3 @@ An axiom is a statement or proposition regarded as established, accepted, or sel
 - If a subsystem is currently available to complete a byte sequence, the promise of completion can be fulfilled in the near term, limited by the halting problem.
 - A system that is able to complete byte sequences can be used to represent any computable algorithm or data, limited by the halting problem and available subsystems.
 
-#### Considerations
-
-Implementing the byte-sequence completion model, especially on conventional hardware, introduces complexity. Performance overheads, such as latency and scalability issues, arise from sequence matching, dynamic routing, and resource management. Efficient resource management, algorithm selection, concurrency, and caching strategies are crucial for optimization.
-
-#### Open Questions
-
-- How can PromiseGrid handle performance overheads from the byte-sequence completion model?
-    - large word size
-- What strategies best manage memory and computational costs in sequence matching and routing?
-    - decentralized computing
-- How can adaptive mechanisms adjust sequence matching strategies based on data patterns?
-    - avoid hardcoded formats, protocols, and algorithms

@@ -11,8 +11,6 @@ Out:
     v2/doc/060-cache.md
 
 - merge all input files into the output file
-- at the bottom, list all concepts that appear in the input files that
-  are not covered in the output file
 - resolve inconsistencies
 - remove redundant information
 - focus on engineering details

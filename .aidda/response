@@ -137,5 +137,6 @@ Modules can unwrap nested messages and forward them to other modules, allowing f
 ### Conclusion
 
 Combining promises at every level and implementing a hierarchical syscall tree with caching and acceptance history ensures trust, accountability, and efficient message handling in a decentralized governance framework. The consistent handling of cache and modules contributes to a robust and flexible system, aligning with computational theory and modular architecture principles.
+
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/060-cache.md

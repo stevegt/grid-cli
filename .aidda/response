@@ -1,5 +1,7 @@
+Your requested file is provided below:
+
 File: /home/stevegt/lab/grid-cli/v2/doc/201-ism.md
-```markdown
+```
 # Infinite State Machines (ISMs) and Their Role in Byte Sequence Completion in PromiseGrid
 
 ## Introduction
@@ -77,7 +79,5 @@ The execution journal would record these states, inputs, assertions, and transit
 
 Infinite State Machines (ISMs) in PromiseGrid provide a powerful and flexible approach to handling byte sequences. By dynamically asserting "what's next" in a graph structure and using the graph as an execution journal, the system can efficiently complete byte sequences, learn from past executions, and adapt to new tasks. This dynamic and adaptive approach is central to the design and operation of PromiseGrid, enabling it to handle complex and evolving computational tasks with ease.
 
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/201-ism.md
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/201-ism.md

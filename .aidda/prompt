@@ -5,7 +5,7 @@ In:
     v2/doc/220-graph.md
     v2/doc/221-graph.md
 Out:
-    v2/doc/220-graph.md
+    v2/doc/221-graph.md
 
 - merge all input files into the output file
 - resolve inconsistencies

@@ -4,41 +4,41 @@ File: /home/stevegt/lab/grid-cli/v2/doc/327-summary.md
 
 ## Overview
 
-PromiseGrid's byte sequence completion design facilitates dynamic interactions within a decentralized system by completing byte sequences to execute tasks or retrieve data. This method ensures modularity and scalability in message handling both across the network and internally within a decentralized microkernel.
+PromiseGrid's byte sequence completion facilitates dynamic interactions within a decentralized system by completing byte sequences to execute tasks or retrieve data. This design ensures modularity and scalability in message handling both across the network and within a decentralized microkernel.
 
-## Core Principles
+## Computational Universality
 
-### Computational Universality
+### Turing Machines and Lambda Calculus
 - **Turing Machines**: Similar to a Universal Turing Machine, byte sequences are processed based on matched patterns, enabling universal computation.
-- **Lambda Calculus**: Mirrors lambda function application and evaluation, emphasizing PromiseGrid's functional programming foundation.
-
-### Analogies
-- **DNA Sequencing**: Completes byte sequences to interpret and execute tasks, akin to interpreting genetic information.
-- **GPT Models**: Resembles GPT token prediction, where context-based pattern recognition ensures coherent output during sequence completions.
+- **Lambda Calculus**: Emphasizes PromiseGrid's functional programming foundation through function application and evaluation.
 
 ## Communication Mechanism
 
 ### Byte Sequence Messages
 - **Inter-Host Communication**: Byte sequences are transmitted over the network, with the kernel focusing on sequence completion.
-- **Intra-Kernel Communication**: Modules communicate within the kernel via byte sequences, facilitating task delegation and sequence handling.
+- **Intra-Kernel Communication**: Modules communicate within the kernel via byte sequences, aiding task delegation and sequence handling.
 
 ## Microkernel Design
 
 ### IPC and Modularity
 - **Invocation Methods**: Uses message passing for decoupled interactions, allowing independent module operation.
 - **Modularity**: Promotes scalability and maintainability through independent modules.
-- **Security**: Employs capabilities-as-promises model to secure interactions, with promises fulfilled through messages.
+- **Security**: Uses capabilities-as-promises to secure interactions.
 
 ## GPT and Completion Mechanics
 
-By leveraging byte sequence completion, PromiseGrid aligns closely with GPT-based models where each token is akin to a byte. Despite GPT tokens being 16-bit integers:
+By leveraging byte sequence completion, PromiseGrid aligns closely with GPT-based models where each token is akin to a byte:
 
 1. **PromiseGrid Module as GPT**: A module can be implemented as a GPT, enabling advanced language modeling and sequence prediction.
-2. **Superset Capabilities**: The grid extends beyond GPT algorithms by handling diverse computational tasks represented through byte sequences.
+2. **Superset Capabilities**: Extends beyond GPT algorithms by handling diverse computational tasks represented through byte sequences.
 
 ## Practical Applications
 
 PromiseGrid's byte sequence completion provides a versatile computation method by encoding various tasks as byte sequences, allowing for dynamic and efficient execution within a decentralized, modular framework.
+
+## Universality of Byte Sequence Completion
+
+PromiseGrid's approach to byte sequence completion provides a universal method for computation by encoding any computational task or function as a sequence of bytes, ensuring versatile and dynamic handling of tasks.
 
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/327-summary.md

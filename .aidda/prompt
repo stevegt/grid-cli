@@ -1,12 +1,11 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-In: v2/doc/001-workflow.md
-Out: v2/doc/001-workflow.md
+In: v2/doc/
+Out: v2/doc/425-l4.md
 
-revise 001-workflow.md:
-- translate the example python code into Go
-- finish the code to include all steps in the algorithm
+discuss the L4 family of kernels and possible lessons learned for
+promisegrid
 
 .stop
 

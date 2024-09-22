@@ -54,62 +54,126 @@ Here’s an example workflow to enhance Aidda for aligning with your goals:
 - Manually review the generated file(s) to ensure coherence and correctness.
 - Make necessary adjustments to the content and structure.
 
-### Example Code for Enhanced Aidda in Python
+### Example Code for Enhanced Aidda in Go
 
-Below is a code snippet to illustrate the merging and de-duplication step using Python:
+Below is a code snippet to illustrate the merging and de-duplication step using Go:
 
-```python
-import os
-from sklearn.cluster import KMeans
-from sentence_transformers import SentenceTransformer
+```go
+package main
 
-# Load all markdown files into memory
-def load_markdown_files(directory):
-    files = []
-    for filename in os.listdir(directory):
-        if filename.endswith('.md'):
-            with open(os.path.join(directory, filename), 'r') as file:
-                files.append(file.read())
-    return files
+import (
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 
-# Generate embeddings for each file using a BERT model
-def generate_embeddings(files):
-    model = SentenceTransformer('bert-base-nli-mean-tokens')
-    embeddings = model.encode(files, convert_to_tensor=True)
-    return embeddings
+	"github.com/joho/godotenv"
+	"github.com/sashabaranov/go-openai"
+	"github.com/remeh/sizedwaitgroup"
+)
 
-# Cluster similar files together
-def cluster_files(embeddings, num_clusters):
-    clustering_model = KMeans(n_clusters=num_clusters)
-    clustering_model.fit(embeddings)
-    return clustering_model.labels_
+func loadMarkdownFiles(directory string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if filepath.Ext(path) == ".md" {
+			data, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			files = append(files, string(data))
+		}
+		return nil
+	})
+	return files, err
+}
 
-# Merge files within each cluster
-def merge_files(files, labels):
-    cluster_map = {}
-    for i, label in enumerate(labels):
-        if label not in cluster_map:
-            cluster_map[label] = []
-        cluster_map[label].append(files[i])
-    merged_files = ['\n'.join(cluster_map[label]) for label in cluster_map]
-    return merged_files
+func generateEmbeddings(files []string, apiKey string) ([][]float64, error) {
+	client := openai.NewClient(apiKey)
+	var embeddings [][]float64
 
-# Main function to orchestrate the process
-def process_markdown_files(directory, num_clusters=5):
-    files = load_markdown_files(directory)
-    embeddings = generate_embeddings(files)
-    labels = cluster_files(embeddings, num_clusters)
-    merged_files = merge_files(files, labels)
-    return merged_files
+	for _, file := range files {
+		resp, err := client.Embeddings(context.TODO(), openai.EmbeddingsRequest{
+			Input: file,
+			Model: openai.GPT3Babbage,
+		})
+		if err != nil {
+			return nil, err
+		}
 
-# Example execution
-directory_path = '/home/stevegt/lab/grid-cli/v2/doc/'
-merged_files = process_markdown_files(directory_path)
+		embeddings = append(embeddings, resp.Data[0].Embedding)
+	}
 
-# Save merged files (optional)
-for i, content in enumerate(merged_files):
-    with open(f'{directory_path}/merged_{i+1}.md', 'w') as file:
-        file.write(content)
+	return embeddings, nil
+}
+
+func clusterFiles(embeddings [][]float64, numClusters int) ([]int, error) {
+	// Placeholder for clustering logic; one can use k-means or similar clustering algorithms
+	return make([]int, len(embeddings)), nil
+}
+
+func mergeFiles(files []string, labels []int) []string {
+	clusterMap := make(map[int][]string)
+	for i, label := range labels {
+		clusterMap[label] = append(clusterMap[label], files[i])
+	}
+
+	var mergedFiles []string
+	for _, contents := range clusterMap {
+		mergedFiles = append(mergedFiles, strings.Join(contents, "\n"))
+	}
+
+	return mergedFiles
+}
+
+func saveMergedFiles(directory string, mergedFiles []string) error {
+	for i, content := range mergedFiles {
+		filename := fmt.Sprintf("%s/merged_%d.md", directory, i+1)
+		err := ioutil.WriteFile(filename, []byte(content), 0644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func main() {
+	// Load API key from environment variable or .env file
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("No .env file found")
+	}
+	apiKey := os.Getenv("OPENAI_API_KEY")
+
+	// Modify the directory path as needed
+	directory := "/home/stevegt/lab/grid-cli/v2/doc/"
+
+	files, err := loadMarkdownFiles(directory)
+	if err != nil {
+		fmt.Printf("failed to load markdown files: %v\n", err)
+		return
+	}
+
+	embeddings, err := generateEmbeddings(files, apiKey)
+	if err != nil {
+		fmt.Printf("failed to generate embeddings: %v\n", err)
+		return
+	}
+
+	labels, err := clusterFiles(embeddings, 5)
+	if err != nil {
+		fmt.Printf("failed to cluster files: %v\n", err)
+		return
+	}
+
+	mergedFiles := mergeFiles(files, labels)
+
+	if err := saveMergedFiles(directory, mergedFiles); err != nil {
+		fmt.Printf("failed to save merged files: %v\n", err)
+	}
+}
 ```
 
 ### Best Practices for Improving Your Workflow

@@ -1,0 +1,10 @@
+graph components {
+	kernel;
+	drivers;
+	agents;
+	host;
+
+	agents -- kernel;
+	kernel -- drivers;
+	drivers -- host;
+}

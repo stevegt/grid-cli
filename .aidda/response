@@ -1,3 +1,4 @@
+```
 File: /home/stevegt/lab/grid-cli/v2/doc/201-ism.md
 ```markdown
 # Infinite State Machines (ISMs) and Their Role in Byte Sequence Completion in PromiseGrid
@@ -17,6 +18,18 @@ An Infinite State Machine (ISM) extends the concept of a finite state machine by
 1. **Unbounded States**: Unlike finite state machines, ISMs are not limited to a predefined set of states. They can create and transition to new states as needed.
 2. **Dynamic Transitions**: Transitions between states in an ISM are determined dynamically based on the input byte sequences and the current state. This allows for more flexible and adaptive behavior.
 3. **Self-Modifying Execution**: ISMs can modify their own structure and behavior during execution, enabling them to handle complex and changing tasks.
+
+### Are Infinite State Machines Turing-Equivalent?
+
+Infinite State Machines (ISMs), due to their capacity for an unbounded number of states and transitions, possess computational capabilities that can render them Turing-equivalent under certain conditions. Turing equivalence implies that a system can perform any computation that a Turing machine can, given sufficient resources.
+
+#### Turing Equivalence of ISMs:
+
+1. **Unbounded Memory and States**: The unbounded nature of ISMs allows them to simulate the tape of a Turing machine, which requires an infinite sequence of symbols. By dynamically creating states, ISMs can represent the necessary memory for computation.
+2. **Conditional Transitions**: ISMs can implement conditional logic in their transitions, similar to the transition functions of a Turing machine. This allows ISMs to perform iterative and recursive computations.
+3. **Halting Behavior**: For an ISM to be Turing-equivalent, it must have a well-defined halting condition, analogous to the halting state of a Turing machine. This ensures that computations can terminate appropriately.
+
+However, it's important to note that while ISMs have the theoretical capacity for Turing-equivalence, practical implementations may impose limitations such as finite resources, which can constrain their computational power in real-world scenarios.
 
 ## Byte Sequence Completion in ISMs
 
@@ -78,3 +91,4 @@ The execution journal would record these states, inputs, assertions, and transit
 Infinite State Machines (ISMs) in PromiseGrid provide a powerful and flexible approach to handling byte sequences. By dynamically asserting "what's next" in a graph structure and using the graph as an execution journal, the system can efficiently complete byte sequences, learn from past executions, and adapt to new tasks. This dynamic and adaptive approach is central to the design and operation of PromiseGrid, enabling it to handle complex and evolving computational tasks with ease.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/201-ism.md
+```

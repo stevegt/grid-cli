@@ -6,14 +6,14 @@ In:
 Out: 
     v2/doc/201-ism.md
 
-- are infinite state machines turing-equivalent?
+
+- add a description of how an ISM transition is like "what's next" in a graph
+- add a description of how byte sequence completion can be implemented as assertions of "what's next" in a graph
+- add a description of how the graph is the execution journal of an ISM 
+- add a description of how promisegrid is an ISM
 
 .stop 
 
-- describe how an ISM transition is like "what's next" in a graph
-- describe how byte sequence completion can be implemented as assertions of "what's next" in a graph
-- describe how the graph is the execution journal of an ISM 
-- describe how promisegrid is an ISM
 - agents assert
 - an assertion is a promise
 - journal is decentralized and is the decentralized cache

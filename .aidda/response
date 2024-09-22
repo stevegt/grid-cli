@@ -1,14 +1,15 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/220-graph.md
-```
+<blank line>
+File: /home/stevegt/lab/grid-cli/v2/doc/221-graph.md
+```markdown
 # Sequence Matching Graph for PromiseGrid
 
 ## Overview
 
-A sequence matching graph is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching.
+The sequence-matching graph in PromiseGrid is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching.
 
 ## Node Composition
 
-Each node in the sequence-matching graph includes:
+Each node in the sequence-matching graph contains:
 
 - **Label**: A string representing the segment of the sequence at this node.
 - **Occurrences**: A list of positions in the reference sequences where this segment occurs.
@@ -24,7 +25,7 @@ type Node struct {
 
 ## Edge Composition
 
-Each edge in the sequence-matching graph represents the next segment in the sequence.
+Each edge represents the next segment in the sequence.
 
 - **Character**: The character from the parent node's label to this edge.
 - **ChildNode**: Reference to the child node.
@@ -133,7 +134,7 @@ The 'Children' field of a node contains only the next node(s) in the sequence. I
 
 ### Genome Storage in Graph
 
-Only the sequences of interest are stored in the graph -- the entire genome is not stored. Sequences are identified based on criteria such as the presence of particular motifs or functional relevance, which can be based on their positions in the genome or other biological markers.
+Only the sequences of interest are stored in the graph. These sequences are identified based on specific criteria such as the presence of particular motifs or functional relevance, which can be based on their positions in the genome or other biological markers.
 
 ## Optimizations and Further Research
 
@@ -147,12 +148,12 @@ To match a sequence fragment with unknown leading characters:
 
 ### Practical Example with Unknown Leading Characters
 
-For an input fragment "CGTA":
+Consider an input fragment "CGTA":
 
 1. **Segment**: Break down "CGTA" into "CGT", "GTA".
 2. **Search**: Find nodes corresponding to "CGT" and "GTA" in the graph.
 3. **Extend**: Extend matches by exploring neighboring nodes to form the complete sequence.
 
-In this way, the system effectively handles sequence fragments with unknown leading characters, ensuring robust sequence matching capabilities.
+In this way, PromiseGrid effectively handles sequence fragments with unknown leading characters, ensuring robust sequence matching capabilities.
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/220-graph.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/221-graph.md

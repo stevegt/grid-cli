@@ -2,18 +2,15 @@
 
 ## Overview
 
-The sequence-matching graph in PromiseGrid is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching and completion.
+The sequence-matching graph in PromiseGrid is a data structure used to match input sequences to stored sequences by traversing nodes and edges efficiently. Each node and edge in the sequence-matching graph has specific compositions that facilitate efficient sequence matching.
 
 ## Node Composition
 
-Each node in the sequence-matching graph contains the following components:
+Each node in the sequence-matching graph contains:
 
-1. **Label**:
-    - A string representing the segment of the sequence at this node.
-2. **Occurrences**:
-    - A list of positions in the reference sequences where this segment occurs.
-3. **Children**:
-    - A map from sequence characters to child nodes, representing the continuation of the sequence.
+- **Label**: A string representing the segment of the sequence at this node.
+- **Occurrences**: A list of positions in the reference sequences where this segment occurs.
+- **Children**: A map from sequence characters to child nodes, representing the continuation of the sequence.
 
 ```go
 type Node struct {
@@ -25,12 +22,10 @@ type Node struct {
 
 ## Edge Composition
 
-Each edge in the sequence-matching graph connects to a child node and represents the next segment in the sequence.
+Each edge represents the next segment in the sequence.
 
-1. **Character**:
-    - The character from the parent node's label to this edge.
-2. **ChildNode**:
-    - Reference to the child node.
+- **Character**: The character from the parent node's label to this edge.
+- **ChildNode**: Reference to the child node.
 
 ```go
 type Edge struct {
@@ -57,15 +52,15 @@ Consider a simplified example with "ACGT" and "AGT" sequences:
 
 ## Input Sequence Matching
 
-To match an input sequence to stored sequences in a sequence-matching graph, follow these steps:
+To match an input sequence to stored sequences:
 
-1. **Traversal**: Starting from the root, traverse through the graph using the characters of the input sequence.
-2. **Edge Matching**: At each node, follow the edge that matches the next character of the input sequence.
-3. **Match Determination**: If a suitable edge or child node cannot be found at any point, the matching process terminates without a match.
+1. **Traversal**: Start from the root and traverse through the graph using the characters of the input sequence.
+2. **Edge Matching**: At each node, follow the edge that matches the next character.
+3. **Match Determination**: If a suitable edge or child node cannot be found, the matching process terminates without a match.
 
 ## Graph Traversal Mechanism
 
-Graph traversal utilizes either a recursive or an iterative technique to explore nodes and edges.
+Graph traversal can be recursive or iterative.
 
 ### Recursive Method
 
@@ -100,31 +95,12 @@ func MatchSequenceIterative(root *Node, sequence string) bool {
 
 ## Examples of Matching
 
-1. **Example 1: Matching "ACGT"**
-    - Starting from the root, traverse edges labeled 'A', 'C', 'G', and 'T'.
-    - Successful match if all edges are followed correctly.
+1. **Matching "ACGT"**: Traverse edges labeled 'A', 'C', 'G', and 'T' from the root. Match is successful if all edges are followed.
+2. **Matching "AGT"**: Traverse edges labeled 'A', 'G', and 'T' from the root. Match is successful if all edges are followed.
 
-2. **Example 2: Matching "AGT"**
-    - Starting from the root, traverse edges labeled 'A', 'G', and 'T'.
-    - Successful match if all edges are followed correctly.
+## Adding a New Sequence
 
-## Advanced Questions Answered
-
-### Sequence-Matching Graph and 'Children' Field
-
-In a sequence-matching graph, does the 'Children' field of a node contain the next node in the sequence? Or does it contain both previous and next nodes?
-
-- The 'Children' field of a node contains only the next node(s) in the sequence. It maps sequence characters to their corresponding child nodes, representing the continuation of the sequence.
-
-### Genome Storage in Graph
-
-Are entire genomes stored in the graph? Or are only the sequences of interest stored? If the latter, how are the sequences of interest identified? Are they identified by their position in the genome? Or are they identified by some other means?
-
-- Only the sequences of interest are stored in the graph. These sequences are identified based on specific criteria such as the presence of particular motifs or functional relevance. The identification can be based on their positions in the genome or other biological markers.
-
-### Adding a New Sequence
-
-Show an example of how a new sequence is added to the graph.
+To add a new sequence "AGC":
 
 ```go
 func AddSequence(root *Node, sequence string) {
@@ -140,8 +116,6 @@ func AddSequence(root *Node, sequence string) {
         }
         currentNode = currentNode.Children[char]
     }
-    // Optionally add occurrence position if needed
-    // currentNode.Occurrences = append(currentNode.Occurrences, position)
 }
 
 // Example usage:
@@ -149,11 +123,22 @@ root := &Node{Children: make(map[rune]*Node)}
 AddSequence(root, "AGC")
 ```
 
+## Advanced Questions Answered
+
+### Sequence-Matching Graph and 'Children' Field
+
+The 'Children' field of a node contains only the next node(s) in the sequence. It maps sequence characters to their corresponding child nodes, representing the continuation of the sequence.
+
+### Genome Storage in Graph
+
+The entire genome is not stored -- only the sequences of interest are stored in the graph. These sequences are identified based on specific criteria such as the presence of particular motifs or functional relevance, which can be based on their positions in the genome or other biological markers.
+
 ## Optimizations and Further Research
 
 ### Sequence Matching with Unknown Leading Characters
 
-To match a sequence fragment with unknown leading characters, the system can:
+To match a sequence fragment with unknown leading characters:
+
 1. **Segment the Fragment**: Divide the input sequence fragment into smaller overlapping segments.
 2. **Search for Segments**: Locate nodes corresponding to the segments within the graph.
 3. **Extend Matches**: Extend partial matches by traversing adjacent nodes in the graph till a complete match is found.
@@ -161,9 +146,9 @@ To match a sequence fragment with unknown leading characters, the system can:
 ### Practical Example with Unknown Leading Characters
 
 Consider an input fragment "CGTA":
+
 1. **Segment**: Break down "CGTA" into "CGT", "GTA".
 2. **Search**: Find nodes corresponding to "CGT" and "GTA" in the graph.
 3. **Extend**: Extend matches by exploring neighboring nodes to form the complete sequence.
 
 In this way, PromiseGrid effectively handles sequence fragments with unknown leading characters, ensuring robust sequence matching capabilities.
-

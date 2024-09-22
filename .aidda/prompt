@@ -5,7 +5,16 @@ In:
     v2/doc/
 Out: v2/doc/201-ism.md
 
-- describe infinite state machines
-- describe how byte sequence completion can be implemented as assertions of
-  "what's next" in a graph
+- edit for conciseness
+- describe why infinite state machines are considered to be
+  turing-equivalent
+- describe how an ISM transition is like "what's next" in a graph
+- describe how byte sequence completion can be implemented as assertions of "what's next" in a graph
 - describe how the graph is the execution journal of an ISM 
+- describe how promisegrid is an ISM
+- agents assert
+- an assertion is a promise
+- journal is decentralized and is the decentralized cache
+- agents respond to each others' assertions, weighting conflicting
+  assertions by currency value
+- a function call is an imposition, but an assertion is a promise

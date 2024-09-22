@@ -1,4 +1,3 @@
-```
 File: /home/stevegt/lab/grid-cli/v2/doc/201-ism.md
 ```markdown
 # Infinite State Machines (ISMs) in Sequence Completion for PromiseGrid
@@ -28,6 +27,25 @@ An ISM extends finite state machines by allowing unlimited states and transition
 2. **Dynamic Transitions**: Transitions depend on events and the current state, enabling adaptive behavior.
 3. **Self-Modifying Execution**: ISMs can alter their structure and behavior during execution to handle complex tasks.
 
+#### Assertion Message Structure
+
+An assertion message is structured as the tuple `(m1, in, errin, out, errout, rc, m2)`, where:
+- `m1`: Current message or state identifier.
+- `in`: Input data or event triggering the transition.
+- `errin`: Input error data, if any.
+- `out`: Output data resulting from the transition.
+- `errout`: Output error data, if any.
+- `rc`: Return code indicating success or specific error conditions.
+- `m2`: Next message or state identifier.
+
+### ISM Programming Language
+
+The language used to program ISMs is based on statements defined by the tuple `(m1, in, errin, out, errout, rc, m2)`. Each element of the tuple can be a variable, allowing for flexible and dynamic state definitions. This structure enables developers to define transitions, handle inputs and outputs, manage errors, and dictate the flow of states within the ISM.
+
+#### Recursion in ISMs
+
+Recursion in the ISM language allows states to invoke themselves or other states through their tuple definitions. By referencing previous states (`m1` or `m2`) within new assertions, ISMs can perform iterative computations and handle repetitive tasks. This recursive capability ensures that complex sequences and computations can be managed efficiently without predefined limitations on the depth or complexity of operations.
+
 ### Are ISMs Turing-Equivalent?
 
 With unbounded states and transitions, ISMs can be Turing-equivalent, capable of performing any computation a Turing machine can, given sufficient resources.
@@ -47,7 +65,7 @@ PromiseGrid utilizes "what's next" assertions within a decentralized graph struc
 #### Decentralized Graph Structure:
 
 - **Distributed Nodes**: The graph is maintained across multiple agents, preventing single points of failure.
-- **Consensus Mechanism**: Agents collectively agree on state transitions, ensuring consistency and resilience.
+- **Consensus Mechanism**: Agents only build on state transitions they agree with, minimizing branching. Agents can use a "merging machine" to merge two or more branches, creating a new machine, enabling convergence.
 - **Scalability**: Decentralization allows the system to scale seamlessly as more agents participate.
 
 #### Assertions of "What's Next":
@@ -65,4 +83,3 @@ Each ISM transition acts as a "what's next" prediction within the graph structur
 PromiseGrid functions as an ISM.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/201-ism.md
-```

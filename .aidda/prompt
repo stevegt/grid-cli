@@ -8,11 +8,6 @@ Out:
 
 
 - be concise
-- add a description of how an assertion message is structured as the
-  tuple (m1, in, errin, out, errout, rc, m2)
-- add a description of the language used to program the ISM.  each
-  statement consists of obj = (m1, in, errin, out, errout, rc, m2).
-  obj has attributes obj.out, obj,errout, rc, and m2.  
-- describe how recursion works in this language
+- show a code example of how recursion works in this language
 
 .stop 

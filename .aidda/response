@@ -1,50 +1,143 @@
- 
-File: /home/stevegt/lab/grid-cli/v2/doc/510-axioms.md
-```markdown
-# Axioms 
-
-## Definition of "Axiom"
-
-An axiom is a statement or proposition regarded as established, accepted, or self-evidently true. In PromiseGrid, axioms define the fundamental principles guiding the system's design, implementation, and operation.
-
-### Axioms on which PromiseGrid is based
-
-#### Side Effects
-
-- External observers experience state changes when observing a function call's results.
-- A function call always has side effects from the perspective of external observers.
-- The system cannot fully know all side effects due to the existence of external observers.
-
-#### Computability
-
-- The observable universe consists of approximately 10^80 atoms, rounded to about 2^270 bits.
-- Any data stored at an atomic scale can be addressed by a byte sequence of approximately 2^270 bits.
-- Computable data can be addressed using a byte sequence representing the algorithm and its input data (referential transparency).
-- Cryptographic hashes can be used to reference algorithms and their data.
-- Cryptographic hashes should be collision-resistant and able to be replaced by more secure algorithms as needed.
-- Replaceable cryptographic hashes of 2^270 bits or more can reference any atomic-scale data or computable function in the observable universe, constrained by the halting problem.
-
-#### Byte Sequence Completion as a Universal Computation Model
-
-- Byte sequences represent any computable algorithm or data.
-- Completing a byte sequence is equivalent to executing a function with its input data.
-- Bytes can signal the type, protocol, algorithm, machine, or other prerequisites for completing the sequence.
-- Systems interpret leading bytes and route sequences to appropriate subsystems for completion.
-- If no subsystem is available to complete a byte sequence, the sequence itself represents a promise of future completion.
-- Available subsystems fulfilling the promise are limited by the halting problem.
-- Systems completing byte sequences can represent any computable algorithm or data, constrained by the halting problem and available subsystems.
-
-#### Considerations
-
-- Implementing byte-sequence completion on conventional hardware introduces complexity.
-- Performance overheads can result from sequence matching, dynamic routing, and resource management.
-- Efficient resource management, algorithm selection, concurrency, and caching strategies are essential to optimize performance.
-
-#### Open Questions
-
-- How can PromiseGrid handle performance overheads from the byte-sequence completion model?
-- What strategies manage memory and computational costs in sequence matching and routing effectively?
-- How can adaptive mechanisms adjust sequence matching strategies based on data patterns?
-
+File: /home/stevegt/lab/grid-cli/v2/doc/348-trienode.md
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/510-axioms.md
+# PromiseGrid Trie Node Structure
+
+## Introduction
+
+The PromiseGrid's Trie Node structure is central to efficiently storing and retrieving promises, module hashes, and arguments within the decentralized system. This document details the design and functionality of the trie node structure, including its components and the importance of reputation accounting.
+
+## Trie Node Structure
+
+### Definition
+
+A Trie Node in PromiseGrid contains key elements crucial for efficient promise handling and storage. The node structure is designed to ensure quick access and modification while supporting the system's dynamic requirements.
+
+```go
+type TrieNode struct {
+    KeyPart           byte                  // Part of the key corresponding to this node
+    Children          map[byte]*TrieNode    // Map of child nodes
+    IsHandler         bool                  // Flag indicating if this node is a handler
+    MultipleHandlers  []HandlerFunc         // List of handler functions if this node has multiple handlers
+    RawValue          interface{}           // Raw value if this node is not a handler
+    Handler           func(prefix []byte, remainder io.Reader) interface{}  // Handler function if this node is a handler
+    Reputation        map[string]ReputationStats  // Reputation accounting for handlers
+}
+```
+
+### Components
+
+1. **KeyPart**:
+    - Represents a single byte of the key stored in the node.
+
+2. **Children**:
+    - A map that associates each byte part with its child node.
+
+3. **IsHandler**:
+    - A boolean flag that signifies whether the node is associated with a handler function.
+
+4. **MultipleHandlers**:
+    - Stores a list of handler functions if the node is associated with multiple handlers.
+
+5. **RawValue**:
+    - Stores the value directly within the node if it is not a handler.
+
+6. **Handler**:
+    - A function that dynamically generates or retrieves the value upon invocation.
+
+7. **Reputation**:
+    - Stores reputation statistics for each handler in the case of multiple handlers.
+
+### Reputation Structure
+
+The reputation structure helps in tracking the performance and reliability of each handler. It includes:
+
+```go
+type ReputationStats struct {
+    PromisesFilled int
+    PromisesBroken int
+    TotalValue     float64 // Can be denominated in personal currency/points issued by the requestor
+}
+```
+
+## Handler Call Signature
+
+### Definition
+
+The handler enables nodes to return context-specific values when part of the trie is traversed. The handler is defined as follows:
+
+```go
+type HandlerFunc func(prefix []byte, remainder io.Reader) interface{}
+```
+
+### Parameters
+
+- **prefix**: A byte slice representing the path leading to the handler node.
+- **remainder**: An `io.Reader` that provides access to the remaining key parts beyond the handler.
+
+### Example Usage
+
+Consider a scenario where the trie stores various configurations, and each configuration can be statically defined or dynamically generated:
+
+```go
+// Define a handler function
+func configHandler(prefix []byte, remainder io.Reader) interface{} {
+    remainderBytes, _ := io.ReadAll(remainder) // Read the remainder of the path
+    fullPath := append(prefix, remainderBytes...)
+    return fmt.Sprintf("Dynamic config for %s", string(fullPath))
+}
+
+// Example TrieNode setup
+root := &TrieNode {
+    KeyPart:   0x00,
+    Children:  make(map[byte]*TrieNode),
+    IsHandler: false,
+}
+
+configNode := &TrieNode {
+    KeyPart:   0x01,
+    Children:  make(map[byte]*TrieNode),
+    IsHandler: true,
+    Handler:   configHandler,
+}
+
+root.Children[0x01] = configNode
+
+// Traversing the trie and invoking the handler
+path := "/config/somepath"
+result := root.Children[0x01].Handler([]byte("/config"), strings.NewReader("somepath"))
+fmt.Println(result)  // Output: Dynamic config for /config/somepath
+```
+
+## Pros and Cons of Having Multiple Handlers per Node
+
+### Pros
+
+1. **Flexibility**:
+    - Allows for more flexible and context-specific responses.
+    - Enables different handlers to be executed based on varying conditions.
+
+2. **Extensibility**:
+    - New handlers can be added to handle additional scenarios or requirements.
+
+3. **Modularity**:
+    - Facilitates modular design by separating concerns within handlers.
+
+4. **Reputation Accounting**:
+    - Tracks the performance of each handler for better decision-making.
+
+### Cons
+
+1. **Complexity**:
+    - Managing multiple handlers can increase system complexity.
+
+2. **Performance Overhead**:
+    - The presence of multiple handlers can introduce performance overhead.
+
+3. **Inconsistency**:
+    - Requires careful coordination to ensure coherent handler outcomes.
+
+## Conclusion
+
+The PromiseGrid Trie Node structure ensures efficient handling of static and dynamic values. Understanding its components, handler functions, and the importance of reputation accounting can help design a robust and adaptable system.
+```
+EOF_/home/stevegt/lab/grid-cli/v2/doc/348-trienode.md

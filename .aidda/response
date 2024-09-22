@@ -1,147 +1,41 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md
+File: /home/stevegt/lab/grid-cli/v2/doc/327-summary.md
 ```markdown
-# Sequence Matchers and Their Implementations
+# PromiseGrid Byte Sequence Completion Design
 
 ## Overview
 
-This document explores implementations of sequence matchers, focusing on principles, data structures, and algorithms. Examples from genetics illustrate how sequence matchers operate at a data structure level, detailing how given sequences are matched with stored sequences, the decision-making process, and the data structures/algorithms involved.
+PromiseGrid's byte sequence completion design enables efficient dynamic interactions within a decentralized system, focusing on completing byte sequences to interpret and execute tasks or retrieve data. This method ensures modularity and scalability in message handling both on the wire and internally within a decentralized microkernel.
 
-## Genetics Sequence Matchers
+## Relationship to Turing Machines and Lambda Calculus
 
-### Introduction
+- **Turing Machines**: PromiseGrid's byte sequence completion parallels a Universal Turing Machine (UTM) by processing byte sequences based on matched patterns, ensuring computational universality.
+- **Lambda Calculus**: Byte sequence completion can be compared to lambda function application and evaluation in functional programming, underscoring PromiseGrid's functional programming roots.
 
-Sequence matching in genetics identifies regions of similarity in DNA, RNA, or protein sequences, revealing functional, structural, or evolutionary relationships.
+## Similarities to DNA Sequencing and GPT Models
 
-### How Sequence Matching Works
+- **DNA Sequencing**: Similar to interpreting and synthesizing genetic information, PromiseGrid completes byte sequences to interpret and execute tasks, using sequences as fundamental units.
+- **GPT Models**: Byte sequence completion is akin to GPT token prediction, where context-based pattern recognition ensures coherent outputs during sequence completions.
 
-1. **Given Sequence Matching**:
-    - Matchers scan stored sequences to align them with a given partial sequence.
+## Universality and Scope
 
-2. **Decision-Making Process**:
-    - Criteria for matches include the number of matches, mismatches, and gaps.
-    - Scoring matrices and alignment algorithms quantify match quality.
+PromiseGrid's approach offers universal computation methods, with the system capable of handling diverse computational tasks dynamically by encoding them as byte sequences. This versatility underscores that PromiseGrid modules can operate similarly to GPT models, making the system a superset of GPT-based LLMs in completion algorithms.
 
-### Data Structures
+## Byte Sequence Messages for Communications
 
-1. **Hash Tables**:
-    - Enable rapid lookup of sub-sequences (e.g., BLAST).
+- **Inter-Host Communication**: Byte sequence messages are transmitted over the network, with the kernel focusing on sequence completion irrespective of content.
+- **Intra-Kernel Communication**: Modules communicate within the kernel through byte sequence messages, ensuring task delegation and efficient sequence handling.
 
-2. **Suffix Trees and Arrays**:
-    - Efficient for finding long matches and handling large datasets.
+## Kernel IPC Design and Microkernels
 
-3. **Graphs**:
-    - Node-based representations where nodes represent sequences or sub-sequences, and edges represent alignments (e.g., De Bruijn graphs).
+PromiseGrid's IPC design incorporates principles from microkernels like Mach:
 
-### Algorithms
-
-1. **Dynamic Programming**:
-    - Used for optimal sequence alignment by breaking problems into simpler sub-problems (e.g., Needleman-Wunsch for global alignment).
-
-2. **Heuristic Algorithms**:
-    - Fast, approximate methods (e.g., BLAST and FASTA).
-
-3. **Graph-Based Algorithms**:
-    - Traverse graph structures for optimal matches.
-
-## Cache as a Sequence Matcher
-
-Implementing a cache as a sequence matcher can enhance capabilities by returning complete sequences based on partial inputs, handling complex queries, and improving data retrieval efficiency.
-
-### Use of Wildcards
-
-1. **Wildcards in Sequences**:
-    - Allow matching with variations and gaps (e.g., `*` and `?` in regular expressions).
-
-2. **Handling Wildcards**:
-    - Algorithms and data structures can accommodate wildcards, though complexity increases.
-
-## BLAST Algorithm
-
-### Overview of BLAST
-
-BLAST (Basic Local Alignment Search Tool) compares an input sequence against a database of sequences, retrieving regions corresponding to word hashes and evaluating alignments.
-
-### BLAST Process
-
-1. **Hashing Words**:
-    - Breaks sequences into sub-sequences ("words") for hashing.
-
-2. **Database Organization**:
-    - Stores hashed words from the database.
-
-3. **Finding Matches**:
-    - Matches query words against hashed words from the database.
-
-4. **Extending Matches**:
-    - Initial matches are extended to evaluate longer regions of similarity.
-
-### Example
-
-- Query: "ACGTACGT"
-- Words: ["ACG", "CGT", "GTA", "TAC", "ACG", "CGT"]
-- Hash table lookups enable quick retrieval of matches.
-
-### Advantages of Hashing in BLAST
-
-1. **Speed**:
-    - Quickly locates matching regions without scanning entire databases.
-2. **Efficiency**:
-    - Efficiently handles large datasets.
-3. **Scalability**:
-    - Facilitates parallel processing.
-
-## Graph or Node-Based Representation
-
-### Introduction
-
-Graph-based representations handle complex relationships and alignments, offering a scalable method to represent sequences and their relationships.
-
-### How Graph-Based Representation Works
-
-1. **Nodes as Sequences**:
-    - Represent sequences or sub-sequences.
-
-2. **Edges as Alignments**:
-    - Represent relationships between sequences.
-
-3. **Graph Construction**:
-    - Sequences are decomposed into sub-sequences, forming nodes and edges.
-
-### Algorithms and Data Structures
-
-1. **De Bruijn Graphs**:
-    - Represent overlaps for genome assembly.
-
-2. **Suffix Trees and Arrays**:
-    - Efficient for pattern matching.
-
-3. **Hash Tables**:
-    - Enable quick lookups.
-
-### Use Cases and Examples
-
-1. **Genomics**:
-    - Handle large-scale DNA sequence data.
-
-2. **Text Mining**:
-    - Sequence of words or phrases.
-
-3. **Network Analysis**:
-    - Represent entities and their relationships.
-
-### Advantages
-
-1. **Scalability**:
-    - Efficiently handle large datasets.
-
-2. **Flexibility**:
-    - Accommodate various sequence and alignment types.
-
-3. **Rich Representation**:
-    - Enhance analytical tasks by capturing sequences and their relationships.
+- **Invocation Methods**: Utilizing message passing for decoupled interactions.
+- **Modularity**: Modules function independently, promoting scalability and maintainability.
+- **Security**: The capabilities-as-promises model secures interactions, with modules fulfilling promises via messages.
 
 ## Conclusion
 
-Implementing a cache as a sequence matcher involves using advanced data structures and algorithms. Inspirations from genetic sequence matching, such as hash tables, suffix trees, graphs, and dynamic programming, provide a robust foundation. Hashing, as illustrated by BLAST, enables rapid search and retrieval. Addressing sequence fragments enhances practical applicability in various domains, from genomics to data recovery.
+PromiseGrid's byte sequence completion design offers a versatile method for decentralized computation and communication. Leveraging concepts from Turing machines, lambda calculus, DNA sequencing, and GPT, the system ensures robust, scalable, and efficient operations, capable of dynamically handling various computational tasks.
+
 ```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/210-sequence-graph.md
+EOF_/home/stevegt/lab/grid-cli/v2/doc/327-summary.md

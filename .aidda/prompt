@@ -5,7 +5,7 @@ In:
     v2/doc/327-summary.md
     v2/doc/430-sequence-completion.md
 Out:
-    v2/doc/327-summary.md
+    v2/doc/430-sequence-completion.md
 
 - merge all input files into the output file
 - resolve inconsistencies

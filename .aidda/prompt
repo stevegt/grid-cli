@@ -1,7 +1,23 @@
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
-In: v2/doc/
+In: 
+    v2/doc/050-design.md
+    v2/doc/051-design.md
+    v2/doc/052-design.md
+    v2/doc/053-design.md
+Out:
+    v2/doc/050-design.md
+
+- merge all input files into the output file
+- resolve inconsistencies
+- remove redundant information
+- focus on engineering details
+- remove fluff and marketing 
+- be concise
+
+.stop
+
 Out: v2/doc/425-l4.md
 
 discuss the L4 family of kernels and possible lessons learned for

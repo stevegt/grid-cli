@@ -1,45 +1,22 @@
 # Persisting the Trie to Disk
 
-## Design Considerations for Persistence
+## Design Considerations
 
-The chosen persistence strategy must address the following:
-1. **Compatibility**: Native and WebAssembly (WASM) environments.
-2. **Reliability**: Data integrity and durability.
+Persistence strategy must address:
+1. **Compatibility**: Across Native and WebAssembly (WASM) environments.
+2. **Reliability**: Ensuring data integrity and durability.
 3. **Performance**: Efficient read/write operations.
-4. **Flexibility**: Support for updates and retrievals.
+4. **Flexibility**: Support for dynamic updates and retrievals.
 
-## Potential Persistence Strategies
+## Persistence Strategies
 
 ### 1. Origin Private File System (OPFS)
 
-**Description**: Secure, performant, and private storage for web environments.
-
-**Advantages**:
-- **Security**: Sandboxed environment.
-- **Performance**: Optimized for web.
-- **Compatibility**: WASM-compatible.
+* **Security**: Sandboxed, ensuring data privacy.
+* **Performance**: Optimized for web use.
+* **Compatibility**: WASM-compatible.
 
 **Implementation**:
-- **WASM**: Interact with OPFS via JavaScript.
-- **Native**: Abstraction for file I/O using standard calls.
-
-### 2. `afero` Library
-
-**Description**: A filesystem abstraction library for Go.
-
-**Advantages**:
-- **Abstraction**: Agnostic to storage backend.
-- **Flexibility**: Supports multiple backends.
-- **Compatibility**: Native environments; minor work for WASM.
-
-**Implementation**:
-- **WASM**: Custom backend to communicate with browser's file API.
-- **Native**: Use OS filesystem backend or others via `afero`.
-
-## Example Implementations
-
-### OPFS in WASM
-
 ```javascript
 async function writeFile(filename, content) {
   const handle = await navigator.storage.getDirectory();
@@ -57,8 +34,13 @@ async function readFile(filename) {
 }
 ```
 
-### `afero` in Native
+### 2. `afero` Library
 
+* **Abstraction**: Generic interface for various storage backends.
+* **Flexibility**: Supports multiple backends.
+* **Compatibility**: Native environments with minor adaptations for WASM.
+
+**Implementation**:
 ```go
 package main
 
@@ -86,11 +68,11 @@ func main() {
 }
 ```
 
-## Persisting the Trie to Disk in Go
+## Persisting Trie to Disk in Go
 
-### Lazy-Loading Node Files
+### Lazy-Loading Nodes
 
-Trie nodes are lazily loaded from the disk as needed, optimizing memory usage.
+Nodes are loaded from disk as needed to optimize memory usage.
 
 ```go
 package main
@@ -196,7 +178,7 @@ func (t *Trie) SaveNodesRecursively(node *TrieNode) error {
 	if err := t.SaveNode(node); err != nil {
 		return err
 	}
-	for childKey, childNode := range node.Children {
+	for _, childNode := range node.Children {
 		if childNode != nil {
 			if err := t.SaveNodesRecursively(childNode); err != nil {
 				return err
@@ -223,8 +205,8 @@ func (t *Trie) LoadNode(nodePath string) (*TrieNode, error) {
 	}
 	node.Path = nodePath
 	node.Fs = t.Fs
-	for childKey := range node.Children {
-		node.Children[childKey] = nil // Mark child as needing lazy load
+	for key := range node.Children {
+		node.Children[key] = nil // Mark for lazy load
 	}
 	return node, nil
 }
@@ -272,6 +254,6 @@ func main() {
 }
 ```
 
-### Conclusion
+### Summary
 
-Combining OPFS and `afero` provides robust trie persistence across native and WASM environments. Lazy-loading nodes optimize memory usage and provide efficient data retrieval.
+Combining OPFS and `afero` provides robust trie persistence across both native and WASM environments. Lazy-loading optimizes memory usage.

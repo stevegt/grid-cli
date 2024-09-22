@@ -12,6 +12,7 @@ if [ -z "$OLLAMA_HOST" ]; then
 fi
 
 cd ../../
+# XXX release the similarity tool on github
 files=$(~/lab/ollama/go-file-similarity-graph/main -closest 2 v2/doc/*.md)
 files=$(echo "$files" | grep -v "doc/README.md")
 files=$(echo "$files" | tr '\n' ' ')
@@ -19,18 +20,20 @@ files=$(echo "$files" | tr '\n' ' ')
 input1=$(echo "$files" | awk '{print $1}')
 input2=$(echo "$files" | awk '{print $2}')
 
-# output is the older of the two imput files
+if [ -z "$input2" ]; then
+    echo "No similar files found"
+    # padsp signalgen -t 100m sin 300
+    exit 1
+fi
+
+# output is the older of the two input files
 if [ "$input1" -nt "$input2" ]; then
     output=$input2
 else
     output=$input1
 fi
 
-if [ -z "$input2" ]; then
-    echo "No similar files found"
-    # padsp signalgen -t 100m sin 300
-    exit 1
-fi
+# XXX cmp the input files and remove the older one (output) if they are identical
 
 echo "Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable

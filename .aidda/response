@@ -1,21 +1,25 @@
 File: /home/stevegt/lab/grid-cli/v2/doc/201-ism.md
 ```markdown
-# Infinite State Machines (ISMs) in Byte Sequence Completion for PromiseGrid
+# Infinite State Machines (ISMs) in Sequence Completion for PromiseGrid
 
 ## Introduction
 
-In PromiseGrid, an Infinite State Machine (ISM) enables dynamic handling and completion of byte sequences. Unlike finite state machines, ISMs have an unbounded set of states, offering flexibility in computation and data management. This document discusses ISMs' principles, byte sequence completion using "what's next" assertions in a graph, and the graph's role as the ISM's execution journal.
+In PromiseGrid, an Infinite State Machine (ISM) enables dynamic handling and completion of sequences. Unlike finite state machines, ISMs have an unbounded set of states, offering flexibility in computation and data management. This document discusses ISMs' principles, sequence completion using "what's next" assertions in a graph, and the graph's role as the ISM's execution journal.
+
+### Agent Assertions and Promises
+
+Agents within PromiseGrid make assertions, which are formalized as promises. An assertion signifies a commitment by an agent to perform a specific action or fulfill a particular role within the system. These promises are reciprocated as agents respond to each other's assertions, establishing a network of mutual commitments. When conflicting assertions arise, agents weigh these by leveraging their personal currency values, which reflect their reputation and reliability. This economic weighting ensures that more trusted and reputable agents have their assertions prioritized, maintaining overall system stability and trustworthiness. Unlike traditional function calls, which are often seen as impositions directing an agent to perform a task, assertions are voluntary promises that embody trust and collaboration within the network.
 
 ## Understanding Infinite State Machines (ISMs)
 
 ### What is an ISM?
 
-An ISM extends finite state machines by allowing unlimited states and transitions. In PromiseGrid, ISMs dynamically adapt to new byte sequences, ideal for complex and evolving computational tasks.
+An ISM extends finite state machines by allowing unlimited states and transitions. 
 
 #### Key Characteristics:
 
 1. **Unbounded States**: ISMs create and transition to new states as needed.
-2. **Dynamic Transitions**: Transitions are determined by input bytes and the current state, enabling adaptive behavior.
+2. **Dynamic Transitions**: Transitions are determined by events and the current state, enabling adaptive behavior.
 3. **Self-Modifying Execution**: ISMs can alter their structure and behavior during execution to handle complex tasks.
 
 ### Are ISMs Turing-Equivalent?
@@ -26,17 +30,17 @@ ISMs, with their unbounded states and transitions, can be Turing-equivalent, mea
 
 1. **Unbounded Memory**: ISMs simulate a Turing machine's tape by dynamically creating states.
 2. **Conditional Transitions**: Implementing conditional logic allows iterative and recursive computations.
-3. **Halting Behavior**: A defined halting condition ensures computations terminate appropriately.
+3. **Halting Behavior**: The universe does not halt, but there may need to be a way for an agent to assert "there is no next state".
 
-## Byte Sequence Completion in ISMs
+## Sequence Completion in ISMs
 
-### Implementing Byte Sequence Completion
+### Implementing Sequence Completion
 
-PromiseGrid uses "what's next" assertions in a graph structure to complete byte sequences, predicting and executing the next byte based on the current state and input.
+PromiseGrid uses "what's next" assertions in a graph structure to complete sequences, predicting and executing the next state based on the current state and event.
 
 #### Assertions of "What's Next":
 
-1. **Graph Representation**: Byte sequences are paths in a graph, with nodes as states and edges as transitions.
+1. **Graph Representation**: sequences are paths in a graph, with nodes as states and edges as transitions.
 2. **Dynamic Assertions**: Possible transitions are asserted based on current inputs, guiding completion.
 3. **Path Selection**: The most probable path is chosen based on historical data and context for efficient completion.
 
@@ -44,62 +48,8 @@ PromiseGrid uses "what's next" assertions in a graph structure to complete byte 
 
 Each ISM transition acts as a "what's next" prediction within the graph structure.
 
-### Byte Sequence Completion Example
-
-To complete the byte sequence "ACGT":
-
-1. **Initial State `S0`**
-   - Input: "AC"
-   - Assertions: Transition to `S1` with "G", or to `S2` with "T"
-   - Selected Transition: `S0 -> S1` ("G")
-   
-2. **State `S1`**
-   - Input: "ACG"
-   - Assertions: Transition to `S2` with "T"
-   - Selected Transition: `S1 -> S2`
-   
-3. **State `S2`**
-   - Completed Sequence: "ACGT"
-
-## Execution Journal of an ISM
-
-### Graph as Execution Journal
-
-The graph tracking byte sequences serves as the ISM's execution journal, recording states, transitions, and inputs for history, auditing, and debugging.
-
-#### Key Functions:
-
-1. **Traceability**: Records every action and decision for detailed auditing.
-2. **Optimization**: Uses historical data to improve sequence completion efficiency.
-3. **Learning & Adaptation**: Learns from past executions to better handle new tasks.
-
-### Example Execution Journal
-
-For the sequence "ACGT":
-
-1. **`S0`**
-   - Input: "AC"
-   - Assertions: Next "G" to `S1`, "T" to `S2`
-   - Transition: `S0 -> S1`
-   
-2. **`S1`**
-   - Input: "ACG"
-   - Assertions: Next "T" to `S2`
-   - Transition: `S1 -> S2`
-   
-3. **`S2`**
-   - Sequence completed: "ACGT"
-
-## PromiseGrid as an ISM
-
 ### PromiseGrid as an ISM
 
-PromiseGrid functions as an ISM, managing complex byte sequences through dynamic state handling and maintaining an execution journal via its graph structure.
-
-#### Characteristics:
-
-1. **Dynamic Adaptation**: Creates states and transitions on-the-fly based on incoming data.
-2. **Scalability**: Handles increasing data complexity without performance loss.
-3. **Intelligent Processing**: Predicts and processes data flows effectively using "what's next" assertions and an execution journal.
+PromiseGrid functions as an ISM.
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/201-ism.md

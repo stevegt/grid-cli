@@ -7,16 +7,11 @@ Out:
     v2/doc/201-ism.md
 
 
-- add a description of the fact that agents make assertions, and an
-  assertion is a promise, agents respond to each others' assertions, weighting conflicting
-  assertions by currency value, - a function call is an imposition, but an assertion is a promise
-
 - be concise
+- break up long paragraphs into shorter paragraphs or bullet points
 
 .stop
 
-- add a description of how message sequence completion can be implemented as assertions of "what's next" in a graph
-- add a description of how the graph is the execution journal of an ISM 
 - add a description of how promisegrid is an ISM
 - journal is decentralized and is the decentralized cache
 

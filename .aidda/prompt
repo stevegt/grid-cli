@@ -6,8 +6,7 @@ In:
 Out: 
     v2/doc/201-ism.md
 
-- describe why infinite state machines are considered to be
-  turing-equivalent
+- are infinite state machines turing-equivalent?
 
 .stop 
 

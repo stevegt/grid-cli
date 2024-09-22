@@ -18,7 +18,13 @@ files=$(echo "$files" | tr '\n' ' ')
 
 input1=$(echo "$files" | awk '{print $1}')
 input2=$(echo "$files" | awk '{print $2}')
-output=$input1
+
+# output is the older of the two imput files
+if [ "$input1" -nt "$input2" ]; then
+    output=$input2
+else
+    output=$input1
+fi
 
 if [ -z "$input2" ]; then
     echo "No similar files found"

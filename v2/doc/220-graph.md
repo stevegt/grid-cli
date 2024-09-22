@@ -1,4 +1,4 @@
-# Sequence Matching Graph Documentation
+# Sequence Matching Graph for PromiseGrid
 
 ## Overview
 

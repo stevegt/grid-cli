@@ -5,7 +5,7 @@ In:
     v2/doc/209-issues.md
     v2/doc/510-axioms.md
 Out:
-    v2/doc/209-issues.md
+    v2/doc/510-axioms.md
 
 - merge all input files into the output file
 - resolve inconsistencies

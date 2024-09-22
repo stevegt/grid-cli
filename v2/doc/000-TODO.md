@@ -1,4 +1,9 @@
-# TODO List for Implementing PromiseGrid Kernel
+# TODO List for Implementing PromiseGrid's grid-cli POC
+
+- implement kernel as a message router using ports
+- implement init agent
+- implement sample agents
+- iterate 
 
 ## General Improvements
 - Improve documentation clarity and consistency.

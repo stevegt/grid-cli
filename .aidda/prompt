@@ -5,7 +5,7 @@ In:
     v2/doc/
 Out: v2/doc/201-ism.md
 
-- edit for conciseness
+- be concise
 - describe why infinite state machines are considered to be
   turing-equivalent
 - describe how an ISM transition is like "what's next" in a graph

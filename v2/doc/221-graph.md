@@ -149,10 +149,6 @@ root := &Node{Children: make(map[rune]*Node)}
 AddSequence(root, "AGC")
 ```
 
-### Conclusion
-
-The sequence-matching graph structure, with detailed node and edge compositions, a traversal mechanism, and illustrative examples, forms the core of efficient sequence matching. This approach supports both recursive and iterative traversal techniques, ensuring flexibility and clarity in matching input sequences to stored reference sequences. This documentation integrates theoretical foundations with practical implementation methods to provide a cohesive understanding of sequence-matching graphs in the PromiseGrid system.
-
 ## Optimizations and Further Research
 
 ### Sequence Matching with Unknown Leading Characters

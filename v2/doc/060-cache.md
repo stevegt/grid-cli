@@ -102,7 +102,3 @@ Modules can unwrap nested messages and forward them to other modules, enabling c
 2. Early rejection.
 3. Modular logic.
 
-### Conclusion
-
-PromiseGrid combines promises at every level and implements a hierarchical syscall tree with caching and acceptance history to ensure trust, accountability, and efficient message handling within a decentralized governance framework.
-

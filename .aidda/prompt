@@ -2,6 +2,23 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Sysmsg: You are an expert technical writer and software architect. 
 In: 
+    v2/doc/
+Out: 
+    v2/doc/101-layers.md
+
+
+- be concise
+- describe message layers, assuming:
+    - CBOR is used for framing 
+    - the first field in the CBOR message is a hash of the protocol
+      doc
+    - second and subsequent CBOR fields are protocol-specific
+    - we get grid-cli running, and then decide which protocol(s) make
+      sense based on experience
+
+.stop 
+
+In: 
     v2/doc/201-ism.md
 Out: 
     v2/doc/201-ism.md

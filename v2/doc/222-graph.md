@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/222-graph.md
-```markdown
 # Turing Completeness of Graphs and Hypergraphs
 
 ## Introduction
@@ -61,5 +59,3 @@ Graphs and hypergraphs, as foundational structures, do not inherently possess Tu
 - Hughes, S., & Setzer, S. (2011). **Graph Rewriting and Turing Completeness**. *Journal of Computational Structures*, 29(3), 415-430.
 - Knuth, D. E. (1984). **Structured Programming with GO TO Statements**. *Computers and Typesetting*, 2(4), 1163-1179.
 - Reisig, K., & Bessette, B. (2006). **On the Turing Completeness of Hypergraph Rewriting Systems**. *International Journal of Computer Science*, 6(2), 55-62.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/222-graph.md

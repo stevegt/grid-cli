@@ -1,18 +1,14 @@
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+create 222-graph.md
+
+Discuss whether a graph or a hypergraph is turing complete.  Give
+examples of graph rewriting systems that are turing complete.  
+
 Sysmsg: You are an expert technical writer and software architect. 
+In: 
+    v2/doc/222-graph.md
 Out: 
-    v2/doc/101-layers.md
+    v2/doc/222-graph.md
 
-
-- be concise
-- describe message layers, assuming:
-    - CBOR is used for framing 
-    - the first field in the CBOR message is a hash of the protocol
-      doc
-    - second and subsequent CBOR fields are protocol-specific
-    - we get grid-cli running, and then decide which protocol(s) make
-      sense based on experience
 
 .stop 
 

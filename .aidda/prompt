@@ -1,12 +1,7 @@
 create 222-graph.md
 
-Discuss whether a graph or a hypergraph is turing complete.  Give
-examples of graph rewriting systems that are turing complete.  
+Discuss whether the following system is turing complete. Assume:
 
-Include a discussion of whether append-only graph rewriting systems
-are turing complete.
-
-Assume:
 - A hyperedge connects the old states of one or more parts of the
   universe to the new states of one or more parts of the universe.
 - At least one of the states is the algorithm to be executed.

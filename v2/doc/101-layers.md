@@ -1,5 +1,3 @@
-File: /home/stevegt/lab/grid-cli/v2/doc/101-layers.md
-```markdown
 # Message Layers
 
 This document describes the message layering architecture for grid-cli.
@@ -13,8 +11,3 @@ This document describes the message layering architecture for grid-cli.
 1. **Protocol Hash**: The first field in each CBOR message is a hash of the protocol document, ensuring integrity and version control.
 2. **Protocol-Specific Fields**: Subsequent CBOR fields contain data specific to the selected protocol, allowing for flexible and extensible communication.
 
-## Protocol Selection
-
-After initializing grid-cli, protocols are chosen based on practical experience and operational needs, ensuring that the system adapts to real-world requirements effectively.
-```
-EOF_/home/stevegt/lab/grid-cli/v2/doc/101-layers.md

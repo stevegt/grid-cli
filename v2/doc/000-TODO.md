@@ -1,7 +1,9 @@
 # TODO List for Implementing PromiseGrid's grid-cli POC
 
-- describe ports
+- describe message format
 - describe kernel
+
+- describe ports
 - implement kernel as a message router using ports
 - implement init agent
 - implement sample agents

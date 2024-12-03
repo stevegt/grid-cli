@@ -6,7 +6,19 @@ examples of graph rewriting systems that are turing complete.
 Include a discussion of whether append-only graph rewriting systems
 are turing complete.
 
-Verify references, provide URLs.
+Assume:
+- A hyperedge connects the old states of one or more parts of the
+  universe to the new states of one or more parts of the universe.
+- At least one of the states is the algorithm to be executed.
+- Zero or more of the states are input parameters to the algorithm.
+- External side effects are represented by states of the universe that
+  are not connected to any other hyperedges.
+- The transition function executes the algorithm, creating the new states.
+- This model can be used to represent a pipes-and-filters architecture.
+- This model can be used to represent a dataflow architecture.
+- This model can be used to represent an infinite state machine.
+
+Remove unverifiable references, provide URLs where possible.
 
 Sysmsg: You are an expert technical writer and software architect. 
 In: 

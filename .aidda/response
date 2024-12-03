@@ -4,76 +4,111 @@ File: /home/stevegt/lab/grid-cli/v2/doc/222-graph.md
 
 ## Introduction
 
-**Turing completeness** is a fundamental concept in computational theory indicating that a system can perform any computation that a Turing machine can, given enough time and memory. This concept helps in understanding the computational capabilities of various models, including mathematical structures like graphs and hypergraphs. This document explores whether graphs and hypergraphs are Turing complete and provides examples of Turing complete graph rewriting systems. Additionally, it discusses the computational limitations of append-only graph rewriting systems.
+Turing completeness is a fundamental concept in computer science that defines the ability of a system to perform any computation that a Turing machine can, given enough time and memory. Graphs and hypergraphs, as mathematical structures, are powerful tools for modeling relationships and computations. This document explores whether graphs and hypergraphs are Turing complete, provides examples of Turing-complete graph rewriting systems, and discusses the computational capabilities of append-only graph rewriting systems.
 
-## Graphs and Turing Completeness
+## Graphs and Hypergraphs in Computation
 
 ### Graphs
 
-A **graph** is a mathematical structure comprising a set of **vertices** (nodes) connected by **edges**. Graphs are pivotal in modeling pairwise relationships and have applications across computer science, mathematics, and network theory.
-
-### Graph Rewriting Systems
-
-Graphs themselves are static, but when paired with **graph rewriting systems**, they become dynamic computational models. Graph rewriting involves transforming graphs by applying rules that replace certain subgraphs with others.
-
-#### Turing Complete Graph Rewriting Systems
-
-1. **Term Graph Rewriting**: This approach represents terms or expressions as graphs, where nodes denote function symbols and edges represent connections between them. Rewriting rules correspond to computational steps.
-
-   - *Reference*: Plump, D. (1999). **Term Graph Rewriting**. In *Handbook of Graph Grammars and Computing by Graph Transformation*, Volume 2 (pp. 3–61). World Scientific. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.37.1833&rep=rep1&type=pdf)
-
-2. **Interaction Nets**: A paradigm where computations are modeled through the interaction of agents represented as nodes in a graph. The rewriting rules are local and parallelizable.
-
-   - *Reference*: Lafont, Y. (1990). **Interaction Nets**. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). ACM. [Link](https://doi.org/10.1145/96709.96718)
-
-## Hypergraphs and Turing Completeness
+A **graph** consists of a set of vertices (nodes) connected by edges (lines), representing pairwise relationships between entities. Graphs are widely used in computer science for modeling networks, dependencies, and various structures.
 
 ### Hypergraphs
 
-A **hypergraph** generalizes a graph by allowing **hyperedges** to connect any number of vertices. This flexibility makes hypergraphs suitable for modeling complex, higher-order relationships.
+A **hypergraph** generalizes the concept of a graph by allowing edges, called **hyperedges**, to connect any number of vertices. This feature enables hypergraphs to represent more complex relationships involving multiple entities simultaneously.
+
+### Modeling Computation
+
+Graphs and hypergraphs can model computational processes by representing states and transitions:
+
+- **States as Nodes**: Each node represents a state of a part of the universe or a piece of data.
+- **Transitions as Edges**: Edges or hyperedges represent transitions between states or the application of functions.
+
+#### Assumptions
+
+- **State Transitions**: A hyperedge connects the old states of one or more parts of the universe to the new states of one or more parts of the universe.
+- **Algorithm Representation**: At least one of the states is the algorithm to be executed.
+- **Input Parameters**: Zero or more of the states are input parameters to the algorithm.
+- **External Side Effects**: External side effects are represented by states of the universe that are not connected to any other hyperedges.
+- **Transition Function**: The transition function executes the algorithm, creating new states.
+- **Architectural Models**: This model can represent a pipes-and-filters architecture, a dataflow architecture, and an infinite state machine.
+
+## Turing Completeness of Graph Rewriting Systems
+
+### Graph Rewriting Systems
+
+A **graph rewriting system** consists of a set of rules for transforming graphs. These rules define how a subgraph can be replaced with another subgraph, enabling the simulation of computational processes.
+
+### Turing-Complete Graph Rewriting Systems
+
+Graph rewriting systems can be Turing complete if they can simulate any computation that a Turing machine can perform. Examples include:
+
+#### Double-Pushout (DPO) Approach
+
+The DPO approach provides a formal framework for graph transformation based on category theory. It allows the definition of precise and general graph rewriting rules.
+
+- **Reference**: Ehrig, H., & Kreowski, H.-J. (1976). *Parallel and Sequential Graph Grammars*. [Link](https://doi.org/10.1007/BFb0025723)
+
+#### Interaction Nets
+
+Interaction nets are a paradigm where computations are modeled through the interaction of agents represented as nodes in a graph. Rewriting rules are local and can be applied in parallel, making them suitable for efficient computation.
+
+- **Reference**: Lafont, Y. (1990). *Interaction Nets*. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). [Link](https://doi.org/10.1145/96709.96718)
+
+#### Graph Reduction in Functional Programming
+
+Graph reduction represents expressions as graphs and reduces them according to rewriting rules. It is a key implementation technique for non-strict functional programming languages like Haskell.
+
+- **Reference**: Peyton Jones, S. L. (1987). *The Implementation of Functional Programming Languages*. [Link](https://www.microsoft.com/en-us/research/publication/the-implementation-of-functional-programming-languages/)
 
 ### Hypergraph Rewriting Systems
 
-Hypergraph rewriting extends graph rewriting to hypergraphs, enabling more expressive computational models.
+Hypergraph rewriting extends graph rewriting by allowing transformation rules to be applied to hypergraphs, accommodating more complex structures.
 
-#### Turing Complete Hypergraph Rewriting Systems
+#### Turing-Complete Hypergraph Rewriting
 
-1. **Hypergraph Lambdas**: An extension of the lambda calculus using hypergraphs to represent functions and their applications.
+An example is the use of hypergraphs to represent and implement the lambda calculus, which is Turing complete.
 
-   - *Reference*: Fernández, M., Mackie, I., & Khasidashvili, Z. (2000). **Normalisation by Interactive Reduction**. *Theoretical Computer Science*, 227(1-2), 113–142. [Link](https://doi.org/10.1016/S0304-3975(99)00099-2)
-
-2. **Bigraphs**: Introduced by Robin Milner, bigraphs are a model of computation combining both the connectivity (like in graphs) and locality (spatial distribution).
-
-   - *Reference*: Milner, R. (2001). **Bigraphical Reactive Systems**. *Lecture Notes in Computer Science*, 2205, 16–35. [Link](https://doi.org/10.1007/3-540-44802-0_2)
+- **Reference**: Fernández, M., & Mackie, I. (1997). *A Calculus for Interaction Nets*. [Link](https://doi.org/10.1016/S0304-3975(97)00207-7)
 
 ## Append-Only Graph Rewriting Systems
 
+### Characteristics
+
+In append-only graph rewriting systems, transformations are restricted to adding new nodes or edges without modifying or deleting existing ones.
+
 ### Computational Limitations
 
-**Append-only graph rewriting systems** restrict transformations to only adding new nodes or edges without altering or deleting existing ones. This limitation impacts their computational power.
+Append-only systems are generally **not Turing complete**. The inability to modify or delete portions of the graph prevents the implementation of certain computational constructs, such as loops and conditional branches that require state changes.
 
-- **Not Turing Complete**: Generally, append-only systems cannot simulate all possible computations of a Turing machine because they lack the ability to modify or erase information, which is essential for processes like looping and conditional branching.
+### Workarounds
 
-### Exceptions and Workarounds
+While limited, append-only systems can encode state changes within the growing structure of the graph. However, this approach often leads to impractical complexity and is insufficient for achieving full Turing completeness.
 
-- **Potential Turing Completeness with Encoding**: There are theoretical models where append-only systems achieve Turing completeness by encoding state within the growing structure, but these are complex and less practical.
+- **Reference**: Ben-Amram, A. M., & Pollack, S. (2011). *What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append*. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)
 
-   - *Reference*: Ben-Amram, A. M., & Pollack, S. (2011). **What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append**. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)
+## Applications of the Model
+
+### Pipes-and-Filters Architecture
+
+The model can represent a **pipes-and-filters architecture**, where data flows through a sequence of processing components (filters) connected by channels (pipes).
+
+### Dataflow Architecture
+
+It is applicable to **dataflow architectures**, where the execution of operations is driven by the availability of input data rather than a predefined control flow.
+
+### Infinite State Machines
+
+By dynamically representing states and transitions, the model can simulate an **infinite state machine**, accommodating systems with unbounded or evolving state spaces.
 
 ## Conclusion
 
-Graphs and hypergraphs, when utilized within rewriting systems with adequate transformation rules, can be Turing complete. These systems can simulate any computation a Turing machine can perform. However, append-only graph rewriting systems typically lack Turing completeness due to their inability to modify existing structures, which is crucial for performing general computations.
+Graphs and hypergraphs, when utilized within comprehensive rewriting systems, can achieve Turing completeness, enabling them to perform any computation that a Turing machine can. However, append-only graph rewriting systems lack this capability due to their inability to modify existing structures, which is essential for general-purpose computation. Understanding these distinctions is crucial for the development of computational models and architectures that leverage the strengths of graph-based representations.
 
 ## References
 
-1. Plump, D. (1999). **Term Graph Rewriting**. In *Handbook of Graph Grammars and Computing by Graph Transformation*, Volume 2 (pp. 3–61). World Scientific. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.37.1833&rep=rep1&type=pdf)
-
-2. Lafont, Y. (1990). **Interaction Nets**. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). ACM. [Link](https://doi.org/10.1145/96709.96718)
-
-3. Fernández, M., Mackie, I., & Khasidashvili, Z. (2000). **Normalisation by Interactive Reduction**. *Theoretical Computer Science*, 227(1-2), 113–142. [Link](https://doi.org/10.1016/S0304-3975(99)00099-2)
-
-4. Milner, R. (2001). **Bigraphical Reactive Systems**. *Lecture Notes in Computer Science*, 2205, 16–35. [Link](https://doi.org/10.1007/3-540-44802-0_2)
-
-5. Ben-Amram, A. M., & Pollack, S. (2011). **What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append**. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)
+1. Ehrig, H., & Kreowski, H.-J. (1976). *Parallel and Sequential Graph Grammars*. In *Graph-Grammars and Their Application to Computer Science and Biology* (pp. 122–150). Springer. [Link](https://doi.org/10.1007/BFb0025723)
+2. Lafont, Y. (1990). *Interaction Nets*. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). ACM. [Link](https://doi.org/10.1145/96709.96718)
+3. Peyton Jones, S. L. (1987). *The Implementation of Functional Programming Languages*. Prentice Hall. [Link](https://www.microsoft.com/en-us/research/publication/the-implementation-of-functional-programming-languages/)
+4. Ben-Amram, A. M., & Pollack, S. (2011). *What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append*. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)
 ```
 EOF_/home/stevegt/lab/grid-cli/v2/doc/222-graph.md

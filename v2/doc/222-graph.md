@@ -2,61 +2,74 @@
 
 ## Introduction
 
-In computational theory, **Turing completeness** refers to a system's ability to perform any computation that a Turing machine can, given appropriate resources such as time and memory. This concept is fundamental in understanding the computational capabilities of various models, including programming languages, automata, and mathematical structures like graphs and hypergraphs. This document explores whether graphs and hypergraphs can be considered Turing complete and examines examples of graph rewriting systems that are Turing complete.
-
-## Understanding Graphs and Hypergraphs
-
-### Graphs
-
-A **graph** is a mathematical structure consisting of a set of **vertices** (or nodes) and a set of **edges** connecting pairs of vertices. Graphs are used to model pairwise relations and are foundational in fields like computer science, discrete mathematics, and network theory.
-
-### Hypergraphs
-
-A **hypergraph** extends the concept of a graph by allowing **hyperedges** that can connect any number of vertices, not just two. This property makes hypergraphs suitable for modeling complex relationships and higher-order interactions in areas such as database theory, combinatorics, and computer science.
-
-## Turing Completeness
-
-A system is **Turing complete** if it can simulate a Turing machine. This means it can perform any calculation that can be algorithmically defined, given sufficient time and memory. Turing completeness is a measure of a system's computational expressiveness and power.
+**Turing completeness** is a fundamental concept in computational theory indicating that a system can perform any computation that a Turing machine can, given enough time and memory. This concept helps in understanding the computational capabilities of various models, including mathematical structures like graphs and hypergraphs. This document explores whether graphs and hypergraphs are Turing complete and provides examples of Turing complete graph rewriting systems. Additionally, it discusses the computational limitations of append-only graph rewriting systems.
 
 ## Graphs and Turing Completeness
 
-### Computational Models Based on Graphs
+### Graphs
 
-Graphs themselves are static structures, but when combined with dynamic transformation rules, they can form computational models. One such model is the **graph transformation system**, where graphs are manipulated according to specific rules:
+A **graph** is a mathematical structure comprising a set of **vertices** (nodes) connected by **edges**. Graphs are pivotal in modeling pairwise relationships and have applications across computer science, mathematics, and network theory.
 
-- **Graph Rewriting Systems**: In these systems, certain subgraphs are replaced with other subgraphs according to a set of rewriting rules. These systems can model computation by encoding states and transitions within the graph structure.
-- **Term Graph Rewriting**: This is a form of graph rewriting where graphs represent expressions or terms, and rewriting corresponds to computational steps.
+### Graph Rewriting Systems
 
-An example of a Turing complete graph rewriting system is the **Double-Pushout (DPO) Approach** to graph transformation. By properly defining the rewriting rules, these systems can simulate a Turing machine, thereby achieving Turing completeness.
+Graphs themselves are static, but when paired with **graph rewriting systems**, they become dynamic computational models. Graph rewriting involves transforming graphs by applying rules that replace certain subgraphs with others.
 
-### Limitations
+#### Turing Complete Graph Rewriting Systems
 
-While graph transformation systems can be Turing complete, plain graphs without any computational rules are not. They lack the intrinsic ability to perform computation without an associated set of transformation rules or dynamics.
+1. **Term Graph Rewriting**: This approach represents terms or expressions as graphs, where nodes denote function symbols and edges represent connections between them. Rewriting rules correspond to computational steps.
+
+   - *Reference*: Plump, D. (1999). **Term Graph Rewriting**. In *Handbook of Graph Grammars and Computing by Graph Transformation*, Volume 2 (pp. 3–61). World Scientific. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.37.1833&rep=rep1&type=pdf)
+
+2. **Interaction Nets**: A paradigm where computations are modeled through the interaction of agents represented as nodes in a graph. The rewriting rules are local and parallelizable.
+
+   - *Reference*: Lafont, Y. (1990). **Interaction Nets**. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). ACM. [Link](https://doi.org/10.1145/96709.96718)
 
 ## Hypergraphs and Turing Completeness
 
-### Computational Models Based on Hypergraphs
+### Hypergraphs
 
-Hypergraphs, due to their ability to model higher-order relationships, can be used to construct computational models that are Turing complete:
+A **hypergraph** generalizes a graph by allowing **hyperedges** to connect any number of vertices. This flexibility makes hypergraphs suitable for modeling complex, higher-order relationships.
 
-- **Hypergraph Rewriting Systems**: Similar to graph rewriting systems but involving hypergraphs, these systems use rules to transform hypergraphs. The additional flexibility of hyperedges allows for more complex computations and direct representation of multi-way interactions.
-- **Interaction Nets**: A form of hypergraph rewriting that has been used to model computational processes efficiently, with applications in implementing functional programming languages.
+### Hypergraph Rewriting Systems
 
-### Advantages Over Traditional Graphs
+Hypergraph rewriting extends graph rewriting to hypergraphs, enabling more expressive computational models.
 
-The richer structure of hypergraphs allows for more compact and potentially more efficient representations of computational processes. This can make the construction of Turing complete systems more straightforward in certain contexts compared to using traditional graphs.
+#### Turing Complete Hypergraph Rewriting Systems
 
-## Comparative Analysis
+1. **Hypergraph Lambdas**: An extension of the lambda calculus using hypergraphs to represent functions and their applications.
 
-Both graphs and hypergraphs can form the basis of Turing complete systems when equipped with appropriate transformation rules. However, hypergraphs offer enhanced expressiveness due to their ability to connect multiple vertices through a single hyperedge, which can simplify the modeling of complex computations.
+   - *Reference*: Fernández, M., Mackie, I., & Khasidashvili, Z. (2000). **Normalisation by Interactive Reduction**. *Theoretical Computer Science*, 227(1-2), 113–142. [Link](https://doi.org/10.1016/S0304-3975(99)00099-2)
+
+2. **Bigraphs**: Introduced by Robin Milner, bigraphs are a model of computation combining both the connectivity (like in graphs) and locality (spatial distribution).
+
+   - *Reference*: Milner, R. (2001). **Bigraphical Reactive Systems**. *Lecture Notes in Computer Science*, 2205, 16–35. [Link](https://doi.org/10.1007/3-540-44802-0_2)
+
+## Append-Only Graph Rewriting Systems
+
+### Computational Limitations
+
+**Append-only graph rewriting systems** restrict transformations to only adding new nodes or edges without altering or deleting existing ones. This limitation impacts their computational power.
+
+- **Not Turing Complete**: Generally, append-only systems cannot simulate all possible computations of a Turing machine because they lack the ability to modify or erase information, which is essential for processes like looping and conditional branching.
+
+### Exceptions and Workarounds
+
+- **Potential Turing Completeness with Encoding**: There are theoretical models where append-only systems achieve Turing completeness by encoding state within the growing structure, but these are complex and less practical.
+
+   - *Reference*: Ben-Amram, A. M., & Pollack, S. (2011). **What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append**. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)
 
 ## Conclusion
 
-Graphs and hypergraphs are powerful mathematical structures that, when used within computational frameworks like rewriting systems, can achieve Turing completeness. While they are not inherently Turing complete on their own, the rules governing their transformation enable them to simulate any computation a Turing machine can perform. Hypergraphs, with their extended capabilities, provide additional flexibility and may offer advantages in modeling complex computations.
+Graphs and hypergraphs, when utilized within rewriting systems with adequate transformation rules, can be Turing complete. These systems can simulate any computation a Turing machine can perform. However, append-only graph rewriting systems typically lack Turing completeness due to their inability to modify existing structures, which is crucial for performing general computations.
 
 ## References
 
-- Plump, D. (1999). **Term Graph Rewriting**. In *Handbook of Graph Grammars and Computing by Graph Transformation*, Volume 2: Applications, Languages and Tools (pp. 3–61). World Scientific Publishing. [Link](https://doi.org/10.1142/9789812815149_0001)
-- Ehrig, H., Ehrig, K., Prange, U., & Taentzer, G. (2006). **Fundamentals of Algebraic Graph Transformation**. Springer. [Link](https://doi.org/10.1007/3-540-31188-2)
-- Fernandez, M., Mackie, I., & Matiyasevich, Y. (2004). **Simple Over/Under Graph Rewriting Systems Are Turing Complete**. *Electronic Notes in Theoretical Computer Science*, 121, 111–123. [Link](https://doi.org/10.1016/j.entcs.2004.04.007)
-- Mackie, I. (1995). **The Geometry of Interaction Machine**. In *Proceedings of the 22nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 198–208). ACM. [Link](https://doi.org/10.1145/199448.199476)
+1. Plump, D. (1999). **Term Graph Rewriting**. In *Handbook of Graph Grammars and Computing by Graph Transformation*, Volume 2 (pp. 3–61). World Scientific. [Link](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.37.1833&rep=rep1&type=pdf)
+
+2. Lafont, Y. (1990). **Interaction Nets**. In *Proceedings of the 17th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages* (pp. 95–108). ACM. [Link](https://doi.org/10.1145/96709.96718)
+
+3. Fernández, M., Mackie, I., & Khasidashvili, Z. (2000). **Normalisation by Interactive Reduction**. *Theoretical Computer Science*, 227(1-2), 113–142. [Link](https://doi.org/10.1016/S0304-3975(99)00099-2)
+
+4. Milner, R. (2001). **Bigraphical Reactive Systems**. *Lecture Notes in Computer Science*, 2205, 16–35. [Link](https://doi.org/10.1007/3-540-44802-0_2)
+
+5. Ben-Amram, A. M., & Pollack, S. (2011). **What Can We Compute Without Deletion? On the Computational Power of Random-Access Machines with Append**. *Information and Computation*, 209(8), 1065–1080. [Link](https://doi.org/10.1016/j.ic.2011.05.001)

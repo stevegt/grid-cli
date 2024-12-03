@@ -3,6 +3,9 @@ create 222-graph.md
 Discuss whether a graph or a hypergraph is turing complete.  Give
 examples of graph rewriting systems that are turing complete.  
 
+Include a discussion of whether append-only graph rewriting systems
+are turing complete.
+
 Verify references, provide URLs.
 
 Sysmsg: You are an expert technical writer and software architect. 
